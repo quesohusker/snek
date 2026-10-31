@@ -57,7 +57,7 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 
 ## Tools
 
-63 tools so far, organized like the Alteryx palette. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
+81 tools so far, organized like the Alteryx palette. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
 
 | Category | Tools |
 |---|---|
@@ -66,10 +66,11 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 | Join | Join (L/J/R outputs), Join Multiple, Union, Append Fields, Find Replace (lookup table) |
 | Parse | Text to Columns, RegEx, DateTime, JSON Parse, Explode List, Unnest JSON |
 | Transform | Summarize, Cross Tab, Transpose, Running Total, Weighted Average, Count Records |
-| Data Investigation | Field Summary, Frequency Table, Correlation, Contingency Table |
-| Modeling | Linear Regression, Logistic Regression, Decision Tree, Random Forest, Boosted Model, Score, Model Comparison, Create Samples |
-| Predictive Grouping | K-Means Clusters, Principal Components |
-| Time Series | TS Filler, Rolling Window, ETS Forecast, ARIMA Forecast |
+| Data Investigation | Field Summary, Frequency Table, Correlation, Contingency Table, Test of Means, Chi-Square Test |
+| Modeling | Linear, Logistic, Regularized (Ridge/Lasso/Elastic Net), Count (Poisson/negative binomial) and Gamma Regression, Decision Tree, Random Forest, Boosted Model, Naive Bayes, K-Nearest Neighbors, Support Vector Machine, Neural Network, Score, Model Comparison, Cross-Validation, Create Samples, Variance Inflation Factors |
+| Predictive Grouping | K-Means Clusters, Cluster Diagnostics, Hierarchical Clustering, Principal Components, Find Nearest Neighbors |
+| Time Series | TS Filler, Rolling Window, Seasonal Decomposition, ETS Forecast, ARIMA Forecast, TS Compare |
+| Sports | Team Ratings (SRS/Massey with home field and margin cap), Elo Ratings (home edge, margin of victory, season carry-over) |
 | Developer | Python (your own pandas code), Dynamic Input, Dynamic Rename, Dynamic Select, Field Info |
 
 Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. Directory plus Dynamic Input reads every file in a folder.
@@ -101,6 +102,9 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Penguins: predict body mass (Field Summary, Correlation, Linear Regression)
 - Penguins: classify species (Create Samples, Decision Tree vs. Random Forest, Model Comparison, Score)
 - Flights: forecast daily departures (TS Filler, ETS and ARIMA with weekly seasonality)
+- Flights: forecast accuracy check (hold out two weeks, forecast them, grade with TS Compare; Seasonal Decomposition)
+- Penguins: model bake-off (five classifiers, 5-fold Cross-Validation)
+- Demo: league ratings for made-up teams (Team Ratings and Elo side by side)
 - Demo: no files needed
 
 All bundled data is CC0. See [examples/data/README.md](examples/data/README.md) for sources and citations.
@@ -160,4 +164,6 @@ Once a day, Snek asks GitHub's public releases page whether a newer version exis
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+Snek is free to download and use for personal, noncommercial purposes under the [PolyForm Strict License 1.0.0](LICENSE). You may not sell it, redistribute it, or publish modified versions. Businesses that want to use Snek for commercial work need a separate license; open an issue to ask.
+
+The bundled example data is CC0 (see [examples/data/README.md](examples/data/README.md)). Third-party components keep their own licenses, listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

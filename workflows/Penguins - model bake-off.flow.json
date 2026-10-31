@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "name": "Penguins - model bake-off",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Penguins",
+      "position": {
+        "x": 0,
+        "y": 195.0
+      },
+      "config": {
+        "path": "examples/data/penguins/penguins.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "naive_bayes",
+      "label": "Naive Bayes",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "target": "species",
+        "predictors": [
+          "bill_length_mm",
+          "bill_depth_mm",
+          "flipper_length_mm",
+          "body_mass_g"
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "type": "knn",
+      "label": "KNN",
+      "position": {
+        "x": 170,
+        "y": 97.5
+      },
+      "config": {
+        "target": "species",
+        "predictors": [
+          "bill_length_mm",
+          "bill_depth_mm",
+          "flipper_length_mm",
+          "body_mass_g"
+        ],
+        "k": 5
+      }
+    },
+    {
+      "id": "4",
+      "type": "svm",
+      "label": "SVM",
+      "position": {
+        "x": 170,
+        "y": 195.0
+      },
+      "config": {
+        "target": "species",
+        "predictors": [
+          "bill_length_mm",
+          "bill_depth_mm",
+          "flipper_length_mm",
+          "body_mass_g"
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "type": "neural_network",
+      "label": "Neural net",
+      "position": {
+        "x": 170,
+        "y": 292.5
+      },
+      "config": {
+        "target": "species",
+        "predictors": [
+          "bill_length_mm",
+          "bill_depth_mm",
+          "flipper_length_mm",
+          "body_mass_g"
+        ],
+        "hidden": "32"
+      }
+    },
+    {
+      "id": "6",
+      "type": "random_forest",
+      "label": "Forest",
+      "position": {
+        "x": 170,
+        "y": 390
+      },
+      "config": {
+        "target": "species",
+        "predictors": [
+          "bill_length_mm",
+          "bill_depth_mm",
+          "flipper_length_mm",
+          "body_mass_g"
+        ],
+        "trees": 100
+      }
+    },
+    {
+      "id": "7",
+      "type": "cross_validation",
+      "label": "5-fold scores",
+      "position": {
+        "x": 340,
+        "y": 195.0
+      },
+      "config": {
+        "folds": 5
+      }
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 510,
+        "y": 195.0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-3.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-4.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-5.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-6.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.model-7.model",
+      "source": "2",
+      "sourceHandle": "model",
+      "target": "7",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e3.model-7.model",
+      "source": "3",
+      "sourceHandle": "model",
+      "target": "7",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e4.model-7.model",
+      "source": "4",
+      "sourceHandle": "model",
+      "target": "7",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e5.model-7.model",
+      "source": "5",
+      "sourceHandle": "model",
+      "target": "7",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e6.model-7.model",
+      "source": "6",
+      "sourceHandle": "model",
+      "target": "7",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e1.out-7.data",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "data"
+    },
+    {
+      "id": "e7.summary-8.in",
+      "source": "7",
+      "sourceHandle": "summary",
+      "target": "8",
+      "targetHandle": "in"
+    }
+  ]
+}

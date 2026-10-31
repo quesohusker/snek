@@ -34,9 +34,13 @@ export async function saveWorkflow() {
 
 export async function openWorkflow(name: string) {
   if (!confirmDiscard()) return;
-  const wf = await api.loadWorkflow(name);
-  useFlow.getState().load(wf, name);
-  useFlow.getState().setDialog(null);
+  try {
+    const wf = await api.loadWorkflow(name);
+    useFlow.getState().load(wf, name);
+    useFlow.getState().setDialog(null);
+  } catch (e) {
+    alert(`Could not open ${name}: ${(e as Error).message}`);
+  }
 }
 
 export function newWorkflow() {

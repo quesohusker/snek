@@ -1,4 +1,4 @@
-from snek.tools.base import Tool, ToolError, fld, is_numeric, lit, opts, register, short
+from snek.tools.base import Port, Tool, ToolError, fld, is_numeric, lit, opts, register, short
 
 CATEGORY = "Data Investigation"
 
@@ -98,6 +98,53 @@ class ContingencyTable(Tool):
             f"{out} = {expr}.reset_index()",
             f"{out}.columns = [str(col) for col in {out}.columns]",
         ])
+
+    def summary(self, cfg):
+        return short(f"{cfg['rows']} × {cfg['columns']}") if cfg["rows"] else ""
+
+
+@register
+class TestOfMeans(Tool):
+    type = "test_of_means"
+    label = "Test of Means"
+    category = CATEGORY
+    description = "Is the difference in averages real? Two groups: t-test. Three or more: one-way ANOVA. S = stats per group, T = the test."
+    outputs = [Port("summary", "S"), Port("test", "T")]
+    fields = [
+        fld("value", "Numeric column", "column", ""),
+        fld("group", "Group column", "column", ""),
+        fld("equal_var", "Assume equal variances (Student t-test)", "bool", False, help="Off uses Welch's t-test, which is safer."),
+    ]
+
+    def code(self, cfg, ctx):
+        value, group = cfg["value"], cfg["group"]
+        ctx.require(value, "Pick the numeric column")
+        ctx.require(group, "Pick the group column")
+        ctx.require_columns([value, group])
+        if not is_numeric(ctx.dtype(value)):
+            raise ToolError(f"{value} is not numeric")
+        eq = ", equal_var=True" if cfg["equal_var"] else ""
+        return f"{ctx.out('summary')}, {ctx.out('test')} = test_of_means({ctx.var()}, {value!r}, {group!r}{eq})"
+
+    def summary(self, cfg):
+        return short(f"{cfg['value']} by {cfg['group']}") if cfg["value"] else ""
+
+
+@register
+class ChiSquareTest(Tool):
+    type = "chi_square"
+    label = "Chi-Square Test"
+    category = CATEGORY
+    description = "Are two category columns related, such as conference and bowl eligibility? T = test result with Cramér's V, E = observed vs expected counts."
+    outputs = [Port("test", "T"), Port("expected", "E")]
+    fields = [fld("rows", "First column", "column", ""), fld("columns", "Second column", "column", "")]
+
+    def code(self, cfg, ctx):
+        r, c = cfg["rows"], cfg["columns"]
+        ctx.require(r, "Pick the first column")
+        ctx.require(c, "Pick the second column")
+        ctx.require_columns([r, c])
+        return f"{ctx.out('test')}, {ctx.out('expected')} = chi_square_test({ctx.var()}, {r!r}, {c!r})"
 
     def summary(self, cfg):
         return short(f"{cfg['rows']} × {cfg['columns']}") if cfg["rows"] else ""

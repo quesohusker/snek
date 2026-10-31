@@ -59,6 +59,16 @@ def test_workflows_save_into_project(client, tmp_path):
     assert [w["name"] for w in client.get("/api/workflows").json()["workflows"]] == ["First flow"]
 
 
+def test_workflow_names_with_punctuation(client, tmp_path):
+    client.post("/api/project/new", json={"parent": str(tmp_path), "name": "proj"})
+    name = "Week 5 (draft), Nebraska & Iowa"
+    assert client.put(f"/api/workflows/{name}", json=simple_output_workflow("output/x.csv")).status_code == 200
+    assert client.get(f"/api/workflows/{name}").status_code == 200
+    assert client.put("/api/workflows/a%2Fb", json={}).status_code >= 400
+    assert client.put("/api/workflows/..", json={}).status_code >= 400
+    assert not list((tmp_path / "proj").glob("*.flow.json"))
+
+
 def test_open_examples_and_reject_bad_input(client, tmp_path):
     client.post("/api/project/new", json={"parent": str(tmp_path), "name": "proj"})
     r = client.post("/api/project/open", json={"path": str(ROOT)})

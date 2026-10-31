@@ -25,7 +25,7 @@ function AboutDialog({ onClose }: { onClose: () => void }) {
   return (
     <Modal title="About Snek" onClose={onClose}>
       <p>
-        <strong>Snek {update?.current ?? ""}</strong>: a visual workflow canvas for pandas. MIT license.
+        <strong>Snek {update?.current ?? ""}</strong>: a visual workflow canvas for pandas. Free for personal, noncommercial use under the PolyForm Strict License 1.0.0.
       </p>
       {!update ? (
         <p className="muted">Checking for updates…</p>

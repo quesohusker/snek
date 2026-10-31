@@ -206,6 +206,48 @@ def main():
     )
 
     build(
+        "Demo - league ratings (made-up teams)",
+        [
+            (1, "text_input", "Made-up league", 0, 0.7, {"data": "week,home,away,home_pts,away_pts,neutral\n1,Prairie Dogs,Ridge Hawks,31,17,false\n1,Lake Pike,Canyon Wrens,24,27,false\n1,Iron Owls,Delta Herons,20,13,false\n2,Ridge Hawks,Iron Owls,28,24,false\n2,Canyon Wrens,Prairie Dogs,14,35,false\n2,Delta Herons,Lake Pike,21,10,false\n3,Prairie Dogs,Iron Owls,27,20,false\n3,Lake Pike,Ridge Hawks,17,30,false\n3,Canyon Wrens,Delta Herons,23,20,false\n4,Iron Owls,Lake Pike,34,6,false\n4,Ridge Hawks,Delta Herons,24,21,false\n4,Prairie Dogs,Lake Pike,42,14,false\n5,Delta Herons,Prairie Dogs,17,20,true\n5,Canyon Wrens,Iron Owls,10,31,true\n5,Ridge Hawks,Canyon Wrens,38,21,true", "delimiter": ","}),
+            (2, "team_ratings", "SRS ratings", 1, 0, {"home": "home", "away": "away", "home_points": "home_pts", "away_points": "away_pts", "neutral": "neutral", "cap": 28}),
+            (3, "elo", "Elo ratings", 1, 1.4, {"home": "home", "away": "away", "home_points": "home_pts", "away_points": "away_pts", "neutral": "neutral", "order": "week"}),
+            (4, "join", "Side by side", 2, 0.7, {"keys": [{"left": "Team", "right": "Team"}], "suffix": "_elo"}),
+            (5, "browse", "", 3, 0.7, {}),
+        ],
+        [(1, "out", 2, "in"), (1, "out", 3, "in"), (2, "ratings", 4, "left"), (3, "ratings", 4, "right"), (4, "join", 5, "in")],
+    )
+
+    build(
+        "Penguins - model bake-off",
+        [
+            (1, "input", "Penguins", 0, 1.5, {"path": f"{PENGUINS}/penguins.csv"}),
+            (2, "naive_bayes", "Naive Bayes", 1, 0, {"target": "species", "predictors": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]}),
+            (3, "knn", "KNN", 1, 0.75, {"target": "species", "predictors": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"], "k": 5}),
+            (4, "svm", "SVM", 1, 1.5, {"target": "species", "predictors": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]}),
+            (5, "neural_network", "Neural net", 1, 2.25, {"target": "species", "predictors": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"], "hidden": "32"}),
+            (6, "random_forest", "Forest", 1, 3, {"target": "species", "predictors": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"], "trees": 100}),
+            (7, "cross_validation", "5-fold scores", 2, 1.5, {"folds": 5}),
+            (8, "browse", "", 3, 1.5, {}),
+        ],
+        [(1, "out", n, "in") for n in (2, 3, 4, 5, 6)] + [(n, "model", 7, "model") for n in (2, 3, 4, 5, 6)] + [(1, "out", 7, "data"), (7, "summary", 8, "in")],
+    )
+
+    build(
+        "Flights - forecast accuracy check",
+        [
+            (1, "input", "Q1 flights", 0, 0.7, {"path": f"{NYC}/flights_2013_*.csv.gz"}),
+            (2, "formula", "Flight date", 1, 0.7, {"formulas": [{"column": "date", "expression": "pd.to_datetime(dict(year=[year], month=[month], day=[day]))", "dtype": ""}]}),
+            (3, "summarize", "Departures per day", 2, 0.7, {"group_by": ["date"], "aggs": [{"column": "carrier", "func": "size", "name": "departures"}]}),
+            (4, "filter", "Before March 18", 3, 0.7, {"mode": "expression", "expression": "[date] < '2013-03-18'"}),
+            (5, "ets", "Forecast last 14 days", 4, 0, {"date": "date", "value": "departures", "freq": "D", "periods": 14, "seasonal": "add", "seasonal_periods": 7}),
+            (6, "ts_compare", "Forecast vs actual", 5, 0.7, {"date": "date", "actual_date": "date", "actual_value": "departures"}),
+            (7, "stl", "Trend and weekly pattern", 3, 2.1, {"date": "date", "value": "departures", "freq": "D", "period": 7}),
+            (8, "browse", "", 6, 0.7, {}),
+        ],
+        chain(1, 2, 3, 4) + [(4, "true", 5, "in"), (5, "forecast", 6, "forecast"), (4, "false", 6, "actual"), (6, "metrics", 8, "in"), (3, "out", 7, "in")],
+    )
+
+    build(
         "Demo - no files needed",
         [
             (1, "text_input", "Scores", 0, 0, {"data": "team,opp,pts,opp_pts\nNebraska,Iowa,24,20\nIowa,Nebraska,20,24\nNebraska,Akron,68,0\nAkron,Nebraska,0,68\nIowa,Akron,31,7\nAkron,Iowa,7,31", "delimiter": ","}),

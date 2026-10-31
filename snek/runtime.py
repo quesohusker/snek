@@ -353,6 +353,20 @@ HELPERS.update({
     "fill_periods": ([modeling.fill_periods], [], [], []),
     "ets_forecast": ([modeling.series_groups, modeling.forecast_frames, modeling.ets_forecast], [], [], ["statsmodels"]),
     "arima_forecast": ([modeling.series_groups, modeling.forecast_frames, modeling.arima_forecast], [], [], ["statsmodels"]),
+    "fit_estimator": ([modeling.design_matrix, modeling.model_row, modeling.guess_task, modeling.fit_estimator], [], [], ["scikit-learn"]),
+    "fit_regularized": ([modeling.design_matrix, modeling.model_row, modeling.fit_regularized], [], [], ["scikit-learn"]),
+    "fit_glm": ([modeling.design_matrix, modeling.model_row, modeling.fit_glm], [], [], ["statsmodels"]),
+    "cross_validate": ([modeling.design_matrix, modeling.model_row, modeling.fit_logistic, modeling.fit_glm, modeling.score_model, modeling.compare_models, modeling.refit_model, modeling.cross_validate], [], [], ["scikit-learn", "statsmodels"]),
+    "vif_table": ([modeling.design_matrix, modeling.vif_table], [], [], ["statsmodels"]),
+    "test_of_means": ([modeling.test_of_means], [], [], ["scipy"]),
+    "chi_square_test": ([modeling.chi_square_test], [], [], ["scipy"]),
+    "seasonal_decompose": ([modeling.series_groups, modeling.seasonal_decompose], [], [], ["statsmodels"]),
+    "compare_forecast": ([modeling.compare_forecast], [], [], []),
+    "cluster_diagnostics": ([modeling.design_matrix, modeling.cluster_diagnostics], [], [], ["scikit-learn"]),
+    "hierarchical_cluster": ([modeling.design_matrix, modeling.hierarchical_cluster], [], [], ["scikit-learn"]),
+    "nearest_neighbors": ([modeling.design_matrix, modeling.nearest_neighbors], [], [], ["scikit-learn"]),
+    "team_ratings": ([modeling.is_true, modeling.team_ratings], [], [], []),
+    "elo_ratings": ([modeling.elo_ratings], [], [], []),
 })
 
 NAMESPACE = {
@@ -377,5 +391,5 @@ NAMESPACE = {
     "parse_json": parse_json,
     "field_summary": field_summary,
     "linear_regression": linear_regression,
-    **{name: getattr(modeling, name) for name in ["linear_model_row", "fit_supervised", "fit_logistic", "score_model", "compare_models", "split_samples", "kmeans_cluster", "principal_components", "fill_periods", "ets_forecast", "arima_forecast"]},
+    **{name: getattr(modeling, name) for name in ["linear_model_row", "fit_supervised", "fit_logistic", "score_model", "compare_models", "split_samples", "kmeans_cluster", "principal_components", "fill_periods", "ets_forecast", "arima_forecast", "fit_estimator", "fit_regularized", "fit_glm", "cross_validate", "vif_table", "test_of_means", "chi_square_test", "seasonal_decompose", "compare_forecast", "cluster_diagnostics", "hierarchical_cluster", "nearest_neighbors", "team_ratings", "elo_ratings"]},
 }

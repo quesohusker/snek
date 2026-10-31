@@ -33,11 +33,11 @@ def main(executable):
         tools = call("/api/tools")["tools"]
         project = call("/api/project")
         print("tools:", len(tools), "project:", project["name"], project["path"])
-        if len(tools) < 63:
+        if len(tools) < 81:
             raise SystemExit(f"Only {len(tools)} tools are bundled")
         names = [w["name"] for w in call("/api/workflows")["workflows"]]
         print("workflows:", names)
-        for name in ["Penguins - body mass by species", "Flights - fleets from nested JSON", "Flights - Q1 delays by airline", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures"]:
+        for name in ["Penguins - body mass by species", "Flights - fleets from nested JSON", "Flights - Q1 delays by airline", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - league ratings (made-up teams)", "Penguins - model bake-off", "Flights - forecast accuracy check"]:
             wf = json.loads((Path(project["path"]) / "workflows" / f"{name}.flow.json").read_text())
             results = call("/api/run", {"workflow": wf})["results"]
             bad = {k: v["error"] for k, v in results.items() if v["status"] != "ok"}

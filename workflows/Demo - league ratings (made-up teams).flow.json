@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "name": "Demo - league ratings (made-up teams)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "text_input",
+      "label": "Made-up league",
+      "position": {
+        "x": 0,
+        "y": 91.0
+      },
+      "config": {
+        "data": "week,home,away,home_pts,away_pts,neutral\n1,Prairie Dogs,Ridge Hawks,31,17,false\n1,Lake Pike,Canyon Wrens,24,27,false\n1,Iron Owls,Delta Herons,20,13,false\n2,Ridge Hawks,Iron Owls,28,24,false\n2,Canyon Wrens,Prairie Dogs,14,35,false\n2,Delta Herons,Lake Pike,21,10,false\n3,Prairie Dogs,Iron Owls,27,20,false\n3,Lake Pike,Ridge Hawks,17,30,false\n3,Canyon Wrens,Delta Herons,23,20,false\n4,Iron Owls,Lake Pike,34,6,false\n4,Ridge Hawks,Delta Herons,24,21,false\n4,Prairie Dogs,Lake Pike,42,14,false\n5,Delta Herons,Prairie Dogs,17,20,true\n5,Canyon Wrens,Iron Owls,10,31,true\n5,Ridge Hawks,Canyon Wrens,38,21,true",
+        "delimiter": ","
+      }
+    },
+    {
+      "id": "2",
+      "type": "team_ratings",
+      "label": "SRS ratings",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "home": "home",
+        "away": "away",
+        "home_points": "home_pts",
+        "away_points": "away_pts",
+        "neutral": "neutral",
+        "cap": 28
+      }
+    },
+    {
+      "id": "3",
+      "type": "elo",
+      "label": "Elo ratings",
+      "position": {
+        "x": 170,
+        "y": 182.0
+      },
+      "config": {
+        "home": "home",
+        "away": "away",
+        "home_points": "home_pts",
+        "away_points": "away_pts",
+        "neutral": "neutral",
+        "order": "week"
+      }
+    },
+    {
+      "id": "4",
+      "type": "join",
+      "label": "Side by side",
+      "position": {
+        "x": 340,
+        "y": 91.0
+      },
+      "config": {
+        "keys": [
+          {
+            "left": "Team",
+            "right": "Team"
+          }
+        ],
+        "suffix": "_elo"
+      }
+    },
+    {
+      "id": "5",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 510,
+        "y": 91.0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-3.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.ratings-4.left",
+      "source": "2",
+      "sourceHandle": "ratings",
+      "target": "4",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e3.ratings-4.right",
+      "source": "3",
+      "sourceHandle": "ratings",
+      "target": "4",
+      "targetHandle": "right"
+    },
+    {
+      "id": "e4.join-5.in",
+      "source": "4",
+      "sourceHandle": "join",
+      "target": "5",
+      "targetHandle": "in"
+    }
+  ]
+}

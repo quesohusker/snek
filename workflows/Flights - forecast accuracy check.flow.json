@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "name": "Flights - forecast accuracy check",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Q1 flights",
+      "position": {
+        "x": 0,
+        "y": 91.0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/flights_2013_*.csv.gz"
+      }
+    },
+    {
+      "id": "2",
+      "type": "formula",
+      "label": "Flight date",
+      "position": {
+        "x": 170,
+        "y": 91.0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "date",
+            "expression": "pd.to_datetime(dict(year=[year], month=[month], day=[day]))",
+            "dtype": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "type": "summarize",
+      "label": "Departures per day",
+      "position": {
+        "x": 340,
+        "y": 91.0
+      },
+      "config": {
+        "group_by": [
+          "date"
+        ],
+        "aggs": [
+          {
+            "column": "carrier",
+            "func": "size",
+            "name": "departures"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "type": "filter",
+      "label": "Before March 18",
+      "position": {
+        "x": 510,
+        "y": 91.0
+      },
+      "config": {
+        "mode": "expression",
+        "expression": "[date] < '2013-03-18'"
+      }
+    },
+    {
+      "id": "5",
+      "type": "ets",
+      "label": "Forecast last 14 days",
+      "position": {
+        "x": 680,
+        "y": 0
+      },
+      "config": {
+        "date": "date",
+        "value": "departures",
+        "freq": "D",
+        "periods": 14,
+        "seasonal": "add",
+        "seasonal_periods": 7
+      }
+    },
+    {
+      "id": "6",
+      "type": "ts_compare",
+      "label": "Forecast vs actual",
+      "position": {
+        "x": 850,
+        "y": 91.0
+      },
+      "config": {
+        "date": "date",
+        "actual_date": "date",
+        "actual_value": "departures"
+      }
+    },
+    {
+      "id": "7",
+      "type": "stl",
+      "label": "Trend and weekly pattern",
+      "position": {
+        "x": 510,
+        "y": 273.0
+      },
+      "config": {
+        "date": "date",
+        "value": "departures",
+        "freq": "D",
+        "period": 7
+      }
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1020,
+        "y": 91.0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.true-5.in",
+      "source": "4",
+      "sourceHandle": "true",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.forecast-6.forecast",
+      "source": "5",
+      "sourceHandle": "forecast",
+      "target": "6",
+      "targetHandle": "forecast"
+    },
+    {
+      "id": "e4.false-6.actual",
+      "source": "4",
+      "sourceHandle": "false",
+      "target": "6",
+      "targetHandle": "actual"
+    },
+    {
+      "id": "e6.metrics-8.in",
+      "source": "6",
+      "sourceHandle": "metrics",
+      "target": "8",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-7.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    }
+  ]
+}

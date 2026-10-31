@@ -8,7 +8,7 @@ ROOT = Path(SPECPATH).parent
 VERSION = re.search(r'__version__ = "([^"]+)"', (ROOT / "snek" / "__init__.py").read_text()).group(1)
 ICON = str(ROOT / "packaging" / ("snek.ico" if sys.platform.startswith("win") else "snek.png"))
 
-datas = [(str(ROOT / "frontend" / "dist"), "frontend/dist"), (str(ROOT / "examples"), "examples")]
+datas = [(str(ROOT / "frontend" / "dist"), "frontend/dist"), (str(ROOT / "examples"), "examples"), (str(ROOT / "LICENSE"), "."), (str(ROOT / "THIRD_PARTY_NOTICES.md"), ".")]
 datas += [(str(p), "workflows") for p in sorted((ROOT / "workflows").glob("*.flow.json")) if not p.name.startswith("CFB")]
 
 a = Analysis(

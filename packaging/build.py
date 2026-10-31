@@ -19,6 +19,7 @@ def asset_name():
 
 
 def build():
+    subprocess.run([sys.executable, str(ROOT / "packaging" / "third_party.py")], check=True)
     shutil.rmtree(DIST, ignore_errors=True)
     shutil.rmtree(ROOT / "packaging" / "build", ignore_errors=True)
     subprocess.run(

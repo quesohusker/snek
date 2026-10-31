@@ -193,3 +193,199 @@ class CreateSamples(Tool):
     def summary(self, cfg):
         e, v = float(cfg["estimation"] or 0), float(cfg["validation"] or 0)
         return f"{e:g} / {v:g} / {max(100 - e - v, 0):g}"
+
+
+@register
+class RegularizedRegression(Tool):
+    type = "regularized"
+    label = "Regularized Regression"
+    category = "Modeling"
+    description = "Ridge, Lasso or Elastic Net: linear regression that shrinks weak predictors. Lasso drops them to zero. M = model, C = coefficients, F = fit."
+    outputs = [Port("model", "M"), Port("coef", "C"), Port("fit", "F")]
+    fields = target_fields() + [
+        fld("method", "Method", "select", "lasso", options=opts(("ridge", "Ridge"), ("lasso", "Lasso"), ("elasticnet", "Elastic Net"))),
+        fld("alpha", "Strength (0 = choose by cross-validation)", "number", 0),
+        fld("l1_ratio", "Lasso share (Elastic Net)", "number", 0.5, show_if={"method": ["elasticnet"]}),
+        fld("seed", "Random seed", "number", 1),
+    ]
+
+    def code(self, cfg, ctx):
+        target, preds = check_target(cfg, ctx)
+        if not is_numeric(ctx.dtype(target)):
+            raise ToolError(f"{target} must be numeric")
+        args = [ctx.var(), repr(target), lit(preds), f"method={cfg['method']!r}"]
+        if cfg["alpha"]:
+            args.append(f"alpha={float(cfg['alpha'])!r}")
+        if cfg["method"] == "elasticnet":
+            ratio = float(cfg["l1_ratio"] or 0.5)
+            if not 0 < ratio <= 1:
+                raise ToolError("Lasso share must be above 0 and at most 1")
+            args.append(f"l1_ratio={ratio!r}")
+        args.append(f"seed={int(cfg['seed'] or 0)}")
+        outs = ", ".join(ctx.out(p) for p in ("model", "coef", "fit"))
+        return f"{outs} = fit_regularized({', '.join(args)})"
+
+    def summary(self, cfg):
+        return short(f"{cfg['method']}: {cfg['target']}") if cfg["target"] else ""
+
+
+class GLMTool(Tool):
+    category = "Modeling"
+    outputs = [Port("model", "M"), Port("coef", "C"), Port("fit", "F")]
+
+    def family(self, cfg):
+        return "poisson"
+
+    def code(self, cfg, ctx):
+        target, preds = check_target(cfg, ctx)
+        if not is_numeric(ctx.dtype(target)):
+            raise ToolError(f"{target} must be numeric")
+        outs = ", ".join(ctx.out(p) for p in ("model", "coef", "fit"))
+        return f"{outs} = fit_glm({ctx.var()}, {target!r}, {lit(preds)}, family={self.family(cfg)!r})"
+
+    def summary(self, cfg):
+        return short(f"{cfg['target']} ~ {' + '.join(cfg['predictors'] or [])}") if cfg["target"] else ""
+
+
+@register
+class CountRegression(GLMTool):
+    type = "count_regression"
+    label = "Count Regression"
+    description = "Model counts like touchdowns or turnovers. Poisson, or negative binomial when counts vary more than Poisson allows. Ratio = multiplier per unit."
+    fields = target_fields() + [fld("family", "Model", "select", "poisson", options=opts(("poisson", "Poisson"), ("negbin", "Negative binomial")))]
+
+    def family(self, cfg):
+        return cfg["family"]
+
+
+@register
+class GammaRegression(GLMTool):
+    type = "gamma_regression"
+    label = "Gamma Regression"
+    description = "Model positive, right-skewed amounts like yards per drive or game duration. Uses a log link, so Ratio = multiplier per unit."
+    fields = target_fields()
+
+    def family(self, cfg):
+        return "gamma"
+
+
+class EstimatorTool(Tool):
+    algorithm = ""
+    category = "Modeling"
+    outputs = [Port("model", "M"), Port("importance", "I"), Port("fit", "F")]
+
+    def extra(self, cfg):
+        return {}
+
+    def code(self, cfg, ctx):
+        target, preds = check_target(cfg, ctx)
+        args = [ctx.var(), repr(target), lit(preds), repr(self.algorithm), f"task={cfg.get('task', 'auto')!r}", f"seed={int(cfg.get('seed') or 1)}"]
+        args += [f"{k}={v!r}" for k, v in self.extra(cfg).items()]
+        outs = ", ".join(ctx.out(p) for p in ("model", "importance", "fit"))
+        return f"{outs} = fit_estimator({', '.join(args)})"
+
+    def summary(self, cfg):
+        return short(f"{cfg['target']} ~ {len(cfg['predictors'] or [])} predictors") if cfg["target"] else ""
+
+
+@register
+class NaiveBayes(EstimatorTool):
+    type = "naive_bayes"
+    label = "Naive Bayes"
+    algorithm = "naive_bayes"
+    description = "A fast, simple classifier that is a good baseline to beat. M = model, I = importance (score drop when a column is shuffled), F = fit."
+    fields = target_fields() + [fld("seed", "Random seed", "number", 1)]
+
+
+@register
+class KNearestNeighbors(EstimatorTool):
+    type = "knn"
+    label = "K-Nearest Neighbors"
+    algorithm = "knn"
+    description = "Predict from the K most similar rows. Columns are scaled first. M = model, I = importance, F = fit."
+    fields = target_fields() + [
+        fld("task", "Type", "select", "auto", options=TASKS),
+        fld("k", "Neighbors (K)", "number", 5),
+        fld("seed", "Random seed", "number", 1),
+    ]
+
+    def extra(self, cfg):
+        k = int(cfg["k"] or 0)
+        if k < 1:
+            raise ToolError("K must be at least 1")
+        return {"k": k}
+
+
+@register
+class SupportVectorMachine(EstimatorTool):
+    type = "svm"
+    label = "Support Vector Machine"
+    algorithm = "svm"
+    description = "Find the boundary with the widest margin between classes, or a tube around the target for numbers. Columns are scaled first."
+    fields = target_fields() + [
+        fld("task", "Type", "select", "auto", options=TASKS),
+        fld("kernel", "Kernel", "select", "rbf", options=opts(("rbf", "Radial (curved)"), ("linear", "Linear"), ("poly", "Polynomial"))),
+        fld("c", "Penalty (C)", "number", 1),
+        fld("seed", "Random seed", "number", 1),
+    ]
+
+    def extra(self, cfg):
+        return {"kernel": cfg["kernel"], "c": float(cfg["c"] or 1)}
+
+
+@register
+class NeuralNetwork(EstimatorTool):
+    type = "neural_network"
+    label = "Neural Network"
+    algorithm = "mlp"
+    description = "A multi-layer perceptron for classification or regression. Columns are scaled first. Set the hidden layer sizes, such as 50 or 64, 32."
+    fields = target_fields() + [
+        fld("task", "Type", "select", "auto", options=TASKS),
+        fld("hidden", "Hidden layers", "text", "50", help="Neurons per layer, separated by commas. 64, 32 means two layers."),
+        fld("seed", "Random seed", "number", 1),
+    ]
+
+    def extra(self, cfg):
+        text = str(cfg["hidden"] or "50").replace(" ", "")
+        if not all(p.isdigit() and int(p) > 0 for p in text.split(",")):
+            raise ToolError("Hidden layers must be positive whole numbers separated by commas")
+        return {"hidden": text}
+
+
+@register
+class CrossValidation(Tool):
+    type = "cross_validation"
+    label = "Cross-Validation"
+    category = "Modeling"
+    description = "Refit each connected model on K slices of the data and score it on the slice it did not see. S = average and spread per model, F = every fold."
+    inputs = [Port("model", "M", multi=True), Port("data", "D")]
+    outputs = [Port("summary", "S"), Port("folds", "F")]
+    fields = [fld("folds", "Folds (K)", "number", 5), fld("seed", "Random seed", "number", 1)]
+
+    def code(self, cfg, ctx):
+        k = int(cfg["folds"] or 0)
+        if k < 2:
+            raise ToolError("Use at least 2 folds")
+        outs = f"{ctx.out('summary')}, {ctx.out('folds')}"
+        return f"{outs} = cross_validate([{', '.join(ctx.vars('model'))}], {ctx.var('data')}, folds={k}, seed={int(cfg['seed'] or 0)})"
+
+    def summary(self, cfg):
+        return f"{cfg['folds']} folds"
+
+
+@register
+class VarianceInflation(Tool):
+    type = "vif"
+    label = "Variance Inflation Factors"
+    category = "Modeling"
+    description = "Spot predictors that largely repeat each other. A VIF above 5 is worth a look; above 10 usually means drop or combine one."
+    fields = [fld("predictors", "Predictors", "columns", [])]
+
+    def code(self, cfg, ctx):
+        preds = cfg["predictors"] or []
+        ctx.require(preds, "Pick at least two predictors")
+        ctx.require_columns(preds)
+        return f"{ctx.out()} = vif_table({ctx.var()}, {lit(preds)})"
+
+    def summary(self, cfg):
+        return short(", ".join(cfg["predictors"] or []))

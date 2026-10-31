@@ -22,7 +22,7 @@ from snek.runtime import output_path
 from snek import updates
 from snek.tools import CATEGORY_ORDER, TOOLS
 
-NAME_RE = re.compile(r"^[\w\- .]{1,80}$")
+NAME_RE = re.compile(r"^[\w\- .(),'&+#]{1,80}$")
 
 engine = Engine()
 projects = Projects()
@@ -179,7 +179,7 @@ def save_workflow(name: str, workflow: dict = Body(...)):
 
 def workflow_path(name):
     if not NAME_RE.match(name) or name.startswith("."):
-        raise HTTPException(400, "Use letters, numbers, spaces, dots, dashes or underscores")
+        raise HTTPException(400, "Use letters, numbers, spaces and . - _ ( ) , ' & + # in workflow names")
     return projects.workflows / f"{name}.flow.json"
 
 

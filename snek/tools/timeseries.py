@@ -169,3 +169,63 @@ class Arima(Tool):
 
     def summary(self, cfg):
         return short(f"{cfg['value']}: {cfg['periods']} ahead") if cfg["value"] else ""
+
+
+@register
+class SeasonalDecomposition(Tool):
+    type = "stl"
+    label = "Seasonal Decomposition"
+    category = CATEGORY
+    description = "Split a series into trend, repeating season, and what's left over (STL)."
+    fields = [
+        fld("date", "Date column", "column", ""),
+        fld("value", "Value column", "column", ""),
+        fld("freq", "Period", "select", "M", options=FREQS),
+        fld("period", "Periods per season", "number", 12, help="12 for monthly data with a yearly pattern, 7 for daily data with a weekly pattern."),
+        fld("robust", "Resist outliers", "bool", False),
+        fld("group_by", "One series per group", "columns", []),
+    ]
+
+    def code(self, cfg, ctx):
+        date, value = cfg["date"], cfg["value"]
+        ctx.require(date, "Pick the date column")
+        ctx.require(value, "Pick the value column")
+        gb = cfg["group_by"] or []
+        ctx.require_columns([date, value] + gb)
+        period = int(cfg["period"] or 0)
+        if period < 2:
+            raise ToolError("Periods per season must be at least 2")
+        args = [ctx.var(), repr(date), repr(value), f"freq={cfg['freq']!r}", f"period={period}"]
+        if cfg["robust"]:
+            args.append("robust=True")
+        if gb:
+            args.append(f"group_by={lit(gb)}")
+        return f"{ctx.out()} = seasonal_decompose({', '.join(args)})"
+
+    def summary(self, cfg):
+        return short(f"{cfg['value']}, season {cfg['period']}") if cfg["value"] else ""
+
+
+@register
+class TSCompare(Tool):
+    type = "ts_compare"
+    label = "TS Compare"
+    category = CATEGORY
+    description = "Grade a forecast against what happened. F = a forecast output, A = actuals. M = MAE, RMSE, MAPE, bias and interval coverage; D = row-by-row errors."
+    inputs = [Port("forecast", "F"), Port("actual", "A")]
+    outputs = [Port("metrics", "M"), Port("detail", "D")]
+    fields = [
+        fld("date", "Forecast date column", "column", "", port="forecast"),
+        fld("actual_date", "Actuals date column", "column", "", port="actual"),
+        fld("actual_value", "Actuals value column", "column", "", port="actual"),
+        fld("group_by", "Match on these columns too", "columns", [], port="forecast"),
+    ]
+
+    def code(self, cfg, ctx):
+        for key, label in (("date", "forecast date"), ("actual_date", "actuals date"), ("actual_value", "actuals value")):
+            ctx.require(cfg[key], f"Pick the {label} column")
+        gb = cfg["group_by"] or []
+        ctx.require_columns([cfg["date"], "Forecast"] + gb, "forecast")
+        ctx.require_columns([cfg["actual_date"], cfg["actual_value"]] + gb, "actual")
+        group = f", group_by={lit(gb)}" if gb else ""
+        return f"{ctx.out('metrics')}, {ctx.out('detail')} = compare_forecast({ctx.var('forecast')}, {ctx.var('actual')}, {cfg['date']!r}, {cfg['actual_date']!r}, {cfg['actual_value']!r}{group})"
