@@ -452,7 +452,7 @@ function placeWorkflow(result: AIResult) {
     {
       format: "snek-clipboard",
       version: 1,
-      nodes: result.workflow.nodes.map((n) => ({ id: String(n.id), type: n.type, label: n.label ?? "", position: n.position ?? { x: 0, y: 0 }, config: n.config })),
+      nodes: result.workflow.nodes.map((n) => ({ id: String(n.id), type: n.type, label: n.label ?? "", position: n.position ?? { x: 0, y: 0 }, config: n.config, trusted: n.trusted })),
       edges: result.workflow.edges.map((e) => ({ source: String(e.source), sourceHandle: e.sourceHandle ?? "out", target: String(e.target), targetHandle: e.targetHandle ?? "in" })),
     },
     { x: left, y: bottom },

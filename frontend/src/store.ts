@@ -31,7 +31,7 @@ export type Snapshot = { nodes: ToolNode[]; edges: Edge[]; label: string };
 export type ClipboardData = {
   format: "snek-clipboard";
   version: 1;
-  nodes: { id: string; type: string; label: string; position: Position; config: Record<string, any> }[];
+  nodes: { id: string; type: string; label: string; position: Position; config: Record<string, any>; trusted?: boolean }[];
   edges: { source: string; sourceHandle: string; target: string; targetHandle: string }[];
 };
 
@@ -87,6 +87,7 @@ type State = {
   setRunning: (v: boolean) => void;
   load: (file: WorkflowFile, name: string | null, filePath?: string | null) => void;
   markSaved: (name: string, filePath?: string | null) => void;
+  trustAll: () => void;
   toWorkflow: () => WorkflowFile;
   past: Snapshot[];
   future: Snapshot[];
@@ -258,7 +259,7 @@ export const useFlow = create<State>()((set, get) => ({
     const data: ClipboardData = {
       format: "snek-clipboard",
       version: 1,
-      nodes: picked.map((n) => ({ id: n.id, type: n.data.type, label: n.data.label, position: { ...n.position }, config: structuredClone(n.data.config) })),
+      nodes: picked.map((n) => ({ id: n.id, type: n.data.type, label: n.data.label, position: { ...n.position }, config: structuredClone(n.data.config), trusted: n.data.trusted })),
       edges: edges.filter((e) => ids.has(e.source) && ids.has(e.target)).map((e) => ({ source: e.source, sourceHandle: e.sourceHandle ?? "out", target: e.target, targetHandle: e.targetHandle ?? "in" })),
     };
     set({ clipboard: data, pasteCount: 0 });
@@ -279,7 +280,7 @@ export const useFlow = create<State>()((set, get) => ({
     const added: ToolNode[] = usable.map((n) => {
       const id = String(next++);
       ids.set(n.id, id);
-      return { id, type: "tool", selected: true, position: { x: n.position.x + shift.x, y: n.position.y + shift.y }, data: { type: n.type, label: n.label ?? "", config: { ...defaultsFor(tools[n.type]), ...structuredClone(n.config) } } };
+      return { id, type: "tool", selected: true, position: { x: n.position.x + shift.x, y: n.position.y + shift.y }, data: { type: n.type, label: n.label ?? "", config: { ...defaultsFor(tools[n.type]), ...structuredClone(n.config) }, trusted: n.trusted } };
     });
     const addedEdges: Edge[] = data.edges
       .filter((e) => ids.has(e.source) && ids.has(e.target))
@@ -443,7 +444,7 @@ export const useFlow = create<State>()((set, get) => ({
     const id = nextId(nodes);
     const anchor = nodes.find((n) => n.id === selectedId);
     const pos = anchor ? { x: anchor.position.x + 170, y: anchor.position.y } : position ?? { x: 80 + nodes.length * 30, y: 80 + nodes.length * 20 };
-    const node: ToolNode = { id, type: "tool", position: pos, selected: true, data: { type, label: "", config: defaultsFor(spec) } };
+    const node: ToolNode = { id, type: "tool", position: pos, selected: true, data: { type, label: "", config: defaultsFor(spec), trusted: true } };
     const anchorSpec = anchor ? tools[anchor.data.type] : undefined;
     const autoEdge: Edge[] =
       anchor && anchorSpec?.outputs.length && spec.inputs.length && !position
@@ -464,7 +465,7 @@ export const useFlow = create<State>()((set, get) => ({
   updateConfig: (id, patch) => {
     get().checkpoint("Change settings", `config:${id}:${Object.keys(patch).join(",")}`);
     set((s) => ({
-      nodes: s.nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, config: { ...n.data.config, ...patch } } } : n)),
+      nodes: s.nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, config: { ...n.data.config, ...patch }, trusted: true } } : n)),
       dirty: true,
       stale: true,
       version: s.version + 1,
@@ -522,7 +523,7 @@ export const useFlow = create<State>()((set, get) => ({
         id: String(n.id),
         type: "tool",
         position: n.position ? { x: n.position.x * spread, y: n.position.y } : { x: 0, y: 0 },
-        data: { type: n.type, label: n.label ?? "", config: { ...defaultsFor(tools[n.type]), ...n.config } },
+        data: { type: n.type, label: n.label ?? "", config: { ...defaultsFor(tools[n.type]), ...n.config }, trusted: n.trusted },
       }));
     const edges: Edge[] = file.edges.map((e) => ({ ...e, id: e.id || edgeId(e), source: String(e.source), target: String(e.target) }));
     set((s) => ({ nodes, edges, name, filePath, autosave: { at: null, error: "", version: -1, name: null }, selectedId: null, results: {}, summaries: {}, stale: true, lastRun: null, dirty: false, version: s.version + 1, loaded: s.loaded + 1, past: [], future: [], historyKey: null, savedSig: signature(nodes, edges) }));
@@ -533,12 +534,17 @@ export const useFlow = create<State>()((set, get) => ({
     get().loadRecent();
   },
 
+  trustAll: () => {
+    if (get().nodes.every((n) => n.data.trusted)) return;
+    set((s) => ({ nodes: s.nodes.map((n) => (n.data.trusted ? n : { ...n, data: { ...n.data, trusted: true } })), version: s.version + 1 }));
+  },
+
   toWorkflow: () => {
     const { nodes, edges, name } = get();
     return {
       version: 2,
       name: name ?? undefined,
-      nodes: nodes.map((n) => ({ id: n.id, type: n.data.type, label: n.data.label, position: { x: Math.round(n.position.x), y: Math.round(n.position.y) }, config: n.data.config })),
+      nodes: nodes.map((n) => ({ id: n.id, type: n.data.type, label: n.data.label, position: { x: Math.round(n.position.x), y: Math.round(n.position.y) }, config: n.data.config, trusted: n.data.trusted })),
       edges: edges.map((e) => ({ id: e.id, source: e.source, sourceHandle: e.sourceHandle ?? "out", target: e.target, targetHandle: e.targetHandle ?? "in" })),
     };
   },

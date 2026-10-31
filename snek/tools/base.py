@@ -131,6 +131,7 @@ class Tool:
     fields = []
     side_effect = False
     volatile = False
+    needs_trust = False
 
     def code(self, cfg, ctx):
         raise NotImplementedError

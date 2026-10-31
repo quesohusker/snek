@@ -130,6 +130,7 @@ class Python(Tool):
     description = "Run your own pandas code. Inputs arrive as df (first) and dfs (all). Assign the result to df."
     needs = "Any table (or several). Your code decides."
     inputs = [Port("in", "", multi=True)]
+    needs_trust = True
     fields = [fld("code", "Code", "python", "df = df.copy()\n")]
 
     def code(self, cfg, ctx):

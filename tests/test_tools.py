@@ -440,3 +440,19 @@ def test_bundled_sample_workflows_run(monkeypatch):
         ev = engine.evaluate(wf, run_side_effects=False)
         problems = {k: r.error for k, r in ev.results.items() if r.status != "ok"}
         assert not problems, f"{name}: {problems}"
+
+
+def test_python_code_waits_for_run_unless_trusted(tmp_path):
+    marker = tmp_path / "ran.txt"
+    code = f"import pathlib\npathlib.Path({str(marker)!r}).write_text('ran')"
+    wf = workflow([(1, "text_input", {"data": GAMES}), (2, "python", {"code": code}), (3, "browse", {})], [(1, "out", 2, "in"), (2, "out", 3, "in")])
+    ev = Engine().evaluate(wf, run_side_effects=False)
+    assert ev.results["2"].status == "waiting" and ev.results["2"].error == "Press Run to run this code"
+    assert ev.results["3"].status == "waiting" and ev.results["3"].error == "Press Run to run this code"
+    assert not marker.exists() and "def python_fn_2" in ev.results["2"].code and "not ready: Press Run" in export_script(ev)
+    ev = Engine().evaluate(wf, run_side_effects=True)
+    assert ev.results["2"].status == "ok" and ev.results["3"].status == "ok" and marker.exists()
+    marker.unlink()
+    wf["nodes"][1]["trusted"] = True
+    ev = Engine().evaluate(wf, run_side_effects=False)
+    assert ev.results["2"].status == "ok" and ev.results["3"].status == "ok" and marker.exists()

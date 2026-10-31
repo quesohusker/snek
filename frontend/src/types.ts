@@ -48,7 +48,7 @@ export type Column = {
 export type PortInfo = { rows: number; columns: Column[]; count?: number };
 
 export type NodeResult = {
-  status: "ok" | "error" | "skipped";
+  status: "ok" | "error" | "skipped" | "waiting";
   error: string;
   message: string;
   warnings: string[];
@@ -72,6 +72,7 @@ export type FlowNodeData = {
   type: string;
   label: string;
   config: Record<string, any>;
+  trusted?: boolean;
 };
 
 export type WorkflowNode = {
@@ -80,6 +81,7 @@ export type WorkflowNode = {
   label?: string;
   position: { x: number; y: number };
   config: Record<string, any>;
+  trusted?: boolean;
 };
 
 export type WorkflowEdge = {

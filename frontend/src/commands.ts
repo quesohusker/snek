@@ -53,7 +53,8 @@ export async function runWorkflow(fresh = false) {
   s.setRunning(true);
   try {
     if (fresh) await api.clearCache();
-    const r = await api.run(s.toWorkflow());
+    s.trustAll();
+    const r = await api.run(useFlow.getState().toWorkflow());
     useFlow.getState().setResults(r.results, r.elapsed_ms);
   } catch (e) {
     alert(`Run failed: ${(e as Error).message}`);

@@ -12,6 +12,8 @@ import pandas as pd
 from snek.runtime import NAMESPACE, output_path
 from snek.tools import TOOLS, Ctx, ToolError, output_var
 
+WAIT = "Press Run to run this code"
+
 
 @dataclass
 class NodeResult:
@@ -162,6 +164,8 @@ class Engine:
         try:
             gathered = self.inputs_for(graph, nid, tool, ev, fingerprints)
             if gathered is None:
+                if any(ev.results[p].status == "waiting" for p in graph.parents(nid) if p in ev.results):
+                    return NodeResult(status="waiting", error=WAIT)
                 return NodeResult(status="skipped", error="An upstream tool failed")
             names, frames, schema, input_fps = gathered
             ev.input_frames[nid] = frames
@@ -176,6 +180,9 @@ class Engine:
         fp = hashlib.sha256(json.dumps([tool.type, res.code, input_fps, stamp]).encode()).hexdigest()
         fingerprints[nid] = fp
         if not execute:
+            return res
+        if tool.needs_trust and not run_side_effects and not node.get("trusted"):
+            res.status, res.error = "waiting", WAIT
             return res
         if tool.side_effect and not run_side_effects:
             res.message = "Writes when you run the workflow"

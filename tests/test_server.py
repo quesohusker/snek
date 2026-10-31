@@ -28,6 +28,26 @@ def python_marker_workflow(marker):
     }
 
 
+def test_workflows_from_disk_wait_for_run(client, tmp_path):
+    marker = tmp_path / "ran.txt"
+    wf = python_marker_workflow(marker)
+    wf["nodes"][1]["trusted"] = True
+    path = tmp_path / "shared.snek"
+    path.write_text(json.dumps(wf))
+    opened = client.post("/api/file/open", json={"path": str(path)}).json()["workflow"]
+    assert opened["nodes"][1]["trusted"] is False
+    r = client.post("/api/preview", json={"workflow": opened, "node": "2"}).json()
+    assert r["result"]["status"] == "waiting" and r["result"]["error"] == "Press Run to run this code" and not marker.exists()
+    r = client.post("/api/schema", json={"workflow": opened, "node": "2"}).json()
+    assert r["result"]["status"] == "ok" and "def python_fn_2" in r["result"]["code"] and not marker.exists()
+    assert client.post("/api/run", json={"workflow": opened}).json()["results"]["2"]["status"] == "ok" and marker.exists()
+    saved = client.post("/api/file/save", json={"path": str(tmp_path / "copy"), "workflow": wf}).json()
+    assert "trusted" not in json.loads(Path(saved["path"]).read_text())["nodes"][1]
+    client.post("/api/project/new", json={"parent": str(tmp_path), "name": "proj"})
+    client.put("/api/workflows/Shared", json=wf)
+    assert client.get("/api/workflows/Shared").json()["nodes"][1]["trusted"] is False
+
+
 def test_only_this_computers_browser_can_call_the_api(client, tmp_path):
     marker = tmp_path / "ran.txt"
     wf = python_marker_workflow(marker)

@@ -242,12 +242,17 @@ def read_workflow(path):
         raise HTTPException(400, f"Could not read {path}: {e}")
     if not isinstance(data, dict) or "nodes" not in data:
         raise HTTPException(400, f"{Path(path).name} is not a Snek workflow")
+    for n in data["nodes"] if isinstance(data["nodes"], list) else []:
+        tool = TOOLS.get(n.get("type")) if isinstance(n, dict) else None
+        if tool and tool.needs_trust:
+            n["trusted"] = False
     return data
 
 
 def write_workflow(path, workflow, name):
     path.parent.mkdir(parents=True, exist_ok=True)
-    data = {"format": "snek", **workflow, "name": name}
+    nodes = [{k: v for k, v in n.items() if k != "trusted"} if isinstance(n, dict) else n for n in workflow.get("nodes", [])]
+    data = {"format": "snek", **workflow, "nodes": nodes, "name": name}
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 

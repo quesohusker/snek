@@ -707,6 +707,17 @@ kbd {
   background: #868e96;
 }
 
+.step-status.waiting {
+  background: var(--warn);
+}
+
+.step-wait {
+  font-size: 10.5px;
+  color: var(--warn);
+  margin-top: 4px;
+  line-height: 1.25;
+}
+
 .step-status.stale {
   opacity: 0.35;
 }

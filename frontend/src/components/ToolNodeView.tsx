@@ -39,6 +39,7 @@ function ToolNodeView({ id, data, selected }: NodeProps<ToolNode>) {
           <span className="step-id">#{id}</span>
         </div>
         {status === "error" && !stale && <div className="step-error">{result.error.split("\n")[0]}</div>}
+        {status === "waiting" && <div className="step-wait">{result.error}</div>}
       </div>
       {labeledOutputs && (
         <div className="step-ports">

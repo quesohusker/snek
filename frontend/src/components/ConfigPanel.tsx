@@ -123,6 +123,7 @@ export default function ConfigPanel() {
               </div>
             )}
             {upstreamProblem && <div className="warn-box">An upstream tool has an error. Fix it to see columns here.</div>}
+            {schema?.status === "waiting" && <div className="warn-box">This workflow came from a file and holds Python code. Press Run once to run it; columns appear here after that.</div>}
             {spec.fields.map((f) => (
               <Field key={f.key} field={f} value={config[f.key]} config={config} onChange={(v) => updateConfig(node.id, { [f.key]: v })} ctx={ctx} />
             ))}
