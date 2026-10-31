@@ -17,7 +17,17 @@ Pick your system. These apps include everything Snek needs, so you do not need P
 | Windows 10 and 11 | [Snek-Windows.zip](https://github.com/quesohusker/snek/releases/latest/download/Snek-Windows.zip) |
 | Linux x86-64 (Ubuntu 22.04 or newer) | [Snek-Linux.tar.gz](https://github.com/quesohusker/snek/releases/latest/download/Snek-Linux.tar.gz) |
 
-- **macOS:** unzip, drag Snek to Applications, and open it. The first time, macOS blocks it because the app is not signed yet: open System Settings ▸ Privacy & Security, scroll down, and click Open Anyway. Snek opens in your browser. Stop it with File ▸ Quit Snek.
+- **macOS (one-time step required):** unzip and drag Snek to Applications. Snek is not signed by Apple yet, so the first time you open it macOS says **"Snek.app" Not Opened**. Click **Done**, not Move to Trash. Then allow Snek one of two ways:
+  - **Fastest:** open Terminal and paste this line. It clears the block and starts Snek:
+    ```bash
+    xattr -dr com.apple.quarantine /Applications/Snek.app && open /Applications/Snek.app
+    ```
+  - **Through Settings:** paste this in Terminal to jump to the right page, scroll down to Security, click **Open Anyway**, and enter your password. Open Snek again and click **Open Anyway** once more.
+    ```bash
+    open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Security"
+    ```
+
+  You only do this once. Snek then opens in your browser; stop it with File ▸ Quit Snek.
 - **Windows:** unzip, open the Snek folder, and double-click `Snek.exe`. If Windows shows "Windows protected your PC", click More info ▸ Run anyway. A console window stays open while Snek runs; close it, or use File ▸ Quit Snek, to stop.
 - **Linux:** extract and run `Snek/Snek`.
 
