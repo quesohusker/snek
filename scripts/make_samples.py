@@ -9,6 +9,7 @@ OUT = "output"
 
 def build(name, nodes, edges):
     wf = {
+        "format": "snek",
         "version": 1,
         "name": name,
         "nodes": [{"id": str(i), "type": t, "label": label, "position": {"x": x * 170, "y": y * 130}, "config": cfg} for i, t, label, x, y, cfg in nodes],
@@ -17,7 +18,7 @@ def build(name, nodes, edges):
             for s, sh, t, th in edges
         ],
     }
-    path = ROOT / "workflows" / f"{name}.flow.json"
+    path = ROOT / "workflows" / f"{name}.snek"
     path.write_text(json.dumps(wf, indent=2))
     print(path)
 

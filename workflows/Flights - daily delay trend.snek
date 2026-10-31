@@ -1,4 +1,5 @@
 {
+  "format": "snek",
   "version": 1,
   "name": "Flights - daily delay trend",
   "nodes": [

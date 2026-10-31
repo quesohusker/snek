@@ -19,6 +19,7 @@ from snek.paths import DIST
 from snek.preview import preview
 from snek.projects import Projects
 from snek.runtime import output_path
+from snek import settings as user_settings
 from snek import updates
 from snek.tools import CATEGORY_ORDER, TOOLS
 
@@ -150,37 +151,108 @@ def clear_cache():
     return {"ok": True}
 
 
+EXT = ".snek"
+LEGACY_EXT = ".flow.json"
+
+
+def workflow_name(path):
+    name = path.name
+    return name[: -len(EXT)] if name.endswith(EXT) else name[: -len(LEGACY_EXT)] if name.endswith(LEGACY_EXT) else path.stem
+
+
+def read_workflow(path):
+    try:
+        data = json.loads(Path(path).read_text())
+    except (OSError, ValueError) as e:
+        raise HTTPException(400, f"Could not read {path}: {e}")
+    if not isinstance(data, dict) or "nodes" not in data:
+        raise HTTPException(400, f"{Path(path).name} is not a Snek workflow")
+    return data
+
+
+def write_workflow(path, workflow, name):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = {"format": "snek", **workflow, "name": name}
+    path.write_text(json.dumps(data, indent=2))
+
+
 @app.get("/api/workflows")
 def list_workflows():
     folder = projects.workflows
-    items = []
-    files = sorted(folder.glob("*.flow.json"), key=lambda p: p.stat().st_mtime, reverse=True) if folder.is_dir() else []
-    for p in files:
-        items.append({"name": p.name[: -len(".flow.json")], "modified": datetime.fromtimestamp(p.stat().st_mtime).isoformat(timespec="seconds")})
-    return {"workflows": items, "folder": str(folder)}
+    found = {}
+    if folder.is_dir():
+        for p in list(folder.glob(f"*{LEGACY_EXT}")) + list(folder.glob(f"*{EXT}")):
+            found[workflow_name(p)] = p
+    items = sorted(found.items(), key=lambda kv: kv[1].stat().st_mtime, reverse=True)
+    return {"workflows": [{"name": n, "path": str(p), "modified": datetime.fromtimestamp(p.stat().st_mtime).isoformat(timespec="seconds")} for n, p in items], "folder": str(folder)}
 
 
 @app.get("/api/workflows/{name}")
 def load_workflow(name: str):
     path = workflow_path(name)
+    legacy = path.with_name(f"{name}{LEGACY_EXT}")
+    if not path.exists() and legacy.exists():
+        path = legacy
     if not path.exists():
         raise HTTPException(404, f"No workflow named {name}")
-    return json.loads(path.read_text())
+    return read_workflow(path)
 
 
 @app.put("/api/workflows/{name}")
 def save_workflow(name: str, workflow: dict = Body(...)):
     path = workflow_path(name)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    workflow["name"] = name
-    path.write_text(json.dumps(workflow, indent=2))
+    legacy = path.with_name(f"{name}{LEGACY_EXT}")
+    write_workflow(path, workflow, name)
+    if legacy.exists():
+        legacy.unlink()
     return {"ok": True, "path": str(path)}
 
 
 def workflow_path(name):
     if not NAME_RE.match(name) or name.startswith("."):
         raise HTTPException(400, "Use letters, numbers, spaces and . - _ ( ) , ' & + # in workflow names")
-    return projects.workflows / f"{name}.flow.json"
+    return projects.workflows / f"{name}{EXT}"
+
+
+@app.get("/api/settings")
+def get_settings():
+    return {**user_settings.load(), "autosave_folder": str(user_settings.autosave_folder())}
+
+
+@app.put("/api/settings")
+def put_settings(changes: dict = Body(...)):
+    try:
+        saved = user_settings.save(changes)
+    except (ValueError, TypeError) as e:
+        raise HTTPException(400, str(e))
+    return {**saved, "autosave_folder": str(user_settings.autosave_folder())}
+
+
+@app.post("/api/autosave")
+def autosave(workflow: dict = Body(...), name: str = Body(...)):
+    safe = re.sub(r"[^\w\- .(),'&+#]", "_", name).strip(" .")[:80] or "Untitled"
+    target = user_settings.autosave_folder() / f"{safe}{EXT}"
+    write_workflow(target, workflow, safe)
+    return {"ok": True, "path": str(target)}
+
+
+@app.post("/api/file/open")
+def open_file(path: str = Body(..., embed=True)):
+    target = Path(os.path.expanduser(path)).resolve()
+    if not target.is_file():
+        raise HTTPException(404, f"No file at {target}")
+    return {"workflow": read_workflow(target), "path": str(target), "name": workflow_name(target)}
+
+
+@app.post("/api/file/save")
+def save_file(path: str = Body(...), workflow: dict = Body(...)):
+    target = Path(os.path.expanduser(path)).resolve()
+    if target.name.endswith(LEGACY_EXT):
+        target = target.with_name(target.name[: -len(LEGACY_EXT)] + EXT)
+    elif target.suffix.lower() != EXT:
+        target = target.with_name(target.name + EXT)
+    write_workflow(target, workflow, workflow_name(target))
+    return {"ok": True, "path": str(target), "name": workflow_name(target)}
 
 
 @app.get("/api/fs")

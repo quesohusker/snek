@@ -55,7 +55,7 @@ def test_relative_output_lands_in_project(client, tmp_path):
 def test_workflows_save_into_project(client, tmp_path):
     client.post("/api/project/new", json={"parent": str(tmp_path), "name": "proj"})
     client.put("/api/workflows/First flow", json=simple_output_workflow("output/x.csv"))
-    assert ((tmp_path / "proj").resolve() / "workflows" / "First flow.flow.json").exists()
+    assert ((tmp_path / "proj").resolve() / "workflows" / "First flow.snek").exists()
     assert [w["name"] for w in client.get("/api/workflows").json()["workflows"]] == ["First flow"]
 
 
@@ -90,3 +90,34 @@ def test_file_browser_starts_in_project_and_lists_places(client, tmp_path):
     assert labels[:3] == ["Project", "Project output", "Project data"]
     for name in ("Desktop", "Documents", "Downloads"):
         assert (name in labels) == (Path.home() / name).is_dir()
+
+
+def test_snek_files_open_save_and_legacy(client, tmp_path):
+    client.post("/api/project/new", json={"parent": str(tmp_path), "name": "proj"})
+    saved = client.post("/api/file/save", json={"path": str(tmp_path / "Desktop" / "my flow"), "workflow": simple_output_workflow("output/x.csv")}).json()
+    assert saved["path"].endswith("my flow.snek") and saved["name"] == "my flow"
+    data = (tmp_path / "Desktop" / "my flow.snek").read_text()
+    assert '"format": "snek"' in data
+    opened = client.post("/api/file/open", json={"path": saved["path"]}).json()
+    assert opened["name"] == "my flow" and len(opened["workflow"]["nodes"]) == 2
+    workflows = (tmp_path / "proj").resolve() / "workflows"
+    (workflows / "Old one.flow.json").write_text(json.dumps(simple_output_workflow("output/y.csv")))
+    listing = client.get("/api/workflows").json()["workflows"]
+    assert [w["name"] for w in listing] == ["Old one"]
+    assert client.get("/api/workflows/Old one").status_code == 200
+    client.put("/api/workflows/Old one", json=simple_output_workflow("output/y.csv"))
+    assert (workflows / "Old one.snek").exists() and not (workflows / "Old one.flow.json").exists()
+    (tmp_path / "notes.txt").write_text("hello")
+    assert client.post("/api/file/open", json={"path": str(tmp_path / "notes.txt")}).status_code == 400
+
+
+def test_settings_and_autosave(client, tmp_path):
+    assert client.get("/api/settings").json()["autosave_minutes"] == 5
+    assert client.put("/api/settings", json={"autosave_minutes": 10, "autosave_mode": "backup"}).json()["autosave_mode"] == "backup"
+    assert client.get("/api/settings").json()["autosave_minutes"] == 10
+    assert client.put("/api/settings", json={"autosave_minutes": 999}).status_code == 400
+    assert client.put("/api/settings", json={"autosave_mode": "cloud"}).status_code == 400
+    r = client.post("/api/autosave", json={"workflow": simple_output_workflow("output/x.csv"), "name": "Week 5/draft"}).json()
+    path = Path(r["path"])
+    assert path.parent == tmp_path / "home" / "autosave" and path.name == "Week 5_draft.snek"
+    assert path.exists()

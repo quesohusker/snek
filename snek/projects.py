@@ -73,6 +73,7 @@ class Projects:
             ("Downloads", home / "Downloads"),
             ("Home", home),
             (EXAMPLES_NAME, ROOT / "examples" / "data"),
+            ("Autosaves", snek_home() / "autosave"),
         ]
         extra = [tuple(p.split("=", 1)) for p in os.environ.get("SNEK_PLACES", "").split(";") if "=" in p]
         items += [(label, Path(os.path.expanduser(path))) for label, path in extra]

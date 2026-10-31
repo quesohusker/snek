@@ -130,11 +130,17 @@ For hot reload, run the server, then `npm run dev` in `frontend/` and open http:
 
 Each tool lives in `snek/tools/` as a class that returns pandas source code. The engine runs that code, and Export writes the same code, so the canvas and the script cannot drift apart. See [CLAUDE.md](CLAUDE.md) for the architecture notes.
 
+## Files, autosave and settings
+
+Snek workflows are `.snek` files. **File ▸ Save to file…** saves one anywhere, and **File ▸ Open file…** opens one from anywhere. After that, ⌘S saves back to the same file. On a Mac, Snek registers `.snek` as its document type, and `Snek path/to/workflow.snek` opens a file from the command line.
+
+Snek autosaves every 5 minutes. Change the interval, or turn it off with 0, in **Edit ▸ Settings…**. By default autosave saves your workflow's own file; untitled work goes to `~/.snek/autosave` instead. Choose "Separate backup copies only" if you'd rather autosave never touch your files. **File ▸ Open autosaves…** opens that folder.
+
 ## Projects
 
 A project is a folder for one piece of analysis. **File ▸ New project…** creates one with `data/`, `output/` and `workflows/` inside. **File ▸ Open project folder…** opens any existing folder as a project. While a project is open:
 
-- File ▸ Open recent lists that project's workflows.
+- File ▸ Open recent lists that project's workflows (saved as `.snek` files in `workflows/`).
 - A relative path such as `output/results.csv` or `data/games.csv` starts from the project folder.
 - Output Data offers one-click **Save in** buttons for the project's output folder, Desktop, Documents and Downloads, and shows the full path it will write to.
 

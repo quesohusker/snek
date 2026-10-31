@@ -1,6 +1,7 @@
 {
+  "format": "snek",
   "version": 1,
-  "name": "Flights - forecast accuracy check",
+  "name": "Flights - forecast daily departures",
   "nodes": [
     {
       "id": "1",
@@ -8,7 +9,7 @@
       "label": "Q1 flights",
       "position": {
         "x": 0,
-        "y": 91.0
+        "y": 0
       },
       "config": {
         "path": "examples/data/nycflights13/flights_2013_*.csv.gz"
@@ -20,7 +21,7 @@
       "label": "Flight date",
       "position": {
         "x": 170,
-        "y": 91.0
+        "y": 0
       },
       "config": {
         "formulas": [
@@ -38,7 +39,7 @@
       "label": "Departures per day",
       "position": {
         "x": 340,
-        "y": 91.0
+        "y": 0
       },
       "config": {
         "group_by": [
@@ -55,24 +56,25 @@
     },
     {
       "id": "4",
-      "type": "filter",
-      "label": "Before March 18",
+      "type": "ts_filler",
+      "label": "Every day present",
       "position": {
         "x": 510,
-        "y": 91.0
+        "y": 0
       },
       "config": {
-        "mode": "expression",
-        "expression": "[date] < '2013-03-18'"
+        "date": "date",
+        "freq": "D",
+        "method": "zero"
       }
     },
     {
       "id": "5",
       "type": "ets",
-      "label": "Forecast last 14 days",
+      "label": "ETS, weekly pattern",
       "position": {
         "x": 680,
-        "y": 0
+        "y": -91.0
       },
       "config": {
         "date": "date",
@@ -85,39 +87,37 @@
     },
     {
       "id": "6",
-      "type": "ts_compare",
-      "label": "Forecast vs actual",
+      "type": "arima",
+      "label": "ARIMA, auto order",
       "position": {
-        "x": 850,
+        "x": 680,
         "y": 91.0
-      },
-      "config": {
-        "date": "date",
-        "actual_date": "date",
-        "actual_value": "departures"
-      }
-    },
-    {
-      "id": "7",
-      "type": "stl",
-      "label": "Trend and weekly pattern",
-      "position": {
-        "x": 510,
-        "y": 273.0
       },
       "config": {
         "date": "date",
         "value": "departures",
         "freq": "D",
-        "period": 7
+        "periods": 14,
+        "seasonal": true,
+        "season_length": 7
       }
+    },
+    {
+      "id": "7",
+      "type": "browse",
+      "label": "ETS forecast",
+      "position": {
+        "x": 850,
+        "y": -91.0
+      },
+      "config": {}
     },
     {
       "id": "8",
       "type": "browse",
-      "label": "",
+      "label": "ARIMA forecast",
       "position": {
-        "x": 1020,
+        "x": 850,
         "y": 91.0
       },
       "config": {}
@@ -146,38 +146,31 @@
       "targetHandle": "in"
     },
     {
-      "id": "e4.true-5.in",
+      "id": "e4.out-5.in",
       "source": "4",
-      "sourceHandle": "true",
+      "sourceHandle": "out",
       "target": "5",
       "targetHandle": "in"
     },
     {
-      "id": "e5.forecast-6.forecast",
-      "source": "5",
-      "sourceHandle": "forecast",
-      "target": "6",
-      "targetHandle": "forecast"
-    },
-    {
-      "id": "e4.false-6.actual",
+      "id": "e4.out-6.in",
       "source": "4",
-      "sourceHandle": "false",
+      "sourceHandle": "out",
       "target": "6",
-      "targetHandle": "actual"
-    },
-    {
-      "id": "e6.metrics-8.in",
-      "source": "6",
-      "sourceHandle": "metrics",
-      "target": "8",
       "targetHandle": "in"
     },
     {
-      "id": "e3.out-7.in",
-      "source": "3",
-      "sourceHandle": "out",
+      "id": "e5.forecast-7.in",
+      "source": "5",
+      "sourceHandle": "forecast",
       "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.forecast-8.in",
+      "source": "6",
+      "sourceHandle": "forecast",
+      "target": "8",
       "targetHandle": "in"
     }
   ]

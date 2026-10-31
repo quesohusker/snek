@@ -13,6 +13,8 @@ export default function Toolbar() {
   const loadRecent = useFlow((s) => s.loadRecent);
   const project = useFlow((s) => s.project);
   const update = useFlow((s) => s.update);
+  const filePath = useFlow((s) => s.filePath);
+  const autosave = useFlow((s) => s.autosave);
   const menus = useMenus();
 
   return (
@@ -21,7 +23,7 @@ export default function Toolbar() {
         <Worm size={18} /> Snek
       </div>
       <Menubar menus={menus} onOpen={(label) => label === "File" && loadRecent()} />
-      <div className="wf-name" title={`${project?.path ?? ""}${name ? ` · ${name}` : ""}`}>
+      <div className="wf-name" title={filePath ?? `${project?.path ?? ""}${name ? ` · ${name}` : ""}`}>
         {project && <span className="project-name">{project.name}</span>}
         {name ?? "Untitled"}
         {dirty && <span className="dirty" title="Unsaved changes" />}
@@ -42,6 +44,13 @@ export default function Toolbar() {
             {stale ? " · changed" : ""}
           </span>
         )}
+        {autosave.error ? (
+          <span className="err-text autosave-note" title={autosave.error}>
+            Autosave failed
+          </span>
+        ) : autosave.at ? (
+          <span className="muted autosave-note">Autosaved {new Date(autosave.at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</span>
+        ) : null}
       </div>
     </header>
   );

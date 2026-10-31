@@ -5,7 +5,7 @@ import { api } from "./api";
 import Toolbar from "./components/Toolbar";
 import CategoryBar from "./components/CategoryBar";
 import Dialogs from "./components/Dialogs";
-import { runWorkflow, saveWorkflow } from "./commands";
+import { autosaveNow, runWorkflow, saveWorkflow } from "./commands";
 import Palette from "./components/Palette";
 import Canvas from "./components/Canvas";
 import ConfigPanel from "./components/ConfigPanel";
@@ -38,6 +38,7 @@ export default function App() {
   const [height, setHeight] = useState(() => readStorage<number>(HEIGHT_KEY) ?? 300);
   const version = useFlow((s) => s.version);
   const stopped = useFlow((s) => s.stopped);
+  const autosaveMinutes = useFlow((s) => s.settings?.autosave_minutes ?? 0);
   const dragging = useRef(false);
 
   useEffect(() => {
@@ -45,12 +46,23 @@ export default function App() {
       .then(([{ tools, categories }, project]) => {
         useFlow.getState().setTools(tools, categories);
         useFlow.getState().setProject(project);
-        const saved = readStorage<{ name: string | null; workflow: WorkflowFile; dirty: boolean; project?: string }>(STORAGE_KEY);
-        if (saved?.workflow && saved.project === project.path) {
-          useFlow.getState().load(saved.workflow, saved.name);
+        const saved = readStorage<{ name: string | null; workflow: WorkflowFile; dirty: boolean; project?: string; filePath?: string | null }>(STORAGE_KEY);
+        const toOpen = new URLSearchParams(window.location.search).get("open");
+        if (toOpen) {
+          window.history.replaceState(null, "", window.location.pathname);
+          api
+            .openFile(toOpen)
+            .then((r) => useFlow.getState().load(r.workflow, r.name, r.path))
+            .catch((e) => alert(`Could not open ${toOpen}: ${e.message}`));
+        } else if (saved?.workflow && saved.project === project.path) {
+          useFlow.getState().load(saved.workflow, saved.name, saved.filePath ?? null);
           useFlow.setState({ dirty: !!saved.dirty });
         }
         useFlow.getState().loadRecent();
+        api
+          .settings()
+          .then((st) => useFlow.getState().setSettings(st))
+          .catch(() => undefined);
         api
           .update()
           .then((u) => useFlow.getState().setUpdate(u))
@@ -64,7 +76,7 @@ export default function App() {
     if (!ready) return;
     const t = setTimeout(() => {
       const s = useFlow.getState();
-      writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty, project: s.project?.path });
+      writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty, project: s.project?.path, filePath: s.filePath });
       api
         .summaries(s.toWorkflow())
         .then((r) => useFlow.getState().setSummaries(r.summaries))
@@ -76,11 +88,17 @@ export default function App() {
   useEffect(() => {
     if (!ready) return;
     return useFlow.subscribe((s, prev) => {
-      if (s.nodes !== prev.nodes || s.name !== prev.name || s.dirty !== prev.dirty || s.project !== prev.project) {
-        writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty, project: s.project?.path });
+      if (s.nodes !== prev.nodes || s.name !== prev.name || s.dirty !== prev.dirty || s.project !== prev.project || s.filePath !== prev.filePath) {
+        writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty, project: s.project?.path, filePath: s.filePath });
       }
     });
   }, [ready]);
+
+  useEffect(() => {
+    if (!ready || autosaveMinutes <= 0) return;
+    const timer = window.setInterval(autosaveNow, autosaveMinutes * 60_000);
+    return () => window.clearInterval(timer);
+  }, [ready, autosaveMinutes]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

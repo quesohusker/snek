@@ -27,16 +27,77 @@ export async function runWorkflow(fresh = false) {
 
 export async function saveWorkflow() {
   const s = useFlow.getState();
-  if (!s.name) return s.setDialog("saveAs");
-  await api.saveWorkflow(s.name, s.toWorkflow());
-  s.markSaved(s.name);
+  try {
+    if (s.filePath) {
+      const r = await api.saveFile(s.filePath, s.toWorkflow());
+      s.markSaved(r.name, r.path);
+      return;
+    }
+    if (!s.name) return s.setDialog("saveAs");
+    const r = await api.saveWorkflow(s.name, s.toWorkflow());
+    s.markSaved(s.name, r.path);
+  } catch (e) {
+    alert(`Save failed: ${(e as Error).message}`);
+  }
+}
+
+function stamp() {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}${pad(d.getMinutes())}`;
+}
+
+export async function autosaveNow() {
+  const s = useFlow.getState();
+  if (!s.dirty || !s.nodes.length || s.autosave.version === s.version) return;
+  const mode = s.settings?.autosave_mode ?? "file";
+  const version = s.version;
+  try {
+    if (mode === "file" && s.filePath) {
+      const r = await api.saveFile(s.filePath, s.toWorkflow());
+      s.markSaved(r.name, r.path);
+    } else if (mode === "file" && s.name) {
+      const r = await api.saveWorkflow(s.name, s.toWorkflow());
+      s.markSaved(s.name, r.path);
+    } else {
+      const name = s.name ?? s.autosave.name ?? `Untitled ${stamp()}`;
+      await api.autosave(s.toWorkflow(), name);
+      useFlow.setState((st) => ({ autosave: { ...st.autosave, name: st.name ? st.autosave.name : name } }));
+    }
+    useFlow.setState((st) => ({ autosave: { ...st.autosave, at: new Date().toISOString(), error: "", version } }));
+  } catch (e) {
+    useFlow.setState((st) => ({ autosave: { ...st.autosave, error: (e as Error).message } }));
+  }
+}
+
+export async function openFile(path: string) {
+  if (!confirmDiscard()) return;
+  try {
+    const r = await api.openFile(path);
+    useFlow.getState().load(r.workflow, r.name, r.path);
+    useFlow.getState().setDialog(null);
+  } catch (e) {
+    alert(`Could not open ${path}: ${(e as Error).message}`);
+  }
+}
+
+export async function saveToFile(path: string) {
+  const s = useFlow.getState();
+  try {
+    const r = await api.saveFile(path, s.toWorkflow());
+    s.markSaved(r.name, r.path);
+    s.setDialog(null);
+  } catch (e) {
+    alert(`Save failed: ${(e as Error).message}`);
+  }
 }
 
 export async function openWorkflow(name: string) {
   if (!confirmDiscard()) return;
   try {
     const wf = await api.loadWorkflow(name);
-    useFlow.getState().load(wf, name);
+    const project = useFlow.getState().project;
+    useFlow.getState().load(wf, name, project ? `${project.workflows}/${name}.snek` : null);
     useFlow.getState().setDialog(null);
   } catch (e) {
     alert(`Could not open ${name}: ${(e as Error).message}`);
@@ -117,10 +178,13 @@ export function useMenus(): Menu[] {
           { type: "separator" },
           { label: "New workflow", onSelect: newWorkflow },
           { label: "Open workflow…", onSelect: () => setDialog("open") },
+          { label: "Open file…", onSelect: () => setDialog("openFile") },
+          { label: "Open autosaves…", onSelect: () => setDialog("openAutosave") },
           { label: "Open recent", submenu: recent.map((name) => ({ label: name, onSelect: () => openWorkflow(name) })) },
           { type: "separator" },
           { label: "Save", shortcut: "⌘S", onSelect: saveWorkflow },
           { label: "Save as…", onSelect: () => setDialog("saveAs") },
+          { label: "Save to file…", onSelect: () => setDialog("saveFile") },
           { type: "separator" },
           { label: "Export", submenu: [{ label: "Python script…", onSelect: () => setDialog("export"), disabled: !count }] },
           { type: "separator" },
@@ -132,6 +196,8 @@ export function useMenus(): Menu[] {
         items: [
           { label: "Select all tools", onSelect: selectAll, disabled: !count },
           { label: "Delete selected", shortcut: "Del", onSelect: deleteSelected, disabled: !hasSelection },
+          { type: "separator" },
+          { label: "Settings…", onSelect: () => setDialog("settings") },
         ],
       },
       {

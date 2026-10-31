@@ -4,8 +4,10 @@ import os
 import socket
 import sys
 import threading
+import urllib.parse
 import urllib.request
 import webbrowser
+from pathlib import Path
 
 import uvicorn
 
@@ -47,21 +49,23 @@ def main():
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--no-browser", action="store_true")
-    args = parser.parse_args()
+    parser.add_argument("file", nargs="?", help="A .snek workflow to open")
+    args, _ = parser.parse_known_args()
     ensure_streams()
+    query = f"/?open={urllib.parse.quote(str(Path(args.file).expanduser().resolve()))}" if args.file else ""
     if running_snek(args.host, args.port):
-        url = f"http://{args.host}:{args.port}"
+        url = f"http://{args.host}:{args.port}{query}"
         print(f"Snek is already running at {url}")
         if not args.no_browser:
             webbrowser.open(url)
         return
     port = free_port(args.host, args.port)
-    url = f"http://{args.host}:{port}"
+    url = f"http://{args.host}:{port}{query}"
     from snek.server import app
 
     if not args.no_browser:
         threading.Timer(1.2, webbrowser.open, [url]).start()
-    print(f"Snek is running at {url}")
+    print(f"Snek is running at http://{args.host}:{port}")
     print("Keep this window open while you use Snek. Close it, or choose File > Quit Snek, to stop.")
     uvicorn.run(app, host=args.host, port=port, log_level="warning", loop="asyncio", http="h11", ws="none", log_config=None)
 

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Copy, Download } from "lucide-react";
 import { useFlow } from "../store";
 import { api } from "../api";
-import { REPO, openWorkflow, switchProject } from "../commands";
+import { REPO, openFile, openWorkflow, saveToFile, switchProject } from "../commands";
 import Modal from "./Modal";
 import FilePicker from "./FilePicker";
-import { joinPath } from "../paths";
+import { FILE_MANAGER, joinPath } from "../paths";
 
 export default function Dialogs() {
   const dialog = useFlow((s) => s.dialog);
@@ -17,7 +17,85 @@ export default function Dialogs() {
   if (dialog === "newProject") return <NewProjectDialog onClose={close} />;
   if (dialog === "openProject") return <OpenProjectDialog onClose={close} />;
   if (dialog === "about") return <AboutDialog onClose={close} />;
+  if (dialog === "openFile") return <OpenFileDialog onClose={close} />;
+  if (dialog === "saveFile") return <SaveFileDialog onClose={close} />;
+  if (dialog === "settings") return <SettingsDialog onClose={close} />;
+  if (dialog === "openAutosave") return <OpenAutosaveDialog onClose={close} />;
   return null;
+}
+
+function OpenFileDialog({ onClose }: { onClose: () => void }) {
+  const project = useFlow((s) => s.project);
+  const filePath = useFlow((s) => s.filePath);
+  return <FilePicker initial={filePath ?? (project ? `${project.workflows}/` : "")} mode="open" title="Open a .snek file" onClose={onClose} onPick={openFile} />;
+}
+
+function SaveFileDialog({ onClose }: { onClose: () => void }) {
+  const project = useFlow((s) => s.project);
+  const filePath = useFlow((s) => s.filePath);
+  const name = useFlow((s) => s.name);
+  const initial = filePath ?? (project ? joinPath(project.workflows, `${name ?? "Untitled"}.snek`) : `${name ?? "Untitled"}.snek`);
+  return <FilePicker initial={initial} mode="save" title="Save as a .snek file" onClose={onClose} onPick={saveToFile} />;
+}
+
+function OpenAutosaveDialog({ onClose }: { onClose: () => void }) {
+  const folder = useFlow((s) => s.settings?.autosave_folder ?? "~/.snek/autosave");
+  return <FilePicker initial={`${folder}/`} mode="open" title="Open an autosaved workflow" onClose={onClose} onPick={openFile} />;
+}
+
+function SettingsDialog({ onClose }: { onClose: () => void }) {
+  const settings = useFlow((s) => s.settings);
+  const update = useFlow((s) => s.update);
+  const [minutes, setMinutes] = useState(String(settings?.autosave_minutes ?? 5));
+  const [mode, setMode] = useState(settings?.autosave_mode ?? "file");
+  const [checks, setChecks] = useState(update?.enabled ?? true);
+  const [error, setError] = useState("");
+  const save = async () => {
+    try {
+      const saved = await api.saveSettings({ autosave_minutes: Number(minutes), autosave_mode: mode });
+      useFlow.getState().setSettings(saved);
+      if (checks !== (update?.enabled ?? true)) useFlow.getState().setUpdate(await api.updateSettings(checks));
+      onClose();
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+  return (
+    <Modal
+      title="Settings"
+      onClose={onClose}
+      footer={
+        <button className="primary" onClick={save}>
+          Save settings
+        </button>
+      }
+    >
+      <h3 className="settings-head">Autosave</h3>
+      <label className="field">
+        <span>Autosave every (minutes, 0 = off)</span>
+        <input type="number" min={0} max={240} value={minutes} onChange={(e) => setMinutes(e.target.value)} />
+      </label>
+      <label className="field">
+        <span>Autosave saves</span>
+        <select value={mode} onChange={(e) => setMode(e.target.value as "file" | "backup")}>
+          <option value="file">My workflow file (untitled work goes to the autosave folder)</option>
+          <option value="backup">Separate backup copies only</option>
+        </select>
+      </label>
+      <p className="muted">
+        Autosave folder: <code>{settings?.autosave_folder}</code>{" "}
+        <button type="button" className="link-btn" onClick={() => settings && api.reveal(settings.autosave_folder).catch(() => setError("No autosaves yet."))}>
+          Show in {FILE_MANAGER}
+        </button>
+      </p>
+      <h3 className="settings-head">Updates</h3>
+      <label className="field field-bool">
+        <input type="checkbox" checked={checks} onChange={(e) => setChecks(e.target.checked)} />
+        <span>Check GitHub once a day for a newer version</span>
+      </label>
+      {error && <div className="error-box">{error}</div>}
+    </Modal>
+  );
 }
 
 function AboutDialog({ onClose }: { onClose: () => void }) {
@@ -153,8 +231,8 @@ function SaveDialog({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState("");
   const save = async () => {
     try {
-      await api.saveWorkflow(name.trim(), useFlow.getState().toWorkflow());
-      useFlow.getState().markSaved(name.trim());
+      const r = await api.saveWorkflow(name.trim(), useFlow.getState().toWorkflow());
+      useFlow.getState().markSaved(name.trim(), r.path);
       onClose();
     } catch (e) {
       setError((e as Error).message);

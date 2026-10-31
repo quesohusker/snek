@@ -8,6 +8,7 @@ output/
 CLAUDE.local.md
 scripts/make_cfbd_samples.py
 workflows/CFB*.flow.json
+workflows/CFB*.snek
 *.egg-info/
 packaging/build/
 packaging/dist/

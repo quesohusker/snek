@@ -1,4 +1,4 @@
-import type { FsListing, NodeResult, PreviewData, ProjectInfo, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
+import type { FsListing, NodeResult, PreviewData, ProjectInfo, SnekSettings, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 async function call<T>(method: string, url: string, body?: unknown): Promise<T> {
   const res = await fetch(url, {
@@ -32,6 +32,11 @@ export const api = {
     call<PreviewResponse>("POST", "/api/preview", { workflow, node, port, offset, limit, profile }),
   exportCode: (workflow: WorkflowFile, name: string) => call<{ code: string }>("POST", "/api/export", { workflow, name }),
   listWorkflows: () => call<{ workflows: { name: string; modified: string }[]; folder: string }>("GET", "/api/workflows"),
+  settings: () => call<SnekSettings>("GET", "/api/settings"),
+  saveSettings: (changes: Partial<SnekSettings>) => call<SnekSettings>("PUT", "/api/settings", changes),
+  autosave: (workflow: WorkflowFile, name: string) => call<{ ok: boolean; path: string }>("POST", "/api/autosave", { workflow, name }),
+  openFile: (path: string) => call<{ workflow: WorkflowFile; path: string; name: string }>("POST", "/api/file/open", { path }),
+  saveFile: (path: string, workflow: WorkflowFile) => call<{ ok: boolean; path: string; name: string }>("POST", "/api/file/save", { path, workflow }),
   loadWorkflow: (name: string) => call<WorkflowFile>("GET", `/api/workflows/${encodeURIComponent(name)}`),
   saveWorkflow: (name: string, workflow: WorkflowFile) => call<{ ok: boolean; path: string }>("PUT", `/api/workflows/${encodeURIComponent(name)}`, workflow),
   fs: (path: string) => call<FsListing>("GET", `/api/fs?path=${encodeURIComponent(path)}`),

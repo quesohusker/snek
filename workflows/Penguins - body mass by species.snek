@@ -1,106 +1,105 @@
 {
+  "format": "snek",
   "version": 1,
-  "name": "Flights - fleets from nested JSON",
+  "name": "Penguins - body mass by species",
   "nodes": [
     {
       "id": "1",
       "type": "input",
-      "label": "Carriers with fleets",
+      "label": "Penguins",
       "position": {
         "x": 0,
         "y": 0
       },
       "config": {
-        "path": "examples/data/nycflights13/carriers.json"
+        "path": "examples/data/penguins/penguins.csv"
       }
     },
     {
       "id": "2",
-      "type": "explode",
-      "label": "One row per plane",
+      "type": "filter",
+      "label": "Sex recorded",
       "position": {
         "x": 170,
         "y": 0
       },
       "config": {
-        "column": "fleet"
+        "mode": "basic",
+        "column": "sex",
+        "operator": "notna"
       }
     },
     {
       "id": "3",
-      "type": "unnest",
-      "label": "Plane fields",
+      "type": "summarize",
+      "label": "",
       "position": {
         "x": 340,
         "y": 0
       },
       "config": {
-        "column": "fleet",
-        "prefix": false
+        "group_by": [
+          "species",
+          "sex"
+        ],
+        "aggs": [
+          {
+            "column": "species",
+            "func": "size",
+            "name": "birds"
+          },
+          {
+            "column": "body_mass_g",
+            "func": "mean",
+            "name": "avg_mass_g"
+          },
+          {
+            "column": "flipper_length_mm",
+            "func": "mean",
+            "name": "avg_flipper_mm"
+          }
+        ]
       }
     },
     {
       "id": "4",
-      "type": "filter",
-      "label": "Known planes",
+      "type": "formula",
+      "label": "Round",
       "position": {
         "x": 510,
         "y": 0
       },
       "config": {
-        "mode": "basic",
-        "column": "tailnum",
-        "operator": "notna"
+        "formulas": [
+          {
+            "column": "avg_mass_g",
+            "expression": "[avg_mass_g].round(0)",
+            "dtype": ""
+          },
+          {
+            "column": "avg_flipper_mm",
+            "expression": "[avg_flipper_mm].round(1)",
+            "dtype": ""
+          }
+        ]
       }
     },
     {
       "id": "5",
-      "type": "summarize",
+      "type": "sort",
       "label": "",
       "position": {
         "x": 680,
         "y": 0
       },
       "config": {
-        "group_by": [
-          "name"
-        ],
-        "aggs": [
-          {
-            "column": "tailnum",
-            "func": "count",
-            "name": "planes"
-          },
-          {
-            "column": "seats",
-            "func": "mean",
-            "name": "avg_seats"
-          },
-          {
-            "column": "year",
-            "func": "median",
-            "name": "median_build_year"
-          },
-          {
-            "column": "manufacturer",
-            "func": "nunique",
-            "name": "manufacturers"
-          }
-        ]
-      }
-    },
-    {
-      "id": "6",
-      "type": "sort",
-      "label": "",
-      "position": {
-        "x": 850,
-        "y": 0
-      },
-      "config": {
         "keys": [
           {
-            "column": "planes",
+            "column": "species",
+            "order": "asc"
+          },
+          {
+            "column": "avg_mass_g",
             "order": "desc"
           }
         ],
@@ -108,11 +107,11 @@
       }
     },
     {
-      "id": "7",
+      "id": "6",
       "type": "browse",
       "label": "",
       "position": {
-        "x": 1020,
+        "x": 850,
         "y": 0
       },
       "config": {}
@@ -127,9 +126,9 @@
       "targetHandle": "in"
     },
     {
-      "id": "e2.out-3.in",
+      "id": "e2.true-3.in",
       "source": "2",
-      "sourceHandle": "out",
+      "sourceHandle": "true",
       "target": "3",
       "targetHandle": "in"
     },
@@ -141,9 +140,9 @@
       "targetHandle": "in"
     },
     {
-      "id": "e4.true-5.in",
+      "id": "e4.out-5.in",
       "source": "4",
-      "sourceHandle": "true",
+      "sourceHandle": "out",
       "target": "5",
       "targetHandle": "in"
     },
@@ -152,13 +151,6 @@
       "source": "5",
       "sourceHandle": "out",
       "target": "6",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e6.out-7.in",
-      "source": "6",
-      "sourceHandle": "out",
-      "target": "7",
       "targetHandle": "in"
     }
   ]

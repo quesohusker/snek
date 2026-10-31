@@ -38,7 +38,7 @@ def main(executable):
         names = [w["name"] for w in call("/api/workflows")["workflows"]]
         print("workflows:", names)
         for name in ["Penguins - body mass by species", "Flights - fleets from nested JSON", "Flights - Q1 delays by airline", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - league ratings (made-up teams)", "Penguins - model bake-off", "Flights - forecast accuracy check"]:
-            wf = json.loads((Path(project["path"]) / "workflows" / f"{name}.flow.json").read_text())
+            wf = json.loads((Path(project["path"]) / "workflows" / f"{name}.snek").read_text())
             results = call("/api/run", {"workflow": wf})["results"]
             bad = {k: v["error"] for k, v in results.items() if v["status"] != "ok"}
             print(name, "->", "ok" if not bad else bad)

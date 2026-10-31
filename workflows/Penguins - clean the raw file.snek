@@ -1,4 +1,5 @@
 {
+  "format": "snek",
   "version": 1,
   "name": "Penguins - clean the raw file",
   "nodes": [

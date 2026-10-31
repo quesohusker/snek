@@ -1,4 +1,5 @@
 {
+  "format": "snek",
   "version": 1,
   "name": "Penguins - predict body mass",
   "nodes": [

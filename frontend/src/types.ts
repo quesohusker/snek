@@ -120,3 +120,9 @@ export type UpdateInfo = {
   update: boolean;
   error: string;
 };
+
+export type SnekSettings = {
+  autosave_minutes: number;
+  autosave_mode: "file" | "backup";
+  autosave_folder: string;
+};

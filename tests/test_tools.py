@@ -436,7 +436,7 @@ def test_bundled_sample_workflows_run(monkeypatch):
     names = ["Penguins - body mass by species", "Penguins - clean the raw file", "Flights - Q1 delays by airline", "Flights - weather at departure", "Flights - fleets from nested JSON", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - league ratings (made-up teams)", "Penguins - model bake-off", "Flights - forecast accuracy check", "Demo - no files needed"]
     engine = Engine()
     for name in names:
-        wf = json.loads((ROOT / "workflows" / f"{name}.flow.json").read_text())
+        wf = json.loads((ROOT / "workflows" / f"{name}.snek").read_text())
         ev = engine.evaluate(wf, run_side_effects=False)
         problems = {k: r.error for k, r in ev.results.items() if r.status != "ok"}
         assert not problems, f"{name}: {problems}"

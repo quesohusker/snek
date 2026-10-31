@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { applyEdgeChanges, applyNodeChanges, type Connection, type Edge, type EdgeChange, type Node, type NodeChange } from "@xyflow/react";
 import { api } from "./api";
-import type { FlowNodeData, NodeResult, ProjectInfo, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
+import type { FlowNodeData, NodeResult, ProjectInfo, SnekSettings, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 export type ToolNode = Node<FlowNodeData, "tool">;
 
@@ -26,7 +26,7 @@ function remember(key: string, value: unknown) {
   }
 }
 
-export type Dialog = "open" | "saveAs" | "export" | "openProject" | "newProject" | "about" | null;
+export type Dialog = "open" | "saveAs" | "export" | "openProject" | "newProject" | "about" | "openFile" | "saveFile" | "settings" | "openAutosave" | null;
 
 type State = {
   tools: Record<string, ToolSpec>;
@@ -41,6 +41,7 @@ type State = {
   running: boolean;
   lastRun: { elapsed: number; ok: number; errors: number } | null;
   name: string | null;
+  filePath: string | null;
   dirty: boolean;
   version: number;
   loaded: number;
@@ -49,6 +50,9 @@ type State = {
   project: ProjectInfo | null;
   stopped: boolean;
   update: UpdateInfo | null;
+  settings: SnekSettings | null;
+  autosave: { at: string | null; error: string; version: number; name: string | null };
+  setSettings: (s: SnekSettings) => void;
   paletteTab: string;
   favorites: string[];
   setPaletteTab: (tab: string) => void;
@@ -72,8 +76,8 @@ type State = {
   mergeResult: (id: string, result: NodeResult) => void;
   setSummaries: (s: Record<string, string>) => void;
   setRunning: (v: boolean) => void;
-  load: (file: WorkflowFile, name: string | null) => void;
-  markSaved: (name: string) => void;
+  load: (file: WorkflowFile, name: string | null, filePath?: string | null) => void;
+  markSaved: (name: string, filePath?: string | null) => void;
   toWorkflow: () => WorkflowFile;
 };
 
@@ -115,6 +119,7 @@ export const useFlow = create<State>()((set, get) => ({
   running: false,
   lastRun: null,
   name: null,
+  filePath: null,
   dirty: false,
   version: 0,
   loaded: 0,
@@ -123,6 +128,10 @@ export const useFlow = create<State>()((set, get) => ({
   project: null,
   stopped: false,
   update: null,
+  settings: null,
+  autosave: { at: null, error: "", version: -1, name: null },
+
+  setSettings: (settings) => set({ settings }),
   paletteTab: stored("snek.paletteTab", "Favorites"),
   favorites: stored("snek.favorites", DEFAULT_FAVORITES),
 
@@ -266,7 +275,7 @@ export const useFlow = create<State>()((set, get) => ({
 
   setRunning: (running) => set({ running }),
 
-  load: (file, name) => {
+  load: (file, name, filePath = null) => {
     const { tools } = get();
     const nodes: ToolNode[] = file.nodes
       .filter((n) => tools[n.type])
@@ -277,11 +286,11 @@ export const useFlow = create<State>()((set, get) => ({
         data: { type: n.type, label: n.label ?? "", config: { ...defaultsFor(tools[n.type]), ...n.config } },
       }));
     const edges: Edge[] = file.edges.map((e) => ({ ...e, id: e.id || edgeId(e), source: String(e.source), target: String(e.target) }));
-    set((s) => ({ nodes, edges, name, selectedId: null, results: {}, summaries: {}, stale: true, lastRun: null, dirty: false, version: s.version + 1, loaded: s.loaded + 1 }));
+    set((s) => ({ nodes, edges, name, filePath, autosave: { at: null, error: "", version: -1, name: null }, selectedId: null, results: {}, summaries: {}, stale: true, lastRun: null, dirty: false, version: s.version + 1, loaded: s.loaded + 1 }));
   },
 
-  markSaved: (name) => {
-    set({ name, dirty: false });
+  markSaved: (name, filePath) => {
+    set((s) => ({ name, dirty: false, filePath: filePath === undefined ? s.filePath : filePath }));
     get().loadRecent();
   },
 
