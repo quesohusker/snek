@@ -1,5 +1,6 @@
 import json
 import re
+import shutil
 import subprocess
 from importlib import metadata
 from pathlib import Path
@@ -48,7 +49,10 @@ def python_license_text(dist):
 
 
 def node_packages():
-    out = subprocess.run(["npm", "ls", "--omit=dev", "--all", "--parseable"], cwd=ROOT / "frontend", capture_output=True, text=True)
+    npm = shutil.which("npm")
+    if not npm:
+        raise SystemExit("npm is needed to list the interface's packages")
+    out = subprocess.run([npm, "ls", "--omit=dev", "--all", "--parseable"], cwd=ROOT / "frontend", capture_output=True, text=True)
     paths = [Path(p) for p in out.stdout.splitlines()[1:]]
     pkgs = {}
     for p in paths:
