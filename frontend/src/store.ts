@@ -352,7 +352,7 @@ export const useFlow = create<State>()((set, get) => ({
 
   setTools: (list, categories) => {
     registerToolLooks(list);
-    set({ toolList: list, tools: Object.fromEntries(list.map((t) => [t.type, t])), categories });
+    set({ toolList: list.filter((t) => !t.hidden), tools: Object.fromEntries(list.map((t) => [t.type, t])), categories });
   },
 
   onNodesChange: (changes) => {
@@ -488,12 +488,13 @@ export const useFlow = create<State>()((set, get) => ({
 
   load: (file, name, filePath = null) => {
     const { tools } = get();
+    const spread = (file.version ?? 1) < 2 ? 1.75 : 1;
     const nodes: ToolNode[] = file.nodes
       .filter((n) => tools[n.type])
       .map((n) => ({
         id: String(n.id),
         type: "tool",
-        position: n.position ?? { x: 0, y: 0 },
+        position: n.position ? { x: n.position.x * spread, y: n.position.y } : { x: 0, y: 0 },
         data: { type: n.type, label: n.label ?? "", config: { ...defaultsFor(tools[n.type]), ...n.config } },
       }));
     const edges: Edge[] = file.edges.map((e) => ({ ...e, id: e.id || edgeId(e), source: String(e.source), target: String(e.target) }));
@@ -508,7 +509,7 @@ export const useFlow = create<State>()((set, get) => ({
   toWorkflow: () => {
     const { nodes, edges, name } = get();
     return {
-      version: 1,
+      version: 2,
       name: name ?? undefined,
       nodes: nodes.map((n) => ({ id: n.id, type: n.data.type, label: n.data.label, position: { x: Math.round(n.position.x), y: Math.round(n.position.y) }, config: n.data.config })),
       edges: edges.map((e) => ({ id: e.id, source: e.source, sourceHandle: e.sourceHandle ?? "out", target: e.target, targetHandle: e.targetHandle ?? "in" })),

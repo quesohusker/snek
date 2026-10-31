@@ -4,12 +4,12 @@ from snek.tools.base import Port, Tool, ToolError, fld, lit, opts, register, sho
 @register
 class Join(Tool):
     type = "join"
-    label = "Join"
-    category = "Join"
-    description = "Match two inputs on key columns. L = left only, J = matched, R = right only."
+    label = "Match Tables"
+    category = "Combine"
+    description = "Match two tables on key columns. Outputs: rows only in the left table, matched rows, and rows only in the right table."
     needs = "Two tables (L and R) that share one or more key columns."
-    inputs = [Port("left", "L"), Port("right", "R")]
-    outputs = [Port("left", "L"), Port("join", "J"), Port("right", "R")]
+    inputs = [Port("left", "left"), Port("right", "right")]
+    outputs = [Port("left", "left only"), Port("join", "matched"), Port("right", "right only")]
     fields = [
         fld("keys", "Join on", "list", [{"left": "", "right": ""}], fields=[
             fld("left", "Left column", "column", "", port="left"),
@@ -39,8 +39,8 @@ class Join(Tool):
 @register
 class Union(Tool):
     type = "union"
-    label = "Union"
-    category = "Join"
+    label = "Stack Tables"
+    category = "Combine"
     description = "Stack any number of inputs. Connect them in the order you want."
     needs = "Two or more tables. Columns are matched by name."
     inputs = [Port("in", "", multi=True)]
@@ -65,11 +65,11 @@ class Union(Tool):
 @register
 class AppendFields(Tool):
     type = "append"
-    label = "Append Fields"
-    category = "Join"
+    label = "Every Combination"
+    category = "Combine"
     description = "Cross join: add every source row to every target row."
-    needs = "A target table (T) and a source table (S), usually a small one."
-    inputs = [Port("target", "T"), Port("source", "S")]
+    needs = "A target table and a source table, usually a small one."
+    inputs = [Port("target", "target"), Port("source", "source")]
     fields = [fld("suffix", "Suffix for duplicate source columns", "text", "_source")]
 
     def code(self, cfg, ctx):
@@ -79,11 +79,11 @@ class AppendFields(Tool):
 @register
 class FindReplace(Tool):
     type = "find_replace"
-    label = "Find Replace"
-    category = "Join"
-    description = "Look values up in a second table. Replace them, or add columns from the lookup table. F = data, R = lookup table."
-    needs = "F: the table to change. R: a lookup table with a key column and the values to swap in or add."
-    inputs = [Port("find", "F"), Port("lookup", "R")]
+    label = "Look Up Values"
+    category = "Combine"
+    description = "Look values up in a second table. Replace them, or add columns from the lookup table. Inputs: the data, and the lookup table."
+    needs = "data: the table to change. lookup: a table with a key column and the values to swap in or add."
+    inputs = [Port("find", "data"), Port("lookup", "lookup")]
     fields = [
         fld("column", "Column to look up", "column", "", port="find"),
         fld("key", "Match it to (lookup column)", "column", "", port="lookup"),
@@ -135,8 +135,8 @@ class FindReplace(Tool):
 @register
 class JoinMultiple(Tool):
     type = "join_multiple"
-    label = "Join Multiple"
-    category = "Join"
+    label = "Match Many Tables"
+    category = "Combine"
     description = "Join three or more inputs on columns they share. Connect them in the order you want."
     needs = "Three or more tables that share the key columns."
     inputs = [Port("in", "", multi=True)]

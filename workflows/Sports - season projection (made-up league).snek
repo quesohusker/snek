@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Sports - season projection (made-up league)",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Schedule and results",
       "position": {
         "x": 0,
-        "y": 130
+        "y": 120
       },
       "config": {
         "path": "examples/data/demo_sports/football_games.csv"
@@ -20,7 +20,7 @@
       "type": "team_ratings",
       "label": "Ratings from played games",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -36,7 +36,7 @@
       "type": "season_sim",
       "label": "Simulate the rest",
       "position": {
-        "x": 340,
+        "x": 600,
         "y": 0
       },
       "config": {
@@ -50,22 +50,12 @@
       }
     },
     {
-      "id": "4",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 510,
-        "y": 0
-      },
-      "config": {}
-    },
-    {
       "id": "5",
       "type": "spread_win_prob",
       "label": "Spreads vs lines",
       "position": {
-        "x": 340,
-        "y": 130
+        "x": 600,
+        "y": 120
       },
       "config": {
         "team": "Team",
@@ -78,22 +68,12 @@
       }
     },
     {
-      "id": "6",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 510,
-        "y": 130
-      },
-      "config": {}
-    },
-    {
       "id": "7",
       "type": "pythagorean",
       "label": "Luck",
       "position": {
-        "x": 170,
-        "y": 260
+        "x": 300,
+        "y": 240
       },
       "config": {
         "home": "home",
@@ -101,16 +81,6 @@
         "home_points": "home_points",
         "away_points": "away_points"
       }
-    },
-    {
-      "id": "8",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 340,
-        "y": 260
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -136,13 +106,6 @@
       "targetHandle": "games"
     },
     {
-      "id": "e3.teams-4.in",
-      "source": "3",
-      "sourceHandle": "teams",
-      "target": "4",
-      "targetHandle": "in"
-    },
-    {
       "id": "e2.ratings-5.ratings",
       "source": "2",
       "sourceHandle": "ratings",
@@ -157,24 +120,10 @@
       "targetHandle": "games"
     },
     {
-      "id": "e5.games-6.in",
-      "source": "5",
-      "sourceHandle": "games",
-      "target": "6",
-      "targetHandle": "in"
-    },
-    {
       "id": "e1.out-7.in",
       "source": "1",
       "sourceHandle": "out",
       "target": "7",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e7.teams-8.in",
-      "source": "7",
-      "sourceHandle": "teams",
-      "target": "8",
       "targetHandle": "in"
     }
   ]

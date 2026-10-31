@@ -41,24 +41,24 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-96 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any tool, in the sidebar or on the canvas, to see what input it needs.
+95 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
 
-| Category | Tools |
+| Category | Steps |
 |---|---|
-| In/Out | Input Data, Text Input, Output Data, Browse, Directory, Date Time Now |
-| Data Connections | API Request (JSON or CSV from any web API) |
-| Preparation | Select, Filter, Formula, Multi-Field Formula, Multi-Row Formula, Sort, Sample, Select Records, Unique, Record ID, Rank, Tile, Auto Field, Data Cleansing, Imputation, Replace Text, Generate Rows |
-| Join | Join (L/J/R outputs), Join Multiple, Union, Append Fields, Find Replace (lookup table) |
-| Parse | Text to Columns, RegEx, DateTime, JSON Parse, Explode List, Unnest JSON |
-| Transform | Summarize, Cross Tab, Transpose, Running Total, Weighted Average, Count Records |
-| Data Investigation | Field Summary, Frequency Table, Correlation, Contingency Table, Test of Means, Chi-Square Test, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
-| Modeling | Linear, Logistic, Regularized (Ridge/Lasso/Elastic Net), Count (Poisson/negative binomial) and Gamma Regression, Decision Tree, Random Forest, Boosted Model, Naive Bayes, K-Nearest Neighbors, Support Vector Machine, Neural Network, Score, Model Comparison, Cross-Validation, Create Samples, Variance Inflation Factors |
-| Predictive Grouping | K-Means Clusters, Cluster Diagnostics, Hierarchical Clustering, Principal Components, Find Nearest Neighbors |
-| Time Series | TS Filler, Rolling Window, Seasonal Decomposition, ETS Forecast, ARIMA Forecast, TS Compare |
+| Open & Save | Open File, Type or Paste Data, Save File, List Files, Read Listed Files, Current Time, Make a Sequence, Web API |
+| Rows | Keep Rows, Sort Rows, Take Rows, Rows by Position, Find Duplicates, Number Rows, Rank Rows, Bucket Values |
+| Columns | Choose Columns, Calculate, Calculate Many Columns, Use Previous Rows, Cumulative Total, Rename Many Columns, Choose Columns by Rule, Column List |
+| Clean | Tidy Up, Detect Types, Fill Blanks, Replace Text, Split Text, Text Pattern, Dates and Times, Read JSON Text, One Row per Item, Spread Out Fields |
+| Combine | Match Tables, Match Many Tables, Stack Tables, Every Combination, Look Up Values |
+| Group & Pivot | Group and Total, Pivot Wider, Pivot Longer, Weighted Average, Count Rows |
+| Explore | Profile Columns, Count Values, Correlation, Cross Count, Compare Averages, Test Independence, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
+| Model | Linear and Logistic Regression, Ridge and Lasso, Count and Gamma Regression, Decision Tree, Random Forest, Gradient Boosting, Naive Bayes, Nearest-Neighbor Model, Support Vector Machine, Neural Network, Predict, Compare Models, Cross-Validation, Train and Test Split, Check Overlap (VIF) |
+| Segment | K-Means Groups, Choose Number of Groups, Hierarchical Groups, Principal Components, Most Similar Rows |
+| Forecast | Fill Missing Dates, Rolling Window, Smoothing Forecast, ARIMA Forecast, Trend and Season, Check Forecast |
 | Sports | **All sports:** Team Ratings (SRS/Massey), Elo Ratings, Opponent Adjust, Spread & Win Probability (grades picks against betting lines), Season Simulation, Pythagorean Expectation. **Football:** Garbage-Time Filter, Success Rate, Football Efficiency (EPA, success rate, explosiveness, havoc). **Basketball:** Four Factors (with offensive, defensive and net rating), Shooting Efficiency. **Baseball:** Batting Stats (through wOBA), Pitching Stats (through FIP). **Volleyball:** Volleyball Box Stats, Side-Out & Serve |
-| Developer | Python (your own pandas code), Dynamic Input, Dynamic Rename, Dynamic Select, Field Info |
+| Code | Python Code (your own pandas code) |
 
-Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. Directory plus Dynamic Input reads every file in a folder.
+Open File reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. List Files plus Read Listed Files reads every file in a folder.
 
 ## Editing
 
@@ -68,13 +68,13 @@ Snek edits like a desktop app:
 - Cut, copy, paste and duplicate tools with ⌘X, ⌘C, ⌘V and ⌘D. Connections between copied tools come along. Paste works between Snek windows.
 - Drag a box on the canvas, or Shift-click, to select several tools. Scroll to pan; ⌘-scroll or pinch to zoom.
 - Right-click a tool or the canvas for a menu.
-- Paste a table copied from Excel and Snek makes a Text Input tool from it. Drop a data file on the canvas and Snek copies it into the project's `data/` folder and adds an Input Data tool.
+- Paste a table copied from Excel and Snek makes a Type or Paste Data step from it. Drop a data file on the canvas and Snek copies it into the project's `data/` folder and adds an Open File step.
 - The copy button above the results grid copies every row, ready to paste into Excel.
 - Snek asks before it closes a workflow with unsaved changes. Help ▸ Keyboard shortcuts lists every shortcut.
 
 ## Expressions
 
-Filter and Formula take pandas expressions. Write a column as `[Column Name]`:
+Keep Rows and Calculate take pandas expressions. Write a column as `[Column Name]`:
 
 ```
 [pts] - [opp_pts]
@@ -84,11 +84,11 @@ iif([dep_delay] > 15, 'late', 'on time')
 
 You can use `pd`, `np` and `iif(condition, then, else)`. Snek suggests a fix when a column name is misspelled.
 
-Multi-Row Formula reaches into other rows with `[Row-1:column]` and `[Row+1:column]`, for example `[pts] - [Row-1:pts]` for the change since the last game. Multi-Field Formula applies one expression to many columns, with `[_CurrentField_]` standing for each column in turn.
+Use Previous Rows reaches into other rows with `[Row-1:column]` and `[Row+1:column]`, for example `[pts] - [Row-1:pts]` for the change since the last game. Calculate Many Columns applies one expression to many columns, with `[_CurrentField_]` standing for each column in turn.
 
 ## Modeling
 
-Every model tool has an **M** output that carries the fitted model. Connect it to **Score** to predict new rows, or to **Model Comparison** with a validation sample to see which model holds up on data it never saw. Use **Create Samples** to make that split. Models come from scikit-learn and statsmodels, so exported scripts that use them list those packages at the top.
+Every model step has a **model** output that carries the fitted model. Connect it to **Predict** to score new rows, or to **Compare Models** with a validation sample to see which model holds up on data it never saw. Use **Train and Test Split** to make that split. Models come from scikit-learn and statsmodels, so exported scripts that use them list those packages at the top.
 
 ## Create a workflow with AI
 
@@ -105,7 +105,7 @@ Keys stay on your computer in `~/.snek/connections.json`. They never go into wor
 
 ## Charts
 
-The **Chart** tool draws bar, line, scatter, area, histogram, box plot and heat map charts. The chart shows in the results panel, where its menu saves a PNG or SVG. To save a web page, connect Output Data with a path ending in `.html`; Union several charts first to put them on one page. Chart pages load the charting library from the web, so they need an internet connection to display.
+The **Chart** tool draws bar, line, scatter, area, histogram, box plot and heat map charts. The chart shows in the results panel, where its menu saves a PNG or SVG. To save a web page, connect Save File with a path ending in `.html`; stack several charts with Stack Tables first to put them on one page. Chart pages load the charting library from the web, so they need an internet connection to display.
 
 ## Sports analytics
 
@@ -133,7 +133,7 @@ A project is a folder for one piece of analysis. **File ▸ New project…** cre
 
 - File ▸ Open recent lists that project's workflows (saved as `.snek` files in `workflows/`).
 - A relative path such as `output/results.csv` or `data/games.csv` starts from the project folder.
-- Output Data offers one-click **Save in** buttons for the project's output folder, Desktop, Documents and Downloads, and shows the full path it will write to.
+- Save File offers one-click **Save in** buttons for the project's output folder, Desktop, Documents and Downloads, and shows the full path it will write to.
 
 The Snek folder itself is the built-in **Snek examples** project. Snek remembers the last project in `~/.snek/config.json`.
 
@@ -154,11 +154,11 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Flights: Q1 delays by airline (wildcard input and a join)
 - Flights: weather at departure (multi-key join)
 - Flights: fleets from nested JSON (explode and unnest)
-- Flights: daily delay trend (DateTime, Multi-Row Formula, Running Total, Rank, Tile)
-- Penguins: predict body mass (Field Summary, Correlation, Linear Regression)
-- Penguins: classify species (Create Samples, Decision Tree vs. Random Forest, Model Comparison, Score)
-- Flights: forecast daily departures (TS Filler, ETS and ARIMA with weekly seasonality)
-- Flights: forecast accuracy check (hold out two weeks, forecast them, grade with TS Compare; Seasonal Decomposition)
+- Flights: daily delay trend (Dates and Times, Use Previous Rows, Cumulative Total, Rank Rows, Bucket Values)
+- Penguins: predict body mass (Profile Columns, Correlation, Linear Regression)
+- Penguins: classify species (Train and Test Split, Decision Tree vs. Random Forest, Compare Models, Predict)
+- Flights: forecast daily departures (Fill Missing Dates, Smoothing and ARIMA forecasts with weekly seasonality)
+- Flights: forecast accuracy check (hold out two weeks, forecast them, grade with Check Forecast; Trend and Season)
 - Penguins: model bake-off (five classifiers, 5-fold Cross-Validation)
 - Demo: league ratings for made-up teams (Team Ratings and Elo side by side)
 - Sports: football play-by-play kit (Garbage-Time Filter, Success Rate, Football Efficiency, Opponent Adjust)
@@ -177,7 +177,7 @@ Once a day, Snek asks GitHub's public releases page whether a newer version exis
 
 ## Caveats
 
-- Formula and Python tools run any code you type. The server listens on 127.0.0.1 only. Do not expose it to a network.
+- Calculate and Python Code run any code you type. The server listens on 127.0.0.1 only. Do not expose it to a network.
 - Data is held in memory. Hundreds of thousands of rows are fast; tens of millions will strain it.
 
 ## Build from source

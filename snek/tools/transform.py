@@ -26,8 +26,8 @@ def agg_expr(func):
 @register
 class Summarize(Tool):
     type = "summarize"
-    label = "Summarize"
-    category = "Transform"
+    label = "Group and Total"
+    category = "Group & Pivot"
     description = "Group by columns and aggregate."
     needs = "Any table, plus the columns to group by and the columns to total."
     fields = [
@@ -69,8 +69,8 @@ class Summarize(Tool):
 @register
 class CrossTab(Tool):
     type = "crosstab"
-    label = "Cross Tab"
-    category = "Transform"
+    label = "Pivot Wider"
+    category = "Group & Pivot"
     description = "Pivot: turn the values of one column into new column headers."
     needs = "A table with a column whose values become headers and a value column."
     fields = [
@@ -100,8 +100,8 @@ class CrossTab(Tool):
 @register
 class Transpose(Tool):
     type = "transpose"
-    label = "Transpose"
-    category = "Transform"
+    label = "Pivot Longer"
+    category = "Group & Pivot"
     description = "Unpivot: turn columns into Name/Value rows."
     needs = "A wide table: key columns to keep and data columns to turn into rows."
     fields = [
@@ -125,8 +125,8 @@ class Transpose(Tool):
 @register
 class Python(Tool):
     type = "python"
-    label = "Python"
-    category = "Developer"
+    label = "Python Code"
+    category = "Code"
     description = "Run your own pandas code. Inputs arrive as df (first) and dfs (all). Assign the result to df."
     needs = "Any table (or several). Your code decides."
     inputs = [Port("in", "", multi=True)]
@@ -156,7 +156,7 @@ class Python(Tool):
 class WeightedAverage(Tool):
     type = "weighted_avg"
     label = "Weighted Average"
-    category = "Transform"
+    category = "Group & Pivot"
     description = "Average a column weighted by another, such as yards per play weighted by plays. Rows with a null value or weight are skipped."
     needs = "A table with a value column and a weight column, such as yards per play and plays."
     fields = [
@@ -184,8 +184,8 @@ class WeightedAverage(Tool):
 @register
 class CountRecords(Tool):
     type = "count_records"
-    label = "Count Records"
-    category = "Transform"
+    label = "Count Rows"
+    category = "Group & Pivot"
     description = "One row holding the number of input rows."
     needs = "Any table."
     fields = [fld("name", "Column name", "text", "Count")]

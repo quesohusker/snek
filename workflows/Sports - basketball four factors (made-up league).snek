@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Sports - basketball four factors (made-up league)",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Team box scores",
       "position": {
         "x": 0,
-        "y": 65.0
+        "y": 60.0
       },
       "config": {
         "path": "examples/data/demo_sports/basketball_box.csv"
@@ -20,7 +20,7 @@
       "type": "four_factors",
       "label": "",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -40,22 +40,12 @@
       }
     },
     {
-      "id": "3",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 340,
-        "y": 0
-      },
-      "config": {}
-    },
-    {
       "id": "4",
       "type": "shooting",
       "label": "Team shooting",
       "position": {
-        "x": 170,
-        "y": 130
+        "x": 300,
+        "y": 120
       },
       "config": {
         "group_by": [
@@ -68,16 +58,6 @@
         "fg3m": "fg3m",
         "fg3a": "fg3a"
       }
-    },
-    {
-      "id": "5",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 340,
-        "y": 130
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -89,24 +69,10 @@
       "targetHandle": "in"
     },
     {
-      "id": "e2.teams-3.in",
-      "source": "2",
-      "sourceHandle": "teams",
-      "target": "3",
-      "targetHandle": "in"
-    },
-    {
       "id": "e1.out-4.in",
       "source": "1",
       "sourceHandle": "out",
       "target": "4",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e4.out-5.in",
-      "source": "4",
-      "sourceHandle": "out",
-      "target": "5",
       "targetHandle": "in"
     }
   ]

@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Flights - weather at departure",
   "nodes": [
     {
@@ -21,7 +21,7 @@
       "label": "Hourly weather",
       "position": {
         "x": 0,
-        "y": 169.0
+        "y": 156.0
       },
       "config": {
         "path": "examples/data/nycflights13/weather_2013_q1.csv"
@@ -32,8 +32,8 @@
       "type": "join",
       "label": "Same airport and hour",
       "position": {
-        "x": 170,
-        "y": 78.0
+        "x": 300,
+        "y": 72.0
       },
       "config": {
         "keys": [
@@ -66,8 +66,8 @@
       "type": "formula",
       "label": "Rain and late flags",
       "position": {
-        "x": 340,
-        "y": 78.0
+        "x": 600,
+        "y": 72.0
       },
       "config": {
         "formulas": [
@@ -89,8 +89,8 @@
       "type": "summarize",
       "label": "",
       "position": {
-        "x": 510,
-        "y": 78.0
+        "x": 900,
+        "y": 72.0
       },
       "config": {
         "group_by": [
@@ -121,8 +121,8 @@
       "type": "sort",
       "label": "",
       "position": {
-        "x": 680,
-        "y": 78.0
+        "x": 1200,
+        "y": 72.0
       },
       "config": {
         "keys": [
@@ -137,16 +137,6 @@
         ],
         "nulls": "last"
       }
-    },
-    {
-      "id": "7",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 850,
-        "y": 78.0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -183,13 +173,6 @@
       "source": "5",
       "sourceHandle": "out",
       "target": "6",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e6.out-7.in",
-      "source": "6",
-      "sourceHandle": "out",
-      "target": "7",
       "targetHandle": "in"
     }
   ]

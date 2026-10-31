@@ -1,7 +1,7 @@
 from snek.tools import connect, fields, grouping, investigate, io, join, model, parse, prep, rows, sports, timeseries, transform
 from snek.tools.base import TOOLS, Ctx, Tool, ToolError, output_var
 
-CATEGORY_ORDER = ["In/Out", "Data Connections", "Preparation", "Join", "Parse", "Transform", "Data Investigation", "Modeling", "Predictive Grouping", "Time Series", "Sports", "Developer"]
+CATEGORY_ORDER = ["Open & Save", "Rows", "Columns", "Clean", "Combine", "Group & Pivot", "Explore", "Model", "Segment", "Forecast", "Sports", "Code"]
 
 __all__ = ["TOOLS", "CATEGORY_ORDER", "Ctx", "Tool", "ToolError", "output_var", "fields", "grouping", "investigate", "io", "join", "model", "parse", "prep", "rows", "sports", "timeseries", "transform"]
 

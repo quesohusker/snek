@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Sports - baseball batting and pitching (made-up players)",
   "nodes": [
     {
@@ -20,7 +20,7 @@
       "type": "batting",
       "label": "",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -42,22 +42,12 @@
       }
     },
     {
-      "id": "3",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 340,
-        "y": 0
-      },
-      "config": {}
-    },
-    {
       "id": "4",
       "type": "input",
       "label": "Pitching lines",
       "position": {
         "x": 0,
-        "y": 130
+        "y": 120
       },
       "config": {
         "path": "examples/data/demo_sports/baseball_pitching.csv"
@@ -68,8 +58,8 @@
       "type": "pitching",
       "label": "",
       "position": {
-        "x": 170,
-        "y": 130
+        "x": 300,
+        "y": 120
       },
       "config": {
         "group_by": [
@@ -85,16 +75,6 @@
         "hbp": "HBP",
         "bf": "BF"
       }
-    },
-    {
-      "id": "6",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 340,
-        "y": 130
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -106,24 +86,10 @@
       "targetHandle": "in"
     },
     {
-      "id": "e2.out-3.in",
-      "source": "2",
-      "sourceHandle": "out",
-      "target": "3",
-      "targetHandle": "in"
-    },
-    {
       "id": "e4.out-5.in",
       "source": "4",
       "sourceHandle": "out",
       "target": "5",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e5.out-6.in",
-      "source": "5",
-      "sourceHandle": "out",
-      "target": "6",
       "targetHandle": "in"
     }
   ]

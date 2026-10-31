@@ -16,8 +16,8 @@ def grouped(frame, group_by, column):
 @register
 class MultiRowFormula(Tool):
     type = "multirow"
-    label = "Multi-Row Formula"
-    category = "Preparation"
+    label = "Use Previous Rows"
+    category = "Columns"
     description = "Use values from earlier or later rows, such as last week's score or the change since the prior game."
     needs = "Rows in order, such as one row per team per game. Optional: group columns so each team stays separate."
     fields = [
@@ -69,8 +69,8 @@ class MultiRowFormula(Tool):
 @register
 class RunningTotal(Tool):
     type = "running_total"
-    label = "Running Total"
-    category = "Transform"
+    label = "Cumulative Total"
+    category = "Columns"
     description = "Add cumulative sums, optionally restarting for each group."
     needs = "Rows in order with numeric columns to add up. Optional: group columns."
     fields = [
@@ -97,8 +97,8 @@ class RunningTotal(Tool):
 @register
 class Rank(Tool):
     type = "rank"
-    label = "Rank"
-    category = "Preparation"
+    label = "Rank Rows"
+    category = "Rows"
     description = "Rank rows by a column, overall or within groups."
     needs = "A table with a numeric or sortable column. Optional: group columns."
     fields = [
@@ -128,8 +128,8 @@ class Rank(Tool):
 @register
 class Tile(Tool):
     type = "tile"
-    label = "Tile"
-    category = "Preparation"
+    label = "Bucket Values"
+    category = "Rows"
     description = "Assign each row to a bucket: quantiles, equal-width bins, or your own break points."
     needs = "A table with a numeric column. Optional: group columns."
     fields = [
@@ -177,8 +177,8 @@ class Tile(Tool):
 @register
 class SelectRecords(Tool):
     type = "select_records"
-    label = "Select Records"
-    category = "Preparation"
+    label = "Rows by Position"
+    category = "Rows"
     description = "Keep rows by position, such as 1-10, 25, 100+."
     needs = "Any table."
     fields = [fld("ranges", "Rows to keep", "textarea", "1-10", help="Comma or line separated. 5 = row 5; 1-10 = rows 1 to 10; -3 = the first 3; 100+ = row 100 to the end.")]
@@ -198,8 +198,8 @@ class SelectRecords(Tool):
 @register
 class GenerateRows(Tool):
     type = "generate_rows"
-    label = "Generate Rows"
-    category = "Preparation"
+    label = "Make a Sequence"
+    category = "Open & Save"
     description = "Create a sequence of numbers or dates, such as weeks 1 to 15 or every day of a season."
     needs = "No input."
     inputs = []

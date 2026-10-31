@@ -196,7 +196,7 @@ export default function Canvas() {
       {nodes.length === 0 && (
         <div className="empty-hint">
           <h2>Start a workflow</h2>
-          <p>Drag Input Data from the left onto the canvas, or click a tool to add it.</p>
+          <p>Drag Open File from the left onto the canvas, or click any step to add it.</p>
           <p>Or open a sample from File ▸ Open recent, or drop a data file here.</p>
         </div>
       )}

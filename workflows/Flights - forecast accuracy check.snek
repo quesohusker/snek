@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Flights - forecast accuracy check",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Q1 flights",
       "position": {
         "x": 0,
-        "y": 91.0
+        "y": 84.0
       },
       "config": {
         "path": "examples/data/nycflights13/flights_2013_*.csv.gz"
@@ -20,8 +20,8 @@
       "type": "formula",
       "label": "Flight date",
       "position": {
-        "x": 170,
-        "y": 91.0
+        "x": 300,
+        "y": 84.0
       },
       "config": {
         "formulas": [
@@ -38,8 +38,8 @@
       "type": "summarize",
       "label": "Departures per day",
       "position": {
-        "x": 340,
-        "y": 91.0
+        "x": 600,
+        "y": 84.0
       },
       "config": {
         "group_by": [
@@ -59,8 +59,8 @@
       "type": "filter",
       "label": "Before March 18",
       "position": {
-        "x": 510,
-        "y": 91.0
+        "x": 900,
+        "y": 84.0
       },
       "config": {
         "mode": "expression",
@@ -72,7 +72,7 @@
       "type": "ets",
       "label": "Forecast last 14 days",
       "position": {
-        "x": 680,
+        "x": 1200,
         "y": 0
       },
       "config": {
@@ -89,8 +89,8 @@
       "type": "ts_compare",
       "label": "Forecast vs actual",
       "position": {
-        "x": 850,
-        "y": 91.0
+        "x": 1500,
+        "y": 84.0
       },
       "config": {
         "date": "date",
@@ -103,8 +103,8 @@
       "type": "stl",
       "label": "Trend and weekly pattern",
       "position": {
-        "x": 510,
-        "y": 273.0
+        "x": 900,
+        "y": 252.0
       },
       "config": {
         "date": "date",
@@ -112,16 +112,6 @@
         "freq": "D",
         "period": 7
       }
-    },
-    {
-      "id": "8",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 1020,
-        "y": 91.0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -166,13 +156,6 @@
       "sourceHandle": "false",
       "target": "6",
       "targetHandle": "actual"
-    },
-    {
-      "id": "e6.metrics-8.in",
-      "source": "6",
-      "sourceHandle": "metrics",
-      "target": "8",
-      "targetHandle": "in"
     },
     {
       "id": "e3.out-7.in",

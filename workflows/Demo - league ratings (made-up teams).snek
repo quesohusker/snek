@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Demo - league ratings (made-up teams)",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Made-up league",
       "position": {
         "x": 0,
-        "y": 91.0
+        "y": 84.0
       },
       "config": {
         "data": "week,home,away,home_pts,away_pts,neutral\n1,Prairie Dogs,Ridge Hawks,31,17,false\n1,Lake Pike,Canyon Wrens,24,27,false\n1,Iron Owls,Delta Herons,20,13,false\n2,Ridge Hawks,Iron Owls,28,24,false\n2,Canyon Wrens,Prairie Dogs,14,35,false\n2,Delta Herons,Lake Pike,21,10,false\n3,Prairie Dogs,Iron Owls,27,20,false\n3,Lake Pike,Ridge Hawks,17,30,false\n3,Canyon Wrens,Delta Herons,23,20,false\n4,Iron Owls,Lake Pike,34,6,false\n4,Ridge Hawks,Delta Herons,24,21,false\n4,Prairie Dogs,Lake Pike,42,14,false\n5,Delta Herons,Prairie Dogs,17,20,true\n5,Canyon Wrens,Iron Owls,10,31,true\n5,Ridge Hawks,Canyon Wrens,38,21,true",
@@ -21,7 +21,7 @@
       "type": "team_ratings",
       "label": "SRS ratings",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -38,8 +38,8 @@
       "type": "elo",
       "label": "Elo ratings",
       "position": {
-        "x": 170,
-        "y": 182.0
+        "x": 300,
+        "y": 168.0
       },
       "config": {
         "home": "home",
@@ -55,8 +55,8 @@
       "type": "join",
       "label": "Side by side",
       "position": {
-        "x": 340,
-        "y": 91.0
+        "x": 600,
+        "y": 84.0
       },
       "config": {
         "keys": [
@@ -67,16 +67,6 @@
         ],
         "suffix": "_elo"
       }
-    },
-    {
-      "id": "5",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 510,
-        "y": 91.0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -107,13 +97,6 @@
       "sourceHandle": "ratings",
       "target": "4",
       "targetHandle": "right"
-    },
-    {
-      "id": "e4.join-5.in",
-      "source": "4",
-      "sourceHandle": "join",
-      "target": "5",
-      "targetHandle": "in"
     }
   ]
 }

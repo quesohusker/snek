@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Demo - no files needed",
   "nodes": [
     {
@@ -21,7 +21,7 @@
       "type": "formula",
       "label": "Win flag",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -39,7 +39,7 @@
       "type": "summarize",
       "label": "Record",
       "position": {
-        "x": 340,
+        "x": 600,
         "y": 0
       },
       "config": {
@@ -65,7 +65,7 @@
       "type": "sort",
       "label": "",
       "position": {
-        "x": 510,
+        "x": 900,
         "y": 0
       },
       "config": {
@@ -77,16 +77,6 @@
         ],
         "nulls": "last"
       }
-    },
-    {
-      "id": "5",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 680,
-        "y": 0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -109,13 +99,6 @@
       "source": "3",
       "sourceHandle": "out",
       "target": "4",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e4.out-5.in",
-      "source": "4",
-      "sourceHandle": "out",
-      "target": "5",
       "targetHandle": "in"
     }
   ]

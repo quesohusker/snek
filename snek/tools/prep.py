@@ -57,8 +57,8 @@ def typed_literal(value, dtype):
 @register
 class Select(Tool):
     type = "select"
-    label = "Select"
-    category = "Preparation"
+    label = "Choose Columns"
+    category = "Columns"
     description = "Keep, drop, reorder, rename and change the type of columns."
     needs = "Any table."
     fields = [
@@ -97,11 +97,11 @@ class Select(Tool):
 @register
 class Filter(Tool):
     type = "filter"
-    label = "Filter"
-    category = "Preparation"
-    description = "Split rows into True and False streams."
+    label = "Keep Rows"
+    category = "Rows"
+    description = "Keep the rows that meet a condition. The removed rows come out of a second output."
     needs = "Any table. You write a condition using its columns."
-    outputs = [Port("true", "T"), Port("false", "F")]
+    outputs = [Port("true", "kept"), Port("false", "removed")]
     fields = [
         fld("mode", "Mode", "select", "basic", options=opts(("basic", "Basic"), ("expression", "Expression"))),
         fld("column", "Column", "column", "", show_if={"mode": ["basic"]}),
@@ -160,8 +160,8 @@ class Filter(Tool):
 @register
 class Formula(Tool):
     type = "formula"
-    label = "Formula"
-    category = "Preparation"
+    label = "Calculate"
+    category = "Columns"
     description = "Create or update columns with pandas expressions."
     needs = "Any table. New columns are built from its existing columns."
     fields = [
@@ -201,8 +201,8 @@ class Formula(Tool):
 @register
 class Sort(Tool):
     type = "sort"
-    label = "Sort"
-    category = "Preparation"
+    label = "Sort Rows"
+    category = "Rows"
     description = "Sort rows by one or more columns."
     needs = "Any table, plus the columns to sort by."
     fields = [
@@ -230,8 +230,8 @@ class Sort(Tool):
 @register
 class Sample(Tool):
     type = "sample"
-    label = "Sample"
-    category = "Preparation"
+    label = "Take Rows"
+    category = "Rows"
     description = "Keep the first, last, random or every Nth rows."
     needs = "Any table. Optional: group columns to sample within each group."
     fields = [
@@ -273,11 +273,11 @@ class Sample(Tool):
 @register
 class Unique(Tool):
     type = "unique"
-    label = "Unique"
-    category = "Preparation"
-    description = "Split rows into unique and duplicate streams."
+    label = "Find Duplicates"
+    category = "Rows"
+    description = "Separate the first copy of each row from its duplicates."
     needs = "Any table, plus the columns that define a duplicate."
-    outputs = [Port("unique", "U"), Port("dupes", "D")]
+    outputs = [Port("unique", "unique"), Port("dupes", "duplicates")]
     fields = [fld("columns", "Columns that define a duplicate", "columns", [], help="Blank uses every column.")]
 
     def code(self, cfg, ctx):
@@ -299,8 +299,8 @@ class Unique(Tool):
 @register
 class RecordID(Tool):
     type = "record_id"
-    label = "Record ID"
-    category = "Preparation"
+    label = "Number Rows"
+    category = "Rows"
     description = "Add a running row number."
     needs = "Any table."
     fields = [
@@ -331,8 +331,8 @@ class RecordID(Tool):
 @register
 class Cleanse(Tool):
     type = "cleanse"
-    label = "Data Cleansing"
-    category = "Preparation"
+    label = "Tidy Up"
+    category = "Clean"
     description = "Trim text, fix case, fill nulls and drop empty rows or columns."
     needs = "Any table, usually with text columns to tidy."
     fields = [
@@ -384,8 +384,8 @@ class Cleanse(Tool):
 class FindReplace(Tool):
     type = "replace"
     label = "Replace Text"
-    category = "Preparation"
-    description = "Find and replace text inside columns. To swap values using a lookup table, use Find Replace in Join."
+    category = "Clean"
+    description = "Find and replace text inside columns. To swap values using a lookup table, use Look Up Values in Join."
     needs = "A table with the text columns to search."
     fields = [
         fld("columns", "Columns", "columns", []),

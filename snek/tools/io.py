@@ -9,8 +9,8 @@ WRITE_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", 
 @register
 class InputData(Tool):
     type = "input"
-    label = "Input Data"
-    category = "In/Out"
+    label = "Open File"
+    category = "Open & Save"
     description = "Read CSV, Excel, JSON, JSON Lines or Parquet. Put * in the path to stack many files."
     needs = "No input. Reads a file from disk."
     inputs = []
@@ -57,8 +57,8 @@ class InputData(Tool):
 @register
 class TextInput(Tool):
     type = "text_input"
-    label = "Text Input"
-    category = "In/Out"
+    label = "Type or Paste Data"
+    category = "Open & Save"
     description = "Type or paste a small table as CSV."
     needs = "No input. Type or paste the data."
     inputs = []
@@ -80,8 +80,8 @@ class TextInput(Tool):
 @register
 class OutputData(Tool):
     type = "output"
-    label = "Output Data"
-    category = "In/Out"
+    label = "Save File"
+    category = "Open & Save"
     description = "Write CSV, Excel, JSON or Parquet when the workflow runs."
     needs = "Any table to save."
     outputs = []
@@ -103,9 +103,10 @@ class OutputData(Tool):
 @register
 class Browse(Tool):
     type = "browse"
-    label = "Browse"
-    category = "In/Out"
-    description = "Show the data at this point. Click any tool to see its output too."
+    label = "Preview"
+    hidden = True
+    category = "Open & Save"
+    description = "Show the data at this point. Every step already shows its output, so this is only kept for older workflows."
     needs = "Any table."
     outputs = []
     fields = []
@@ -118,9 +119,9 @@ class Browse(Tool):
 @register
 class Directory(Tool):
     type = "directory"
-    label = "Directory"
-    category = "In/Out"
-    description = "List the files in a folder: path, name, extension, size and date. Feed it to Dynamic Input to read them all."
+    label = "List Files"
+    category = "Open & Save"
+    description = "List the files in a folder: path, name, extension, size and date. Feed it to Read Listed Files to read them all."
     needs = "No input. Reads a folder on disk."
     inputs = []
     fields = [
@@ -151,10 +152,10 @@ class Directory(Tool):
 @register
 class DynamicInput(Tool):
     type = "dynamic_input"
-    label = "Dynamic Input"
-    category = "Developer"
-    description = "Read every file listed in a column, such as the path column from Directory, and stack them."
-    needs = "A table with a column of file paths, such as the output of Directory."
+    label = "Read Listed Files"
+    category = "Open & Save"
+    description = "Read every file listed in a column, such as the path column from List Files, and stack them."
+    needs = "A table with a column of file paths, such as the output of List Files."
     fields = [
         fld("column", "Column with file paths", "column", ""),
         fld("format", "Format", "select", "auto", options=READ_FORMATS),
@@ -185,8 +186,8 @@ class DynamicInput(Tool):
 @register
 class DateTimeNow(Tool):
     type = "now"
-    label = "Date Time Now"
-    category = "In/Out"
+    label = "Current Time"
+    category = "Open & Save"
     description = "One row with the current date and time, refreshed on every run."
     needs = "No input."
     inputs = []

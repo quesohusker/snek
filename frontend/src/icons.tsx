@@ -191,18 +191,18 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
-  "In/Out": "var(--cat-io)",
-  "Data Connections": "var(--cat-connect)",
-  Preparation: "var(--cat-prep)",
-  Join: "var(--cat-join)",
-  Parse: "var(--cat-parse)",
-  Transform: "var(--cat-transform)",
-  "Data Investigation": "var(--cat-investigate)",
-  Modeling: "var(--cat-model)",
-  "Predictive Grouping": "var(--cat-grouping)",
-  "Time Series": "var(--cat-timeseries)",
+  "Open & Save": "var(--cat-io)",
+  Rows: "var(--cat-prep)",
+  Columns: "var(--cat-parse)",
+  Clean: "var(--cat-transform)",
+  Combine: "var(--cat-join)",
+  "Group & Pivot": "var(--cat-investigate)",
+  Explore: "var(--cat-grouping)",
+  Model: "var(--cat-model)",
+  Segment: "var(--cat-connect)",
+  Forecast: "var(--cat-timeseries)",
   Sports: "var(--cat-sports)",
-  Developer: "var(--cat-dev)",
+  Code: "var(--cat-dev)",
 };
 
 export function ToolIcon({ type, size = 22 }: { type: string; size?: number }) {

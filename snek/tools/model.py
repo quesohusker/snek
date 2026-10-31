@@ -32,10 +32,10 @@ def num(value, cast=int):
 class LinearRegression(Tool):
     type = "linear_regression"
     label = "Linear Regression"
-    category = "Modeling"
-    description = "Fit an ordinary least squares model. S = rows with predictions, C = coefficients with p-values, F = fit statistics, M = model for Score."
+    category = "Model"
+    description = "Fit an ordinary least squares model. Outputs: rows with predictions, coefficients with p-values, fit statistics, and a model for Predict."
     needs = "One row per observation with a numeric target column and one or more predictor columns."
-    outputs = [Port("scored", "S"), Port("coef", "C"), Port("fit", "F"), Port("model", "M")]
+    outputs = [Port("scored", "scored"), Port("coef", "coefficients"), Port("fit", "fit"), Port("model", "model")]
     fields = target_fields(numeric_only=True) + [fld("intercept", "Include an intercept", "bool", True)]
 
     def code(self, cfg, ctx):
@@ -55,10 +55,10 @@ class LinearRegression(Tool):
 class LogisticRegression(Tool):
     type = "logistic_regression"
     label = "Logistic Regression"
-    category = "Modeling"
-    description = "Predict a yes/no outcome, such as win or loss. M = model for Score, C = coefficients with odds ratios and p-values, F = fit statistics."
+    category = "Model"
+    description = "Predict a yes/no outcome, such as win or loss. Outputs: a model for Predict, coefficients with odds ratios and p-values, and fit statistics."
     needs = "One row per observation with a yes/no target column (two values) and predictor columns."
-    outputs = [Port("model", "M"), Port("coef", "C"), Port("fit", "F")]
+    outputs = [Port("model", "model"), Port("coef", "coefficients"), Port("fit", "fit")]
     fields = target_fields() + [fld("positive", "Positive outcome", "text", "", placeholder="auto: the last value alphabetically", help="The value the model gives a probability for, e.g. W or 1.")]
 
     def code(self, cfg, ctx):
@@ -73,8 +73,8 @@ class LogisticRegression(Tool):
 
 class TreeModel(Tool):
     algorithm = ""
-    category = "Modeling"
-    outputs = [Port("model", "M"), Port("importance", "I")]
+    category = "Model"
+    outputs = [Port("model", "model"), Port("importance", "importance")]
 
     def params(self, cfg):
         return {}
@@ -96,9 +96,9 @@ class DecisionTree(TreeModel):
     type = "decision_tree"
     label = "Decision Tree"
     algorithm = "tree"
-    description = "A tree of if-then splits you can read. M = model for Score, I = which predictors matter most, R = the rules as text."
+    description = "A tree of if-then splits you can read. Outputs: a model for Predict, which predictors matter most, and the rules as text."
     needs = "One row per observation with a target column (category or number) and predictor columns."
-    outputs = [Port("model", "M"), Port("importance", "I"), Port("rules", "R")]
+    outputs = [Port("model", "model"), Port("importance", "importance"), Port("rules", "rules")]
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
         fld("max_depth", "Maximum depth (0 = no limit)", "number", 4),
@@ -115,7 +115,7 @@ class RandomForest(TreeModel):
     type = "random_forest"
     label = "Random Forest"
     algorithm = "forest"
-    description = "Many decision trees voting together. Accurate and hard to overfit. M = model for Score, I = predictor importance."
+    description = "Many decision trees voting together. Accurate and hard to overfit. Outputs: a model for Predict, and predictor importance."
     needs = "One row per observation with a target column (category or number) and predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
@@ -131,9 +131,9 @@ class RandomForest(TreeModel):
 @register
 class BoostedModel(TreeModel):
     type = "boosted_model"
-    label = "Boosted Model"
+    label = "Gradient Boosting"
     algorithm = "boosted"
-    description = "Gradient boosting: trees built one after another, each fixing the last one's errors. M = model for Score, I = predictor importance."
+    description = "Gradient boosting: trees built one after another, each fixing the last one's errors. Outputs: a model for Predict, and predictor importance."
     needs = "One row per observation with a target column (category or number) and predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
@@ -150,11 +150,11 @@ class BoostedModel(TreeModel):
 @register
 class Score(Tool):
     type = "score"
-    label = "Score"
-    category = "Modeling"
-    description = "Apply a fitted model to new rows. Connect a model's M output to M and the data to score to D."
-    needs = "M: a fitted model from any model tool's M output. D: rows with the same predictor columns."
-    inputs = [Port("model", "M"), Port("data", "D")]
+    label = "Predict"
+    category = "Model"
+    description = "Apply a fitted model to new rows. Connect a model output to the model input, and the rows to predict to the data input."
+    needs = "model: the model output of any model tool. data: rows with the same predictor columns."
+    inputs = [Port("model", "model"), Port("data", "data")]
     fields = []
 
     def code(self, cfg, ctx):
@@ -164,12 +164,12 @@ class Score(Tool):
 @register
 class ModelComparison(Tool):
     type = "model_comparison"
-    label = "Model Comparison"
-    category = "Modeling"
-    description = "Score one or more models on data they did not see, usually the validation sample. E = accuracy measures per model, C = confusion matrix."
-    needs = "M: one or more model outputs. D: rows the models did not train on, with the target column."
-    inputs = [Port("model", "M", multi=True), Port("data", "D")]
-    outputs = [Port("metrics", "E"), Port("confusion", "C")]
+    label = "Compare Models"
+    category = "Model"
+    description = "Grade one or more models on data they did not see, usually the validation sample. Outputs: accuracy measures per model, and a confusion matrix."
+    needs = "model: one or more model outputs. data: rows the models did not train on, with the target column."
+    inputs = [Port("model", "model", multi=True), Port("data", "data")]
+    outputs = [Port("metrics", "metrics"), Port("confusion", "confusion")]
     fields = []
 
     def code(self, cfg, ctx):
@@ -180,11 +180,11 @@ class ModelComparison(Tool):
 @register
 class CreateSamples(Tool):
     type = "create_samples"
-    label = "Create Samples"
-    category = "Modeling"
-    description = "Split rows at random into estimation (E), validation (V) and holdout (H) sets, so you can test a model on data it never saw."
+    label = "Train and Test Split"
+    category = "Model"
+    description = "Split rows at random into train, validation and holdout sets, so you can test a model on data it never saw."
     needs = "Any table to split."
-    outputs = [Port("estimation", "E"), Port("validation", "V"), Port("holdout", "H")]
+    outputs = [Port("estimation", "train"), Port("validation", "validation"), Port("holdout", "holdout")]
     fields = [
         fld("estimation", "Estimation %", "number", 70),
         fld("validation", "Validation %", "number", 30),
@@ -206,11 +206,11 @@ class CreateSamples(Tool):
 @register
 class RegularizedRegression(Tool):
     type = "regularized"
-    label = "Regularized Regression"
-    category = "Modeling"
-    description = "Ridge, Lasso or Elastic Net: linear regression that shrinks weak predictors. Lasso drops them to zero. M = model, C = coefficients, F = fit."
+    label = "Ridge and Lasso"
+    category = "Model"
+    description = "Ridge, Lasso or Elastic Net: linear regression that shrinks weak predictors. Lasso drops them to zero. Outputs: model, coefficients, and fit."
     needs = "One row per observation with a numeric target column and predictor columns."
-    outputs = [Port("model", "M"), Port("coef", "C"), Port("fit", "F")]
+    outputs = [Port("model", "model"), Port("coef", "coefficients"), Port("fit", "fit")]
     fields = target_fields() + [
         fld("method", "Method", "select", "lasso", options=opts(("ridge", "Ridge"), ("lasso", "Lasso"), ("elasticnet", "Elastic Net"))),
         fld("alpha", "Strength (0 = choose by cross-validation)", "number", 0),
@@ -239,8 +239,8 @@ class RegularizedRegression(Tool):
 
 
 class GLMTool(Tool):
-    category = "Modeling"
-    outputs = [Port("model", "M"), Port("coef", "C"), Port("fit", "F")]
+    category = "Model"
+    outputs = [Port("model", "model"), Port("coef", "coefficients"), Port("fit", "fit")]
 
     def family(self, cfg):
         return "poisson"
@@ -282,8 +282,8 @@ class GammaRegression(GLMTool):
 
 class EstimatorTool(Tool):
     algorithm = ""
-    category = "Modeling"
-    outputs = [Port("model", "M"), Port("importance", "I"), Port("fit", "F")]
+    category = "Model"
+    outputs = [Port("model", "model"), Port("importance", "importance"), Port("fit", "fit")]
 
     def extra(self, cfg):
         return {}
@@ -304,7 +304,7 @@ class NaiveBayes(EstimatorTool):
     type = "naive_bayes"
     label = "Naive Bayes"
     algorithm = "naive_bayes"
-    description = "A fast, simple classifier that is a good baseline to beat. M = model, I = importance (score drop when a column is shuffled), F = fit."
+    description = "A fast, simple classifier that is a good baseline to beat. Outputs: model, importance (score drop when a column is shuffled), and fit."
     needs = "One row per observation with a category target column and predictor columns."
     fields = target_fields() + [fld("seed", "Random seed", "number", 1)]
 
@@ -312,9 +312,9 @@ class NaiveBayes(EstimatorTool):
 @register
 class KNearestNeighbors(EstimatorTool):
     type = "knn"
-    label = "K-Nearest Neighbors"
+    label = "Nearest-Neighbor Model"
     algorithm = "knn"
-    description = "Predict from the K most similar rows. Columns are scaled first. M = model, I = importance, F = fit."
+    description = "Predict from the K most similar rows. Columns are scaled first. Outputs: model, importance, and fit."
     needs = "One row per observation with a target column and numeric predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
@@ -371,11 +371,11 @@ class NeuralNetwork(EstimatorTool):
 class CrossValidation(Tool):
     type = "cross_validation"
     label = "Cross-Validation"
-    category = "Modeling"
-    description = "Refit each connected model on K slices of the data and score it on the slice it did not see. S = average and spread per model, F = every fold."
-    needs = "M: one or more model outputs. D: the table to slice, with the target and predictor columns."
-    inputs = [Port("model", "M", multi=True), Port("data", "D")]
-    outputs = [Port("summary", "S"), Port("folds", "F")]
+    category = "Model"
+    description = "Refit each connected model on K slices of the data and score it on the slice it did not see. Outputs: average and spread per model, and every fold."
+    needs = "model: one or more model outputs. data: the table to slice, with the target and predictor columns."
+    inputs = [Port("model", "model", multi=True), Port("data", "data")]
+    outputs = [Port("summary", "summary"), Port("folds", "folds")]
     fields = [fld("folds", "Folds (K)", "number", 5), fld("seed", "Random seed", "number", 1)]
 
     def code(self, cfg, ctx):
@@ -392,8 +392,8 @@ class CrossValidation(Tool):
 @register
 class VarianceInflation(Tool):
     type = "vif"
-    label = "Variance Inflation Factors"
-    category = "Modeling"
+    label = "Check Overlap (VIF)"
+    category = "Model"
     description = "Spot predictors that largely repeat each other. A VIF above 5 is worth a look; above 10 usually means drop or combine one."
     needs = "A table with two or more numeric predictor columns."
     fields = [fld("predictors", "Predictors", "columns", [])]

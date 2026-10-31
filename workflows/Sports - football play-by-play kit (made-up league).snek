@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Sports - football play-by-play kit (made-up league)",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Made-up plays",
       "position": {
         "x": 0,
-        "y": 65.0
+        "y": 60.0
       },
       "config": {
         "path": "examples/data/demo_sports/football_plays.csv"
@@ -20,8 +20,8 @@
       "type": "garbage_time",
       "label": "Drop garbage time",
       "position": {
-        "x": 170,
-        "y": 65.0
+        "x": 300,
+        "y": 60.0
       },
       "config": {
         "period": "period",
@@ -34,8 +34,8 @@
       "type": "success_rate",
       "label": "",
       "position": {
-        "x": 340,
-        "y": 65.0
+        "x": 600,
+        "y": 60.0
       },
       "config": {
         "down": "down",
@@ -48,7 +48,7 @@
       "type": "football_efficiency",
       "label": "Team efficiency",
       "position": {
-        "x": 510,
+        "x": 900,
         "y": 0
       },
       "config": {
@@ -61,22 +61,12 @@
       }
     },
     {
-      "id": "5",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 680,
-        "y": 0
-      },
-      "config": {}
-    },
-    {
       "id": "6",
       "type": "summarize",
       "label": "EPA per game",
       "position": {
-        "x": 510,
-        "y": 130
+        "x": 900,
+        "y": 120
       },
       "config": {
         "group_by": [
@@ -104,8 +94,8 @@
       "type": "formula",
       "label": "Home or away",
       "position": {
-        "x": 680,
-        "y": 130
+        "x": 1200,
+        "y": 120
       },
       "config": {
         "formulas": [
@@ -122,8 +112,8 @@
       "type": "opponent_adjust",
       "label": "Adjust for opponents",
       "position": {
-        "x": 850,
-        "y": 130
+        "x": 1500,
+        "y": 120
       },
       "config": {
         "team": "offense",
@@ -135,16 +125,6 @@
         "weight": "plays",
         "alpha": 1
       }
-    },
-    {
-      "id": "9",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 1020,
-        "y": 130
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -170,13 +150,6 @@
       "targetHandle": "in"
     },
     {
-      "id": "e4.out-5.in",
-      "source": "4",
-      "sourceHandle": "out",
-      "target": "5",
-      "targetHandle": "in"
-    },
-    {
       "id": "e3.out-6.in",
       "source": "3",
       "sourceHandle": "out",
@@ -195,13 +168,6 @@
       "source": "7",
       "sourceHandle": "out",
       "target": "8",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e8.adjusted-9.in",
-      "source": "8",
-      "sourceHandle": "adjusted",
-      "target": "9",
       "targetHandle": "in"
     }
   ]

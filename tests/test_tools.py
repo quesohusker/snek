@@ -235,7 +235,7 @@ def test_join_type_mismatch_errors():
 
 def test_join_missing_input():
     wf = workflow([(1, "text_input", {"data": GAMES}), (2, "join", {"keys": [{"left": "team", "right": "team"}]})], [(1, "out", 2, "left")])
-    assert "Connect the R input" in err(run(wf), 2)
+    assert "Connect the right input" in err(run(wf), 2)
 
 
 def test_union_modes_and_order():

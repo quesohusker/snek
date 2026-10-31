@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Flights - forecast daily departures",
   "nodes": [
     {
@@ -20,7 +20,7 @@
       "type": "formula",
       "label": "Flight date",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -38,7 +38,7 @@
       "type": "summarize",
       "label": "Departures per day",
       "position": {
-        "x": 340,
+        "x": 600,
         "y": 0
       },
       "config": {
@@ -59,7 +59,7 @@
       "type": "ts_filler",
       "label": "Every day present",
       "position": {
-        "x": 510,
+        "x": 900,
         "y": 0
       },
       "config": {
@@ -73,8 +73,8 @@
       "type": "ets",
       "label": "ETS, weekly pattern",
       "position": {
-        "x": 680,
-        "y": -91.0
+        "x": 1200,
+        "y": -84.0
       },
       "config": {
         "date": "date",
@@ -90,8 +90,8 @@
       "type": "arima",
       "label": "ARIMA, auto order",
       "position": {
-        "x": 680,
-        "y": 91.0
+        "x": 1200,
+        "y": 84.0
       },
       "config": {
         "date": "date",
@@ -101,26 +101,6 @@
         "seasonal": true,
         "season_length": 7
       }
-    },
-    {
-      "id": "7",
-      "type": "browse",
-      "label": "ETS forecast",
-      "position": {
-        "x": 850,
-        "y": -91.0
-      },
-      "config": {}
-    },
-    {
-      "id": "8",
-      "type": "browse",
-      "label": "ARIMA forecast",
-      "position": {
-        "x": 850,
-        "y": 91.0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -157,20 +137,6 @@
       "source": "4",
       "sourceHandle": "out",
       "target": "6",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e5.forecast-7.in",
-      "source": "5",
-      "sourceHandle": "forecast",
-      "target": "7",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e6.forecast-8.in",
-      "source": "6",
-      "sourceHandle": "forecast",
-      "target": "8",
       "targetHandle": "in"
     }
   ]

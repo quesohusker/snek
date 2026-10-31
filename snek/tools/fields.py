@@ -29,8 +29,8 @@ def snake(name):
 @register
 class AutoField(Tool):
     type = "autofield"
-    label = "Auto Field"
-    category = "Preparation"
+    label = "Detect Types"
+    category = "Clean"
     description = "Turn text columns that hold numbers, dates or true/false values into real types."
     needs = "A table with text columns that hold numbers, dates or true/false values, such as a CSV read as text."
     fields = [fld("columns", "Columns", "columns", [], help="Blank checks every text column. Codes with a leading zero and four or more digits, like ZIP codes, stay text.")]
@@ -48,8 +48,8 @@ class AutoField(Tool):
 @register
 class MultiFieldFormula(Tool):
     type = "multifield"
-    label = "Multi-Field Formula"
-    category = "Preparation"
+    label = "Calculate Many Columns"
+    category = "Columns"
     description = "Apply one expression to many columns. Write the column being changed as [_CurrentField_]."
     needs = "A table with several columns that need the same change."
     fields = [
@@ -86,8 +86,8 @@ class MultiFieldFormula(Tool):
 @register
 class Imputation(Tool):
     type = "impute"
-    label = "Imputation"
-    category = "Preparation"
+    label = "Fill Blanks"
+    category = "Clean"
     description = "Fill nulls with the mean, median, most common value, a fixed value, or the nearest row."
     needs = "A table with blanks in numeric or text columns. Optional: group columns."
     fields = [
@@ -138,8 +138,8 @@ class Imputation(Tool):
 @register
 class DynamicRename(Tool):
     type = "dynamic_rename"
-    label = "Dynamic Rename"
-    category = "Developer"
+    label = "Rename Many Columns"
+    category = "Columns"
     description = "Rename many columns at once: use the first row as headers, add a prefix or suffix, change case, or find and replace in names."
     needs = "Any table. To use the first row as headers, that row must hold the names."
     fields = [
@@ -187,8 +187,8 @@ class DynamicRename(Tool):
 @register
 class DynamicSelect(Tool):
     type = "dynamic_select"
-    label = "Dynamic Select"
-    category = "Developer"
+    label = "Choose Columns by Rule"
+    category = "Columns"
     description = "Keep or drop columns by type or by a pattern in their names."
     needs = "Any table."
     fields = [
@@ -224,8 +224,8 @@ class DynamicSelect(Tool):
 @register
 class FieldInfo(Tool):
     type = "field_info"
-    label = "Field Info"
-    category = "Developer"
+    label = "Column List"
+    category = "Columns"
     description = "Turn the column list into rows: name, type, position, and how many nulls."
     needs = "Any table."
     fields = []

@@ -6,8 +6,8 @@ from snek.tools.base import Tool, ToolError, fld, opts, register, short
 @register
 class TextToColumns(Tool):
     type = "split"
-    label = "Text to Columns"
-    category = "Parse"
+    label = "Split Text"
+    category = "Clean"
     description = "Split a text column on a delimiter into new columns or new rows."
     needs = "A table with a text column to split on a delimiter."
     fields = [
@@ -51,8 +51,8 @@ class TextToColumns(Tool):
 @register
 class Explode(Tool):
     type = "explode"
-    label = "Explode List"
-    category = "Parse"
+    label = "One Row per Item"
+    category = "Clean"
     description = "Turn a column of lists into one row per item. Use it on nested JSON arrays."
     needs = "A table with a column of lists, such as a nested JSON array."
     fields = [fld("column", "List column", "column", "")]
@@ -70,8 +70,8 @@ class Explode(Tool):
 @register
 class Unnest(Tool):
     type = "unnest"
-    label = "Unnest JSON"
-    category = "Parse"
+    label = "Spread Out Fields"
+    category = "Clean"
     description = "Spread a column of JSON objects (dicts) into one column per key."
     needs = "A table with a column of JSON objects (dicts)."
     fields = [
@@ -108,8 +108,8 @@ DATE_PARTS = opts(("year", "Year"), ("quarter", "Quarter"), ("month", "Month num
 @register
 class DateTime(Tool):
     type = "datetime"
-    label = "DateTime"
-    category = "Parse"
+    label = "Dates and Times"
+    category = "Clean"
     description = "Turn text into dates, dates into text, or pull out parts like year, week or day name."
     needs = "A table with a date or date-like text column."
     fields = [
@@ -166,8 +166,8 @@ class DateTime(Tool):
 @register
 class RegEx(Tool):
     type = "regex"
-    label = "RegEx"
-    category = "Parse"
+    label = "Text Pattern"
+    category = "Clean"
     description = "Use a regular expression to test, pull apart, replace, or split text."
     needs = "A table with a text column."
     fields = [
@@ -230,8 +230,8 @@ class RegEx(Tool):
 @register
 class JSONParse(Tool):
     type = "json_parse"
-    label = "JSON Parse"
-    category = "Parse"
+    label = "Read JSON Text"
+    category = "Clean"
     description = "Turn a column of JSON text into objects you can Unnest or Explode, or spread it into columns right away."
     needs = "A table with a column of JSON text."
     fields = [

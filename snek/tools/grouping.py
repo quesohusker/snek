@@ -1,16 +1,14 @@
 from snek.tools.base import Port, Tool, ToolError, fld, lit, register, short
 
-CATEGORY = "Predictive Grouping"
-
 
 @register
 class KMeans(Tool):
     type = "kmeans"
-    label = "K-Means Clusters"
-    category = CATEGORY
-    description = "Group similar rows into K clusters. D = data with a Cluster column, C = cluster centers and sizes, M = model to assign new rows with Score."
+    label = "K-Means Groups"
+    category = "Segment"
+    description = "Group similar rows into K clusters. Outputs: data with a Cluster column, cluster centers and sizes, and a model that Predict uses to assign new rows."
     needs = "One row per item to group (team, player, game) with numeric feature columns."
-    outputs = [Port("data", "D"), Port("centers", "C"), Port("model", "M")]
+    outputs = [Port("data", "data"), Port("centers", "centers"), Port("model", "model")]
     fields = [
         fld("features", "Columns to cluster on", "columns", []),
         fld("k", "Number of clusters", "number", 3),
@@ -36,10 +34,10 @@ class KMeans(Tool):
 class PrincipalComponents(Tool):
     type = "pca"
     label = "Principal Components"
-    category = CATEGORY
-    description = "Squeeze many related columns into a few components. D = data with PC columns, L = loadings, V = variance explained, M = model for Score."
+    category = "Segment"
+    description = "Squeeze many related columns into a few components. Outputs: data with PC columns, loadings, variance explained, and a model for Predict."
     needs = "One row per item with several related numeric columns."
-    outputs = [Port("data", "D"), Port("loadings", "L"), Port("variance", "V"), Port("model", "M")]
+    outputs = [Port("data", "data"), Port("loadings", "loadings"), Port("variance", "variance"), Port("model", "model")]
     fields = [
         fld("features", "Columns", "columns", []),
         fld("components", "Number of components", "number", 2),
@@ -63,8 +61,8 @@ class PrincipalComponents(Tool):
 @register
 class ClusterDiagnostics(Tool):
     type = "cluster_diagnostics"
-    label = "Cluster Diagnostics"
-    category = CATEGORY
+    label = "Choose Number of Groups"
+    category = "Segment"
     description = "Try a range of K for K-Means and score each: within-cluster spread (look for the elbow) and silhouette (higher is better)."
     needs = "One row per item with numeric feature columns."
     fields = [
@@ -91,11 +89,11 @@ class ClusterDiagnostics(Tool):
 @register
 class HierarchicalClustering(Tool):
     type = "hierarchical"
-    label = "Hierarchical Clustering"
-    category = CATEGORY
-    description = "Merge the most similar rows step by step, then cut into K clusters. D = data with Cluster, S = cluster sizes and averages."
+    label = "Hierarchical Groups"
+    category = "Segment"
+    description = "Merge the most similar rows step by step, then cut into K clusters. Outputs: data with a Cluster column, and cluster sizes and averages."
     needs = "One row per item with numeric feature columns."
-    outputs = [Port("data", "D"), Port("summary", "S")]
+    outputs = [Port("data", "data"), Port("summary", "summary")]
     fields = [
         fld("features", "Columns", "columns", []),
         fld("k", "Number of clusters", "number", 3),
@@ -119,8 +117,8 @@ class HierarchicalClustering(Tool):
 @register
 class FindNearestNeighbors(Tool):
     type = "nearest_neighbors"
-    label = "Find Nearest Neighbors"
-    category = CATEGORY
+    label = "Most Similar Rows"
+    category = "Segment"
     description = "For each row, list the K most similar other rows, such as the teams whose stat profile is closest to Nebraska's."
     needs = "One row per item with an ID column (such as team) and numeric feature columns."
     fields = [

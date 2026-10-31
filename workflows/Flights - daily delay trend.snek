@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Flights - daily delay trend",
   "nodes": [
     {
@@ -20,7 +20,7 @@
       "type": "datetime",
       "label": "Parse departure hour",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -34,7 +34,7 @@
       "type": "formula",
       "label": "New York time",
       "position": {
-        "x": 340,
+        "x": 600,
         "y": 0
       },
       "config": {
@@ -52,7 +52,7 @@
       "type": "datetime",
       "label": "Day of flight",
       "position": {
-        "x": 510,
+        "x": 900,
         "y": 0
       },
       "config": {
@@ -67,7 +67,7 @@
       "type": "summarize",
       "label": "Per day",
       "position": {
-        "x": 680,
+        "x": 1200,
         "y": 0
       },
       "config": {
@@ -93,7 +93,7 @@
       "type": "sort",
       "label": "",
       "position": {
-        "x": 850,
+        "x": 1500,
         "y": 0
       },
       "config": {
@@ -112,7 +112,7 @@
       "label": "Change vs prior day",
       "position": {
         "x": 0,
-        "y": 182.0
+        "y": 168.0
       },
       "config": {
         "column": "delay_change",
@@ -124,8 +124,8 @@
       "type": "running_total",
       "label": "Flights to date",
       "position": {
-        "x": 170,
-        "y": 182.0
+        "x": 300,
+        "y": 168.0
       },
       "config": {
         "columns": [
@@ -138,8 +138,8 @@
       "type": "rank",
       "label": "Worst days",
       "position": {
-        "x": 340,
-        "y": 182.0
+        "x": 600,
+        "y": 168.0
       },
       "config": {
         "column": "avg_delay",
@@ -153,8 +153,8 @@
       "type": "tile",
       "label": "Delay quartile",
       "position": {
-        "x": 510,
-        "y": 182.0
+        "x": 900,
+        "y": 168.0
       },
       "config": {
         "column": "avg_delay",
@@ -162,16 +162,6 @@
         "tiles": 4,
         "name": "quartile"
       }
-    },
-    {
-      "id": "11",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 680,
-        "y": 182.0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -236,13 +226,6 @@
       "source": "9",
       "sourceHandle": "out",
       "target": "10",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e10.out-11.in",
-      "source": "10",
-      "sourceHandle": "out",
-      "target": "11",
       "targetHandle": "in"
     }
   ]

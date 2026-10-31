@@ -72,9 +72,9 @@ class TeamRatings(Tool):
     label = "Team Ratings"
     category = CATEGORY
     group = "All sports"
-    description = "Simple Rating System (SRS / Massey): points better than an average team, adjusted for schedule. R = ratings, G = games with predicted margins, F = fit and home-field edge."
+    description = "Simple Rating System (SRS / Massey): points better than an average team, adjusted for schedule. Outputs: ratings, games with predicted margins, and fit with the home-field edge."
     needs = GAMES_NEEDED
-    outputs = [Port("ratings", "R"), Port("games", "G"), Port("fit", "F")]
+    outputs = [Port("ratings", "ratings"), Port("games", "games"), Port("fit", "fit")]
     fields = game_fields() + [
         fld("home_field", "Estimate home-field advantage", "bool", True),
         fld("cap", "Cap each margin at (0 = no cap)", "number", 0, help="A cap like 28 stops blowouts from dominating."),
@@ -103,9 +103,9 @@ class EloRatings(Tool):
     label = "Elo Ratings"
     category = CATEGORY
     group = "All sports"
-    description = "Game-by-game Elo with home edge, margin of victory and season carry-over. R = current ratings, G = each game's pre-game ratings and win probability."
+    description = "Game-by-game Elo with home edge, margin of victory and season carry-over. Outputs: current ratings, and each game's pre-game ratings and win probability."
     needs = GAMES_NEEDED[:-1] + ", a date or week column to put games in order, and a season column for carry-over."
-    outputs = [Port("ratings", "R"), Port("games", "G")]
+    outputs = [Port("ratings", "ratings"), Port("games", "games")]
     fields = game_fields() + [
         fld("order", "Order games by (date or week)", "column", ""),
         fld("season", "Season column (optional)", "column", "", help="When a team starts a new season its rating moves partway back toward average."),
@@ -145,9 +145,9 @@ class OpponentAdjust(Tool):
     label = "Opponent Adjust"
     category = CATEGORY
     group = "All sports"
-    description = "Adjusts per-game stats for opponent strength (ridge regression on team and opponent). A = adjusted offense and defense per team, F = fit."
+    description = "Adjusts per-game stats for opponent strength (ridge regression on team and opponent). Outputs: adjusted offense and defense per team, and fit."
     needs = "One row per team per game: a team column, an opponent column, and one or more numeric stat columns (points, yards per play, EPA per play...). Optional: home/away column and a weight column such as plays."
-    outputs = [Port("adjusted", "A"), Port("fit", "F")]
+    outputs = [Port("adjusted", "adjusted"), Port("fit", "fit")]
     fields = [
         fld("team", "Team column", "column", ""),
         fld("opponent", "Opponent column", "column", ""),
@@ -179,12 +179,12 @@ class SpreadWinProbability(Tool):
     label = "Spread & Win Probability"
     category = CATEGORY
     group = "All sports"
-    description = "Turns team ratings into a predicted margin and win probability for each game, and grades picks against betting lines. G = games, S = summary."
-    needs = "R input: one row per team with a rating (connect Team Ratings' R). G input: one row per game with home and away team columns. Optional: scores to grade the picks, and a betting line column."
-    inputs = [Port("ratings", "R"), Port("games", "G")]
-    outputs = [Port("games", "G"), Port("summary", "S")]
+    description = "Turns team ratings into a predicted margin and win probability for each game, and grades picks against betting lines. Outputs: games and a summary."
+    needs = "ratings input: one row per team with a rating (connect Team Ratings' ratings output). games input: one row per game with home and away team columns. Optional: scores to grade the picks, and a betting line column."
+    inputs = [Port("ratings", "ratings"), Port("games", "games")]
+    outputs = [Port("games", "games"), Port("summary", "summary")]
     fields = rating_fields() + game_fields("games", optional_scores=True) + [
-        fld("home_edge", "Home-field edge (points)", "number", 0, help="Use the home-field value from Team Ratings' F output."),
+        fld("home_edge", "Home-field edge (points)", "number", 0, help="Use the home-field value from Team Ratings' fit output."),
         fld("sigma", "Spread of results (0 = estimate)", "number", 0, help="Standard deviation of real margins around the prediction. 0 estimates it from the played games, allowing for the ratings having been fit to them."),
         fld("line", "Betting line column (optional)", "column", "", port="games"),
         fld("line_sign", "Line convention", "select", "negative", options=opts(("negative", "Home favorite is negative (-7)"), ("positive", "Home favorite is positive (+7)"))),
@@ -216,12 +216,12 @@ class SeasonSimulation(Tool):
     label = "Season Simulation"
     category = CATEGORY
     group = "All sports"
-    description = "Monte Carlo season: plays out every unplayed game thousands of times from team ratings. T = projected wins and odds per team, D = win distribution."
-    needs = "R input: one row per team with a rating (connect Team Ratings' R). G input: the full schedule, one row per game with home and away teams. Played games keep their scores; games with blank scores are simulated."
-    inputs = [Port("ratings", "R"), Port("games", "G")]
-    outputs = [Port("teams", "T"), Port("dist", "D")]
+    description = "Monte Carlo season: plays out every unplayed game thousands of times from team ratings. Outputs: projected wins and odds per team, and the win distribution."
+    needs = "ratings input: one row per team with a rating (connect Team Ratings' ratings output). games input: the full schedule, one row per game with home and away teams. Played games keep their scores; games with blank scores are simulated."
+    inputs = [Port("ratings", "ratings"), Port("games", "games")]
+    outputs = [Port("teams", "teams"), Port("dist", "distribution")]
     fields = rating_fields() + game_fields("games", optional_scores=True) + [
-        fld("home_edge", "Home-field edge (points)", "number", 0, help="Use the home-field value from Team Ratings' F output."),
+        fld("home_edge", "Home-field edge (points)", "number", 0, help="Use the home-field value from Team Ratings' fit output."),
         fld("sigma", "Spread of results (0 = estimate)", "number", 0, help="Standard deviation of real margins around the prediction. 0 estimates it from the played games, allowing for the ratings having been fit to them."),
         fld("simulations", "Simulations", "number", 10000),
         fld("target_wins", "Show the chance of at least this many wins", "number", 6),
@@ -252,9 +252,9 @@ class Pythagorean(Tool):
     label = "Pythagorean Expectation"
     category = CATEGORY
     group = "All sports"
-    description = "Expected win % from points scored and allowed, and luck: actual wins minus expected wins. T = teams, F = exponent and fit."
+    description = "Expected win % from points scored and allowed, and luck: actual wins minus expected wins. Outputs: teams, and the exponent and fit."
     needs = "One row per game with home team, away team, home points and away points columns."
-    outputs = [Port("teams", "T"), Port("fit", "F")]
+    outputs = [Port("teams", "teams"), Port("fit", "fit")]
     fields = [f for f in game_fields() if f["key"] != "neutral"] + [
         fld("exponent", "Exponent", "number", 2.37, help="Common choices: 1.83 baseball, 2.37 pro football, about 14 pro basketball."),
         fld("fit_exponent", "Fit the exponent to this data", "bool", False, help="Finds the exponent that best matches these teams' records."),
@@ -282,7 +282,7 @@ class GarbageTime(Tool):
     group = "Football"
     description = "Splits plays into competitive (K) and garbage time (G) by quarter and score margin."
     needs = "Play-by-play: one row per play with a quarter (period) column and both teams' scores at the time of the play."
-    outputs = [Port("kept", "K"), Port("garbage", "G")]
+    outputs = [Port("kept", "competitive"), Port("garbage", "garbage")]
     fields = [
         fld("period", "Quarter column", "column", ""),
         fld("score_a", "Offense score column", "column", ""),
@@ -389,9 +389,9 @@ class FourFactors(Tool):
     label = "Four Factors"
     category = CATEGORY
     group = "Basketball"
-    description = "Possessions, offensive, defensive and net rating per 100 possessions, and Dean Oliver's four factors for offense and defense. T = teams, G = each game."
+    description = "Possessions, offensive, defensive and net rating per 100 possessions, and Dean Oliver's four factors for offense and defense. Outputs: teams, and each game."
     needs = "Team box scores: two rows per game (one per team) with a game ID, team, and points, FGM, FGA, 3PM, FTM, FTA, offensive rebounds, defensive rebounds and turnovers."
-    outputs = [Port("teams", "T"), Port("games", "G")]
+    outputs = [Port("teams", "teams"), Port("games", "games")]
     fields = [fld("game", "Game ID column", "column", ""), fld("team", "Team column", "column", "")] + [fld(k, f"{label} column", "column", "") for k, label in BASKETBALL_BOX] + [
         fld("minutes", "Team minutes column (optional)", "column", "", help="Total player minutes, like 240 for a 48-minute game. Adds pace."),
         fld("game_minutes", "Minutes in a regulation game", "number", 48, help="48 for the NBA, 40 for college and FIBA."),

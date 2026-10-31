@@ -26,7 +26,7 @@ How to write the workflow:
 - A field with show_if only matters when its condition holds.
 - Filter conditions and Formula expressions are pandas expressions with each column written as [Column Name]. pd, np and iif(condition, then, else) are available.
 - Read data only from the files listed under "Files in this project", using their paths exactly as given, or from a catalog tool that downloads data when the user asks for that source. Never invent a file path. Use the column names given for each file; for columns that a tool creates, use the names its description gives.
-- Keep the workflow as short as the task allows. Add Output Data only when the user asks to save results. End each branch with the tool whose result the user wants to see.
+- Keep the workflow as short as the task allows. Add Save File only when the user asks to save results. End each branch with the tool whose result the user wants to see.
 - summary: two or three plain sentences for the user: what the workflow does, and anything they must check or supply (an API key, an assumption about a column, a file they need to add).
 
 The tool catalog follows. Each line is one tool as JSON."""
@@ -41,7 +41,7 @@ SCHEMA = {
                 "type": "object",
                 "properties": {
                     "id": {"type": "string"},
-                    "type": {"type": "string", "enum": sorted(TOOLS)},
+                    "type": {"type": "string", "enum": sorted(t for t, tool in TOOLS.items() if not tool.hidden)},
                     "label": {"type": "string"},
                     "config_json": {"type": "string"},
                 },
@@ -90,7 +90,7 @@ def field_entry(f):
 def tool_catalog():
     order = {c: i for i, c in enumerate(CATEGORY_ORDER)}
     lines = []
-    for tool in sorted(TOOLS.values(), key=lambda t: (order.get(t.category, 99), t.group, t.label)):
+    for tool in sorted((t for t in TOOLS.values() if not t.hidden), key=lambda t: (order.get(t.category, 99), t.group, t.label)):
         entry = {
             "type": tool.type,
             "label": tool.label,
@@ -193,7 +193,7 @@ def to_workflow(plan):
             continue
         edges.append({"id": f"e{source}.{sp}-{target}.{tp}", "source": source, "sourceHandle": sp, "target": target, "targetHandle": tp})
     layout(nodes, edges)
-    return {"version": 1, "nodes": nodes, "edges": edges}, problems, back
+    return {"version": 2, "nodes": nodes, "edges": edges}, problems, back
 
 
 def layout(nodes, edges):
@@ -204,7 +204,7 @@ def layout(nodes, edges):
     rows = {}
     for n in nodes:
         d = depth[n["id"]]
-        n["position"] = {"x": 60 + d * 190, "y": 60 + rows.get(d, 0) * 130}
+        n["position"] = {"x": 60 + d * 310, "y": 60 + rows.get(d, 0) * 120}
         rows[d] = rows.get(d, 0) + 1
 
 

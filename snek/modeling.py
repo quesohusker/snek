@@ -249,7 +249,7 @@ def fill_periods(df, date_col, freq="D", group_by=(), method="none"):
     for key, g in groups:
         if g[date_col].duplicated().any():
             label = f" in group {key}" if group_by else ""
-            raise ValueError(f"{date_col} has more than one row per period{label}. Summarize first.")
+            raise ValueError(f"{date_col} has more than one row per period{label}. Use Group and Total first.")
         full = pd.period_range(g[date_col].min(), g[date_col].max(), freq=freq)
         out = g.set_index(date_col).reindex(full).rename_axis(date_col).reset_index()
         out["Filled"] = ~out[date_col].isin(g[date_col])
@@ -274,11 +274,11 @@ def series_groups(df, date_col, value_col, freq, group_by):
     for key, g in groups:
         g = g.dropna(subset=[date_col])
         if g[date_col].duplicated().any():
-            raise ValueError(f"{date_col} has more than one row per period{f' in group {key}' if group_by else ''}. Summarize first.")
+            raise ValueError(f"{date_col} has more than one row per period{f' in group {key}' if group_by else ''}. Use Group and Total first.")
         y = pd.to_numeric(g.set_index(date_col)[value_col], errors="coerce").sort_index()
         y = y.reindex(pd.period_range(y.index.min(), y.index.max(), freq=freq))
         if y.isna().any():
-            raise ValueError(f"{value_col} has gaps or nulls{f' in group {key}' if group_by else ''}. Use TS Filler first.")
+            raise ValueError(f"{value_col} has gaps or nulls{f' in group {key}' if group_by else ''}. Use Fill Missing Dates first.")
         yield dict(zip(group_by, key if isinstance(key, tuple) else (key,))), y
 
 

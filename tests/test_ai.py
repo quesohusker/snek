@@ -52,10 +52,10 @@ PENGUINS = "examples/data/penguins/penguins.csv"
 
 def test_catalog_and_schema_cover_every_tool():
     catalog = [json.loads(line) for line in ai.tool_catalog().splitlines()]
-    assert {t["type"] for t in catalog} == set(ai.TOOLS)
+    assert {t["type"] for t in catalog} == {t for t, tool in ai.TOOLS.items() if not tool.hidden}
     team = next(t for t in catalog if t["type"] == "team_ratings")
     assert team["outputs"] == ["ratings", "games", "fit"] and any(f["key"] == "cap" for f in team["fields"])
-    assert set(ai.SCHEMA["properties"]["nodes"]["items"]["properties"]["type"]["enum"]) == set(ai.TOOLS)
+    assert set(ai.SCHEMA["properties"]["nodes"]["items"]["properties"]["type"]["enum"]) == {t for t, tool in ai.TOOLS.items() if not tool.hidden}
 
 
 def test_context_lists_project_files_with_columns():
@@ -72,7 +72,7 @@ def test_create_repairs_a_bad_column(monkeypatch):
     result = ai.create_workflow("Average body mass by species", ROOT, "Snek examples", engine=Engine(), client=client)
     assert result["rounds"] == 2 and result["errors"] == {} and result["summary"] == "Average body mass by species."
     repair = client.requests[1]["messages"][-1]["content"]
-    assert "node b (Summarize)" in repair and "species:str" in repair
+    assert "node b (Group and Total)" in repair and "species:str" in repair
     wf = result["workflow"]
     assert [n["type"] for n in wf["nodes"]] == ["input", "summarize"] and wf["nodes"][1]["position"]["x"] > wf["nodes"][0]["position"]["x"]
     assert wf["edges"] == [{"id": "e1.out-2.in", "source": "1", "sourceHandle": "out", "target": "2", "targetHandle": "in"}]

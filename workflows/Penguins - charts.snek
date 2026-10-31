@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Penguins - charts",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Penguins",
       "position": {
         "x": 0,
-        "y": 195.0
+        "y": 180.0
       },
       "config": {
         "path": "examples/data/penguins/penguins.csv"
@@ -20,7 +20,7 @@
       "type": "chart",
       "label": "Mass by species",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -37,8 +37,8 @@
       "type": "chart",
       "label": "Flipper vs mass",
       "position": {
-        "x": 170,
-        "y": 130
+        "x": 300,
+        "y": 120
       },
       "config": {
         "kind": "scatter",
@@ -52,8 +52,8 @@
       "type": "chart",
       "label": "Mass spread",
       "position": {
-        "x": 170,
-        "y": 260
+        "x": 300,
+        "y": 240
       },
       "config": {
         "kind": "histogram",
@@ -67,8 +67,8 @@
       "type": "chart",
       "label": "Bill length",
       "position": {
-        "x": 170,
-        "y": 390
+        "x": 300,
+        "y": 360
       },
       "config": {
         "kind": "box",
@@ -81,8 +81,8 @@
       "type": "union",
       "label": "All charts",
       "position": {
-        "x": 340,
-        "y": 195.0
+        "x": 600,
+        "y": 180.0
       },
       "config": {}
     },
@@ -91,8 +91,8 @@
       "type": "output",
       "label": "Save as a web page",
       "position": {
-        "x": 510,
-        "y": 195.0
+        "x": 900,
+        "y": 180.0
       },
       "config": {
         "path": "output/penguin charts.html",

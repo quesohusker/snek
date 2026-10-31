@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Penguins - clean the raw file",
   "nodes": [
     {
@@ -20,7 +20,7 @@
       "type": "select",
       "label": "Rename and type",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -88,7 +88,7 @@
       "type": "cleanse",
       "label": "Lowercase sex",
       "position": {
-        "x": 340,
+        "x": 600,
         "y": 0
       },
       "config": {
@@ -104,7 +104,7 @@
       "type": "formula",
       "label": "Short species, egg year",
       "position": {
-        "x": 510,
+        "x": 900,
         "y": 0
       },
       "config": {
@@ -127,7 +127,7 @@
       "type": "filter",
       "label": "Known sex",
       "position": {
-        "x": 680,
+        "x": 1200,
         "y": 0
       },
       "config": {
@@ -142,7 +142,7 @@
       "type": "summarize",
       "label": "",
       "position": {
-        "x": 850,
+        "x": 1500,
         "y": 0
       },
       "config": {
@@ -163,16 +163,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "7",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 1020,
-        "y": 0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -209,13 +199,6 @@
       "source": "5",
       "sourceHandle": "true",
       "target": "6",
-      "targetHandle": "in"
-    },
-    {
-      "id": "e6.out-7.in",
-      "source": "6",
-      "sourceHandle": "out",
-      "target": "7",
       "targetHandle": "in"
     }
   ]

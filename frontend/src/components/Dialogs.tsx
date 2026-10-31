@@ -380,7 +380,7 @@ function ShortcutsDialog({ onClose }: { onClose: () => void }) {
           </tr>
         </tbody>
       </table>
-      <p className="muted">Paste a table copied from Excel or a CSV onto the canvas to make a Text Input tool. Drop a data file on the canvas to add an Input Data tool.</p>
+      <p className="muted">Paste a table copied from Excel or a CSV onto the canvas to make a Type or Paste Data step. Drop a data file on the canvas to add an Open File step.</p>
     </Modal>
   );
 }

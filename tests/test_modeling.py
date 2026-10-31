@@ -241,7 +241,7 @@ def test_arima_manual_matches_statsmodels_and_auto_runs():
     summary = out(auto, 2, "summary").set_index("Measure")["Value"]
     assert summary["Order (p, d, q)"].startswith("(") and float(summary["AIC"]) > 0
     gappy = data.drop(index=[5]).reset_index(drop=True)
-    assert "TS Filler" in err(run(wf([(1, "text_input", {"data": csv_text(gappy)}), (2, "arima", {"date": "month", "value": "sales", "freq": "M"})], [(1, "out", 2, "in")])), 2)
+    assert "Fill Missing Dates" in err(run(wf([(1, "text_input", {"data": csv_text(gappy)}), (2, "arima", {"date": "month", "value": "sales", "freq": "M"})], [(1, "out", 2, "in")])), 2)
 
 
 def test_grouped_forecast():

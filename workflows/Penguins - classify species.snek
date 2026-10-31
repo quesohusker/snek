@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Penguins - classify species",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Penguins",
       "position": {
         "x": 0,
-        "y": 91.0
+        "y": 84.0
       },
       "config": {
         "path": "examples/data/penguins/penguins.csv"
@@ -20,8 +20,8 @@
       "type": "create_samples",
       "label": "70 / 30 split",
       "position": {
-        "x": 170,
-        "y": 91.0
+        "x": 300,
+        "y": 84.0
       },
       "config": {
         "estimation": 70,
@@ -34,7 +34,7 @@
       "type": "decision_tree",
       "label": "Tree",
       "position": {
-        "x": 340,
+        "x": 600,
         "y": 0
       },
       "config": {
@@ -53,8 +53,8 @@
       "type": "random_forest",
       "label": "Forest",
       "position": {
-        "x": 340,
-        "y": 182.0
+        "x": 600,
+        "y": 168.0
       },
       "config": {
         "target": "species",
@@ -72,8 +72,8 @@
       "type": "model_comparison",
       "label": "Accuracy on unseen birds",
       "position": {
-        "x": 510,
-        "y": 91.0
+        "x": 900,
+        "y": 84.0
       },
       "config": {}
     },
@@ -82,18 +82,8 @@
       "type": "score",
       "label": "Score validation birds",
       "position": {
-        "x": 680,
-        "y": 182.0
-      },
-      "config": {}
-    },
-    {
-      "id": "7",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 850,
-        "y": 182.0
+        "x": 1200,
+        "y": 168.0
       },
       "config": {}
     }
@@ -154,13 +144,6 @@
       "sourceHandle": "validation",
       "target": "6",
       "targetHandle": "data"
-    },
-    {
-      "id": "e6.out-7.in",
-      "source": "6",
-      "sourceHandle": "out",
-      "target": "7",
-      "targetHandle": "in"
     }
   ]
 }

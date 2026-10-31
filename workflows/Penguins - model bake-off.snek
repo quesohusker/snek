@@ -1,6 +1,6 @@
 {
   "format": "snek",
-  "version": 1,
+  "version": 2,
   "name": "Penguins - model bake-off",
   "nodes": [
     {
@@ -9,7 +9,7 @@
       "label": "Penguins",
       "position": {
         "x": 0,
-        "y": 195.0
+        "y": 180.0
       },
       "config": {
         "path": "examples/data/penguins/penguins.csv"
@@ -20,7 +20,7 @@
       "type": "naive_bayes",
       "label": "Naive Bayes",
       "position": {
-        "x": 170,
+        "x": 300,
         "y": 0
       },
       "config": {
@@ -38,8 +38,8 @@
       "type": "knn",
       "label": "KNN",
       "position": {
-        "x": 170,
-        "y": 97.5
+        "x": 300,
+        "y": 90.0
       },
       "config": {
         "target": "species",
@@ -57,8 +57,8 @@
       "type": "svm",
       "label": "SVM",
       "position": {
-        "x": 170,
-        "y": 195.0
+        "x": 300,
+        "y": 180.0
       },
       "config": {
         "target": "species",
@@ -75,8 +75,8 @@
       "type": "neural_network",
       "label": "Neural net",
       "position": {
-        "x": 170,
-        "y": 292.5
+        "x": 300,
+        "y": 270.0
       },
       "config": {
         "target": "species",
@@ -94,8 +94,8 @@
       "type": "random_forest",
       "label": "Forest",
       "position": {
-        "x": 170,
-        "y": 390
+        "x": 300,
+        "y": 360
       },
       "config": {
         "target": "species",
@@ -113,22 +113,12 @@
       "type": "cross_validation",
       "label": "5-fold scores",
       "position": {
-        "x": 340,
-        "y": 195.0
+        "x": 600,
+        "y": 180.0
       },
       "config": {
         "folds": 5
       }
-    },
-    {
-      "id": "8",
-      "type": "browse",
-      "label": "",
-      "position": {
-        "x": 510,
-        "y": 195.0
-      },
-      "config": {}
     }
   ],
   "edges": [
@@ -208,13 +198,6 @@
       "sourceHandle": "out",
       "target": "7",
       "targetHandle": "data"
-    },
-    {
-      "id": "e7.summary-8.in",
-      "source": "7",
-      "sourceHandle": "summary",
-      "target": "8",
-      "targetHandle": "in"
     }
   ]
 }

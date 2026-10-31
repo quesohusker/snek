@@ -2,15 +2,13 @@ import urllib.parse
 
 from snek.tools.base import Tool, ToolError, fld, opts, register, short
 
-CATEGORY = "Data Connections"
-
 
 @register
 class APIRequest(Tool):
     type = "api_request"
-    label = "API Request"
-    category = CATEGORY
-    description = "Download JSON or CSV from any web API with a GET request. Nested JSON fields become columns; lists stay as lists for Explode List."
+    label = "Web API"
+    category = "Open & Save"
+    description = "Download JSON or CSV from any web API with a GET request. Nested JSON fields become columns; lists stay as lists for One Row per Item."
     needs = "No input. The API's URL. If it needs a key, save the key in Edit ▸ Settings ▸ Data Connections and give its name here."
     inputs = []
     fields = [

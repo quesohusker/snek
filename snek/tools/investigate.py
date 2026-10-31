@@ -1,13 +1,11 @@
 from snek.tools.base import Port, Tool, ToolError, fld, is_numeric, lit, opts, register, short
 
-CATEGORY = "Data Investigation"
-
 
 @register
 class FieldSummary(Tool):
     type = "field_summary"
-    label = "Field Summary"
-    category = CATEGORY
+    label = "Profile Columns"
+    category = "Explore"
     description = "One row per column: count, nulls, distinct values, min, max, mean, median, standard deviation, and the most common value."
     needs = "Any table."
     fields = []
@@ -19,8 +17,8 @@ class FieldSummary(Tool):
 @register
 class FrequencyTable(Tool):
     type = "frequency"
-    label = "Frequency Table"
-    category = CATEGORY
+    label = "Count Values"
+    category = "Explore"
     description = "Count how often each value, or each combination of values, appears, with percents."
     needs = "Any table, plus one or more columns to count."
     fields = [
@@ -51,7 +49,7 @@ class FrequencyTable(Tool):
 class Correlation(Tool):
     type = "correlation"
     label = "Correlation"
-    category = CATEGORY
+    category = "Explore"
     description = "Correlation matrix for numeric columns: Pearson for straight-line relationships, Spearman for rank order."
     needs = "A table with two or more numeric columns."
     fields = [
@@ -76,8 +74,8 @@ class Correlation(Tool):
 @register
 class ContingencyTable(Tool):
     type = "contingency"
-    label = "Contingency Table"
-    category = CATEGORY
+    label = "Cross Count"
+    category = "Explore"
     description = "Cross-count two columns, such as conference by win or loss, as counts or percents."
     needs = "A table with two category columns, such as conference and result."
     fields = [
@@ -110,11 +108,11 @@ class ContingencyTable(Tool):
 @register
 class TestOfMeans(Tool):
     type = "test_of_means"
-    label = "Test of Means"
-    category = CATEGORY
-    description = "Is the difference in averages real? Two groups: t-test. Three or more: one-way ANOVA. S = stats per group, T = the test."
+    label = "Compare Averages"
+    category = "Explore"
+    description = "Is the difference in averages real? Two groups: t-test. Three or more: one-way ANOVA. Outputs: stats per group, and the test."
     needs = "One row per observation with a numeric value column and a group column with two or more groups."
-    outputs = [Port("summary", "S"), Port("test", "T")]
+    outputs = [Port("summary", "summary"), Port("test", "test")]
     fields = [
         fld("value", "Numeric column", "column", ""),
         fld("group", "Group column", "column", ""),
@@ -138,11 +136,11 @@ class TestOfMeans(Tool):
 @register
 class ChiSquareTest(Tool):
     type = "chi_square"
-    label = "Chi-Square Test"
-    category = CATEGORY
-    description = "Are two category columns related, such as conference and bowl eligibility? T = test result with Cramér's V, E = observed vs expected counts."
+    label = "Test Independence"
+    category = "Explore"
+    description = "Are two category columns related, such as conference and bowl eligibility? Outputs: the test result with Cramér's V, and observed vs expected counts."
     needs = "One row per observation with two category columns."
-    outputs = [Port("test", "T"), Port("expected", "E")]
+    outputs = [Port("test", "test"), Port("expected", "expected")]
     fields = [fld("rows", "First column", "column", ""), fld("columns", "Second column", "column", "")]
 
     def code(self, cfg, ctx):
@@ -160,8 +158,8 @@ class ChiSquareTest(Tool):
 class Chart(Tool):
     type = "chart"
     label = "Chart"
-    category = CATEGORY
-    description = "Bar, line, scatter, area, histogram, box plot or heat map. The chart shows in the results panel; connect Output Data with an .html path to save it."
+    category = "Explore"
+    description = "Bar, line, scatter, area, histogram, box plot or heat map. The chart shows in the results panel; connect Save File with an .html path to save it."
     needs = "Any table with the columns to plot. Charts embed up to the row limit, so summarize large data first."
     fields = [
         fld("kind", "Chart type", "select", "bar", options=opts(("bar", "Bar"), ("line", "Line"), ("scatter", "Scatter"), ("area", "Area"), ("histogram", "Histogram"), ("box", "Box plot"), ("heatmap", "Heat map"))),

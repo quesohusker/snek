@@ -125,6 +125,7 @@ class Tool:
     icon = ""
     color = ""
     connection = ""
+    hidden = False
     inputs = [Port("in")]
     outputs = [Port("out")]
     fields = []
@@ -156,6 +157,7 @@ class Tool:
             "icon": self.icon,
             "color": self.color,
             "connection": self.connection,
+            "hidden": self.hidden,
             "inputs": [asdict(p) for p in self.inputs],
             "outputs": [asdict(p) for p in self.outputs],
             "fields": self.fields,
