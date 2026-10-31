@@ -27,7 +27,7 @@ A local workflow canvas for pandas. You drag tools onto a canvas, wire them, and
 - `snek/expr.py` turns `[Column Name]` into `df['Column Name']` for Filter and Formula expressions.
 - `snek/codegen.py` builds the exported script from the engine's generated code.
 - `snek/projects.py` tracks the open project folder. Opening a project changes the server's working directory to it, so relative paths in generated code resolve inside the project. Config lives in `~/.snek/config.json` (`SNEK_HOME` overrides the folder, which tests use).
-- `snek/server.py` is the FastAPI app. `/api/schema` dry-runs a tool to get its input columns and code. `/api/preview` runs up to a tool and returns a page of rows.
+- `snek/server.py` is the FastAPI app. `/api/schema` dry-runs a tool to get its input columns and code. `/api/preview` runs up to a tool and returns a page of rows. The `LocalOnly` middleware rejects any request whose Host is not loopback and any `/api` request whose Origin or Sec-Fetch-Site is foreign, so pages on other sites cannot drive the server.
 - `frontend/` is React + React Flow (`@xyflow/react`) + zustand, built with Vite. `src/commands.ts` defines the menus once; the top menu bar and the sidebar's Menu section both render from it. Add new commands there.
 - Workflows are `.snek` files (JSON with `"format": "snek"`). Older `.flow.json` files still load and are converted when saved. `snek/settings.py` holds user settings (autosave interval and mode) in `~/.snek/settings.json`; autosave copies go to `~/.snek/autosave`.
 - `workflows/*.snek` are the bundled sample workflows. `scripts/make_samples.py` regenerates the bundled samples.
@@ -39,6 +39,7 @@ A local workflow canvas for pandas. You drag tools onto a canvas, wire them, and
 - Tools must not mutate their inputs. Start in-place edits with `out = inp.copy()`. The engine passes shallow copies as a backstop.
 - Every row-subsetting tool resets the index.
 - Output tools have `side_effect = True`. They write only on Run, never on preview or schema calls.
+- Tools that run user-written code set `needs_trust = True`. Outside Run, the engine runs such a step only when its node carries `trusted: true`. The frontend sets the flag on steps the user adds or edits and on every step when Run is pressed; the server clears it on everything read from disk and strips it on save, and AI drafts start without it.
 - Add a golden test in `tests/test_tools.py` for every new tool or behavior change. `test_export_matches_engine` must keep passing.
 - pandas is 3.x: strings default to the `str` dtype, Copy-on-Write is always on, and datetimes parse as `datetime64[us, ...]`.
 - No comments in code.
@@ -46,7 +47,8 @@ A local workflow canvas for pandas. You drag tools onto a canvas, wire them, and
 ## Releases
 
 - The version lives in `snek/__init__.py` (`__version__`); `pyproject.toml` and the app bundle read it from there.
-- To release: bump `__version__`, commit, push, then push a `vX.Y.Z` tag. `.github/workflows/release.yml` builds and smoke-tests the macOS, Windows and Linux apps and publishes them with the source zip. Rewrite the release notes afterward; the workflow posts a placeholder.
+- To release: bump `__version__`, commit, push, then push a `vX.Y.Z` tag. `.github/workflows/release.yml` builds and smoke-tests the macOS, Windows and Linux apps and publishes them with the source zip and a `SHA256SUMS.txt`. Rewrite the release notes afterward; the workflow posts a placeholder.
+- Python packages for the builds and the test job come from `packaging/requirements.lock`, pinned with hashes. When a dependency changes, regenerate it with the `uv pip compile` command in its header, then run the suite from a fresh venv made from the lock.
 - `snek/updates.py` checks GitHub's releases API once a day, sends no user data, and can be turned off in Help.
 
 ## Data

@@ -18,18 +18,19 @@ Pick your system. These apps include everything Snek needs, so you do not need P
 | Linux x86-64 (Ubuntu 22.04 or newer) | [Snek-Linux.tar.gz](https://github.com/quesohusker/snek/releases/latest/download/Snek-Linux.tar.gz) |
 
 - **macOS (one-time step required):** unzip and drag Snek to Applications. Snek is not signed by Apple yet, so the first time you open it macOS says **"Snek.app" Not Opened**. Click **Done**, not Move to Trash. Then allow Snek one of two ways:
-  - **Fastest:** open Terminal and paste this line. It clears the block and starts Snek:
-    ```bash
-    xattr -dr com.apple.quarantine /Applications/Snek.app && open /Applications/Snek.app
-    ```
-  - **Through Settings:** paste this in Terminal to jump to the right page, scroll down to Security, click **Open Anyway**, and enter your password. Open Snek again and click **Open Anyway** once more.
+  - **Through Settings (recommended):** paste this in Terminal to jump to the right page, scroll down to Security, click **Open Anyway**, and enter your password. Open Snek again and click **Open Anyway** once more. macOS still scans the app and records the exception for Snek alone.
     ```bash
     open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Security"
+    ```
+  - **Faster, less safe:** this line removes the download flag from every file inside the app, so macOS skips its checks on them. Use it only after you have checked the download against `SHA256SUMS.txt` (see below).
+    ```bash
+    xattr -dr com.apple.quarantine /Applications/Snek.app && open /Applications/Snek.app
     ```
 
   You only do this once. Snek then opens in your browser; stop it with File ▸ Quit Snek.
 - **Windows:** unzip, open the Snek folder, and double-click `Snek.exe`. If Windows shows "Windows protected your PC", click More info ▸ Run anyway. A console window stays open while Snek runs; close it, or use File ▸ Quit Snek, to stop.
 - **Linux:** extract and run `Snek/Snek`.
+- **Check the download:** every release includes `SHA256SUMS.txt`. In Terminal, run `shasum -a 256 -c SHA256SUMS.txt --ignore-missing` in the folder that holds the download (on Windows, `certutil -hashfile Snek-Windows.zip SHA256` and compare the line). A mismatch means the file is not the one the release build made.
 
 Snek keeps its settings and a copy of the sample project in `~/.snek`.
 

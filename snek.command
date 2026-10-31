@@ -18,6 +18,6 @@ if [ ! -x .venv/bin/python ]; then
   .venv/bin/python -m pip install --quiet -e . || exit 1
 fi
 if [ ! -f frontend/dist/index.html ]; then
-  (cd frontend && npm install && npm run build) || exit 1
+  (cd frontend && npm ci --ignore-scripts && npm run build) || exit 1
 fi
 exec .venv/bin/python -m snek "$@"
