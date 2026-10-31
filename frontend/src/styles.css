@@ -20,6 +20,8 @@
   --cat-dev: #495057;
   --cat-investigate: #d9480f;
   --cat-model: #a61e4d;
+  --cat-grouping: #66a80f;
+  --cat-timeseries: #9c36b5;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   color-scheme: light;
 }

@@ -6,6 +6,8 @@ import os
 import numpy as np
 import pandas as pd
 
+from snek import modeling
+
 FORMATS = {
     ".csv": "csv",
     ".txt": "csv",
@@ -339,6 +341,20 @@ HELPERS = {
     "linear_regression": ([linear_regression], [], []),
 }
 
+HELPERS.update({
+    "linear_model_row": ([modeling.model_row, modeling.linear_model_row], [], [], []),
+    "fit_supervised": ([modeling.design_matrix, modeling.model_row, modeling.guess_task, modeling.fit_supervised], [], [], ["scikit-learn"]),
+    "fit_logistic": ([modeling.design_matrix, modeling.model_row, modeling.fit_logistic], [], [], ["statsmodels"]),
+    "score_model": ([modeling.design_matrix, modeling.score_model], [], [], ["scikit-learn", "statsmodels"]),
+    "compare_models": ([modeling.design_matrix, modeling.score_model, modeling.compare_models], [], [], ["scikit-learn", "statsmodels"]),
+    "split_samples": ([modeling.split_samples], [], [], []),
+    "kmeans_cluster": ([modeling.design_matrix, modeling.model_row, modeling.score_model, modeling.kmeans_cluster], [], [], ["scikit-learn"]),
+    "principal_components": ([modeling.design_matrix, modeling.model_row, modeling.score_model, modeling.principal_components], [], [], ["scikit-learn"]),
+    "fill_periods": ([modeling.fill_periods], [], [], []),
+    "ets_forecast": ([modeling.series_groups, modeling.forecast_frames, modeling.ets_forecast], [], [], ["statsmodels"]),
+    "arima_forecast": ([modeling.series_groups, modeling.forecast_frames, modeling.arima_forecast], [], [], ["statsmodels"]),
+})
+
 NAMESPACE = {
     "pd": pd,
     "np": np,
@@ -361,4 +377,5 @@ NAMESPACE = {
     "parse_json": parse_json,
     "field_summary": field_summary,
     "linear_regression": linear_regression,
+    **{name: getattr(modeling, name) for name in ["linear_model_row", "fit_supervised", "fit_logistic", "score_model", "compare_models", "split_samples", "kmeans_cluster", "principal_components", "fill_periods", "ets_forecast", "arima_forecast"]},
 }

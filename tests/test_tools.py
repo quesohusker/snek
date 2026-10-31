@@ -433,7 +433,7 @@ def test_bundled_sample_workflows_run(monkeypatch):
     import json
 
     monkeypatch.chdir(ROOT)
-    names = ["Penguins - body mass by species", "Penguins - clean the raw file", "Flights - Q1 delays by airline", "Flights - weather at departure", "Flights - fleets from nested JSON", "Flights - daily delay trend", "Penguins - predict body mass", "Demo - no files needed"]
+    names = ["Penguins - body mass by species", "Penguins - clean the raw file", "Flights - Q1 delays by airline", "Flights - weather at departure", "Flights - fleets from nested JSON", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - no files needed"]
     engine = Engine()
     for name in names:
         wf = json.loads((ROOT / "workflows" / f"{name}.flow.json").read_text())

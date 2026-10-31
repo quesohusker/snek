@@ -16,6 +16,8 @@ dependencies = [
     "numpy",
     "openpyxl",
     "pyarrow",
+    "scikit-learn",
+    "statsmodels",
 ]
 
 [project.optional-dependencies]

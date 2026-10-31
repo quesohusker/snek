@@ -25,13 +25,17 @@ def prelude(body, name):
     constants = {"FORMATS": FORMATS, "EXTENSIONS": EXTENSIONS}
     used = [h for h in HELPERS if re.search(rf"\b{h}\(", body)]
     imports = {"io"} if "io.StringIO" in body else set()
-    needed_constants, functions = [], []
+    needed_constants, functions, packages = [], [], []
     for h in used:
-        fns, imps, consts = HELPERS[h]
+        fns, imps, consts, *extra = HELPERS[h]
         imports |= set(imps)
         needed_constants += [c for c in consts if c not in needed_constants]
         functions += [fn for fn in fns if fn not in functions]
-    parts = ['"""' + f"Exported from Snek workflow: {name}" + '"""', ""]
+        packages += [p for p in (extra[0] if extra else []) if p not in packages]
+    doc = f"Exported from Snek workflow: {name}"
+    if packages:
+        doc += f"\n\nRequires pandas, numpy, {', '.join(packages)}."
+    parts = ['"""' + doc + '"""', ""]
     parts += [f"import {m}" for m in sorted(imports)] + ([""] if imports else [])
     parts += ["import numpy as np", "import pandas as pd"]
     for c in needed_constants:

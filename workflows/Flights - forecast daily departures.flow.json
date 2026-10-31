@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "name": "Flights - forecast daily departures",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Q1 flights",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/flights_2013_*.csv.gz"
+      }
+    },
+    {
+      "id": "2",
+      "type": "formula",
+      "label": "Flight date",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "date",
+            "expression": "pd.to_datetime(dict(year=[year], month=[month], day=[day]))",
+            "dtype": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "type": "summarize",
+      "label": "Departures per day",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "group_by": [
+          "date"
+        ],
+        "aggs": [
+          {
+            "column": "carrier",
+            "func": "size",
+            "name": "departures"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "type": "ts_filler",
+      "label": "Every day present",
+      "position": {
+        "x": 510,
+        "y": 0
+      },
+      "config": {
+        "date": "date",
+        "freq": "D",
+        "method": "zero"
+      }
+    },
+    {
+      "id": "5",
+      "type": "ets",
+      "label": "ETS, weekly pattern",
+      "position": {
+        "x": 680,
+        "y": -91.0
+      },
+      "config": {
+        "date": "date",
+        "value": "departures",
+        "freq": "D",
+        "periods": 14,
+        "seasonal": "add",
+        "seasonal_periods": 7
+      }
+    },
+    {
+      "id": "6",
+      "type": "arima",
+      "label": "ARIMA, auto order",
+      "position": {
+        "x": 680,
+        "y": 91.0
+      },
+      "config": {
+        "date": "date",
+        "value": "departures",
+        "freq": "D",
+        "periods": 14,
+        "seasonal": true,
+        "season_length": 7
+      }
+    },
+    {
+      "id": "7",
+      "type": "browse",
+      "label": "ETS forecast",
+      "position": {
+        "x": 850,
+        "y": -91.0
+      },
+      "config": {}
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "ARIMA forecast",
+      "position": {
+        "x": 850,
+        "y": 91.0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-6.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.forecast-7.in",
+      "source": "5",
+      "sourceHandle": "forecast",
+      "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.forecast-8.in",
+      "source": "6",
+      "sourceHandle": "forecast",
+      "target": "8",
+      "targetHandle": "in"
+    }
+  ]
+}

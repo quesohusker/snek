@@ -177,6 +177,35 @@ def main():
     )
 
     build(
+        "Penguins - classify species",
+        [
+            (1, "input", "Penguins", 0, 0.7, {"path": f"{PENGUINS}/penguins.csv"}),
+            (2, "create_samples", "70 / 30 split", 1, 0.7, {"estimation": 70, "validation": 30, "seed": 1}),
+            (3, "decision_tree", "Tree", 2, 0, {"target": "species", "predictors": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "island"], "max_depth": 4}),
+            (4, "random_forest", "Forest", 2, 1.4, {"target": "species", "predictors": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "island"], "trees": 200}),
+            (5, "model_comparison", "Accuracy on unseen birds", 3, 0.7, {}),
+            (6, "score", "Score validation birds", 4, 1.4, {}),
+            (7, "browse", "", 5, 1.4, {}),
+        ],
+        [(1, "out", 2, "in"), (2, "estimation", 3, "in"), (2, "estimation", 4, "in"), (3, "model", 5, "model"), (4, "model", 5, "model"), (2, "validation", 5, "data"), (4, "model", 6, "model"), (2, "validation", 6, "data"), (6, "out", 7, "in")],
+    )
+
+    build(
+        "Flights - forecast daily departures",
+        [
+            (1, "input", "Q1 flights", 0, 0, {"path": f"{NYC}/flights_2013_*.csv.gz"}),
+            (2, "formula", "Flight date", 1, 0, {"formulas": [{"column": "date", "expression": "pd.to_datetime(dict(year=[year], month=[month], day=[day]))", "dtype": ""}]}),
+            (3, "summarize", "Departures per day", 2, 0, {"group_by": ["date"], "aggs": [{"column": "carrier", "func": "size", "name": "departures"}]}),
+            (4, "ts_filler", "Every day present", 3, 0, {"date": "date", "freq": "D", "method": "zero"}),
+            (5, "ets", "ETS, weekly pattern", 4, -0.7, {"date": "date", "value": "departures", "freq": "D", "periods": 14, "seasonal": "add", "seasonal_periods": 7}),
+            (6, "arima", "ARIMA, auto order", 4, 0.7, {"date": "date", "value": "departures", "freq": "D", "periods": 14, "seasonal": True, "season_length": 7}),
+            (7, "browse", "ETS forecast", 5, -0.7, {}),
+            (8, "browse", "ARIMA forecast", 5, 0.7, {}),
+        ],
+        chain(1, 2, 3, 4) + [(4, "out", 5, "in"), (4, "out", 6, "in"), (5, "forecast", 7, "in"), (6, "forecast", 8, "in")],
+    )
+
+    build(
         "Demo - no files needed",
         [
             (1, "text_input", "Scores", 0, 0, {"data": "team,opp,pts,opp_pts\nNebraska,Iowa,24,20\nIowa,Nebraska,20,24\nNebraska,Akron,68,0\nAkron,Nebraska,0,68\nIowa,Akron,31,7\nAkron,Iowa,7,31", "delimiter": ","}),

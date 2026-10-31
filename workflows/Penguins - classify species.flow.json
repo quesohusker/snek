@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "name": "Penguins - classify species",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Penguins",
+      "position": {
+        "x": 0,
+        "y": 91.0
+      },
+      "config": {
+        "path": "examples/data/penguins/penguins.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "create_samples",
+      "label": "70 / 30 split",
+      "position": {
+        "x": 170,
+        "y": 91.0
+      },
+      "config": {
+        "estimation": 70,
+        "validation": 30,
+        "seed": 1
+      }
+    },
+    {
+      "id": "3",
+      "type": "decision_tree",
+      "label": "Tree",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "target": "species",
+        "predictors": [
+          "bill_length_mm",
+          "bill_depth_mm",
+          "flipper_length_mm",
+          "island"
+        ],
+        "max_depth": 4
+      }
+    },
+    {
+      "id": "4",
+      "type": "random_forest",
+      "label": "Forest",
+      "position": {
+        "x": 340,
+        "y": 182.0
+      },
+      "config": {
+        "target": "species",
+        "predictors": [
+          "bill_length_mm",
+          "bill_depth_mm",
+          "flipper_length_mm",
+          "island"
+        ],
+        "trees": 200
+      }
+    },
+    {
+      "id": "5",
+      "type": "model_comparison",
+      "label": "Accuracy on unseen birds",
+      "position": {
+        "x": 510,
+        "y": 91.0
+      },
+      "config": {}
+    },
+    {
+      "id": "6",
+      "type": "score",
+      "label": "Score validation birds",
+      "position": {
+        "x": 680,
+        "y": 182.0
+      },
+      "config": {}
+    },
+    {
+      "id": "7",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 850,
+        "y": 182.0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.estimation-3.in",
+      "source": "2",
+      "sourceHandle": "estimation",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.estimation-4.in",
+      "source": "2",
+      "sourceHandle": "estimation",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.model-5.model",
+      "source": "3",
+      "sourceHandle": "model",
+      "target": "5",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e4.model-5.model",
+      "source": "4",
+      "sourceHandle": "model",
+      "target": "5",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e2.validation-5.data",
+      "source": "2",
+      "sourceHandle": "validation",
+      "target": "5",
+      "targetHandle": "data"
+    },
+    {
+      "id": "e4.model-6.model",
+      "source": "4",
+      "sourceHandle": "model",
+      "target": "6",
+      "targetHandle": "model"
+    },
+    {
+      "id": "e2.validation-6.data",
+      "source": "2",
+      "sourceHandle": "validation",
+      "target": "6",
+      "targetHandle": "data"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    }
+  ]
+}

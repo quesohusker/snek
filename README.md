@@ -57,7 +57,7 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 
 ## Tools
 
-50 tools so far, organized like the Alteryx palette. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
+63 tools so far, organized like the Alteryx palette. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
 
 | Category | Tools |
 |---|---|
@@ -67,7 +67,9 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 | Parse | Text to Columns, RegEx, DateTime, JSON Parse, Explode List, Unnest JSON |
 | Transform | Summarize, Cross Tab, Transpose, Running Total, Weighted Average, Count Records |
 | Data Investigation | Field Summary, Frequency Table, Correlation, Contingency Table |
-| Modeling | Linear Regression (predictions, coefficients with p-values, fit statistics) |
+| Modeling | Linear Regression, Logistic Regression, Decision Tree, Random Forest, Boosted Model, Score, Model Comparison, Create Samples |
+| Predictive Grouping | K-Means Clusters, Principal Components |
+| Time Series | TS Filler, Rolling Window, ETS Forecast, ARIMA Forecast |
 | Developer | Python (your own pandas code), Dynamic Input, Dynamic Rename, Dynamic Select, Field Info |
 
 Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. Directory plus Dynamic Input reads every file in a folder.
@@ -97,6 +99,8 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Flights: fleets from nested JSON (explode and unnest)
 - Flights: daily delay trend (DateTime, Multi-Row Formula, Running Total, Rank, Tile)
 - Penguins: predict body mass (Field Summary, Correlation, Linear Regression)
+- Penguins: classify species (Create Samples, Decision Tree vs. Random Forest, Model Comparison, Score)
+- Flights: forecast daily departures (TS Filler, ETS and ARIMA with weekly seasonality)
 - Demo: no files needed
 
 All bundled data is CC0. See [examples/data/README.md](examples/data/README.md) for sources and citations.
@@ -139,6 +143,10 @@ The file picker lists the project folders, Desktop, Documents, Downloads, Home a
 ```bash
 SNEK_PLACES="Data=~/data;Clients=~/work/clients" .venv/bin/python -m snek
 ```
+
+## Modeling
+
+Every model tool has an **M** output that carries the fitted model. Connect it to **Score** to predict new rows, or to **Model Comparison** with a validation sample to see which model holds up on data it never saw. Use **Create Samples** to make that split. Models come from scikit-learn and statsmodels, so exported scripts that use them list those packages at the top.
 
 ## Updates
 
