@@ -1,0 +1,113 @@
+{
+  "format": "snek",
+  "version": 1,
+  "name": "Sports - basketball four factors (made-up league)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Team box scores",
+      "position": {
+        "x": 0,
+        "y": 65.0
+      },
+      "config": {
+        "path": "examples/data/demo_sports/basketball_box.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "four_factors",
+      "label": "",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "game": "game_id",
+        "team": "team",
+        "pts": "pts",
+        "fgm": "fgm",
+        "fga": "fga",
+        "fg3m": "fg3m",
+        "ftm": "ftm",
+        "fta": "fta",
+        "orb": "orb",
+        "drb": "drb",
+        "tov": "tov",
+        "minutes": "minutes",
+        "game_minutes": 40
+      }
+    },
+    {
+      "id": "3",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
+      "id": "4",
+      "type": "shooting",
+      "label": "Team shooting",
+      "position": {
+        "x": 170,
+        "y": 130
+      },
+      "config": {
+        "group_by": [
+          "team"
+        ],
+        "pts": "pts",
+        "fga": "fga",
+        "fta": "fta",
+        "fgm": "fgm",
+        "fg3m": "fg3m",
+        "fg3a": "fg3a"
+      }
+    },
+    {
+      "id": "5",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 130
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.teams-3.in",
+      "source": "2",
+      "sourceHandle": "teams",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-4.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    }
+  ]
+}

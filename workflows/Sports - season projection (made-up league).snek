@@ -1,0 +1,181 @@
+{
+  "format": "snek",
+  "version": 1,
+  "name": "Sports - season projection (made-up league)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Schedule and results",
+      "position": {
+        "x": 0,
+        "y": 130
+      },
+      "config": {
+        "path": "examples/data/demo_sports/football_games.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "team_ratings",
+      "label": "Ratings from played games",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "home": "home",
+        "away": "away",
+        "home_points": "home_points",
+        "away_points": "away_points",
+        "cap": 28
+      }
+    },
+    {
+      "id": "3",
+      "type": "season_sim",
+      "label": "Simulate the rest",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "team": "Team",
+        "rating": "Rating",
+        "home": "home",
+        "away": "away",
+        "home_points": "home_points",
+        "away_points": "away_points",
+        "target_wins": 5
+      }
+    },
+    {
+      "id": "4",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 510,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
+      "id": "5",
+      "type": "spread_win_prob",
+      "label": "Spreads vs lines",
+      "position": {
+        "x": 340,
+        "y": 130
+      },
+      "config": {
+        "team": "Team",
+        "rating": "Rating",
+        "home": "home",
+        "away": "away",
+        "home_points": "home_points",
+        "away_points": "away_points",
+        "line": "spread"
+      }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 510,
+        "y": 130
+      },
+      "config": {}
+    },
+    {
+      "id": "7",
+      "type": "pythagorean",
+      "label": "Luck",
+      "position": {
+        "x": 170,
+        "y": 260
+      },
+      "config": {
+        "home": "home",
+        "away": "away",
+        "home_points": "home_points",
+        "away_points": "away_points"
+      }
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 260
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.ratings-3.ratings",
+      "source": "2",
+      "sourceHandle": "ratings",
+      "target": "3",
+      "targetHandle": "ratings"
+    },
+    {
+      "id": "e1.out-3.games",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "games"
+    },
+    {
+      "id": "e3.teams-4.in",
+      "source": "3",
+      "sourceHandle": "teams",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.ratings-5.ratings",
+      "source": "2",
+      "sourceHandle": "ratings",
+      "target": "5",
+      "targetHandle": "ratings"
+    },
+    {
+      "id": "e1.out-5.games",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "games"
+    },
+    {
+      "id": "e5.games-6.in",
+      "source": "5",
+      "sourceHandle": "games",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-7.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e7.teams-8.in",
+      "source": "7",
+      "sourceHandle": "teams",
+      "target": "8",
+      "targetHandle": "in"
+    }
+  ]
+}

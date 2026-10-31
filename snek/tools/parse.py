@@ -9,6 +9,7 @@ class TextToColumns(Tool):
     label = "Text to Columns"
     category = "Parse"
     description = "Split a text column on a delimiter into new columns or new rows."
+    needs = "A table with a text column to split on a delimiter."
     fields = [
         fld("column", "Column", "column", ""),
         fld("delimiter", "Delimiter", "text", ","),
@@ -53,6 +54,7 @@ class Explode(Tool):
     label = "Explode List"
     category = "Parse"
     description = "Turn a column of lists into one row per item. Use it on nested JSON arrays."
+    needs = "A table with a column of lists, such as a nested JSON array."
     fields = [fld("column", "List column", "column", "")]
 
     def code(self, cfg, ctx):
@@ -71,6 +73,7 @@ class Unnest(Tool):
     label = "Unnest JSON"
     category = "Parse"
     description = "Spread a column of JSON objects (dicts) into one column per key."
+    needs = "A table with a column of JSON objects (dicts)."
     fields = [
         fld("column", "Object column", "column", ""),
         fld("prefix", "Prefix new columns with the column name", "bool", True),
@@ -108,6 +111,7 @@ class DateTime(Tool):
     label = "DateTime"
     category = "Parse"
     description = "Turn text into dates, dates into text, or pull out parts like year, week or day name."
+    needs = "A table with a date or date-like text column."
     fields = [
         fld("mode", "Do", "select", "parse", options=opts(("parse", "Text to date"), ("format", "Date to text"), ("extract", "Pull out a part"))),
         fld("column", "Column", "column", ""),
@@ -165,6 +169,7 @@ class RegEx(Tool):
     label = "RegEx"
     category = "Parse"
     description = "Use a regular expression to test, pull apart, replace, or split text."
+    needs = "A table with a text column."
     fields = [
         fld("column", "Column", "column", ""),
         fld("pattern", "Regular expression", "code", "", placeholder=r"(\d+)-(\d+)", help="Python regex. Name groups with (?P<name>...) to name the new columns."),
@@ -228,6 +233,7 @@ class JSONParse(Tool):
     label = "JSON Parse"
     category = "Parse"
     description = "Turn a column of JSON text into objects you can Unnest or Explode, or spread it into columns right away."
+    needs = "A table with a column of JSON text."
     fields = [
         fld("column", "JSON text column", "column", ""),
         fld("flatten", "Spread objects into columns", "bool", True),

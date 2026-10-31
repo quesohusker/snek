@@ -32,6 +32,7 @@ class AutoField(Tool):
     label = "Auto Field"
     category = "Preparation"
     description = "Turn text columns that hold numbers, dates or true/false values into real types."
+    needs = "A table with text columns that hold numbers, dates or true/false values, such as a CSV read as text."
     fields = [fld("columns", "Columns", "columns", [], help="Blank checks every text column. Codes with a leading zero and four or more digits, like ZIP codes, stay text.")]
 
     def code(self, cfg, ctx):
@@ -50,6 +51,7 @@ class MultiFieldFormula(Tool):
     label = "Multi-Field Formula"
     category = "Preparation"
     description = "Apply one expression to many columns. Write the column being changed as [_CurrentField_]."
+    needs = "A table with several columns that need the same change."
     fields = [
         fld("columns", "Columns", "columns", []),
         fld("expression", "Expression", "code", "", placeholder="[_CurrentField_].round(1)", help="[_CurrentField_] stands for each picked column in turn. Other columns work as usual."),
@@ -87,6 +89,7 @@ class Imputation(Tool):
     label = "Imputation"
     category = "Preparation"
     description = "Fill nulls with the mean, median, most common value, a fixed value, or the nearest row."
+    needs = "A table with blanks in numeric or text columns. Optional: group columns."
     fields = [
         fld("columns", "Columns", "columns", []),
         fld("method", "Fill with", "select", "mean", options=opts(("mean", "Average"), ("median", "Median"), ("mode", "Most common value"), ("value", "A value"), ("ffill", "Previous row's value"), ("bfill", "Next row's value"))),
@@ -138,6 +141,7 @@ class DynamicRename(Tool):
     label = "Dynamic Rename"
     category = "Developer"
     description = "Rename many columns at once: use the first row as headers, add a prefix or suffix, change case, or find and replace in names."
+    needs = "Any table. To use the first row as headers, that row must hold the names."
     fields = [
         fld("mode", "Rename by", "select", "first_row", options=opts(("first_row", "First row of data"), ("prefix", "Add prefix"), ("suffix", "Add suffix"), ("case", "Change case"), ("replace", "Find and replace in names"))),
         fld("columns", "Columns", "columns", [], show_if={"mode": ["prefix", "suffix", "case", "replace"]}, help="Blank renames every column."),
@@ -186,6 +190,7 @@ class DynamicSelect(Tool):
     label = "Dynamic Select"
     category = "Developer"
     description = "Keep or drop columns by type or by a pattern in their names."
+    needs = "Any table."
     fields = [
         fld("mode", "Select by", "select", "type", options=opts(("type", "Column type"), ("pattern", "Name pattern"))),
         fld("types", "Types", "multi_select", ["numeric"], show_if={"mode": ["type"]}, options=TYPE_GROUPS),
@@ -222,6 +227,7 @@ class FieldInfo(Tool):
     label = "Field Info"
     category = "Developer"
     description = "Turn the column list into rows: name, type, position, and how many nulls."
+    needs = "Any table."
     fields = []
 
     def code(self, cfg, ctx):

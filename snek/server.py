@@ -162,7 +162,7 @@ def workflow_name(path):
 
 def read_workflow(path):
     try:
-        data = json.loads(Path(path).read_text())
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         raise HTTPException(400, f"Could not read {path}: {e}")
     if not isinstance(data, dict) or "nodes" not in data:
@@ -173,7 +173,7 @@ def read_workflow(path):
 def write_workflow(path, workflow, name):
     path.parent.mkdir(parents=True, exist_ok=True)
     data = {"format": "snek", **workflow, "name": name}
-    path.write_text(json.dumps(data, indent=2))
+    path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
 @app.get("/api/workflows")

@@ -5,6 +5,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PENGUINS = "examples/data/penguins"
 NYC = "examples/data/nycflights13"
 OUT = "output"
+DEMO = "examples/data/demo_sports"
 
 
 def build(name, nodes, edges):
@@ -19,7 +20,7 @@ def build(name, nodes, edges):
         ],
     }
     path = ROOT / "workflows" / f"{name}.snek"
-    path.write_text(json.dumps(wf, indent=2))
+    path.write_text(json.dumps(wf, indent=2), encoding="utf-8")
     print(path)
 
 
@@ -258,6 +259,79 @@ def main():
             (5, "browse", "", 4, 0, {}),
         ],
         chain(1, 2, 3, 4, 5),
+    )
+
+
+    build(
+        "Sports - football play-by-play kit (made-up league)",
+        [
+            (1, "input", "Made-up plays", 0, 0.5, {"path": f"{DEMO}/football_plays.csv"}),
+            (2, "garbage_time", "Drop garbage time", 1, 0.5, {"period": "period", "score_a": "offense_score", "score_b": "defense_score"}),
+            (3, "success_rate", "", 2, 0.5, {"down": "down", "distance": "distance", "yards": "yards_gained"}),
+            (4, "football_efficiency", "Team efficiency", 3, 0, {"offense": "offense", "defense": "defense", "success": "Success", "epa": "epa", "yards": "yards_gained", "havoc": "havoc"}),
+            (5, "browse", "", 4, 0, {}),
+            (6, "summarize", "EPA per game", 3, 1, {"group_by": ["game_id", "offense", "defense", "home"], "aggs": [
+                {"column": "epa", "func": "mean", "name": "epa_per_play"},
+                {"column": "epa", "func": "size", "name": "plays"},
+            ]}),
+            (7, "formula", "Home or away", 4, 1, {"formulas": [{"column": "site", "expression": "iif([offense] == [home], 'home', 'away')", "dtype": ""}]}),
+            (8, "opponent_adjust", "Adjust for opponents", 5, 1, {"team": "offense", "opponent": "defense", "stats": ["epa_per_play"], "location": "site", "weight": "plays", "alpha": 1}),
+            (9, "browse", "", 6, 1, {}),
+        ],
+        chain(1, 2) + [(2, "kept", 3, "in"), (3, "out", 4, "in"), (4, "out", 5, "in"), (3, "out", 6, "in")] + chain(6, 7, 8) + [(8, "adjusted", 9, "in")],
+    )
+
+    build(
+        "Sports - season projection (made-up league)",
+        [
+            (1, "input", "Schedule and results", 0, 1, {"path": f"{DEMO}/football_games.csv"}),
+            (2, "team_ratings", "Ratings from played games", 1, 0, {"home": "home", "away": "away", "home_points": "home_points", "away_points": "away_points", "cap": 28}),
+            (3, "season_sim", "Simulate the rest", 2, 0, {"team": "Team", "rating": "Rating", "home": "home", "away": "away", "home_points": "home_points", "away_points": "away_points", "target_wins": 5}),
+            (4, "browse", "", 3, 0, {}),
+            (5, "spread_win_prob", "Spreads vs lines", 2, 1, {"team": "Team", "rating": "Rating", "home": "home", "away": "away", "home_points": "home_points", "away_points": "away_points", "line": "spread"}),
+            (6, "browse", "", 3, 1, {}),
+            (7, "pythagorean", "Luck", 1, 2, {"home": "home", "away": "away", "home_points": "home_points", "away_points": "away_points"}),
+            (8, "browse", "", 2, 2, {}),
+        ],
+        [(1, "out", 2, "in"), (2, "ratings", 3, "ratings"), (1, "out", 3, "games"), (3, "teams", 4, "in"), (2, "ratings", 5, "ratings"), (1, "out", 5, "games"), (5, "games", 6, "in"), (1, "out", 7, "in"), (7, "teams", 8, "in")],
+    )
+
+    build(
+        "Sports - basketball four factors (made-up league)",
+        [
+            (1, "input", "Team box scores", 0, 0.5, {"path": f"{DEMO}/basketball_box.csv"}),
+            (2, "four_factors", "", 1, 0, {"game": "game_id", "team": "team", "pts": "pts", "fgm": "fgm", "fga": "fga", "fg3m": "fg3m", "ftm": "ftm", "fta": "fta", "orb": "orb", "drb": "drb", "tov": "tov", "minutes": "minutes", "game_minutes": 40}),
+            (3, "browse", "", 2, 0, {}),
+            (4, "shooting", "Team shooting", 1, 1, {"group_by": ["team"], "pts": "pts", "fga": "fga", "fta": "fta", "fgm": "fgm", "fg3m": "fg3m", "fg3a": "fg3a"}),
+            (5, "browse", "", 2, 1, {}),
+        ],
+        [(1, "out", 2, "in"), (2, "teams", 3, "in"), (1, "out", 4, "in"), (4, "out", 5, "in")],
+    )
+
+    build(
+        "Sports - baseball batting and pitching (made-up players)",
+        [
+            (1, "input", "Batting lines", 0, 0, {"path": f"{DEMO}/baseball_batting.csv"}),
+            (2, "batting", "", 1, 0, {"group_by": ["player", "team"], "ab": "AB", "h": "H", "doubles": "2B", "triples": "3B", "hr": "HR", "bb": "BB", "hbp": "HBP", "sf": "SF", "so": "SO", "ibb": "IBB", "pa": "PA"}),
+            (3, "browse", "", 2, 0, {}),
+            (4, "input", "Pitching lines", 0, 1, {"path": f"{DEMO}/baseball_pitching.csv"}),
+            (5, "pitching", "", 1, 1, {"group_by": ["pitcher", "team"], "ip": "IP", "er": "ER", "h": "H", "bb": "BB", "so": "SO", "hr": "HR", "hbp": "HBP", "bf": "BF"}),
+            (6, "browse", "", 2, 1, {}),
+        ],
+        chain(1, 2, 3) + chain(4, 5, 6),
+    )
+
+    build(
+        "Sports - volleyball box and side-out (made-up matches)",
+        [
+            (1, "input", "Player box scores", 0, 0, {"path": f"{DEMO}/volleyball_box.csv"}),
+            (2, "volleyball_stats", "Player season", 1, 0, {"group_by": ["team", "player"], "sets": "sets", "kills": "kills", "errors": "errors", "attempts": "total_attacks", "assists": "assists", "aces": "aces", "service_errors": "service_errors", "digs": "digs", "block_solos": "block_solos", "block_assists": "block_assists"}),
+            (3, "browse", "", 2, 0, {}),
+            (4, "input", "Rally by rally", 0, 1, {"path": f"{DEMO}/volleyball_rallies.csv"}),
+            (5, "sideout", "", 1, 1, {"serving": "serve_team", "winner": "winner", "receiving": "recv_team"}),
+            (6, "browse", "", 2, 1, {}),
+        ],
+        chain(1, 2, 3) + chain(4, 5, 6),
     )
 
 

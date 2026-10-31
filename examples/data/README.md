@@ -23,3 +23,13 @@ Source: [tidyverse/nycflights13](https://github.com/tidyverse/nycflights13), `da
 Changes from the source: flights and weather are cut to January to March 2013. Flights were converted from R data to gzipped CSV, with whole-number columns written without decimals and `time_hour` written as ISO 8601 UTC.
 
 Citation: Wickham H (2021). nycflights13: Flights that Departed NYC in 2013. https://github.com/tidyverse/nycflights13.
+
+## Made-up sports leagues (`demo_sports/`)
+
+Invented teams and players, generated at random by `scripts/make_demo_sports.py`. None of it describes real games. Released under CC0.
+
+- `football_plays.csv`: play-by-play for 30 games, with downs, distances, yards gained, scores, a made-up EPA value and a havoc flag.
+- `football_games.csv`: a 45-game schedule. Weeks 1 to 6 have scores (from the plays); weeks 7 to 9 are unplayed. Every game has a made-up betting line.
+- `basketball_box.csv`: team box scores for 56 games, two rows per game.
+- `baseball_batting.csv`, `baseball_pitching.csv`: season lines for 30 batters and 15 pitchers.
+- `volleyball_box.csv`: player box scores by match. `volleyball_rallies.csv`: rally-by-rally results for the same matches.

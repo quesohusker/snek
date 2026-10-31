@@ -21,7 +21,9 @@ export type ToolSpec = {
   type: string;
   label: string;
   category: string;
+  group?: string;
   description: string;
+  needs?: string;
   inputs: PortSpec[];
   outputs: PortSpec[];
   fields: FieldSpec[];

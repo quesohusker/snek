@@ -7,6 +7,7 @@ class Join(Tool):
     label = "Join"
     category = "Join"
     description = "Match two inputs on key columns. L = left only, J = matched, R = right only."
+    needs = "Two tables (L and R) that share one or more key columns."
     inputs = [Port("left", "L"), Port("right", "R")]
     outputs = [Port("left", "L"), Port("join", "J"), Port("right", "R")]
     fields = [
@@ -41,6 +42,7 @@ class Union(Tool):
     label = "Union"
     category = "Join"
     description = "Stack any number of inputs. Connect them in the order you want."
+    needs = "Two or more tables. Columns are matched by name."
     inputs = [Port("in", "", multi=True)]
     fields = [
         fld("mode", "Match columns by", "select", "name", options=opts(("name", "Name, keep all columns"), ("common", "Name, common columns only"), ("position", "Position"))),
@@ -66,6 +68,7 @@ class AppendFields(Tool):
     label = "Append Fields"
     category = "Join"
     description = "Cross join: add every source row to every target row."
+    needs = "A target table (T) and a source table (S), usually a small one."
     inputs = [Port("target", "T"), Port("source", "S")]
     fields = [fld("suffix", "Suffix for duplicate source columns", "text", "_source")]
 
@@ -79,6 +82,7 @@ class FindReplace(Tool):
     label = "Find Replace"
     category = "Join"
     description = "Look values up in a second table. Replace them, or add columns from the lookup table. F = data, R = lookup table."
+    needs = "F: the table to change. R: a lookup table with a key column and the values to swap in or add."
     inputs = [Port("find", "F"), Port("lookup", "R")]
     fields = [
         fld("column", "Column to look up", "column", "", port="find"),
@@ -134,6 +138,7 @@ class JoinMultiple(Tool):
     label = "Join Multiple"
     category = "Join"
     description = "Join three or more inputs on columns they share. Connect them in the order you want."
+    needs = "Three or more tables that share the key columns."
     inputs = [Port("in", "", multi=True)]
     fields = [
         fld("keys", "Join on", "columns", []),

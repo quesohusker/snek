@@ -9,6 +9,7 @@ class KMeans(Tool):
     label = "K-Means Clusters"
     category = CATEGORY
     description = "Group similar rows into K clusters. D = data with a Cluster column, C = cluster centers and sizes, M = model to assign new rows with Score."
+    needs = "One row per item to group (team, player, game) with numeric feature columns."
     outputs = [Port("data", "D"), Port("centers", "C"), Port("model", "M")]
     fields = [
         fld("features", "Columns to cluster on", "columns", []),
@@ -37,6 +38,7 @@ class PrincipalComponents(Tool):
     label = "Principal Components"
     category = CATEGORY
     description = "Squeeze many related columns into a few components. D = data with PC columns, L = loadings, V = variance explained, M = model for Score."
+    needs = "One row per item with several related numeric columns."
     outputs = [Port("data", "D"), Port("loadings", "L"), Port("variance", "V"), Port("model", "M")]
     fields = [
         fld("features", "Columns", "columns", []),
@@ -64,6 +66,7 @@ class ClusterDiagnostics(Tool):
     label = "Cluster Diagnostics"
     category = CATEGORY
     description = "Try a range of K for K-Means and score each: within-cluster spread (look for the elbow) and silhouette (higher is better)."
+    needs = "One row per item with numeric feature columns."
     fields = [
         fld("features", "Columns to cluster on", "columns", []),
         fld("k_min", "Smallest K", "number", 2),
@@ -91,6 +94,7 @@ class HierarchicalClustering(Tool):
     label = "Hierarchical Clustering"
     category = CATEGORY
     description = "Merge the most similar rows step by step, then cut into K clusters. D = data with Cluster, S = cluster sizes and averages."
+    needs = "One row per item with numeric feature columns."
     outputs = [Port("data", "D"), Port("summary", "S")]
     fields = [
         fld("features", "Columns", "columns", []),
@@ -118,6 +122,7 @@ class FindNearestNeighbors(Tool):
     label = "Find Nearest Neighbors"
     category = CATEGORY
     description = "For each row, list the K most similar other rows, such as the teams whose stat profile is closest to Nebraska's."
+    needs = "One row per item with an ID column (such as team) and numeric feature columns."
     fields = [
         fld("id", "Label column", "column", "", help="What to call each row, like team."),
         fld("features", "Compare on", "columns", []),

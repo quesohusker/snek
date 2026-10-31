@@ -1,0 +1,130 @@
+{
+  "format": "snek",
+  "version": 1,
+  "name": "Sports - baseball batting and pitching (made-up players)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Batting lines",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/demo_sports/baseball_batting.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "batting",
+      "label": "",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "group_by": [
+          "player",
+          "team"
+        ],
+        "ab": "AB",
+        "h": "H",
+        "doubles": "2B",
+        "triples": "3B",
+        "hr": "HR",
+        "bb": "BB",
+        "hbp": "HBP",
+        "sf": "SF",
+        "so": "SO",
+        "ibb": "IBB",
+        "pa": "PA"
+      }
+    },
+    {
+      "id": "3",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
+      "id": "4",
+      "type": "input",
+      "label": "Pitching lines",
+      "position": {
+        "x": 0,
+        "y": 130
+      },
+      "config": {
+        "path": "examples/data/demo_sports/baseball_pitching.csv"
+      }
+    },
+    {
+      "id": "5",
+      "type": "pitching",
+      "label": "",
+      "position": {
+        "x": 170,
+        "y": 130
+      },
+      "config": {
+        "group_by": [
+          "pitcher",
+          "team"
+        ],
+        "ip": "IP",
+        "er": "ER",
+        "h": "H",
+        "bb": "BB",
+        "so": "SO",
+        "hr": "HR",
+        "hbp": "HBP",
+        "bf": "BF"
+      }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 130
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    }
+  ]
+}

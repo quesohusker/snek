@@ -92,6 +92,11 @@ export default function ConfigPanel() {
         {tab === "config" ? (
           <>
             <p className="muted desc">{spec.description}</p>
+            {spec.needs && (
+              <p className="needs-box">
+                <strong>Input needed:</strong> {spec.needs}
+              </p>
+            )}
             {spec.inputs.length > 0 && (
               <div className="input-summary">
                 {spec.inputs.map((p) => {

@@ -34,6 +34,7 @@ class LinearRegression(Tool):
     label = "Linear Regression"
     category = "Modeling"
     description = "Fit an ordinary least squares model. S = rows with predictions, C = coefficients with p-values, F = fit statistics, M = model for Score."
+    needs = "One row per observation with a numeric target column and one or more predictor columns."
     outputs = [Port("scored", "S"), Port("coef", "C"), Port("fit", "F"), Port("model", "M")]
     fields = target_fields(numeric_only=True) + [fld("intercept", "Include an intercept", "bool", True)]
 
@@ -56,6 +57,7 @@ class LogisticRegression(Tool):
     label = "Logistic Regression"
     category = "Modeling"
     description = "Predict a yes/no outcome, such as win or loss. M = model for Score, C = coefficients with odds ratios and p-values, F = fit statistics."
+    needs = "One row per observation with a yes/no target column (two values) and predictor columns."
     outputs = [Port("model", "M"), Port("coef", "C"), Port("fit", "F")]
     fields = target_fields() + [fld("positive", "Positive outcome", "text", "", placeholder="auto: the last value alphabetically", help="The value the model gives a probability for, e.g. W or 1.")]
 
@@ -95,6 +97,7 @@ class DecisionTree(TreeModel):
     label = "Decision Tree"
     algorithm = "tree"
     description = "A tree of if-then splits you can read. M = model for Score, I = which predictors matter most, R = the rules as text."
+    needs = "One row per observation with a target column (category or number) and predictor columns."
     outputs = [Port("model", "M"), Port("importance", "I"), Port("rules", "R")]
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
@@ -113,6 +116,7 @@ class RandomForest(TreeModel):
     label = "Random Forest"
     algorithm = "forest"
     description = "Many decision trees voting together. Accurate and hard to overfit. M = model for Score, I = predictor importance."
+    needs = "One row per observation with a target column (category or number) and predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
         fld("trees", "Number of trees", "number", 200),
@@ -130,6 +134,7 @@ class BoostedModel(TreeModel):
     label = "Boosted Model"
     algorithm = "boosted"
     description = "Gradient boosting: trees built one after another, each fixing the last one's errors. M = model for Score, I = predictor importance."
+    needs = "One row per observation with a target column (category or number) and predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
         fld("trees", "Number of trees", "number", 100),
@@ -148,6 +153,7 @@ class Score(Tool):
     label = "Score"
     category = "Modeling"
     description = "Apply a fitted model to new rows. Connect a model's M output to M and the data to score to D."
+    needs = "M: a fitted model from any model tool's M output. D: rows with the same predictor columns."
     inputs = [Port("model", "M"), Port("data", "D")]
     fields = []
 
@@ -161,6 +167,7 @@ class ModelComparison(Tool):
     label = "Model Comparison"
     category = "Modeling"
     description = "Score one or more models on data they did not see, usually the validation sample. E = accuracy measures per model, C = confusion matrix."
+    needs = "M: one or more model outputs. D: rows the models did not train on, with the target column."
     inputs = [Port("model", "M", multi=True), Port("data", "D")]
     outputs = [Port("metrics", "E"), Port("confusion", "C")]
     fields = []
@@ -176,6 +183,7 @@ class CreateSamples(Tool):
     label = "Create Samples"
     category = "Modeling"
     description = "Split rows at random into estimation (E), validation (V) and holdout (H) sets, so you can test a model on data it never saw."
+    needs = "Any table to split."
     outputs = [Port("estimation", "E"), Port("validation", "V"), Port("holdout", "H")]
     fields = [
         fld("estimation", "Estimation %", "number", 70),
@@ -201,6 +209,7 @@ class RegularizedRegression(Tool):
     label = "Regularized Regression"
     category = "Modeling"
     description = "Ridge, Lasso or Elastic Net: linear regression that shrinks weak predictors. Lasso drops them to zero. M = model, C = coefficients, F = fit."
+    needs = "One row per observation with a numeric target column and predictor columns."
     outputs = [Port("model", "M"), Port("coef", "C"), Port("fit", "F")]
     fields = target_fields() + [
         fld("method", "Method", "select", "lasso", options=opts(("ridge", "Ridge"), ("lasso", "Lasso"), ("elasticnet", "Elastic Net"))),
@@ -252,6 +261,7 @@ class CountRegression(GLMTool):
     type = "count_regression"
     label = "Count Regression"
     description = "Model counts like touchdowns or turnovers. Poisson, or negative binomial when counts vary more than Poisson allows. Ratio = multiplier per unit."
+    needs = "One row per observation with a count target (0, 1, 2...) and predictor columns."
     fields = target_fields() + [fld("family", "Model", "select", "poisson", options=opts(("poisson", "Poisson"), ("negbin", "Negative binomial")))]
 
     def family(self, cfg):
@@ -263,6 +273,7 @@ class GammaRegression(GLMTool):
     type = "gamma_regression"
     label = "Gamma Regression"
     description = "Model positive, right-skewed amounts like yards per drive or game duration. Uses a log link, so Ratio = multiplier per unit."
+    needs = "One row per observation with a positive numeric target and predictor columns."
     fields = target_fields()
 
     def family(self, cfg):
@@ -294,6 +305,7 @@ class NaiveBayes(EstimatorTool):
     label = "Naive Bayes"
     algorithm = "naive_bayes"
     description = "A fast, simple classifier that is a good baseline to beat. M = model, I = importance (score drop when a column is shuffled), F = fit."
+    needs = "One row per observation with a category target column and predictor columns."
     fields = target_fields() + [fld("seed", "Random seed", "number", 1)]
 
 
@@ -303,6 +315,7 @@ class KNearestNeighbors(EstimatorTool):
     label = "K-Nearest Neighbors"
     algorithm = "knn"
     description = "Predict from the K most similar rows. Columns are scaled first. M = model, I = importance, F = fit."
+    needs = "One row per observation with a target column and numeric predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
         fld("k", "Neighbors (K)", "number", 5),
@@ -322,6 +335,7 @@ class SupportVectorMachine(EstimatorTool):
     label = "Support Vector Machine"
     algorithm = "svm"
     description = "Find the boundary with the widest margin between classes, or a tube around the target for numbers. Columns are scaled first."
+    needs = "One row per observation with a target column and numeric predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
         fld("kernel", "Kernel", "select", "rbf", options=opts(("rbf", "Radial (curved)"), ("linear", "Linear"), ("poly", "Polynomial"))),
@@ -339,6 +353,7 @@ class NeuralNetwork(EstimatorTool):
     label = "Neural Network"
     algorithm = "mlp"
     description = "A multi-layer perceptron for classification or regression. Columns are scaled first. Set the hidden layer sizes, such as 50 or 64, 32."
+    needs = "One row per observation with a target column and numeric predictor columns."
     fields = target_fields() + [
         fld("task", "Type", "select", "auto", options=TASKS),
         fld("hidden", "Hidden layers", "text", "50", help="Neurons per layer, separated by commas. 64, 32 means two layers."),
@@ -358,6 +373,7 @@ class CrossValidation(Tool):
     label = "Cross-Validation"
     category = "Modeling"
     description = "Refit each connected model on K slices of the data and score it on the slice it did not see. S = average and spread per model, F = every fold."
+    needs = "M: one or more model outputs. D: the table to slice, with the target and predictor columns."
     inputs = [Port("model", "M", multi=True), Port("data", "D")]
     outputs = [Port("summary", "S"), Port("folds", "F")]
     fields = [fld("folds", "Folds (K)", "number", 5), fld("seed", "Random seed", "number", 1)]
@@ -379,6 +395,7 @@ class VarianceInflation(Tool):
     label = "Variance Inflation Factors"
     category = "Modeling"
     description = "Spot predictors that largely repeat each other. A VIF above 5 is worth a look; above 10 usually means drop or combine one."
+    needs = "A table with two or more numeric predictor columns."
     fields = [fld("predictors", "Predictors", "columns", [])]
 
     def code(self, cfg, ctx):

@@ -20,7 +20,7 @@ class Projects:
 
     def load(self):
         try:
-            data = json.loads(config_path().read_text())
+            data = json.loads(config_path().read_text(encoding="utf-8"))
         except (OSError, ValueError):
             data = {}
         self.recent = [p for p in data.get("recent", []) if Path(p).is_dir()]
@@ -30,7 +30,7 @@ class Projects:
     def save(self):
         path = config_path()
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps({"project": str(self.current), "recent": self.recent[:10]}, indent=2))
+        path.write_text(json.dumps({"project": str(self.current), "recent": self.recent[:10]}, indent=2), encoding="utf-8")
 
     def open(self, path, remember=True):
         folder = Path(os.path.expanduser(str(path))).resolve()

@@ -29,6 +29,7 @@ class Summarize(Tool):
     label = "Summarize"
     category = "Transform"
     description = "Group by columns and aggregate."
+    needs = "Any table, plus the columns to group by and the columns to total."
     fields = [
         fld("group_by", "Group by", "columns", []),
         fld("aggs", "Aggregations", "list", [{"column": "", "func": "sum", "name": ""}], fields=[
@@ -71,6 +72,7 @@ class CrossTab(Tool):
     label = "Cross Tab"
     category = "Transform"
     description = "Pivot: turn the values of one column into new column headers."
+    needs = "A table with a column whose values become headers and a value column."
     fields = [
         fld("group_by", "Group by (rows)", "columns", []),
         fld("header", "New column headers from", "column", ""),
@@ -101,6 +103,7 @@ class Transpose(Tool):
     label = "Transpose"
     category = "Transform"
     description = "Unpivot: turn columns into Name/Value rows."
+    needs = "A wide table: key columns to keep and data columns to turn into rows."
     fields = [
         fld("keys", "Key columns (kept)", "columns", []),
         fld("data", "Data columns (blank = all others)", "columns", []),
@@ -125,6 +128,7 @@ class Python(Tool):
     label = "Python"
     category = "Developer"
     description = "Run your own pandas code. Inputs arrive as df (first) and dfs (all). Assign the result to df."
+    needs = "Any table (or several). Your code decides."
     inputs = [Port("in", "", multi=True)]
     fields = [fld("code", "Code", "python", "df = df.copy()\n")]
 
@@ -154,6 +158,7 @@ class WeightedAverage(Tool):
     label = "Weighted Average"
     category = "Transform"
     description = "Average a column weighted by another, such as yards per play weighted by plays. Rows with a null value or weight are skipped."
+    needs = "A table with a value column and a weight column, such as yards per play and plays."
     fields = [
         fld("value", "Value", "column", ""),
         fld("weight", "Weight", "column", ""),
@@ -182,6 +187,7 @@ class CountRecords(Tool):
     label = "Count Records"
     category = "Transform"
     description = "One row holding the number of input rows."
+    needs = "Any table."
     fields = [fld("name", "Column name", "text", "Count")]
 
     def code(self, cfg, ctx):

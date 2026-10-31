@@ -38,6 +38,7 @@ class TSFiller(Tool):
     label = "TS Filler"
     category = CATEGORY
     description = "Add rows for missing dates so every period appears once, such as a week with no game. A Filled column marks the new rows."
+    needs = "One row per date (or per date and group) with a date column."
     fields = [
         fld("date", "Date column", "column", ""),
         fld("freq", "Period", "select", "D", options=FREQS),
@@ -63,6 +64,7 @@ class RollingWindow(Tool):
     label = "Rolling Window"
     category = CATEGORY
     description = "Moving averages and totals over the last N rows, such as a team's average over its last three games."
+    needs = "Rows in date order with numeric columns. Optional: group columns."
     fields = [
         fld("columns", "Columns", "columns", []),
         fld("window", "Window (rows)", "number", 3),
@@ -103,6 +105,7 @@ class ETS(Tool):
     label = "ETS Forecast"
     category = CATEGORY
     description = "Exponential smoothing forecast with optional trend and seasonality. F = forecast with intervals, H = history with fitted values."
+    needs = "One row per period with a date column and a numeric value column. Optional: group columns for many series."
     outputs = [Port("forecast", "F"), Port("history", "H")]
     fields = series_fields() + [
         fld("trend", "Trend", "select", "", options=opts(("", "None"), ("add", "Additive"), ("mul", "Multiplicative"))),
@@ -138,6 +141,7 @@ class Arima(Tool):
     label = "ARIMA Forecast"
     category = CATEGORY
     description = "ARIMA forecast. Auto picks the order with the lowest AIC. F = forecast with intervals, H = history with fitted values, S = model summary."
+    needs = "One row per period with a date column and a numeric value column. Optional: group columns for many series."
     outputs = [Port("forecast", "F"), Port("history", "H"), Port("summary", "S")]
     fields = series_fields() + [
         fld("order_mode", "Order", "select", "auto", options=opts(("auto", "Choose automatically"), ("manual", "Set p, d, q"))),
@@ -177,6 +181,7 @@ class SeasonalDecomposition(Tool):
     label = "Seasonal Decomposition"
     category = CATEGORY
     description = "Split a series into trend, repeating season, and what's left over (STL)."
+    needs = "One row per period with a date column and a numeric value column, covering at least two full seasons."
     fields = [
         fld("date", "Date column", "column", ""),
         fld("value", "Value column", "column", ""),
@@ -212,6 +217,7 @@ class TSCompare(Tool):
     label = "TS Compare"
     category = CATEGORY
     description = "Grade a forecast against what happened. F = a forecast output, A = actuals. M = MAE, RMSE, MAPE, bias and interval coverage; D = row-by-row errors."
+    needs = "F: a forecast output from ETS or ARIMA. A: actual values with a date column."
     inputs = [Port("forecast", "F"), Port("actual", "A")]
     outputs = [Port("metrics", "M"), Port("detail", "D")]
     fields = [

@@ -1,0 +1,208 @@
+{
+  "format": "snek",
+  "version": 1,
+  "name": "Sports - football play-by-play kit (made-up league)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Made-up plays",
+      "position": {
+        "x": 0,
+        "y": 65.0
+      },
+      "config": {
+        "path": "examples/data/demo_sports/football_plays.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "garbage_time",
+      "label": "Drop garbage time",
+      "position": {
+        "x": 170,
+        "y": 65.0
+      },
+      "config": {
+        "period": "period",
+        "score_a": "offense_score",
+        "score_b": "defense_score"
+      }
+    },
+    {
+      "id": "3",
+      "type": "success_rate",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 65.0
+      },
+      "config": {
+        "down": "down",
+        "distance": "distance",
+        "yards": "yards_gained"
+      }
+    },
+    {
+      "id": "4",
+      "type": "football_efficiency",
+      "label": "Team efficiency",
+      "position": {
+        "x": 510,
+        "y": 0
+      },
+      "config": {
+        "offense": "offense",
+        "defense": "defense",
+        "success": "Success",
+        "epa": "epa",
+        "yards": "yards_gained",
+        "havoc": "havoc"
+      }
+    },
+    {
+      "id": "5",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 680,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
+      "id": "6",
+      "type": "summarize",
+      "label": "EPA per game",
+      "position": {
+        "x": 510,
+        "y": 130
+      },
+      "config": {
+        "group_by": [
+          "game_id",
+          "offense",
+          "defense",
+          "home"
+        ],
+        "aggs": [
+          {
+            "column": "epa",
+            "func": "mean",
+            "name": "epa_per_play"
+          },
+          {
+            "column": "epa",
+            "func": "size",
+            "name": "plays"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7",
+      "type": "formula",
+      "label": "Home or away",
+      "position": {
+        "x": 680,
+        "y": 130
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "site",
+            "expression": "iif([offense] == [home], 'home', 'away')",
+            "dtype": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "8",
+      "type": "opponent_adjust",
+      "label": "Adjust for opponents",
+      "position": {
+        "x": 850,
+        "y": 130
+      },
+      "config": {
+        "team": "offense",
+        "opponent": "defense",
+        "stats": [
+          "epa_per_play"
+        ],
+        "location": "site",
+        "weight": "plays",
+        "alpha": 1
+      }
+    },
+    {
+      "id": "9",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1020,
+        "y": 130
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.kept-3.in",
+      "source": "2",
+      "sourceHandle": "kept",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-6.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e7.out-8.in",
+      "source": "7",
+      "sourceHandle": "out",
+      "target": "8",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e8.adjusted-9.in",
+      "source": "8",
+      "sourceHandle": "adjusted",
+      "target": "9",
+      "targetHandle": "in"
+    }
+  ]
+}

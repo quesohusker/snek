@@ -1,0 +1,120 @@
+{
+  "format": "snek",
+  "version": 1,
+  "name": "Sports - volleyball box and side-out (made-up matches)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Player box scores",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/demo_sports/volleyball_box.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "volleyball_stats",
+      "label": "Player season",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "group_by": [
+          "team",
+          "player"
+        ],
+        "sets": "sets",
+        "kills": "kills",
+        "errors": "errors",
+        "attempts": "total_attacks",
+        "assists": "assists",
+        "aces": "aces",
+        "service_errors": "service_errors",
+        "digs": "digs",
+        "block_solos": "block_solos",
+        "block_assists": "block_assists"
+      }
+    },
+    {
+      "id": "3",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
+      "id": "4",
+      "type": "input",
+      "label": "Rally by rally",
+      "position": {
+        "x": 0,
+        "y": 130
+      },
+      "config": {
+        "path": "examples/data/demo_sports/volleyball_rallies.csv"
+      }
+    },
+    {
+      "id": "5",
+      "type": "sideout",
+      "label": "",
+      "position": {
+        "x": 170,
+        "y": 130
+      },
+      "config": {
+        "serving": "serve_team",
+        "winner": "winner",
+        "receiving": "recv_team"
+      }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 130
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    }
+  ]
+}

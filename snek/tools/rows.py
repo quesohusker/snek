@@ -19,6 +19,7 @@ class MultiRowFormula(Tool):
     label = "Multi-Row Formula"
     category = "Preparation"
     description = "Use values from earlier or later rows, such as last week's score or the change since the prior game."
+    needs = "Rows in order, such as one row per team per game. Optional: group columns so each team stays separate."
     fields = [
         fld("column", "Output column", "text", "", placeholder="new or existing column"),
         fld("expression", "Expression", "code", "", help="Refer to other rows as [Row-1:column] or [Row+1:column], and to this row as [column]. Sort first; rows are used in their current order."),
@@ -71,6 +72,7 @@ class RunningTotal(Tool):
     label = "Running Total"
     category = "Transform"
     description = "Add cumulative sums, optionally restarting for each group."
+    needs = "Rows in order with numeric columns to add up. Optional: group columns."
     fields = [
         fld("columns", "Columns to total", "columns", []),
         fld("group_by", "Restart for each group", "columns", []),
@@ -98,6 +100,7 @@ class Rank(Tool):
     label = "Rank"
     category = "Preparation"
     description = "Rank rows by a column, overall or within groups."
+    needs = "A table with a numeric or sortable column. Optional: group columns."
     fields = [
         fld("column", "Rank by", "column", ""),
         fld("order", "Order", "select", "desc", options=opts(("desc", "Highest is 1"), ("asc", "Lowest is 1"))),
@@ -128,6 +131,7 @@ class Tile(Tool):
     label = "Tile"
     category = "Preparation"
     description = "Assign each row to a bucket: quantiles, equal-width bins, or your own break points."
+    needs = "A table with a numeric column. Optional: group columns."
     fields = [
         fld("column", "Column", "column", ""),
         fld("mode", "Method", "select", "count", options=opts(("count", "Equal counts (quantiles)"), ("width", "Equal width"), ("manual", "My break points"))),
@@ -176,6 +180,7 @@ class SelectRecords(Tool):
     label = "Select Records"
     category = "Preparation"
     description = "Keep rows by position, such as 1-10, 25, 100+."
+    needs = "Any table."
     fields = [fld("ranges", "Rows to keep", "textarea", "1-10", help="Comma or line separated. 5 = row 5; 1-10 = rows 1 to 10; -3 = the first 3; 100+ = row 100 to the end.")]
 
     def code(self, cfg, ctx):
@@ -196,6 +201,7 @@ class GenerateRows(Tool):
     label = "Generate Rows"
     category = "Preparation"
     description = "Create a sequence of numbers or dates, such as weeks 1 to 15 or every day of a season."
+    needs = "No input."
     inputs = []
     fields = [
         fld("mode", "Generate", "select", "number", options=opts(("number", "Numbers"), ("date", "Dates"))),

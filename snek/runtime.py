@@ -6,7 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from snek import modeling
+from snek import modeling, sports_math
 
 FORMATS = {
     ".csv": "csv",
@@ -367,6 +367,17 @@ HELPERS.update({
     "nearest_neighbors": ([modeling.design_matrix, modeling.nearest_neighbors], [], [], ["scikit-learn"]),
     "team_ratings": ([modeling.is_true, modeling.team_ratings], [], [], []),
     "elo_ratings": ([modeling.elo_ratings], [], [], []),
+    "opponent_adjust": ([sports_math.site_sign, sports_math.opponent_adjust], [], [], ["scikit-learn"]),
+    "game_predictions": ([modeling.is_true, sports_math.normal_cdf, sports_math.rating_lookup, sports_math.check_rated, sports_math.margin_spread, sports_math.game_predictions], [], [], ["scipy"]),
+    "simulate_season": ([modeling.is_true, sports_math.normal_cdf, sports_math.rating_lookup, sports_math.check_rated, sports_math.margin_spread, sports_math.simulate_season], [], [], ["scipy"]),
+    "pythagorean": ([sports_math.pythagorean], [], [], ["scipy"]),
+    "football_efficiency": ([modeling.is_true, sports_math.football_efficiency], [], [], []),
+    "four_factors": ([sports_math.four_factors], [], [], []),
+    "shooting_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.shooting_stats], [], [], []),
+    "batting_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.batting_stats], [], [], []),
+    "pitching_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.innings, sports_math.pitching_stats], [], [], []),
+    "volleyball_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.volleyball_stats], [], [], []),
+    "sideout_stats": ([sports_math.safe_div, sports_math.sideout_stats], [], [], []),
 })
 
 NAMESPACE = {
@@ -392,4 +403,5 @@ NAMESPACE = {
     "field_summary": field_summary,
     "linear_regression": linear_regression,
     **{name: getattr(modeling, name) for name in ["linear_model_row", "fit_supervised", "fit_logistic", "score_model", "compare_models", "split_samples", "kmeans_cluster", "principal_components", "fill_periods", "ets_forecast", "arima_forecast", "fit_estimator", "fit_regularized", "fit_glm", "cross_validate", "vif_table", "test_of_means", "chi_square_test", "seasonal_decompose", "compare_forecast", "cluster_diagnostics", "hierarchical_cluster", "nearest_neighbors", "team_ratings", "elo_ratings"]},
+    **{name: getattr(sports_math, name) for name in ["opponent_adjust", "game_predictions", "simulate_season", "pythagorean", "football_efficiency", "four_factors", "shooting_stats", "batting_stats", "pitching_stats", "volleyball_stats", "sideout_stats"]},
 }

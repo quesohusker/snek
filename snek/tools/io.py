@@ -12,6 +12,7 @@ class InputData(Tool):
     label = "Input Data"
     category = "In/Out"
     description = "Read CSV, Excel, JSON, JSON Lines or Parquet. Put * in the path to stack many files."
+    needs = "No input. Reads a file from disk."
     inputs = []
     fields = [
         fld("path", "File", "file", "", help="Use * to stack files, e.g. …/2025/games_teams_regular_w*.json"),
@@ -59,6 +60,7 @@ class TextInput(Tool):
     label = "Text Input"
     category = "In/Out"
     description = "Type or paste a small table as CSV."
+    needs = "No input. Type or paste the data."
     inputs = []
     fields = [
         fld("data", "Data (CSV, first row = headers)", "textarea", "name,value\na,1\nb,2"),
@@ -81,6 +83,7 @@ class OutputData(Tool):
     label = "Output Data"
     category = "In/Out"
     description = "Write CSV, Excel, JSON or Parquet when the workflow runs."
+    needs = "Any table to save."
     outputs = []
     side_effect = True
     fields = [
@@ -103,6 +106,7 @@ class Browse(Tool):
     label = "Browse"
     category = "In/Out"
     description = "Show the data at this point. Click any tool to see its output too."
+    needs = "Any table."
     outputs = []
     fields = []
 
@@ -117,6 +121,7 @@ class Directory(Tool):
     label = "Directory"
     category = "In/Out"
     description = "List the files in a folder: path, name, extension, size and date. Feed it to Dynamic Input to read them all."
+    needs = "No input. Reads a folder on disk."
     inputs = []
     fields = [
         fld("folder", "Folder", "file", "", help="A folder path, e.g. data or ~/Downloads"),
@@ -149,6 +154,7 @@ class DynamicInput(Tool):
     label = "Dynamic Input"
     category = "Developer"
     description = "Read every file listed in a column, such as the path column from Directory, and stack them."
+    needs = "A table with a column of file paths, such as the output of Directory."
     fields = [
         fld("column", "Column with file paths", "column", ""),
         fld("format", "Format", "select", "auto", options=READ_FORMATS),
@@ -182,6 +188,7 @@ class DateTimeNow(Tool):
     label = "Date Time Now"
     category = "In/Out"
     description = "One row with the current date and time, refreshed on every run."
+    needs = "No input."
     inputs = []
     volatile = True
     fields = [

@@ -12,7 +12,7 @@ def settings_path():
 
 def load():
     try:
-        stored = json.loads(settings_path().read_text())
+        stored = json.loads(settings_path().read_text(encoding="utf-8"))
     except (OSError, ValueError):
         stored = {}
     return {**DEFAULTS, **{k: v for k, v in stored.items() if k in DEFAULTS}}
@@ -31,7 +31,7 @@ def save(changes):
         current["autosave_mode"] = changes["autosave_mode"]
     path = settings_path()
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(current, indent=2))
+    path.write_text(json.dumps(current, indent=2), encoding="utf-8")
     return current
 
 

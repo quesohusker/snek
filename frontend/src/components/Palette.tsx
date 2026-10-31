@@ -6,6 +6,7 @@ import { useMenus } from "../commands";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
 import type { MenuItem } from "./Menubar";
 import type { ToolSpec } from "../types";
+import { useToolCard } from "./ToolCard";
 
 const OPEN_KEY = "snek.sidebarOpen";
 
@@ -38,15 +39,42 @@ function filterItems(items: MenuItem[], q: string): MenuItem[] {
   });
 }
 
-function Group({ label, open, onToggle, depth, children }: { label: string; open: boolean; onToggle: () => void; depth: number; children: ReactNode }) {
+function Group({ label, open, onToggle, depth, count, children }: { label: string; open: boolean; onToggle: () => void; depth: number; count?: number; children: ReactNode }) {
   return (
-    <div className="tree-group">
+    <div className={`tree-group${count !== undefined ? " tool-group" : ""}`}>
       <button className={`tree-head depth-${depth}`} style={{ paddingLeft: 4 + depth * 12 }} onClick={onToggle} aria-expanded={open}>
         <ChevronRight size={12} className={`tree-chevron${open ? " open" : ""}`} />
         <span>{label}</span>
+        {count !== undefined && <span className="tab-count">{count}</span>}
       </button>
       {open && <div className="tree-children">{children}</div>}
     </div>
+  );
+}
+
+function ToolButton({ tool, color, showCategory, onDragStart, onAdd }: { tool: ToolSpec; color: string; showCategory: boolean; onDragStart: (e: DragEvent, type: string) => void; onAdd: (type: string) => void }) {
+  const tip = useToolCard(tool);
+  return (
+    <button
+      className="palette-item"
+      draggable
+      onDragStart={(e) => {
+        tip.hide();
+        onDragStart(e, tool.type);
+      }}
+      onClick={() => onAdd(tool.type)}
+      onMouseEnter={tip.show}
+      onMouseLeave={tip.hide}
+    >
+      <span className="palette-icon" style={{ background: color }}>
+        <ToolIcon type={tool.type} size={15} />
+      </span>
+      <span className="palette-text">
+        <span className="palette-label">{tool.label}</span>
+        <span className="palette-desc">{showCategory ? `${tool.category}${tool.group ? ` › ${tool.group}` : ""} · ` : ""}{tool.description}</span>
+      </span>
+      {tip.card}
+    </button>
   );
 }
 
@@ -98,20 +126,26 @@ export default function Palette() {
     const color = CATEGORY_COLORS[t.category] ?? "var(--cat-dev)";
     return (
       <div key={t.type} className="tool-row">
-        <button className="palette-item" draggable onDragStart={(e) => onDragStart(e, t.type)} onClick={() => onAddTool(t.type)} title={t.description}>
-          <span className="palette-icon" style={{ background: color }}>
-            <ToolIcon type={t.type} size={15} />
-          </span>
-          <span className="palette-text">
-            <span className="palette-label">{t.label}</span>
-            <span className="palette-desc">{showCategory ? `${t.category} · ` : ""}{t.description}</span>
-          </span>
-        </button>
+        <ToolButton tool={t} color={color} showCategory={showCategory} onDragStart={onDragStart} onAdd={onAddTool} />
         <button className={`star${fav ? " on" : ""}`} onClick={() => toggleFavorite(t.type)} title={fav ? "Remove from Favorites" : "Add to Favorites"} aria-label={fav ? `Remove ${t.label} from Favorites` : `Add ${t.label} to Favorites`}>
           <Star size={13} fill={fav ? "currentColor" : "none"} />
         </button>
       </div>
     );
+  };
+
+  const groupedRows = (items: ToolSpec[], category: string): ReactNode => {
+    const groups = [...new Set(items.map((t) => t.group || ""))];
+    if (groups.length < 2) return items.map((t) => toolRow(t));
+    return groups.map((g, i) => {
+      const key = `tools/${category}/${g}`;
+      const list = items.filter((t) => (t.group || "") === g);
+      return (
+        <Group key={key} label={g || "Other"} count={list.length} open={isOpen(key, i === 0)} onToggle={() => toggle(key, i === 0)} depth={0}>
+          {list.map((t) => toolRow(t))}
+        </Group>
+      );
+    });
   };
 
   const renderItems = (items: MenuItem[], path: string, depth: number): ReactNode =>
@@ -153,12 +187,12 @@ export default function Palette() {
           <h4 className="palette-section" style={{ color: CATEGORY_COLORS[c] }}>
             {c}
           </h4>
-          {items.map((t) => toolRow(t))}
+          {groupedRows(items, c)}
         </section>
       );
     });
   } else {
-    body = toolList.filter((t) => t.category === tab).map((t) => toolRow(t));
+    body = groupedRows(toolList.filter((t) => t.category === tab), tab);
   }
 
   const heading = q ? `Search: ${matches.length} tool${matches.length === 1 ? "" : "s"}` : tab;

@@ -52,11 +52,11 @@ def node_packages():
     npm = shutil.which("npm")
     if not npm:
         raise SystemExit("npm is needed to list the interface's packages")
-    out = subprocess.run([npm, "ls", "--omit=dev", "--all", "--parseable"], cwd=ROOT / "frontend", capture_output=True, text=True)
+    out = subprocess.run([npm, "ls", "--omit=dev", "--all", "--parseable"], cwd=ROOT / "frontend", capture_output=True, text=True, encoding="utf-8", errors="replace")
     paths = [Path(p) for p in out.stdout.splitlines()[1:]]
     pkgs = {}
     for p in paths:
-        meta = json.loads((p / "package.json").read_text())
+        meta = json.loads((p / "package.json").read_text(encoding="utf-8"))
         files = sorted(f for f in p.iterdir() if f.is_file() and LICENSE_NAMES.search(f.name))
         text = "\n\n".join(f.read_text(encoding="utf-8", errors="replace").strip() for f in files)
         pkgs[f"{meta['name']}@{meta.get('version', '')}"] = (meta["name"], meta.get("version", ""), meta.get("license", ""), text)
@@ -82,7 +82,7 @@ def main():
     parts += ["## JavaScript packages (bundled into the interface)", ""]
     for _, (name, version, lic, text) in sorted(node_packages().items()):
         parts += [f"### {name} {version}", "", f"License: {lic or 'see text'}", "", "```", text or "No license file in the package.", "```", ""]
-    (ROOT / "THIRD_PARTY_NOTICES.md").write_text("\n".join(parts))
+    (ROOT / "THIRD_PARTY_NOTICES.md").write_text("\n".join(parts), encoding="utf-8")
     print("wrote THIRD_PARTY_NOTICES.md")
 
 

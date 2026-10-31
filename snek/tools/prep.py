@@ -60,6 +60,7 @@ class Select(Tool):
     label = "Select"
     category = "Preparation"
     description = "Keep, drop, reorder, rename and change the type of columns."
+    needs = "Any table."
     fields = [
         fld("fields", "Columns", "select_fields", [], dtypes=[{"value": v, "label": l} for v, l in DTYPE_OPTIONS]),
         fld("keep_new", "Keep columns not listed here", "bool", True, help="Columns that appear upstream later."),
@@ -99,6 +100,7 @@ class Filter(Tool):
     label = "Filter"
     category = "Preparation"
     description = "Split rows into True and False streams."
+    needs = "Any table. You write a condition using its columns."
     outputs = [Port("true", "T"), Port("false", "F")]
     fields = [
         fld("mode", "Mode", "select", "basic", options=opts(("basic", "Basic"), ("expression", "Expression"))),
@@ -161,6 +163,7 @@ class Formula(Tool):
     label = "Formula"
     category = "Preparation"
     description = "Create or update columns with pandas expressions."
+    needs = "Any table. New columns are built from its existing columns."
     fields = [
         fld("formulas", "Formulas", "list", [{"column": "", "expression": "", "dtype": ""}], fields=[
             fld("column", "Output column", "text", "", placeholder="new or existing column"),
@@ -201,6 +204,7 @@ class Sort(Tool):
     label = "Sort"
     category = "Preparation"
     description = "Sort rows by one or more columns."
+    needs = "Any table, plus the columns to sort by."
     fields = [
         fld("keys", "Sort by", "list", [{"column": "", "order": "asc"}], fields=[
             fld("column", "Column", "column", ""),
@@ -229,6 +233,7 @@ class Sample(Tool):
     label = "Sample"
     category = "Preparation"
     description = "Keep the first, last, random or every Nth rows."
+    needs = "Any table. Optional: group columns to sample within each group."
     fields = [
         fld("mode", "Keep", "select", "first", options=opts(("first", "First N rows"), ("last", "Last N rows"), ("random_n", "Random N rows"), ("random_pct", "Random percent"), ("nth", "Every Nth row"))),
         fld("n", "N", "number", 100, show_if={"mode": ["first", "last", "random_n", "nth"]}),
@@ -271,6 +276,7 @@ class Unique(Tool):
     label = "Unique"
     category = "Preparation"
     description = "Split rows into unique and duplicate streams."
+    needs = "Any table, plus the columns that define a duplicate."
     outputs = [Port("unique", "U"), Port("dupes", "D")]
     fields = [fld("columns", "Columns that define a duplicate", "columns", [], help="Blank uses every column.")]
 
@@ -296,6 +302,7 @@ class RecordID(Tool):
     label = "Record ID"
     category = "Preparation"
     description = "Add a running row number."
+    needs = "Any table."
     fields = [
         fld("column", "Column name", "text", "RecordID"),
         fld("start", "Start at", "number", 1),
@@ -327,6 +334,7 @@ class Cleanse(Tool):
     label = "Data Cleansing"
     category = "Preparation"
     description = "Trim text, fix case, fill nulls and drop empty rows or columns."
+    needs = "Any table, usually with text columns to tidy."
     fields = [
         fld("columns", "Columns", "columns", [], help="Blank applies to every column."),
         fld("trim", "Trim leading and trailing spaces", "bool", True),
@@ -378,6 +386,7 @@ class FindReplace(Tool):
     label = "Replace Text"
     category = "Preparation"
     description = "Find and replace text inside columns. To swap values using a lookup table, use Find Replace in Join."
+    needs = "A table with the text columns to search."
     fields = [
         fld("columns", "Columns", "columns", []),
         fld("find", "Find", "text", ""),

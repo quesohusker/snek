@@ -16,6 +16,7 @@ A local, Alteryx-style workflow canvas. You drag tools onto a canvas, wire them,
 
 - `snek/modeling.py` holds the model helpers (scikit-learn, statsmodels). Model tools pass the fitted model between tools as a one-row DataFrame (Model, Algorithm, Task, Target, Features, Columns), so the engine still only moves DataFrames. `score_model` knows how to apply each algorithm.
 - `snek/tools/` holds one module per palette category. Each tool is a class with `fields` (form spec), `inputs`/`outputs` (ports) and `code(cfg, ctx)`, which returns pandas source.
+- Every tool sets `needs`: one or two sentences on the input it expects. The hover card and the Configure tab show it. Set `group` to nest tools inside a category; the sidebar shows each group as a collapsible section. Sports helpers live in `snek/sports_math.py`.
 - `snek/engine.py` topologically sorts the graph, generates each tool's code, and `exec`s it with the input frames bound to their variable names. Results cache by a hash of the code, the input hashes and the file stamps.
 - `snek/runtime.py` holds the helpers the generated code calls (`read_any`, `write_any`, `join_lrj`, `unnest`, `iif`). Export copies their source into the script.
 - `snek/expr.py` turns `[Column Name]` into `df['Column Name']` for Filter and Formula expressions.

@@ -9,6 +9,7 @@ class FieldSummary(Tool):
     label = "Field Summary"
     category = CATEGORY
     description = "One row per column: count, nulls, distinct values, min, max, mean, median, standard deviation, and the most common value."
+    needs = "Any table."
     fields = []
 
     def code(self, cfg, ctx):
@@ -21,6 +22,7 @@ class FrequencyTable(Tool):
     label = "Frequency Table"
     category = CATEGORY
     description = "Count how often each value, or each combination of values, appears, with percents."
+    needs = "Any table, plus one or more columns to count."
     fields = [
         fld("columns", "Columns", "columns", []),
         fld("nulls", "Count nulls as a value", "bool", True),
@@ -51,6 +53,7 @@ class Correlation(Tool):
     label = "Correlation"
     category = CATEGORY
     description = "Correlation matrix for numeric columns: Pearson for straight-line relationships, Spearman for rank order."
+    needs = "A table with two or more numeric columns."
     fields = [
         fld("columns", "Columns", "columns", [], help="Blank uses every numeric column."),
         fld("method", "Method", "select", "pearson", options=opts(("pearson", "Pearson"), ("spearman", "Spearman"), ("kendall", "Kendall"))),
@@ -76,6 +79,7 @@ class ContingencyTable(Tool):
     label = "Contingency Table"
     category = CATEGORY
     description = "Cross-count two columns, such as conference by win or loss, as counts or percents."
+    needs = "A table with two category columns, such as conference and result."
     fields = [
         fld("rows", "Rows", "column", ""),
         fld("columns", "Columns", "column", ""),
@@ -109,6 +113,7 @@ class TestOfMeans(Tool):
     label = "Test of Means"
     category = CATEGORY
     description = "Is the difference in averages real? Two groups: t-test. Three or more: one-way ANOVA. S = stats per group, T = the test."
+    needs = "One row per observation with a numeric value column and a group column with two or more groups."
     outputs = [Port("summary", "S"), Port("test", "T")]
     fields = [
         fld("value", "Numeric column", "column", ""),
@@ -136,6 +141,7 @@ class ChiSquareTest(Tool):
     label = "Chi-Square Test"
     category = CATEGORY
     description = "Are two category columns related, such as conference and bowl eligibility? T = test result with Cramér's V, E = observed vs expected counts."
+    needs = "One row per observation with two category columns."
     outputs = [Port("test", "T"), Port("expected", "E")]
     fields = [fld("rows", "First column", "column", ""), fld("columns", "Second column", "column", "")]
 

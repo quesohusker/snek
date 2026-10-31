@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useFlow, type ToolNode } from "../store";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
+import { useToolCard } from "./ToolCard";
 
 function spread(i: number, n: number) {
   return `${((i + 1) / (n + 1)) * 100}%`;
@@ -13,12 +14,13 @@ function ToolNodeView({ id, data, selected }: NodeProps<ToolNode>) {
   const summary = useFlow((s) => s.summaries[id]);
   const stale = useFlow((s) => s.stale);
   const running = useFlow((s) => s.running);
+  const tip = useToolCard(spec);
   if (!spec) return null;
   const color = CATEGORY_COLORS[spec.category] ?? "var(--cat-dev)";
   const status = result?.status;
   return (
-    <div className={`tool-node${selected ? " selected" : ""}`} title={result?.error || spec.description}>
-      <div className="tool-tile" style={{ background: color }}>
+    <div className={`tool-node${selected ? " selected" : ""}`} title={result?.error || undefined}>
+      <div className="tool-tile" style={{ background: color }} onMouseEnter={tip.show} onMouseLeave={tip.hide} onMouseDown={tip.hide}>
         <ToolIcon type={data.type} />
         {spec.inputs.map((p, i) => (
           <Handle key={p.name} type="target" position={Position.Left} id={p.name} style={{ top: spread(i, spec.inputs.length) }} className={p.multi ? "handle multi" : "handle"}>
@@ -41,6 +43,7 @@ function ToolNodeView({ id, data, selected }: NodeProps<ToolNode>) {
       </div>
       {summary && <div className="tool-summary">{summary}</div>}
       {status === "error" && !stale && <div className="tool-error">{result.error.split("\n")[0]}</div>}
+      {tip.card}
     </div>
   );
 }

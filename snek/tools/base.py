@@ -119,7 +119,9 @@ class Tool:
     type = ""
     label = ""
     category = ""
+    group = ""
     description = ""
+    needs = ""
     inputs = [Port("in")]
     outputs = [Port("out")]
     fields = []
@@ -145,7 +147,9 @@ class Tool:
             "type": self.type,
             "label": self.label,
             "category": self.category,
+            "group": self.group,
             "description": self.description,
+            "needs": self.needs,
             "inputs": [asdict(p) for p in self.inputs],
             "outputs": [asdict(p) for p in self.outputs],
             "fields": self.fields,

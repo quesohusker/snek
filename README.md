@@ -41,7 +41,7 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-81 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
+94 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category. Hover over any tool, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Tools |
 |---|---|
@@ -54,7 +54,7 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 | Modeling | Linear, Logistic, Regularized (Ridge/Lasso/Elastic Net), Count (Poisson/negative binomial) and Gamma Regression, Decision Tree, Random Forest, Boosted Model, Naive Bayes, K-Nearest Neighbors, Support Vector Machine, Neural Network, Score, Model Comparison, Cross-Validation, Create Samples, Variance Inflation Factors |
 | Predictive Grouping | K-Means Clusters, Cluster Diagnostics, Hierarchical Clustering, Principal Components, Find Nearest Neighbors |
 | Time Series | TS Filler, Rolling Window, Seasonal Decomposition, ETS Forecast, ARIMA Forecast, TS Compare |
-| Sports | Team Ratings (SRS/Massey with home field and margin cap), Elo Ratings (home edge, margin of victory, season carry-over) |
+| Sports | **All sports:** Team Ratings (SRS/Massey), Elo Ratings, Opponent Adjust, Spread & Win Probability (grades picks against betting lines), Season Simulation, Pythagorean Expectation. **Football:** Garbage-Time Filter, Success Rate, Football Efficiency (EPA, success rate, explosiveness, havoc). **Basketball:** Four Factors (with offensive, defensive and net rating), Shooting Efficiency. **Baseball:** Batting Stats (through wOBA), Pitching Stats (through FIP). **Volleyball:** Volleyball Box Stats, Side-Out & Serve |
 | Developer | Python (your own pandas code), Dynamic Input, Dynamic Rename, Dynamic Select, Field Info |
 
 Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. Directory plus Dynamic Input reads every file in a folder.
@@ -76,6 +76,20 @@ Multi-Row Formula reaches into other rows with `[Row-1:column]` and `[Row+1:colu
 ## Modeling
 
 Every model tool has an **M** output that carries the fitted model. Connect it to **Score** to predict new rows, or to **Model Comparison** with a validation sample to see which model holds up on data it never saw. Use **Create Samples** to make that split. Models come from scikit-learn and statsmodels, so exported scripts that use them list those packages at the top.
+
+## Sports analytics
+
+The Sports tab groups its tools by sport. The **All sports** tools work for any game with two teams and a score:
+
+- **Team Ratings** and **Elo Ratings** rate teams from game results.
+- **Opponent Adjust** corrects any per-game stat for the strength of the opponents faced.
+- **Spread & Win Probability** turns ratings into a predicted margin and win chance for each game. Give it a betting line column and it grades every pick against the line.
+- **Season Simulation** plays out the rest of a schedule thousands of times: projected wins, the chance of reaching a win total, and the chance to win out.
+- **Pythagorean Expectation** shows which teams won more or fewer games than their scoring says they should.
+
+The sport groups read play-by-play and box scores: success rate, EPA and havoc for football, the four factors for basketball, OBP through wOBA and ERA through FIP for baseball, and hitting percentage and side-out rate for volleyball.
+
+Snek bundles no real league data. Bring your own exports, such as CFBD or NCAA stats files. The sports samples use made-up leagues.
 
 ## Files, autosave and settings
 
@@ -117,9 +131,14 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Flights: forecast accuracy check (hold out two weeks, forecast them, grade with TS Compare; Seasonal Decomposition)
 - Penguins: model bake-off (five classifiers, 5-fold Cross-Validation)
 - Demo: league ratings for made-up teams (Team Ratings and Elo side by side)
+- Sports: football play-by-play kit (Garbage-Time Filter, Success Rate, Football Efficiency, Opponent Adjust)
+- Sports: season projection (Team Ratings, Season Simulation, Spread & Win Probability against lines, Pythagorean Expectation)
+- Sports: basketball four factors (Four Factors, Shooting Efficiency)
+- Sports: baseball batting and pitching (Batting Stats, Pitching Stats)
+- Sports: volleyball box and side-out (Volleyball Box Stats, Side-Out & Serve)
 - Demo: no files needed
 
-All bundled data is CC0. See [examples/data/README.md](examples/data/README.md) for sources and citations.
+All bundled data is CC0, and the sports data is made up. See [examples/data/README.md](examples/data/README.md) for sources and citations.
 
 ## Updates
 

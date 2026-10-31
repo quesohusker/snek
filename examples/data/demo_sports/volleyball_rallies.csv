@@ -1,0 +1,1957 @@
+match_id,home_team,away_team,set_no,rally_no,serve_team,recv_team,winner,end_event,score_home,score_away
+902,Prairie Dogs,Canyon Wrens,1,1,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,0,0
+902,Prairie Dogs,Canyon Wrens,1,2,Canyon Wrens,Prairie Dogs,Prairie Dogs,Block,0,1
+902,Prairie Dogs,Canyon Wrens,1,3,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,1,1
+902,Prairie Dogs,Canyon Wrens,1,4,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,2,1
+902,Prairie Dogs,Canyon Wrens,1,5,Prairie Dogs,Canyon Wrens,Prairie Dogs,Attack error,3,1
+902,Prairie Dogs,Canyon Wrens,1,6,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,4,1
+902,Prairie Dogs,Canyon Wrens,1,7,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,4,2
+902,Prairie Dogs,Canyon Wrens,1,8,Canyon Wrens,Prairie Dogs,Canyon Wrens,Block,4,3
+902,Prairie Dogs,Canyon Wrens,1,9,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,4,4
+902,Prairie Dogs,Canyon Wrens,1,10,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,5,4
+902,Prairie Dogs,Canyon Wrens,1,11,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,5,5
+902,Prairie Dogs,Canyon Wrens,1,12,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,6,5
+902,Prairie Dogs,Canyon Wrens,1,13,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,7,5
+902,Prairie Dogs,Canyon Wrens,1,14,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,8,5
+902,Prairie Dogs,Canyon Wrens,1,15,Canyon Wrens,Prairie Dogs,Canyon Wrens,Ace,8,6
+902,Prairie Dogs,Canyon Wrens,1,16,Canyon Wrens,Prairie Dogs,Canyon Wrens,Ace,8,7
+902,Prairie Dogs,Canyon Wrens,1,17,Canyon Wrens,Prairie Dogs,Canyon Wrens,Service error,8,8
+902,Prairie Dogs,Canyon Wrens,1,18,Canyon Wrens,Prairie Dogs,Prairie Dogs,Ace,8,9
+902,Prairie Dogs,Canyon Wrens,1,19,Prairie Dogs,Canyon Wrens,Canyon Wrens,Ace,9,9
+902,Prairie Dogs,Canyon Wrens,1,20,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,9,10
+902,Prairie Dogs,Canyon Wrens,1,21,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,10,10
+902,Prairie Dogs,Canyon Wrens,1,22,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,11,10
+902,Prairie Dogs,Canyon Wrens,1,23,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,12,10
+902,Prairie Dogs,Canyon Wrens,1,24,Canyon Wrens,Prairie Dogs,Canyon Wrens,Block,12,11
+902,Prairie Dogs,Canyon Wrens,1,25,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,12,12
+902,Prairie Dogs,Canyon Wrens,1,26,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,13,12
+902,Prairie Dogs,Canyon Wrens,1,27,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,13,13
+902,Prairie Dogs,Canyon Wrens,1,28,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,14,13
+902,Prairie Dogs,Canyon Wrens,1,29,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,14,14
+902,Prairie Dogs,Canyon Wrens,1,30,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,15,14
+902,Prairie Dogs,Canyon Wrens,1,31,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,15,15
+902,Prairie Dogs,Canyon Wrens,1,32,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,16,15
+902,Prairie Dogs,Canyon Wrens,1,33,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,17,15
+902,Prairie Dogs,Canyon Wrens,1,34,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,17,16
+902,Prairie Dogs,Canyon Wrens,1,35,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,18,16
+902,Prairie Dogs,Canyon Wrens,1,36,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,18,17
+902,Prairie Dogs,Canyon Wrens,1,37,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,18,18
+902,Prairie Dogs,Canyon Wrens,1,38,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,19,18
+902,Prairie Dogs,Canyon Wrens,1,39,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,20,18
+902,Prairie Dogs,Canyon Wrens,1,40,Canyon Wrens,Prairie Dogs,Canyon Wrens,Attack error,20,19
+902,Prairie Dogs,Canyon Wrens,1,41,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,20,20
+902,Prairie Dogs,Canyon Wrens,1,42,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,21,20
+902,Prairie Dogs,Canyon Wrens,1,43,Canyon Wrens,Prairie Dogs,Prairie Dogs,Block,21,21
+902,Prairie Dogs,Canyon Wrens,1,44,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,22,21
+902,Prairie Dogs,Canyon Wrens,1,45,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,23,21
+902,Prairie Dogs,Canyon Wrens,1,46,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,24,21
+902,Prairie Dogs,Canyon Wrens,1,47,Canyon Wrens,Prairie Dogs,Canyon Wrens,Service error,24,22
+902,Prairie Dogs,Canyon Wrens,1,48,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,24,23
+902,Prairie Dogs,Canyon Wrens,1,49,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,24,24
+902,Prairie Dogs,Canyon Wrens,1,50,Canyon Wrens,Prairie Dogs,Prairie Dogs,Block,24,25
+902,Prairie Dogs,Canyon Wrens,1,51,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,25,25
+902,Prairie Dogs,Canyon Wrens,1,52,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,26,25
+902,Prairie Dogs,Canyon Wrens,1,53,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,26,26
+902,Prairie Dogs,Canyon Wrens,1,54,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,26,27
+902,Prairie Dogs,Canyon Wrens,1,55,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,27,27
+902,Prairie Dogs,Canyon Wrens,1,56,Canyon Wrens,Prairie Dogs,Canyon Wrens,Ace,27,28
+902,Prairie Dogs,Canyon Wrens,2,1,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,0,0
+902,Prairie Dogs,Canyon Wrens,2,2,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,1,0
+902,Prairie Dogs,Canyon Wrens,2,3,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,2,0
+902,Prairie Dogs,Canyon Wrens,2,4,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,2,1
+902,Prairie Dogs,Canyon Wrens,2,5,Prairie Dogs,Canyon Wrens,Prairie Dogs,Block,3,1
+902,Prairie Dogs,Canyon Wrens,2,6,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,4,1
+902,Prairie Dogs,Canyon Wrens,2,7,Prairie Dogs,Canyon Wrens,Canyon Wrens,Service error,5,1
+902,Prairie Dogs,Canyon Wrens,2,8,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,5,2
+902,Prairie Dogs,Canyon Wrens,2,9,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,6,2
+902,Prairie Dogs,Canyon Wrens,2,10,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,6,3
+902,Prairie Dogs,Canyon Wrens,2,11,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,6,4
+902,Prairie Dogs,Canyon Wrens,2,12,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,7,4
+902,Prairie Dogs,Canyon Wrens,2,13,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,8,4
+902,Prairie Dogs,Canyon Wrens,2,14,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,8,5
+902,Prairie Dogs,Canyon Wrens,2,15,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,9,5
+902,Prairie Dogs,Canyon Wrens,2,16,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,9,6
+902,Prairie Dogs,Canyon Wrens,2,17,Prairie Dogs,Canyon Wrens,Canyon Wrens,Service error,10,6
+902,Prairie Dogs,Canyon Wrens,2,18,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,10,7
+902,Prairie Dogs,Canyon Wrens,2,19,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,11,7
+902,Prairie Dogs,Canyon Wrens,2,20,Canyon Wrens,Prairie Dogs,Prairie Dogs,Block,11,8
+902,Prairie Dogs,Canyon Wrens,2,21,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,12,8
+902,Prairie Dogs,Canyon Wrens,2,22,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,12,9
+902,Prairie Dogs,Canyon Wrens,2,23,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,13,9
+902,Prairie Dogs,Canyon Wrens,2,24,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,13,10
+902,Prairie Dogs,Canyon Wrens,2,25,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,14,10
+902,Prairie Dogs,Canyon Wrens,2,26,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,15,10
+902,Prairie Dogs,Canyon Wrens,2,27,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,16,10
+902,Prairie Dogs,Canyon Wrens,2,28,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,17,10
+902,Prairie Dogs,Canyon Wrens,2,29,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,17,11
+902,Prairie Dogs,Canyon Wrens,2,30,Prairie Dogs,Canyon Wrens,Prairie Dogs,Attack error,18,11
+902,Prairie Dogs,Canyon Wrens,2,31,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,19,11
+902,Prairie Dogs,Canyon Wrens,2,32,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,19,12
+902,Prairie Dogs,Canyon Wrens,2,33,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,20,12
+902,Prairie Dogs,Canyon Wrens,2,34,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,21,12
+902,Prairie Dogs,Canyon Wrens,2,35,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,21,13
+902,Prairie Dogs,Canyon Wrens,2,36,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,22,13
+902,Prairie Dogs,Canyon Wrens,2,37,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,22,14
+902,Prairie Dogs,Canyon Wrens,2,38,Canyon Wrens,Prairie Dogs,Canyon Wrens,Block,22,15
+902,Prairie Dogs,Canyon Wrens,2,39,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,22,16
+902,Prairie Dogs,Canyon Wrens,2,40,Canyon Wrens,Prairie Dogs,Canyon Wrens,Block,22,17
+902,Prairie Dogs,Canyon Wrens,2,41,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,22,18
+902,Prairie Dogs,Canyon Wrens,2,42,Prairie Dogs,Canyon Wrens,Canyon Wrens,Service error,23,18
+902,Prairie Dogs,Canyon Wrens,2,43,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,23,19
+902,Prairie Dogs,Canyon Wrens,2,44,Canyon Wrens,Prairie Dogs,Prairie Dogs,Block,23,20
+902,Prairie Dogs,Canyon Wrens,2,45,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,24,20
+902,Prairie Dogs,Canyon Wrens,3,1,Prairie Dogs,Canyon Wrens,Prairie Dogs,Block,0,0
+902,Prairie Dogs,Canyon Wrens,3,2,Prairie Dogs,Canyon Wrens,Prairie Dogs,Ace,1,0
+902,Prairie Dogs,Canyon Wrens,3,3,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,2,0
+902,Prairie Dogs,Canyon Wrens,3,4,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,3,0
+902,Prairie Dogs,Canyon Wrens,3,5,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,4,0
+902,Prairie Dogs,Canyon Wrens,3,6,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,5,0
+902,Prairie Dogs,Canyon Wrens,3,7,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,6,0
+902,Prairie Dogs,Canyon Wrens,3,8,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,7,0
+902,Prairie Dogs,Canyon Wrens,3,9,Canyon Wrens,Prairie Dogs,Canyon Wrens,Attack error,7,1
+902,Prairie Dogs,Canyon Wrens,3,10,Canyon Wrens,Prairie Dogs,Canyon Wrens,Service error,7,2
+902,Prairie Dogs,Canyon Wrens,3,11,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,7,3
+902,Prairie Dogs,Canyon Wrens,3,12,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,8,3
+902,Prairie Dogs,Canyon Wrens,3,13,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,9,3
+902,Prairie Dogs,Canyon Wrens,3,14,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,10,3
+902,Prairie Dogs,Canyon Wrens,3,15,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,10,4
+902,Prairie Dogs,Canyon Wrens,3,16,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,11,4
+902,Prairie Dogs,Canyon Wrens,3,17,Prairie Dogs,Canyon Wrens,Prairie Dogs,Attack error,12,4
+902,Prairie Dogs,Canyon Wrens,3,18,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,13,4
+902,Prairie Dogs,Canyon Wrens,3,19,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,13,5
+902,Prairie Dogs,Canyon Wrens,3,20,Canyon Wrens,Prairie Dogs,Prairie Dogs,Ace,13,6
+902,Prairie Dogs,Canyon Wrens,3,21,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,14,6
+902,Prairie Dogs,Canyon Wrens,3,22,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,15,6
+902,Prairie Dogs,Canyon Wrens,3,23,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,15,7
+902,Prairie Dogs,Canyon Wrens,3,24,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,16,7
+902,Prairie Dogs,Canyon Wrens,3,25,Canyon Wrens,Prairie Dogs,Prairie Dogs,Block,16,8
+902,Prairie Dogs,Canyon Wrens,3,26,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,17,8
+902,Prairie Dogs,Canyon Wrens,3,27,Canyon Wrens,Prairie Dogs,Canyon Wrens,Ace,17,9
+902,Prairie Dogs,Canyon Wrens,3,28,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,17,10
+902,Prairie Dogs,Canyon Wrens,3,29,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,17,11
+902,Prairie Dogs,Canyon Wrens,3,30,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,18,11
+902,Prairie Dogs,Canyon Wrens,3,31,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,19,11
+902,Prairie Dogs,Canyon Wrens,3,32,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,20,11
+902,Prairie Dogs,Canyon Wrens,3,33,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,21,11
+902,Prairie Dogs,Canyon Wrens,3,34,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,21,12
+902,Prairie Dogs,Canyon Wrens,3,35,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,22,12
+902,Prairie Dogs,Canyon Wrens,3,36,Prairie Dogs,Canyon Wrens,Canyon Wrens,Ace,23,12
+902,Prairie Dogs,Canyon Wrens,3,37,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,23,13
+902,Prairie Dogs,Canyon Wrens,3,38,Canyon Wrens,Prairie Dogs,Canyon Wrens,Service error,23,14
+902,Prairie Dogs,Canyon Wrens,3,39,Canyon Wrens,Prairie Dogs,Prairie Dogs,Ace,23,15
+902,Prairie Dogs,Canyon Wrens,3,40,Prairie Dogs,Canyon Wrens,Prairie Dogs,Block,24,15
+902,Prairie Dogs,Canyon Wrens,4,1,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,0,0
+902,Prairie Dogs,Canyon Wrens,4,2,Canyon Wrens,Prairie Dogs,Canyon Wrens,Service error,0,1
+902,Prairie Dogs,Canyon Wrens,4,3,Canyon Wrens,Prairie Dogs,Canyon Wrens,Attack error,0,2
+902,Prairie Dogs,Canyon Wrens,4,4,Canyon Wrens,Prairie Dogs,Canyon Wrens,Block,0,3
+902,Prairie Dogs,Canyon Wrens,4,5,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,0,4
+902,Prairie Dogs,Canyon Wrens,4,6,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,1,4
+902,Prairie Dogs,Canyon Wrens,4,7,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,1,5
+902,Prairie Dogs,Canyon Wrens,4,8,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,2,5
+902,Prairie Dogs,Canyon Wrens,4,9,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,2,6
+902,Prairie Dogs,Canyon Wrens,4,10,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,2,7
+902,Prairie Dogs,Canyon Wrens,4,11,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,3,7
+902,Prairie Dogs,Canyon Wrens,4,12,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,3,8
+902,Prairie Dogs,Canyon Wrens,4,13,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,3,9
+902,Prairie Dogs,Canyon Wrens,4,14,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,3,10
+902,Prairie Dogs,Canyon Wrens,4,15,Prairie Dogs,Canyon Wrens,Canyon Wrens,Attack error,4,10
+902,Prairie Dogs,Canyon Wrens,4,16,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,4,11
+902,Prairie Dogs,Canyon Wrens,4,17,Prairie Dogs,Canyon Wrens,Prairie Dogs,Ace,5,11
+902,Prairie Dogs,Canyon Wrens,4,18,Prairie Dogs,Canyon Wrens,Prairie Dogs,Attack error,6,11
+902,Prairie Dogs,Canyon Wrens,4,19,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,7,11
+902,Prairie Dogs,Canyon Wrens,4,20,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,8,11
+902,Prairie Dogs,Canyon Wrens,4,21,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,8,12
+902,Prairie Dogs,Canyon Wrens,4,22,Prairie Dogs,Canyon Wrens,Canyon Wrens,Service error,9,12
+902,Prairie Dogs,Canyon Wrens,4,23,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,9,13
+902,Prairie Dogs,Canyon Wrens,4,24,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,10,13
+902,Prairie Dogs,Canyon Wrens,4,25,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,11,13
+902,Prairie Dogs,Canyon Wrens,4,26,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,11,14
+902,Prairie Dogs,Canyon Wrens,4,27,Prairie Dogs,Canyon Wrens,Prairie Dogs,Block,12,14
+902,Prairie Dogs,Canyon Wrens,4,28,Prairie Dogs,Canyon Wrens,Canyon Wrens,Service error,13,14
+902,Prairie Dogs,Canyon Wrens,4,29,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,13,15
+902,Prairie Dogs,Canyon Wrens,4,30,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,14,15
+902,Prairie Dogs,Canyon Wrens,4,31,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,14,16
+902,Prairie Dogs,Canyon Wrens,4,32,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,15,16
+902,Prairie Dogs,Canyon Wrens,4,33,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,16,16
+902,Prairie Dogs,Canyon Wrens,4,34,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,16,17
+902,Prairie Dogs,Canyon Wrens,4,35,Canyon Wrens,Prairie Dogs,Canyon Wrens,Block,16,18
+902,Prairie Dogs,Canyon Wrens,4,36,Canyon Wrens,Prairie Dogs,Canyon Wrens,Attack error,16,19
+902,Prairie Dogs,Canyon Wrens,4,37,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,16,20
+902,Prairie Dogs,Canyon Wrens,4,38,Prairie Dogs,Canyon Wrens,Prairie Dogs,Block,17,20
+902,Prairie Dogs,Canyon Wrens,4,39,Prairie Dogs,Canyon Wrens,Canyon Wrens,Service error,18,20
+902,Prairie Dogs,Canyon Wrens,4,40,Canyon Wrens,Prairie Dogs,Canyon Wrens,Attack error,18,21
+902,Prairie Dogs,Canyon Wrens,4,41,Canyon Wrens,Prairie Dogs,Prairie Dogs,Ace,18,22
+902,Prairie Dogs,Canyon Wrens,4,42,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,19,22
+902,Prairie Dogs,Canyon Wrens,4,43,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,19,23
+902,Prairie Dogs,Canyon Wrens,4,44,Canyon Wrens,Prairie Dogs,Prairie Dogs,Block,19,24
+902,Prairie Dogs,Canyon Wrens,4,45,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,20,24
+902,Prairie Dogs,Canyon Wrens,4,46,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,21,24
+902,Prairie Dogs,Canyon Wrens,4,47,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,22,24
+902,Prairie Dogs,Canyon Wrens,5,1,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,0,0
+902,Prairie Dogs,Canyon Wrens,5,2,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,1,0
+902,Prairie Dogs,Canyon Wrens,5,3,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,2,0
+902,Prairie Dogs,Canyon Wrens,5,4,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,3,0
+902,Prairie Dogs,Canyon Wrens,5,5,Prairie Dogs,Canyon Wrens,Prairie Dogs,Attack error,4,0
+902,Prairie Dogs,Canyon Wrens,5,6,Prairie Dogs,Canyon Wrens,Prairie Dogs,Ace,5,0
+902,Prairie Dogs,Canyon Wrens,5,7,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,6,0
+902,Prairie Dogs,Canyon Wrens,5,8,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,6,1
+902,Prairie Dogs,Canyon Wrens,5,9,Canyon Wrens,Prairie Dogs,Canyon Wrens,Kill,6,2
+902,Prairie Dogs,Canyon Wrens,5,10,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,6,3
+902,Prairie Dogs,Canyon Wrens,5,11,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,7,3
+902,Prairie Dogs,Canyon Wrens,5,12,Canyon Wrens,Prairie Dogs,Prairie Dogs,Attack error,7,4
+902,Prairie Dogs,Canyon Wrens,5,13,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,8,4
+902,Prairie Dogs,Canyon Wrens,5,14,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,8,5
+902,Prairie Dogs,Canyon Wrens,5,15,Prairie Dogs,Canyon Wrens,Prairie Dogs,Kill,9,5
+902,Prairie Dogs,Canyon Wrens,5,16,Prairie Dogs,Canyon Wrens,Canyon Wrens,Service error,10,5
+902,Prairie Dogs,Canyon Wrens,5,17,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,10,6
+902,Prairie Dogs,Canyon Wrens,5,18,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,11,6
+902,Prairie Dogs,Canyon Wrens,5,19,Canyon Wrens,Prairie Dogs,Canyon Wrens,Ace,11,7
+902,Prairie Dogs,Canyon Wrens,5,20,Canyon Wrens,Prairie Dogs,Prairie Dogs,Service error,11,8
+902,Prairie Dogs,Canyon Wrens,5,21,Prairie Dogs,Canyon Wrens,Canyon Wrens,Block,12,8
+902,Prairie Dogs,Canyon Wrens,5,22,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,12,9
+902,Prairie Dogs,Canyon Wrens,5,23,Prairie Dogs,Canyon Wrens,Prairie Dogs,Service error,13,9
+902,Prairie Dogs,Canyon Wrens,5,24,Prairie Dogs,Canyon Wrens,Canyon Wrens,Kill,14,9
+902,Prairie Dogs,Canyon Wrens,5,25,Canyon Wrens,Prairie Dogs,Prairie Dogs,Kill,14,10
+903,Prairie Dogs,Iron Owls,1,1,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,0,0
+903,Prairie Dogs,Iron Owls,1,2,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,1,0
+903,Prairie Dogs,Iron Owls,1,3,Prairie Dogs,Iron Owls,Iron Owls,Ace,2,0
+903,Prairie Dogs,Iron Owls,1,4,Iron Owls,Prairie Dogs,Prairie Dogs,Block,2,1
+903,Prairie Dogs,Iron Owls,1,5,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,3,1
+903,Prairie Dogs,Iron Owls,1,6,Prairie Dogs,Iron Owls,Iron Owls,Ace,4,1
+903,Prairie Dogs,Iron Owls,1,7,Iron Owls,Prairie Dogs,Iron Owls,Block,4,2
+903,Prairie Dogs,Iron Owls,1,8,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,4,3
+903,Prairie Dogs,Iron Owls,1,9,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,5,3
+903,Prairie Dogs,Iron Owls,1,10,Prairie Dogs,Iron Owls,Iron Owls,Kill,6,3
+903,Prairie Dogs,Iron Owls,1,11,Iron Owls,Prairie Dogs,Iron Owls,Kill,6,4
+903,Prairie Dogs,Iron Owls,1,12,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,6,5
+903,Prairie Dogs,Iron Owls,1,13,Prairie Dogs,Iron Owls,Prairie Dogs,Block,7,5
+903,Prairie Dogs,Iron Owls,1,14,Prairie Dogs,Iron Owls,Iron Owls,Kill,8,5
+903,Prairie Dogs,Iron Owls,1,15,Iron Owls,Prairie Dogs,Iron Owls,Kill,8,6
+903,Prairie Dogs,Iron Owls,1,16,Iron Owls,Prairie Dogs,Iron Owls,Service error,8,7
+903,Prairie Dogs,Iron Owls,1,17,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,8,8
+903,Prairie Dogs,Iron Owls,1,18,Prairie Dogs,Iron Owls,Iron Owls,Service error,9,8
+903,Prairie Dogs,Iron Owls,1,19,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,9,9
+903,Prairie Dogs,Iron Owls,1,20,Prairie Dogs,Iron Owls,Iron Owls,Attack error,10,9
+903,Prairie Dogs,Iron Owls,1,21,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,10,10
+903,Prairie Dogs,Iron Owls,1,22,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,11,10
+903,Prairie Dogs,Iron Owls,1,23,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,12,10
+903,Prairie Dogs,Iron Owls,1,24,Prairie Dogs,Iron Owls,Iron Owls,Kill,13,10
+903,Prairie Dogs,Iron Owls,1,25,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,13,11
+903,Prairie Dogs,Iron Owls,1,26,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,14,11
+903,Prairie Dogs,Iron Owls,1,27,Prairie Dogs,Iron Owls,Prairie Dogs,Ace,15,11
+903,Prairie Dogs,Iron Owls,1,28,Prairie Dogs,Iron Owls,Iron Owls,Kill,16,11
+903,Prairie Dogs,Iron Owls,1,29,Iron Owls,Prairie Dogs,Iron Owls,Kill,16,12
+903,Prairie Dogs,Iron Owls,1,30,Iron Owls,Prairie Dogs,Iron Owls,Service error,16,13
+903,Prairie Dogs,Iron Owls,1,31,Iron Owls,Prairie Dogs,Iron Owls,Service error,16,14
+903,Prairie Dogs,Iron Owls,1,32,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,16,15
+903,Prairie Dogs,Iron Owls,1,33,Prairie Dogs,Iron Owls,Iron Owls,Ace,17,15
+903,Prairie Dogs,Iron Owls,1,34,Iron Owls,Prairie Dogs,Iron Owls,Block,17,16
+903,Prairie Dogs,Iron Owls,1,35,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,17,17
+903,Prairie Dogs,Iron Owls,1,36,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,18,17
+903,Prairie Dogs,Iron Owls,1,37,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,19,17
+903,Prairie Dogs,Iron Owls,1,38,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,20,17
+903,Prairie Dogs,Iron Owls,1,39,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,21,17
+903,Prairie Dogs,Iron Owls,1,40,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,22,17
+903,Prairie Dogs,Iron Owls,1,41,Prairie Dogs,Iron Owls,Iron Owls,Attack error,23,17
+903,Prairie Dogs,Iron Owls,1,42,Iron Owls,Prairie Dogs,Prairie Dogs,Ace,23,18
+903,Prairie Dogs,Iron Owls,1,43,Prairie Dogs,Iron Owls,Iron Owls,Attack error,24,18
+903,Prairie Dogs,Iron Owls,1,44,Iron Owls,Prairie Dogs,Iron Owls,Kill,24,19
+903,Prairie Dogs,Iron Owls,1,45,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,24,20
+903,Prairie Dogs,Iron Owls,2,1,Prairie Dogs,Iron Owls,Iron Owls,Kill,0,0
+903,Prairie Dogs,Iron Owls,2,2,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,0,1
+903,Prairie Dogs,Iron Owls,2,3,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,1,1
+903,Prairie Dogs,Iron Owls,2,4,Prairie Dogs,Iron Owls,Iron Owls,Kill,2,1
+903,Prairie Dogs,Iron Owls,2,5,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,2,2
+903,Prairie Dogs,Iron Owls,2,6,Prairie Dogs,Iron Owls,Iron Owls,Kill,3,2
+903,Prairie Dogs,Iron Owls,2,7,Iron Owls,Prairie Dogs,Iron Owls,Attack error,3,3
+903,Prairie Dogs,Iron Owls,2,8,Iron Owls,Prairie Dogs,Iron Owls,Kill,3,4
+903,Prairie Dogs,Iron Owls,2,9,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,3,5
+903,Prairie Dogs,Iron Owls,2,10,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,4,5
+903,Prairie Dogs,Iron Owls,2,11,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,5,5
+903,Prairie Dogs,Iron Owls,2,12,Prairie Dogs,Iron Owls,Iron Owls,Kill,6,5
+903,Prairie Dogs,Iron Owls,2,13,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,6,6
+903,Prairie Dogs,Iron Owls,2,14,Prairie Dogs,Iron Owls,Iron Owls,Kill,7,6
+903,Prairie Dogs,Iron Owls,2,15,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,7,7
+903,Prairie Dogs,Iron Owls,2,16,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,8,7
+903,Prairie Dogs,Iron Owls,2,17,Prairie Dogs,Iron Owls,Iron Owls,Kill,9,7
+903,Prairie Dogs,Iron Owls,2,18,Iron Owls,Prairie Dogs,Prairie Dogs,Block,9,8
+903,Prairie Dogs,Iron Owls,2,19,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,10,8
+903,Prairie Dogs,Iron Owls,2,20,Prairie Dogs,Iron Owls,Iron Owls,Attack error,11,8
+903,Prairie Dogs,Iron Owls,2,21,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,11,9
+903,Prairie Dogs,Iron Owls,2,22,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,12,9
+903,Prairie Dogs,Iron Owls,2,23,Prairie Dogs,Iron Owls,Iron Owls,Attack error,13,9
+903,Prairie Dogs,Iron Owls,2,24,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,13,10
+903,Prairie Dogs,Iron Owls,2,25,Prairie Dogs,Iron Owls,Iron Owls,Kill,14,10
+903,Prairie Dogs,Iron Owls,2,26,Iron Owls,Prairie Dogs,Prairie Dogs,Block,14,11
+903,Prairie Dogs,Iron Owls,2,27,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,15,11
+903,Prairie Dogs,Iron Owls,2,28,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,16,11
+903,Prairie Dogs,Iron Owls,2,29,Prairie Dogs,Iron Owls,Iron Owls,Kill,17,11
+903,Prairie Dogs,Iron Owls,2,30,Iron Owls,Prairie Dogs,Iron Owls,Kill,17,12
+903,Prairie Dogs,Iron Owls,2,31,Iron Owls,Prairie Dogs,Prairie Dogs,Block,17,13
+903,Prairie Dogs,Iron Owls,2,32,Prairie Dogs,Iron Owls,Iron Owls,Kill,18,13
+903,Prairie Dogs,Iron Owls,2,33,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,18,14
+903,Prairie Dogs,Iron Owls,2,34,Prairie Dogs,Iron Owls,Iron Owls,Kill,19,14
+903,Prairie Dogs,Iron Owls,2,35,Iron Owls,Prairie Dogs,Iron Owls,Service error,19,15
+903,Prairie Dogs,Iron Owls,2,36,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,19,16
+903,Prairie Dogs,Iron Owls,2,37,Prairie Dogs,Iron Owls,Iron Owls,Service error,20,16
+903,Prairie Dogs,Iron Owls,2,38,Iron Owls,Prairie Dogs,Iron Owls,Kill,20,17
+903,Prairie Dogs,Iron Owls,2,39,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,20,18
+903,Prairie Dogs,Iron Owls,2,40,Prairie Dogs,Iron Owls,Iron Owls,Block,21,18
+903,Prairie Dogs,Iron Owls,2,41,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,21,19
+903,Prairie Dogs,Iron Owls,2,42,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,22,19
+903,Prairie Dogs,Iron Owls,2,43,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,23,19
+903,Prairie Dogs,Iron Owls,2,44,Prairie Dogs,Iron Owls,Iron Owls,Kill,24,19
+903,Prairie Dogs,Iron Owls,2,45,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,24,20
+903,Prairie Dogs,Iron Owls,3,1,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,0,0
+903,Prairie Dogs,Iron Owls,3,2,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,1,0
+903,Prairie Dogs,Iron Owls,3,3,Prairie Dogs,Iron Owls,Iron Owls,Kill,2,0
+903,Prairie Dogs,Iron Owls,3,4,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,2,1
+903,Prairie Dogs,Iron Owls,3,5,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,3,1
+903,Prairie Dogs,Iron Owls,3,6,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,4,1
+903,Prairie Dogs,Iron Owls,3,7,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,5,1
+903,Prairie Dogs,Iron Owls,3,8,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,6,1
+903,Prairie Dogs,Iron Owls,3,9,Prairie Dogs,Iron Owls,Iron Owls,Kill,7,1
+903,Prairie Dogs,Iron Owls,3,10,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,7,2
+903,Prairie Dogs,Iron Owls,3,11,Prairie Dogs,Iron Owls,Iron Owls,Kill,8,2
+903,Prairie Dogs,Iron Owls,3,12,Iron Owls,Prairie Dogs,Iron Owls,Ace,8,3
+903,Prairie Dogs,Iron Owls,3,13,Iron Owls,Prairie Dogs,Iron Owls,Block,8,4
+903,Prairie Dogs,Iron Owls,3,14,Iron Owls,Prairie Dogs,Iron Owls,Attack error,8,5
+903,Prairie Dogs,Iron Owls,3,15,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,8,6
+903,Prairie Dogs,Iron Owls,3,16,Prairie Dogs,Iron Owls,Iron Owls,Ace,9,6
+903,Prairie Dogs,Iron Owls,3,17,Iron Owls,Prairie Dogs,Iron Owls,Kill,9,7
+903,Prairie Dogs,Iron Owls,3,18,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,9,8
+903,Prairie Dogs,Iron Owls,3,19,Prairie Dogs,Iron Owls,Iron Owls,Kill,10,8
+903,Prairie Dogs,Iron Owls,3,20,Iron Owls,Prairie Dogs,Prairie Dogs,Ace,10,9
+903,Prairie Dogs,Iron Owls,3,21,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,11,9
+903,Prairie Dogs,Iron Owls,3,22,Prairie Dogs,Iron Owls,Iron Owls,Kill,12,9
+903,Prairie Dogs,Iron Owls,3,23,Iron Owls,Prairie Dogs,Prairie Dogs,Block,12,10
+903,Prairie Dogs,Iron Owls,3,24,Prairie Dogs,Iron Owls,Iron Owls,Kill,13,10
+903,Prairie Dogs,Iron Owls,3,25,Iron Owls,Prairie Dogs,Iron Owls,Block,13,11
+903,Prairie Dogs,Iron Owls,3,26,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,13,12
+903,Prairie Dogs,Iron Owls,3,27,Prairie Dogs,Iron Owls,Iron Owls,Kill,14,12
+903,Prairie Dogs,Iron Owls,3,28,Iron Owls,Prairie Dogs,Prairie Dogs,Block,14,13
+903,Prairie Dogs,Iron Owls,3,29,Prairie Dogs,Iron Owls,Iron Owls,Ace,15,13
+903,Prairie Dogs,Iron Owls,3,30,Iron Owls,Prairie Dogs,Iron Owls,Block,15,14
+903,Prairie Dogs,Iron Owls,3,31,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,15,15
+903,Prairie Dogs,Iron Owls,3,32,Prairie Dogs,Iron Owls,Iron Owls,Kill,16,15
+903,Prairie Dogs,Iron Owls,3,33,Iron Owls,Prairie Dogs,Iron Owls,Service error,16,16
+903,Prairie Dogs,Iron Owls,3,34,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,16,17
+903,Prairie Dogs,Iron Owls,3,35,Prairie Dogs,Iron Owls,Iron Owls,Kill,17,17
+903,Prairie Dogs,Iron Owls,3,36,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,17,18
+903,Prairie Dogs,Iron Owls,3,37,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,18,18
+903,Prairie Dogs,Iron Owls,3,38,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,19,18
+903,Prairie Dogs,Iron Owls,3,39,Prairie Dogs,Iron Owls,Iron Owls,Attack error,20,18
+903,Prairie Dogs,Iron Owls,3,40,Iron Owls,Prairie Dogs,Iron Owls,Kill,20,19
+903,Prairie Dogs,Iron Owls,3,41,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,20,20
+903,Prairie Dogs,Iron Owls,3,42,Prairie Dogs,Iron Owls,Iron Owls,Block,21,20
+903,Prairie Dogs,Iron Owls,3,43,Iron Owls,Prairie Dogs,Iron Owls,Kill,21,21
+903,Prairie Dogs,Iron Owls,3,44,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,21,22
+903,Prairie Dogs,Iron Owls,3,45,Prairie Dogs,Iron Owls,Prairie Dogs,Block,22,22
+903,Prairie Dogs,Iron Owls,3,46,Prairie Dogs,Iron Owls,Iron Owls,Kill,23,22
+903,Prairie Dogs,Iron Owls,3,47,Iron Owls,Prairie Dogs,Iron Owls,Kill,23,23
+903,Prairie Dogs,Iron Owls,3,48,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,23,24
+903,Prairie Dogs,Iron Owls,3,49,Prairie Dogs,Iron Owls,Prairie Dogs,Block,24,24
+903,Prairie Dogs,Iron Owls,3,50,Prairie Dogs,Iron Owls,Iron Owls,Kill,25,24
+903,Prairie Dogs,Iron Owls,3,51,Iron Owls,Prairie Dogs,Iron Owls,Ace,25,25
+903,Prairie Dogs,Iron Owls,3,52,Iron Owls,Prairie Dogs,Iron Owls,Block,25,26
+903,Prairie Dogs,Iron Owls,4,1,Iron Owls,Prairie Dogs,Iron Owls,Kill,0,0
+903,Prairie Dogs,Iron Owls,4,2,Iron Owls,Prairie Dogs,Iron Owls,Attack error,0,1
+903,Prairie Dogs,Iron Owls,4,3,Iron Owls,Prairie Dogs,Iron Owls,Kill,0,2
+903,Prairie Dogs,Iron Owls,4,4,Iron Owls,Prairie Dogs,Prairie Dogs,Ace,0,3
+903,Prairie Dogs,Iron Owls,4,5,Prairie Dogs,Iron Owls,Iron Owls,Ace,1,3
+903,Prairie Dogs,Iron Owls,4,6,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,1,4
+903,Prairie Dogs,Iron Owls,4,7,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,2,4
+903,Prairie Dogs,Iron Owls,4,8,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,3,4
+903,Prairie Dogs,Iron Owls,4,9,Prairie Dogs,Iron Owls,Iron Owls,Kill,4,4
+903,Prairie Dogs,Iron Owls,4,10,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,4,5
+903,Prairie Dogs,Iron Owls,4,11,Prairie Dogs,Iron Owls,Prairie Dogs,Ace,5,5
+903,Prairie Dogs,Iron Owls,4,12,Prairie Dogs,Iron Owls,Iron Owls,Kill,6,5
+903,Prairie Dogs,Iron Owls,4,13,Iron Owls,Prairie Dogs,Iron Owls,Ace,6,6
+903,Prairie Dogs,Iron Owls,4,14,Iron Owls,Prairie Dogs,Iron Owls,Block,6,7
+903,Prairie Dogs,Iron Owls,4,15,Iron Owls,Prairie Dogs,Iron Owls,Kill,6,8
+903,Prairie Dogs,Iron Owls,4,16,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,6,9
+903,Prairie Dogs,Iron Owls,4,17,Prairie Dogs,Iron Owls,Iron Owls,Attack error,7,9
+903,Prairie Dogs,Iron Owls,4,18,Iron Owls,Prairie Dogs,Iron Owls,Kill,7,10
+903,Prairie Dogs,Iron Owls,4,19,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,7,11
+903,Prairie Dogs,Iron Owls,4,20,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,8,11
+903,Prairie Dogs,Iron Owls,4,21,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,9,11
+903,Prairie Dogs,Iron Owls,4,22,Prairie Dogs,Iron Owls,Iron Owls,Kill,10,11
+903,Prairie Dogs,Iron Owls,4,23,Iron Owls,Prairie Dogs,Iron Owls,Kill,10,12
+903,Prairie Dogs,Iron Owls,4,24,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,10,13
+903,Prairie Dogs,Iron Owls,4,25,Prairie Dogs,Iron Owls,Iron Owls,Attack error,11,13
+903,Prairie Dogs,Iron Owls,4,26,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,11,14
+903,Prairie Dogs,Iron Owls,4,27,Prairie Dogs,Iron Owls,Iron Owls,Kill,12,14
+903,Prairie Dogs,Iron Owls,4,28,Iron Owls,Prairie Dogs,Iron Owls,Kill,12,15
+903,Prairie Dogs,Iron Owls,4,29,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,12,16
+903,Prairie Dogs,Iron Owls,4,30,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,13,16
+903,Prairie Dogs,Iron Owls,4,31,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,14,16
+903,Prairie Dogs,Iron Owls,4,32,Prairie Dogs,Iron Owls,Iron Owls,Service error,15,16
+903,Prairie Dogs,Iron Owls,4,33,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,15,17
+903,Prairie Dogs,Iron Owls,4,34,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,16,17
+903,Prairie Dogs,Iron Owls,4,35,Prairie Dogs,Iron Owls,Iron Owls,Service error,17,17
+903,Prairie Dogs,Iron Owls,4,36,Iron Owls,Prairie Dogs,Iron Owls,Kill,17,18
+903,Prairie Dogs,Iron Owls,4,37,Iron Owls,Prairie Dogs,Prairie Dogs,Block,17,19
+903,Prairie Dogs,Iron Owls,4,38,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,18,19
+903,Prairie Dogs,Iron Owls,4,39,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,19,19
+903,Prairie Dogs,Iron Owls,4,40,Prairie Dogs,Iron Owls,Iron Owls,Kill,20,19
+903,Prairie Dogs,Iron Owls,4,41,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,20,20
+903,Prairie Dogs,Iron Owls,4,42,Prairie Dogs,Iron Owls,Iron Owls,Kill,21,20
+903,Prairie Dogs,Iron Owls,4,43,Iron Owls,Prairie Dogs,Prairie Dogs,Block,21,21
+903,Prairie Dogs,Iron Owls,4,44,Prairie Dogs,Iron Owls,Iron Owls,Kill,22,21
+903,Prairie Dogs,Iron Owls,4,45,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,22,22
+903,Prairie Dogs,Iron Owls,4,46,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,23,22
+903,Prairie Dogs,Iron Owls,4,47,Prairie Dogs,Iron Owls,Iron Owls,Kill,24,22
+903,Prairie Dogs,Iron Owls,4,48,Iron Owls,Prairie Dogs,Iron Owls,Service error,24,23
+903,Prairie Dogs,Iron Owls,4,49,Iron Owls,Prairie Dogs,Prairie Dogs,Ace,24,24
+903,Prairie Dogs,Iron Owls,4,50,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,25,24
+907,Ridge Hawks,Canyon Wrens,1,1,Ridge Hawks,Canyon Wrens,Ridge Hawks,Block,0,0
+907,Ridge Hawks,Canyon Wrens,1,2,Ridge Hawks,Canyon Wrens,Canyon Wrens,Service error,1,0
+907,Ridge Hawks,Canyon Wrens,1,3,Canyon Wrens,Ridge Hawks,Ridge Hawks,Attack error,1,1
+907,Ridge Hawks,Canyon Wrens,1,4,Ridge Hawks,Canyon Wrens,Ridge Hawks,Block,2,1
+907,Ridge Hawks,Canyon Wrens,1,5,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,3,1
+907,Ridge Hawks,Canyon Wrens,1,6,Ridge Hawks,Canyon Wrens,Ridge Hawks,Service error,4,1
+907,Ridge Hawks,Canyon Wrens,1,7,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,5,1
+907,Ridge Hawks,Canyon Wrens,1,8,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,5,2
+907,Ridge Hawks,Canyon Wrens,1,9,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,6,2
+907,Ridge Hawks,Canyon Wrens,1,10,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,7,2
+907,Ridge Hawks,Canyon Wrens,1,11,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,7,3
+907,Ridge Hawks,Canyon Wrens,1,12,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,8,3
+907,Ridge Hawks,Canyon Wrens,1,13,Canyon Wrens,Ridge Hawks,Ridge Hawks,Block,8,4
+907,Ridge Hawks,Canyon Wrens,1,14,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,9,4
+907,Ridge Hawks,Canyon Wrens,1,15,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,9,5
+907,Ridge Hawks,Canyon Wrens,1,16,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,10,5
+907,Ridge Hawks,Canyon Wrens,1,17,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,11,5
+907,Ridge Hawks,Canyon Wrens,1,18,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,12,5
+907,Ridge Hawks,Canyon Wrens,1,19,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,12,6
+907,Ridge Hawks,Canyon Wrens,1,20,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,12,7
+907,Ridge Hawks,Canyon Wrens,1,21,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,12,8
+907,Ridge Hawks,Canyon Wrens,1,22,Canyon Wrens,Ridge Hawks,Ridge Hawks,Attack error,12,9
+907,Ridge Hawks,Canyon Wrens,1,23,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,13,9
+907,Ridge Hawks,Canyon Wrens,1,24,Canyon Wrens,Ridge Hawks,Ridge Hawks,Service error,13,10
+907,Ridge Hawks,Canyon Wrens,1,25,Ridge Hawks,Canyon Wrens,Ridge Hawks,Attack error,14,10
+907,Ridge Hawks,Canyon Wrens,1,26,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,15,10
+907,Ridge Hawks,Canyon Wrens,1,27,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,16,10
+907,Ridge Hawks,Canyon Wrens,1,28,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,16,11
+907,Ridge Hawks,Canyon Wrens,1,29,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,17,11
+907,Ridge Hawks,Canyon Wrens,1,30,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,18,11
+907,Ridge Hawks,Canyon Wrens,1,31,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,19,11
+907,Ridge Hawks,Canyon Wrens,1,32,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,19,12
+907,Ridge Hawks,Canyon Wrens,1,33,Ridge Hawks,Canyon Wrens,Canyon Wrens,Ace,20,12
+907,Ridge Hawks,Canyon Wrens,1,34,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,20,13
+907,Ridge Hawks,Canyon Wrens,1,35,Ridge Hawks,Canyon Wrens,Canyon Wrens,Block,21,13
+907,Ridge Hawks,Canyon Wrens,1,36,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,21,14
+907,Ridge Hawks,Canyon Wrens,1,37,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,22,14
+907,Ridge Hawks,Canyon Wrens,1,38,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,23,14
+907,Ridge Hawks,Canyon Wrens,1,39,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,23,15
+907,Ridge Hawks,Canyon Wrens,1,40,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,24,15
+907,Ridge Hawks,Canyon Wrens,1,41,Canyon Wrens,Ridge Hawks,Ridge Hawks,Attack error,24,16
+907,Ridge Hawks,Canyon Wrens,2,1,Ridge Hawks,Canyon Wrens,Canyon Wrens,Attack error,0,0
+907,Ridge Hawks,Canyon Wrens,2,2,Canyon Wrens,Ridge Hawks,Ridge Hawks,Block,0,1
+907,Ridge Hawks,Canyon Wrens,2,3,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,1,1
+907,Ridge Hawks,Canyon Wrens,2,4,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,2,1
+907,Ridge Hawks,Canyon Wrens,2,5,Ridge Hawks,Canyon Wrens,Canyon Wrens,Block,3,1
+907,Ridge Hawks,Canyon Wrens,2,6,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,3,2
+907,Ridge Hawks,Canyon Wrens,2,7,Canyon Wrens,Ridge Hawks,Canyon Wrens,Service error,3,3
+907,Ridge Hawks,Canyon Wrens,2,8,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,3,4
+907,Ridge Hawks,Canyon Wrens,2,9,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,4,4
+907,Ridge Hawks,Canyon Wrens,2,10,Canyon Wrens,Ridge Hawks,Ridge Hawks,Service error,4,5
+907,Ridge Hawks,Canyon Wrens,2,11,Ridge Hawks,Canyon Wrens,Ridge Hawks,Block,5,5
+907,Ridge Hawks,Canyon Wrens,2,12,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,6,5
+907,Ridge Hawks,Canyon Wrens,2,13,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,6,6
+907,Ridge Hawks,Canyon Wrens,2,14,Ridge Hawks,Canyon Wrens,Canyon Wrens,Ace,7,6
+907,Ridge Hawks,Canyon Wrens,2,15,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,7,7
+907,Ridge Hawks,Canyon Wrens,2,16,Canyon Wrens,Ridge Hawks,Canyon Wrens,Attack error,7,8
+907,Ridge Hawks,Canyon Wrens,2,17,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,7,9
+907,Ridge Hawks,Canyon Wrens,2,18,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,8,9
+907,Ridge Hawks,Canyon Wrens,2,19,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,9,9
+907,Ridge Hawks,Canyon Wrens,2,20,Ridge Hawks,Canyon Wrens,Ridge Hawks,Ace,10,9
+907,Ridge Hawks,Canyon Wrens,2,21,Ridge Hawks,Canyon Wrens,Ridge Hawks,Service error,11,9
+907,Ridge Hawks,Canyon Wrens,2,22,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,12,9
+907,Ridge Hawks,Canyon Wrens,2,23,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,13,9
+907,Ridge Hawks,Canyon Wrens,2,24,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,14,9
+907,Ridge Hawks,Canyon Wrens,2,25,Ridge Hawks,Canyon Wrens,Canyon Wrens,Service error,15,9
+907,Ridge Hawks,Canyon Wrens,2,26,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,15,10
+907,Ridge Hawks,Canyon Wrens,2,27,Ridge Hawks,Canyon Wrens,Canyon Wrens,Ace,16,10
+907,Ridge Hawks,Canyon Wrens,2,28,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,16,11
+907,Ridge Hawks,Canyon Wrens,2,29,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,17,11
+907,Ridge Hawks,Canyon Wrens,2,30,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,17,12
+907,Ridge Hawks,Canyon Wrens,2,31,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,18,12
+907,Ridge Hawks,Canyon Wrens,2,32,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,19,12
+907,Ridge Hawks,Canyon Wrens,2,33,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,19,13
+907,Ridge Hawks,Canyon Wrens,2,34,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,19,14
+907,Ridge Hawks,Canyon Wrens,2,35,Ridge Hawks,Canyon Wrens,Ridge Hawks,Block,20,14
+907,Ridge Hawks,Canyon Wrens,2,36,Ridge Hawks,Canyon Wrens,Canyon Wrens,Ace,21,14
+907,Ridge Hawks,Canyon Wrens,2,37,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,21,15
+907,Ridge Hawks,Canyon Wrens,2,38,Ridge Hawks,Canyon Wrens,Ridge Hawks,Attack error,22,15
+907,Ridge Hawks,Canyon Wrens,2,39,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,23,15
+907,Ridge Hawks,Canyon Wrens,2,40,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,23,16
+907,Ridge Hawks,Canyon Wrens,2,41,Ridge Hawks,Canyon Wrens,Canyon Wrens,Block,24,16
+907,Ridge Hawks,Canyon Wrens,2,42,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,24,17
+907,Ridge Hawks,Canyon Wrens,2,43,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,24,18
+907,Ridge Hawks,Canyon Wrens,3,1,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,0,0
+907,Ridge Hawks,Canyon Wrens,3,2,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,0,1
+907,Ridge Hawks,Canyon Wrens,3,3,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,1,1
+907,Ridge Hawks,Canyon Wrens,3,4,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,2,1
+907,Ridge Hawks,Canyon Wrens,3,5,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,3,1
+907,Ridge Hawks,Canyon Wrens,3,6,Canyon Wrens,Ridge Hawks,Ridge Hawks,Attack error,3,2
+907,Ridge Hawks,Canyon Wrens,3,7,Ridge Hawks,Canyon Wrens,Ridge Hawks,Attack error,4,2
+907,Ridge Hawks,Canyon Wrens,3,8,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,5,2
+907,Ridge Hawks,Canyon Wrens,3,9,Ridge Hawks,Canyon Wrens,Ridge Hawks,Block,6,2
+907,Ridge Hawks,Canyon Wrens,3,10,Ridge Hawks,Canyon Wrens,Canyon Wrens,Block,7,2
+907,Ridge Hawks,Canyon Wrens,3,11,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,7,3
+907,Ridge Hawks,Canyon Wrens,3,12,Ridge Hawks,Canyon Wrens,Canyon Wrens,Attack error,8,3
+907,Ridge Hawks,Canyon Wrens,3,13,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,8,4
+907,Ridge Hawks,Canyon Wrens,3,14,Canyon Wrens,Ridge Hawks,Ridge Hawks,Ace,8,5
+907,Ridge Hawks,Canyon Wrens,3,15,Ridge Hawks,Canyon Wrens,Ridge Hawks,Attack error,9,5
+907,Ridge Hawks,Canyon Wrens,3,16,Ridge Hawks,Canyon Wrens,Ridge Hawks,Attack error,10,5
+907,Ridge Hawks,Canyon Wrens,3,17,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,11,5
+907,Ridge Hawks,Canyon Wrens,3,18,Ridge Hawks,Canyon Wrens,Canyon Wrens,Ace,12,5
+907,Ridge Hawks,Canyon Wrens,3,19,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,12,6
+907,Ridge Hawks,Canyon Wrens,3,20,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,12,7
+907,Ridge Hawks,Canyon Wrens,3,21,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,13,7
+907,Ridge Hawks,Canyon Wrens,3,22,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,14,7
+907,Ridge Hawks,Canyon Wrens,3,23,Canyon Wrens,Ridge Hawks,Ridge Hawks,Service error,14,8
+907,Ridge Hawks,Canyon Wrens,3,24,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,15,8
+907,Ridge Hawks,Canyon Wrens,3,25,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,16,8
+907,Ridge Hawks,Canyon Wrens,3,26,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,17,8
+907,Ridge Hawks,Canyon Wrens,3,27,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,17,9
+907,Ridge Hawks,Canyon Wrens,3,28,Canyon Wrens,Ridge Hawks,Canyon Wrens,Kill,17,10
+907,Ridge Hawks,Canyon Wrens,3,29,Canyon Wrens,Ridge Hawks,Ridge Hawks,Kill,17,11
+907,Ridge Hawks,Canyon Wrens,3,30,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,18,11
+907,Ridge Hawks,Canyon Wrens,3,31,Ridge Hawks,Canyon Wrens,Canyon Wrens,Kill,19,11
+907,Ridge Hawks,Canyon Wrens,3,32,Canyon Wrens,Ridge Hawks,Ridge Hawks,Attack error,19,12
+907,Ridge Hawks,Canyon Wrens,3,33,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,20,12
+907,Ridge Hawks,Canyon Wrens,3,34,Ridge Hawks,Canyon Wrens,Canyon Wrens,Attack error,21,12
+907,Ridge Hawks,Canyon Wrens,3,35,Canyon Wrens,Ridge Hawks,Ridge Hawks,Block,21,13
+907,Ridge Hawks,Canyon Wrens,3,36,Ridge Hawks,Canyon Wrens,Ridge Hawks,Block,22,13
+907,Ridge Hawks,Canyon Wrens,3,37,Ridge Hawks,Canyon Wrens,Ridge Hawks,Attack error,23,13
+907,Ridge Hawks,Canyon Wrens,3,38,Ridge Hawks,Canyon Wrens,Ridge Hawks,Kill,24,13
+909,Ridge Hawks,Delta Herons,1,1,Ridge Hawks,Delta Herons,Delta Herons,Kill,0,0
+909,Ridge Hawks,Delta Herons,1,2,Delta Herons,Ridge Hawks,Delta Herons,Kill,0,1
+909,Ridge Hawks,Delta Herons,1,3,Delta Herons,Ridge Hawks,Delta Herons,Kill,0,2
+909,Ridge Hawks,Delta Herons,1,4,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,0,3
+909,Ridge Hawks,Delta Herons,1,5,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,1,3
+909,Ridge Hawks,Delta Herons,1,6,Ridge Hawks,Delta Herons,Delta Herons,Kill,2,3
+909,Ridge Hawks,Delta Herons,1,7,Delta Herons,Ridge Hawks,Ridge Hawks,Block,2,4
+909,Ridge Hawks,Delta Herons,1,8,Ridge Hawks,Delta Herons,Ridge Hawks,Block,3,4
+909,Ridge Hawks,Delta Herons,1,9,Ridge Hawks,Delta Herons,Delta Herons,Kill,4,4
+909,Ridge Hawks,Delta Herons,1,10,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,4,5
+909,Ridge Hawks,Delta Herons,1,11,Ridge Hawks,Delta Herons,Ridge Hawks,Attack error,5,5
+909,Ridge Hawks,Delta Herons,1,12,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,6,5
+909,Ridge Hawks,Delta Herons,1,13,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,7,5
+909,Ridge Hawks,Delta Herons,1,14,Ridge Hawks,Delta Herons,Ridge Hawks,Attack error,8,5
+909,Ridge Hawks,Delta Herons,1,15,Ridge Hawks,Delta Herons,Delta Herons,Kill,9,5
+909,Ridge Hawks,Delta Herons,1,16,Delta Herons,Ridge Hawks,Delta Herons,Ace,9,6
+909,Ridge Hawks,Delta Herons,1,17,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,9,7
+909,Ridge Hawks,Delta Herons,1,18,Ridge Hawks,Delta Herons,Delta Herons,Attack error,10,7
+909,Ridge Hawks,Delta Herons,1,19,Delta Herons,Ridge Hawks,Ridge Hawks,Service error,10,8
+909,Ridge Hawks,Delta Herons,1,20,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,11,8
+909,Ridge Hawks,Delta Herons,1,21,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,12,8
+909,Ridge Hawks,Delta Herons,1,22,Ridge Hawks,Delta Herons,Ridge Hawks,Block,13,8
+909,Ridge Hawks,Delta Herons,1,23,Ridge Hawks,Delta Herons,Delta Herons,Attack error,14,8
+909,Ridge Hawks,Delta Herons,1,24,Delta Herons,Ridge Hawks,Delta Herons,Kill,14,9
+909,Ridge Hawks,Delta Herons,1,25,Delta Herons,Ridge Hawks,Ridge Hawks,Service error,14,10
+909,Ridge Hawks,Delta Herons,1,26,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,15,10
+909,Ridge Hawks,Delta Herons,1,27,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,16,10
+909,Ridge Hawks,Delta Herons,1,28,Ridge Hawks,Delta Herons,Ridge Hawks,Block,17,10
+909,Ridge Hawks,Delta Herons,1,29,Ridge Hawks,Delta Herons,Delta Herons,Kill,18,10
+909,Ridge Hawks,Delta Herons,1,30,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,18,11
+909,Ridge Hawks,Delta Herons,1,31,Ridge Hawks,Delta Herons,Delta Herons,Kill,19,11
+909,Ridge Hawks,Delta Herons,1,32,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,19,12
+909,Ridge Hawks,Delta Herons,1,33,Ridge Hawks,Delta Herons,Delta Herons,Service error,20,12
+909,Ridge Hawks,Delta Herons,1,34,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,20,13
+909,Ridge Hawks,Delta Herons,1,35,Ridge Hawks,Delta Herons,Delta Herons,Service error,21,13
+909,Ridge Hawks,Delta Herons,1,36,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,21,14
+909,Ridge Hawks,Delta Herons,1,37,Ridge Hawks,Delta Herons,Delta Herons,Kill,22,14
+909,Ridge Hawks,Delta Herons,1,38,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,22,15
+909,Ridge Hawks,Delta Herons,1,39,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,23,15
+909,Ridge Hawks,Delta Herons,1,40,Ridge Hawks,Delta Herons,Delta Herons,Kill,24,15
+909,Ridge Hawks,Delta Herons,1,41,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,24,16
+909,Ridge Hawks,Delta Herons,2,1,Ridge Hawks,Delta Herons,Delta Herons,Service error,0,0
+909,Ridge Hawks,Delta Herons,2,2,Delta Herons,Ridge Hawks,Delta Herons,Kill,0,1
+909,Ridge Hawks,Delta Herons,2,3,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,0,2
+909,Ridge Hawks,Delta Herons,2,4,Ridge Hawks,Delta Herons,Delta Herons,Kill,1,2
+909,Ridge Hawks,Delta Herons,2,5,Delta Herons,Ridge Hawks,Delta Herons,Block,1,3
+909,Ridge Hawks,Delta Herons,2,6,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,1,4
+909,Ridge Hawks,Delta Herons,2,7,Ridge Hawks,Delta Herons,Delta Herons,Block,2,4
+909,Ridge Hawks,Delta Herons,2,8,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,2,5
+909,Ridge Hawks,Delta Herons,2,9,Ridge Hawks,Delta Herons,Ridge Hawks,Block,3,5
+909,Ridge Hawks,Delta Herons,2,10,Ridge Hawks,Delta Herons,Ridge Hawks,Attack error,4,5
+909,Ridge Hawks,Delta Herons,2,11,Ridge Hawks,Delta Herons,Delta Herons,Attack error,5,5
+909,Ridge Hawks,Delta Herons,2,12,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,5,6
+909,Ridge Hawks,Delta Herons,2,13,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,6,6
+909,Ridge Hawks,Delta Herons,2,14,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,7,6
+909,Ridge Hawks,Delta Herons,2,15,Ridge Hawks,Delta Herons,Delta Herons,Kill,8,6
+909,Ridge Hawks,Delta Herons,2,16,Delta Herons,Ridge Hawks,Delta Herons,Kill,8,7
+909,Ridge Hawks,Delta Herons,2,17,Delta Herons,Ridge Hawks,Delta Herons,Kill,8,8
+909,Ridge Hawks,Delta Herons,2,18,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,8,9
+909,Ridge Hawks,Delta Herons,2,19,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,9,9
+909,Ridge Hawks,Delta Herons,2,20,Ridge Hawks,Delta Herons,Delta Herons,Kill,10,9
+909,Ridge Hawks,Delta Herons,2,21,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,10,10
+909,Ridge Hawks,Delta Herons,2,22,Ridge Hawks,Delta Herons,Delta Herons,Attack error,11,10
+909,Ridge Hawks,Delta Herons,2,23,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,11,11
+909,Ridge Hawks,Delta Herons,2,24,Ridge Hawks,Delta Herons,Delta Herons,Service error,12,11
+909,Ridge Hawks,Delta Herons,2,25,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,12,12
+909,Ridge Hawks,Delta Herons,2,26,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,13,12
+909,Ridge Hawks,Delta Herons,2,27,Ridge Hawks,Delta Herons,Delta Herons,Kill,14,12
+909,Ridge Hawks,Delta Herons,2,28,Delta Herons,Ridge Hawks,Delta Herons,Service error,14,13
+909,Ridge Hawks,Delta Herons,2,29,Delta Herons,Ridge Hawks,Ridge Hawks,Service error,14,14
+909,Ridge Hawks,Delta Herons,2,30,Ridge Hawks,Delta Herons,Delta Herons,Service error,15,14
+909,Ridge Hawks,Delta Herons,2,31,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,15,15
+909,Ridge Hawks,Delta Herons,2,32,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,16,15
+909,Ridge Hawks,Delta Herons,2,33,Ridge Hawks,Delta Herons,Delta Herons,Kill,17,15
+909,Ridge Hawks,Delta Herons,2,34,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,17,16
+909,Ridge Hawks,Delta Herons,2,35,Ridge Hawks,Delta Herons,Ridge Hawks,Attack error,18,16
+909,Ridge Hawks,Delta Herons,2,36,Ridge Hawks,Delta Herons,Ridge Hawks,Service error,19,16
+909,Ridge Hawks,Delta Herons,2,37,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,20,16
+909,Ridge Hawks,Delta Herons,2,38,Ridge Hawks,Delta Herons,Delta Herons,Ace,21,16
+909,Ridge Hawks,Delta Herons,2,39,Delta Herons,Ridge Hawks,Delta Herons,Kill,21,17
+909,Ridge Hawks,Delta Herons,2,40,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,21,18
+909,Ridge Hawks,Delta Herons,2,41,Ridge Hawks,Delta Herons,Delta Herons,Block,22,18
+909,Ridge Hawks,Delta Herons,2,42,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,22,19
+909,Ridge Hawks,Delta Herons,2,43,Ridge Hawks,Delta Herons,Delta Herons,Kill,23,19
+909,Ridge Hawks,Delta Herons,2,44,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,23,20
+909,Ridge Hawks,Delta Herons,2,45,Ridge Hawks,Delta Herons,Delta Herons,Kill,24,20
+909,Ridge Hawks,Delta Herons,2,46,Delta Herons,Ridge Hawks,Delta Herons,Kill,24,21
+909,Ridge Hawks,Delta Herons,2,47,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,24,22
+909,Ridge Hawks,Delta Herons,3,1,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,0,0
+909,Ridge Hawks,Delta Herons,3,2,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,1,0
+909,Ridge Hawks,Delta Herons,3,3,Ridge Hawks,Delta Herons,Delta Herons,Kill,2,0
+909,Ridge Hawks,Delta Herons,3,4,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,2,1
+909,Ridge Hawks,Delta Herons,3,5,Ridge Hawks,Delta Herons,Delta Herons,Service error,3,1
+909,Ridge Hawks,Delta Herons,3,6,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,3,2
+909,Ridge Hawks,Delta Herons,3,7,Ridge Hawks,Delta Herons,Delta Herons,Kill,4,2
+909,Ridge Hawks,Delta Herons,3,8,Delta Herons,Ridge Hawks,Ridge Hawks,Block,4,3
+909,Ridge Hawks,Delta Herons,3,9,Ridge Hawks,Delta Herons,Delta Herons,Kill,5,3
+909,Ridge Hawks,Delta Herons,3,10,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,5,4
+909,Ridge Hawks,Delta Herons,3,11,Ridge Hawks,Delta Herons,Ridge Hawks,Service error,6,4
+909,Ridge Hawks,Delta Herons,3,12,Ridge Hawks,Delta Herons,Ridge Hawks,Service error,7,4
+909,Ridge Hawks,Delta Herons,3,13,Ridge Hawks,Delta Herons,Ridge Hawks,Block,8,4
+909,Ridge Hawks,Delta Herons,3,14,Ridge Hawks,Delta Herons,Ridge Hawks,Attack error,9,4
+909,Ridge Hawks,Delta Herons,3,15,Ridge Hawks,Delta Herons,Delta Herons,Kill,10,4
+909,Ridge Hawks,Delta Herons,3,16,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,10,5
+909,Ridge Hawks,Delta Herons,3,17,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,11,5
+909,Ridge Hawks,Delta Herons,3,18,Ridge Hawks,Delta Herons,Ridge Hawks,Attack error,12,5
+909,Ridge Hawks,Delta Herons,3,19,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,13,5
+909,Ridge Hawks,Delta Herons,3,20,Ridge Hawks,Delta Herons,Delta Herons,Kill,14,5
+909,Ridge Hawks,Delta Herons,3,21,Delta Herons,Ridge Hawks,Ridge Hawks,Ace,14,6
+909,Ridge Hawks,Delta Herons,3,22,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,15,6
+909,Ridge Hawks,Delta Herons,3,23,Ridge Hawks,Delta Herons,Delta Herons,Kill,16,6
+909,Ridge Hawks,Delta Herons,3,24,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,16,7
+909,Ridge Hawks,Delta Herons,3,25,Ridge Hawks,Delta Herons,Delta Herons,Kill,17,7
+909,Ridge Hawks,Delta Herons,3,26,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,17,8
+909,Ridge Hawks,Delta Herons,3,27,Ridge Hawks,Delta Herons,Delta Herons,Kill,18,8
+909,Ridge Hawks,Delta Herons,3,28,Delta Herons,Ridge Hawks,Delta Herons,Block,18,9
+909,Ridge Hawks,Delta Herons,3,29,Delta Herons,Ridge Hawks,Ridge Hawks,Block,18,10
+909,Ridge Hawks,Delta Herons,3,30,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,19,10
+909,Ridge Hawks,Delta Herons,3,31,Ridge Hawks,Delta Herons,Ridge Hawks,Service error,20,10
+909,Ridge Hawks,Delta Herons,3,32,Ridge Hawks,Delta Herons,Ridge Hawks,Kill,21,10
+909,Ridge Hawks,Delta Herons,3,33,Ridge Hawks,Delta Herons,Delta Herons,Kill,22,10
+909,Ridge Hawks,Delta Herons,3,34,Delta Herons,Ridge Hawks,Delta Herons,Block,22,11
+909,Ridge Hawks,Delta Herons,3,35,Delta Herons,Ridge Hawks,Delta Herons,Attack error,22,12
+909,Ridge Hawks,Delta Herons,3,36,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,22,13
+909,Ridge Hawks,Delta Herons,3,37,Ridge Hawks,Delta Herons,Delta Herons,Attack error,23,13
+909,Ridge Hawks,Delta Herons,3,38,Delta Herons,Ridge Hawks,Ridge Hawks,Kill,23,14
+909,Ridge Hawks,Delta Herons,3,39,Ridge Hawks,Delta Herons,Delta Herons,Kill,24,14
+909,Ridge Hawks,Delta Herons,3,40,Delta Herons,Ridge Hawks,Delta Herons,Kill,24,15
+909,Ridge Hawks,Delta Herons,3,41,Delta Herons,Ridge Hawks,Ridge Hawks,Attack error,24,16
+912,Lake Pike,Canyon Wrens,1,1,Lake Pike,Canyon Wrens,Lake Pike,Kill,0,0
+912,Lake Pike,Canyon Wrens,1,2,Lake Pike,Canyon Wrens,Lake Pike,Attack error,1,0
+912,Lake Pike,Canyon Wrens,1,3,Lake Pike,Canyon Wrens,Lake Pike,Kill,2,0
+912,Lake Pike,Canyon Wrens,1,4,Lake Pike,Canyon Wrens,Lake Pike,Ace,3,0
+912,Lake Pike,Canyon Wrens,1,5,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,4,0
+912,Lake Pike,Canyon Wrens,1,6,Canyon Wrens,Lake Pike,Lake Pike,Kill,4,1
+912,Lake Pike,Canyon Wrens,1,7,Lake Pike,Canyon Wrens,Lake Pike,Attack error,5,1
+912,Lake Pike,Canyon Wrens,1,8,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,6,1
+912,Lake Pike,Canyon Wrens,1,9,Canyon Wrens,Lake Pike,Lake Pike,Service error,6,2
+912,Lake Pike,Canyon Wrens,1,10,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,7,2
+912,Lake Pike,Canyon Wrens,1,11,Canyon Wrens,Lake Pike,Lake Pike,Attack error,7,3
+912,Lake Pike,Canyon Wrens,1,12,Lake Pike,Canyon Wrens,Lake Pike,Kill,8,3
+912,Lake Pike,Canyon Wrens,1,13,Lake Pike,Canyon Wrens,Lake Pike,Attack error,9,3
+912,Lake Pike,Canyon Wrens,1,14,Lake Pike,Canyon Wrens,Lake Pike,Attack error,10,3
+912,Lake Pike,Canyon Wrens,1,15,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,11,3
+912,Lake Pike,Canyon Wrens,1,16,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,11,4
+912,Lake Pike,Canyon Wrens,1,17,Canyon Wrens,Lake Pike,Canyon Wrens,Service error,11,5
+912,Lake Pike,Canyon Wrens,1,18,Canyon Wrens,Lake Pike,Lake Pike,Service error,11,6
+912,Lake Pike,Canyon Wrens,1,19,Lake Pike,Canyon Wrens,Lake Pike,Attack error,12,6
+912,Lake Pike,Canyon Wrens,1,20,Lake Pike,Canyon Wrens,Lake Pike,Kill,13,6
+912,Lake Pike,Canyon Wrens,1,21,Lake Pike,Canyon Wrens,Canyon Wrens,Block,14,6
+912,Lake Pike,Canyon Wrens,1,22,Canyon Wrens,Lake Pike,Canyon Wrens,Attack error,14,7
+912,Lake Pike,Canyon Wrens,1,23,Canyon Wrens,Lake Pike,Lake Pike,Kill,14,8
+912,Lake Pike,Canyon Wrens,1,24,Lake Pike,Canyon Wrens,Lake Pike,Attack error,15,8
+912,Lake Pike,Canyon Wrens,1,25,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,16,8
+912,Lake Pike,Canyon Wrens,1,26,Canyon Wrens,Lake Pike,Lake Pike,Kill,16,9
+912,Lake Pike,Canyon Wrens,1,27,Lake Pike,Canyon Wrens,Lake Pike,Service error,17,9
+912,Lake Pike,Canyon Wrens,1,28,Lake Pike,Canyon Wrens,Lake Pike,Kill,18,9
+912,Lake Pike,Canyon Wrens,1,29,Lake Pike,Canyon Wrens,Canyon Wrens,Attack error,19,9
+912,Lake Pike,Canyon Wrens,1,30,Canyon Wrens,Lake Pike,Lake Pike,Kill,19,10
+912,Lake Pike,Canyon Wrens,1,31,Lake Pike,Canyon Wrens,Lake Pike,Kill,20,10
+912,Lake Pike,Canyon Wrens,1,32,Lake Pike,Canyon Wrens,Canyon Wrens,Service error,21,10
+912,Lake Pike,Canyon Wrens,1,33,Canyon Wrens,Lake Pike,Canyon Wrens,Attack error,21,11
+912,Lake Pike,Canyon Wrens,1,34,Canyon Wrens,Lake Pike,Lake Pike,Block,21,12
+912,Lake Pike,Canyon Wrens,1,35,Lake Pike,Canyon Wrens,Lake Pike,Block,22,12
+912,Lake Pike,Canyon Wrens,1,36,Lake Pike,Canyon Wrens,Canyon Wrens,Service error,23,12
+912,Lake Pike,Canyon Wrens,1,37,Canyon Wrens,Lake Pike,Lake Pike,Kill,23,13
+912,Lake Pike,Canyon Wrens,1,38,Lake Pike,Canyon Wrens,Lake Pike,Service error,24,13
+912,Lake Pike,Canyon Wrens,2,1,Lake Pike,Canyon Wrens,Lake Pike,Kill,0,0
+912,Lake Pike,Canyon Wrens,2,2,Lake Pike,Canyon Wrens,Canyon Wrens,Service error,1,0
+912,Lake Pike,Canyon Wrens,2,3,Canyon Wrens,Lake Pike,Lake Pike,Kill,1,1
+912,Lake Pike,Canyon Wrens,2,4,Lake Pike,Canyon Wrens,Canyon Wrens,Block,2,1
+912,Lake Pike,Canyon Wrens,2,5,Canyon Wrens,Lake Pike,Lake Pike,Service error,2,2
+912,Lake Pike,Canyon Wrens,2,6,Lake Pike,Canyon Wrens,Canyon Wrens,Block,3,2
+912,Lake Pike,Canyon Wrens,2,7,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,3,3
+912,Lake Pike,Canyon Wrens,2,8,Canyon Wrens,Lake Pike,Lake Pike,Kill,3,4
+912,Lake Pike,Canyon Wrens,2,9,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,4,4
+912,Lake Pike,Canyon Wrens,2,10,Canyon Wrens,Lake Pike,Lake Pike,Attack error,4,5
+912,Lake Pike,Canyon Wrens,2,11,Lake Pike,Canyon Wrens,Lake Pike,Attack error,5,5
+912,Lake Pike,Canyon Wrens,2,12,Lake Pike,Canyon Wrens,Lake Pike,Service error,6,5
+912,Lake Pike,Canyon Wrens,2,13,Lake Pike,Canyon Wrens,Lake Pike,Service error,7,5
+912,Lake Pike,Canyon Wrens,2,14,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,8,5
+912,Lake Pike,Canyon Wrens,2,15,Canyon Wrens,Lake Pike,Canyon Wrens,Block,8,6
+912,Lake Pike,Canyon Wrens,2,16,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,8,7
+912,Lake Pike,Canyon Wrens,2,17,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,8,8
+912,Lake Pike,Canyon Wrens,2,18,Canyon Wrens,Lake Pike,Lake Pike,Service error,8,9
+912,Lake Pike,Canyon Wrens,2,19,Lake Pike,Canyon Wrens,Canyon Wrens,Attack error,9,9
+912,Lake Pike,Canyon Wrens,2,20,Canyon Wrens,Lake Pike,Lake Pike,Kill,9,10
+912,Lake Pike,Canyon Wrens,2,21,Lake Pike,Canyon Wrens,Lake Pike,Service error,10,10
+912,Lake Pike,Canyon Wrens,2,22,Lake Pike,Canyon Wrens,Lake Pike,Ace,11,10
+912,Lake Pike,Canyon Wrens,2,23,Lake Pike,Canyon Wrens,Lake Pike,Block,12,10
+912,Lake Pike,Canyon Wrens,2,24,Lake Pike,Canyon Wrens,Lake Pike,Attack error,13,10
+912,Lake Pike,Canyon Wrens,2,25,Lake Pike,Canyon Wrens,Canyon Wrens,Block,14,10
+912,Lake Pike,Canyon Wrens,2,26,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,14,11
+912,Lake Pike,Canyon Wrens,2,27,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,14,12
+912,Lake Pike,Canyon Wrens,2,28,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,14,13
+912,Lake Pike,Canyon Wrens,2,29,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,14,14
+912,Lake Pike,Canyon Wrens,2,30,Canyon Wrens,Lake Pike,Lake Pike,Kill,14,15
+912,Lake Pike,Canyon Wrens,2,31,Lake Pike,Canyon Wrens,Canyon Wrens,Block,15,15
+912,Lake Pike,Canyon Wrens,2,32,Canyon Wrens,Lake Pike,Canyon Wrens,Ace,15,16
+912,Lake Pike,Canyon Wrens,2,33,Canyon Wrens,Lake Pike,Lake Pike,Attack error,15,17
+912,Lake Pike,Canyon Wrens,2,34,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,16,17
+912,Lake Pike,Canyon Wrens,2,35,Canyon Wrens,Lake Pike,Lake Pike,Block,16,18
+912,Lake Pike,Canyon Wrens,2,36,Lake Pike,Canyon Wrens,Lake Pike,Kill,17,18
+912,Lake Pike,Canyon Wrens,2,37,Lake Pike,Canyon Wrens,Lake Pike,Block,18,18
+912,Lake Pike,Canyon Wrens,2,38,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,19,18
+912,Lake Pike,Canyon Wrens,2,39,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,19,19
+912,Lake Pike,Canyon Wrens,2,40,Canyon Wrens,Lake Pike,Lake Pike,Service error,19,20
+912,Lake Pike,Canyon Wrens,2,41,Lake Pike,Canyon Wrens,Lake Pike,Kill,20,20
+912,Lake Pike,Canyon Wrens,2,42,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,21,20
+912,Lake Pike,Canyon Wrens,2,43,Canyon Wrens,Lake Pike,Lake Pike,Kill,21,21
+912,Lake Pike,Canyon Wrens,2,44,Lake Pike,Canyon Wrens,Lake Pike,Attack error,22,21
+912,Lake Pike,Canyon Wrens,2,45,Lake Pike,Canyon Wrens,Canyon Wrens,Block,23,21
+912,Lake Pike,Canyon Wrens,2,46,Canyon Wrens,Lake Pike,Lake Pike,Kill,23,22
+912,Lake Pike,Canyon Wrens,2,47,Lake Pike,Canyon Wrens,Lake Pike,Block,24,22
+912,Lake Pike,Canyon Wrens,3,1,Lake Pike,Canyon Wrens,Lake Pike,Kill,0,0
+912,Lake Pike,Canyon Wrens,3,2,Lake Pike,Canyon Wrens,Canyon Wrens,Block,1,0
+912,Lake Pike,Canyon Wrens,3,3,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,1,1
+912,Lake Pike,Canyon Wrens,3,4,Canyon Wrens,Lake Pike,Canyon Wrens,Block,1,2
+912,Lake Pike,Canyon Wrens,3,5,Canyon Wrens,Lake Pike,Lake Pike,Kill,1,3
+912,Lake Pike,Canyon Wrens,3,6,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,2,3
+912,Lake Pike,Canyon Wrens,3,7,Canyon Wrens,Lake Pike,Lake Pike,Kill,2,4
+912,Lake Pike,Canyon Wrens,3,8,Lake Pike,Canyon Wrens,Lake Pike,Kill,3,4
+912,Lake Pike,Canyon Wrens,3,9,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,4,4
+912,Lake Pike,Canyon Wrens,3,10,Canyon Wrens,Lake Pike,Lake Pike,Service error,4,5
+912,Lake Pike,Canyon Wrens,3,11,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,5,5
+912,Lake Pike,Canyon Wrens,3,12,Canyon Wrens,Lake Pike,Lake Pike,Kill,5,6
+912,Lake Pike,Canyon Wrens,3,13,Lake Pike,Canyon Wrens,Lake Pike,Block,6,6
+912,Lake Pike,Canyon Wrens,3,14,Lake Pike,Canyon Wrens,Canyon Wrens,Service error,7,6
+912,Lake Pike,Canyon Wrens,3,15,Canyon Wrens,Lake Pike,Canyon Wrens,Service error,7,7
+912,Lake Pike,Canyon Wrens,3,16,Canyon Wrens,Lake Pike,Canyon Wrens,Attack error,7,8
+912,Lake Pike,Canyon Wrens,3,17,Canyon Wrens,Lake Pike,Lake Pike,Ace,7,9
+912,Lake Pike,Canyon Wrens,3,18,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,8,9
+912,Lake Pike,Canyon Wrens,3,19,Canyon Wrens,Lake Pike,Lake Pike,Service error,8,10
+912,Lake Pike,Canyon Wrens,3,20,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,9,10
+912,Lake Pike,Canyon Wrens,3,21,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,9,11
+912,Lake Pike,Canyon Wrens,3,22,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,9,12
+912,Lake Pike,Canyon Wrens,3,23,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,9,13
+912,Lake Pike,Canyon Wrens,3,24,Canyon Wrens,Lake Pike,Lake Pike,Attack error,9,14
+912,Lake Pike,Canyon Wrens,3,25,Lake Pike,Canyon Wrens,Lake Pike,Kill,10,14
+912,Lake Pike,Canyon Wrens,3,26,Lake Pike,Canyon Wrens,Lake Pike,Block,11,14
+912,Lake Pike,Canyon Wrens,3,27,Lake Pike,Canyon Wrens,Lake Pike,Kill,12,14
+912,Lake Pike,Canyon Wrens,3,28,Lake Pike,Canyon Wrens,Lake Pike,Kill,13,14
+912,Lake Pike,Canyon Wrens,3,29,Lake Pike,Canyon Wrens,Lake Pike,Attack error,14,14
+912,Lake Pike,Canyon Wrens,3,30,Lake Pike,Canyon Wrens,Lake Pike,Service error,15,14
+912,Lake Pike,Canyon Wrens,3,31,Lake Pike,Canyon Wrens,Lake Pike,Kill,16,14
+912,Lake Pike,Canyon Wrens,3,32,Lake Pike,Canyon Wrens,Canyon Wrens,Attack error,17,14
+912,Lake Pike,Canyon Wrens,3,33,Canyon Wrens,Lake Pike,Lake Pike,Kill,17,15
+912,Lake Pike,Canyon Wrens,3,34,Lake Pike,Canyon Wrens,Canyon Wrens,Block,18,15
+912,Lake Pike,Canyon Wrens,3,35,Canyon Wrens,Lake Pike,Lake Pike,Attack error,18,16
+912,Lake Pike,Canyon Wrens,3,36,Lake Pike,Canyon Wrens,Canyon Wrens,Ace,19,16
+912,Lake Pike,Canyon Wrens,3,37,Canyon Wrens,Lake Pike,Canyon Wrens,Block,19,17
+912,Lake Pike,Canyon Wrens,3,38,Canyon Wrens,Lake Pike,Lake Pike,Block,19,18
+912,Lake Pike,Canyon Wrens,3,39,Lake Pike,Canyon Wrens,Lake Pike,Block,20,18
+912,Lake Pike,Canyon Wrens,3,40,Lake Pike,Canyon Wrens,Canyon Wrens,Kill,21,18
+912,Lake Pike,Canyon Wrens,3,41,Canyon Wrens,Lake Pike,Lake Pike,Kill,21,19
+912,Lake Pike,Canyon Wrens,3,42,Lake Pike,Canyon Wrens,Lake Pike,Block,22,19
+912,Lake Pike,Canyon Wrens,3,43,Lake Pike,Canyon Wrens,Lake Pike,Kill,23,19
+912,Lake Pike,Canyon Wrens,3,44,Lake Pike,Canyon Wrens,Canyon Wrens,Block,24,19
+912,Lake Pike,Canyon Wrens,3,45,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,24,20
+912,Lake Pike,Canyon Wrens,3,46,Canyon Wrens,Lake Pike,Canyon Wrens,Kill,24,21
+912,Lake Pike,Canyon Wrens,3,47,Canyon Wrens,Lake Pike,Lake Pike,Attack error,24,22
+914,Lake Pike,Delta Herons,1,1,Lake Pike,Delta Herons,Delta Herons,Kill,0,0
+914,Lake Pike,Delta Herons,1,2,Delta Herons,Lake Pike,Lake Pike,Block,0,1
+914,Lake Pike,Delta Herons,1,3,Lake Pike,Delta Herons,Delta Herons,Service error,1,1
+914,Lake Pike,Delta Herons,1,4,Delta Herons,Lake Pike,Lake Pike,Kill,1,2
+914,Lake Pike,Delta Herons,1,5,Lake Pike,Delta Herons,Lake Pike,Kill,2,2
+914,Lake Pike,Delta Herons,1,6,Lake Pike,Delta Herons,Lake Pike,Kill,3,2
+914,Lake Pike,Delta Herons,1,7,Lake Pike,Delta Herons,Lake Pike,Kill,4,2
+914,Lake Pike,Delta Herons,1,8,Lake Pike,Delta Herons,Lake Pike,Kill,5,2
+914,Lake Pike,Delta Herons,1,9,Lake Pike,Delta Herons,Lake Pike,Kill,6,2
+914,Lake Pike,Delta Herons,1,10,Lake Pike,Delta Herons,Lake Pike,Attack error,7,2
+914,Lake Pike,Delta Herons,1,11,Lake Pike,Delta Herons,Lake Pike,Block,8,2
+914,Lake Pike,Delta Herons,1,12,Lake Pike,Delta Herons,Delta Herons,Kill,9,2
+914,Lake Pike,Delta Herons,1,13,Delta Herons,Lake Pike,Lake Pike,Attack error,9,3
+914,Lake Pike,Delta Herons,1,14,Lake Pike,Delta Herons,Delta Herons,Attack error,10,3
+914,Lake Pike,Delta Herons,1,15,Delta Herons,Lake Pike,Lake Pike,Kill,10,4
+914,Lake Pike,Delta Herons,1,16,Lake Pike,Delta Herons,Lake Pike,Kill,11,4
+914,Lake Pike,Delta Herons,1,17,Lake Pike,Delta Herons,Delta Herons,Kill,12,4
+914,Lake Pike,Delta Herons,1,18,Delta Herons,Lake Pike,Lake Pike,Kill,12,5
+914,Lake Pike,Delta Herons,1,19,Lake Pike,Delta Herons,Lake Pike,Attack error,13,5
+914,Lake Pike,Delta Herons,1,20,Lake Pike,Delta Herons,Delta Herons,Kill,14,5
+914,Lake Pike,Delta Herons,1,21,Delta Herons,Lake Pike,Delta Herons,Kill,14,6
+914,Lake Pike,Delta Herons,1,22,Delta Herons,Lake Pike,Delta Herons,Block,14,7
+914,Lake Pike,Delta Herons,1,23,Delta Herons,Lake Pike,Lake Pike,Attack error,14,8
+914,Lake Pike,Delta Herons,1,24,Lake Pike,Delta Herons,Lake Pike,Kill,15,8
+914,Lake Pike,Delta Herons,1,25,Lake Pike,Delta Herons,Lake Pike,Attack error,16,8
+914,Lake Pike,Delta Herons,1,26,Lake Pike,Delta Herons,Delta Herons,Kill,17,8
+914,Lake Pike,Delta Herons,1,27,Delta Herons,Lake Pike,Lake Pike,Kill,17,9
+914,Lake Pike,Delta Herons,1,28,Lake Pike,Delta Herons,Lake Pike,Attack error,18,9
+914,Lake Pike,Delta Herons,1,29,Lake Pike,Delta Herons,Delta Herons,Kill,19,9
+914,Lake Pike,Delta Herons,1,30,Delta Herons,Lake Pike,Lake Pike,Service error,19,10
+914,Lake Pike,Delta Herons,1,31,Lake Pike,Delta Herons,Lake Pike,Kill,20,10
+914,Lake Pike,Delta Herons,1,32,Lake Pike,Delta Herons,Lake Pike,Kill,21,10
+914,Lake Pike,Delta Herons,1,33,Lake Pike,Delta Herons,Lake Pike,Attack error,22,10
+914,Lake Pike,Delta Herons,1,34,Lake Pike,Delta Herons,Delta Herons,Block,23,10
+914,Lake Pike,Delta Herons,1,35,Delta Herons,Lake Pike,Delta Herons,Kill,23,11
+914,Lake Pike,Delta Herons,1,36,Delta Herons,Lake Pike,Delta Herons,Kill,23,12
+914,Lake Pike,Delta Herons,1,37,Delta Herons,Lake Pike,Delta Herons,Kill,23,13
+914,Lake Pike,Delta Herons,1,38,Delta Herons,Lake Pike,Lake Pike,Attack error,23,14
+914,Lake Pike,Delta Herons,1,39,Lake Pike,Delta Herons,Delta Herons,Ace,24,14
+914,Lake Pike,Delta Herons,1,40,Delta Herons,Lake Pike,Lake Pike,Kill,24,15
+914,Lake Pike,Delta Herons,2,1,Lake Pike,Delta Herons,Delta Herons,Kill,0,0
+914,Lake Pike,Delta Herons,2,2,Delta Herons,Lake Pike,Lake Pike,Attack error,0,1
+914,Lake Pike,Delta Herons,2,3,Lake Pike,Delta Herons,Delta Herons,Kill,1,1
+914,Lake Pike,Delta Herons,2,4,Delta Herons,Lake Pike,Lake Pike,Kill,1,2
+914,Lake Pike,Delta Herons,2,5,Lake Pike,Delta Herons,Delta Herons,Kill,2,2
+914,Lake Pike,Delta Herons,2,6,Delta Herons,Lake Pike,Delta Herons,Kill,2,3
+914,Lake Pike,Delta Herons,2,7,Delta Herons,Lake Pike,Lake Pike,Service error,2,4
+914,Lake Pike,Delta Herons,2,8,Lake Pike,Delta Herons,Lake Pike,Kill,3,4
+914,Lake Pike,Delta Herons,2,9,Lake Pike,Delta Herons,Lake Pike,Block,4,4
+914,Lake Pike,Delta Herons,2,10,Lake Pike,Delta Herons,Delta Herons,Kill,5,4
+914,Lake Pike,Delta Herons,2,11,Delta Herons,Lake Pike,Lake Pike,Service error,5,5
+914,Lake Pike,Delta Herons,2,12,Lake Pike,Delta Herons,Lake Pike,Kill,6,5
+914,Lake Pike,Delta Herons,2,13,Lake Pike,Delta Herons,Delta Herons,Ace,7,5
+914,Lake Pike,Delta Herons,2,14,Delta Herons,Lake Pike,Lake Pike,Attack error,7,6
+914,Lake Pike,Delta Herons,2,15,Lake Pike,Delta Herons,Delta Herons,Kill,8,6
+914,Lake Pike,Delta Herons,2,16,Delta Herons,Lake Pike,Lake Pike,Kill,8,7
+914,Lake Pike,Delta Herons,2,17,Lake Pike,Delta Herons,Lake Pike,Kill,9,7
+914,Lake Pike,Delta Herons,2,18,Lake Pike,Delta Herons,Lake Pike,Service error,10,7
+914,Lake Pike,Delta Herons,2,19,Lake Pike,Delta Herons,Lake Pike,Kill,11,7
+914,Lake Pike,Delta Herons,2,20,Lake Pike,Delta Herons,Lake Pike,Kill,12,7
+914,Lake Pike,Delta Herons,2,21,Lake Pike,Delta Herons,Lake Pike,Kill,13,7
+914,Lake Pike,Delta Herons,2,22,Lake Pike,Delta Herons,Lake Pike,Kill,14,7
+914,Lake Pike,Delta Herons,2,23,Lake Pike,Delta Herons,Delta Herons,Kill,15,7
+914,Lake Pike,Delta Herons,2,24,Delta Herons,Lake Pike,Delta Herons,Service error,15,8
+914,Lake Pike,Delta Herons,2,25,Delta Herons,Lake Pike,Lake Pike,Kill,15,9
+914,Lake Pike,Delta Herons,2,26,Lake Pike,Delta Herons,Lake Pike,Kill,16,9
+914,Lake Pike,Delta Herons,2,27,Lake Pike,Delta Herons,Lake Pike,Kill,17,9
+914,Lake Pike,Delta Herons,2,28,Lake Pike,Delta Herons,Lake Pike,Block,18,9
+914,Lake Pike,Delta Herons,2,29,Lake Pike,Delta Herons,Delta Herons,Kill,19,9
+914,Lake Pike,Delta Herons,2,30,Delta Herons,Lake Pike,Lake Pike,Kill,19,10
+914,Lake Pike,Delta Herons,2,31,Lake Pike,Delta Herons,Delta Herons,Kill,20,10
+914,Lake Pike,Delta Herons,2,32,Delta Herons,Lake Pike,Lake Pike,Kill,20,11
+914,Lake Pike,Delta Herons,2,33,Lake Pike,Delta Herons,Lake Pike,Kill,21,11
+914,Lake Pike,Delta Herons,2,34,Lake Pike,Delta Herons,Delta Herons,Kill,22,11
+914,Lake Pike,Delta Herons,2,35,Delta Herons,Lake Pike,Lake Pike,Kill,22,12
+914,Lake Pike,Delta Herons,2,36,Lake Pike,Delta Herons,Lake Pike,Kill,23,12
+914,Lake Pike,Delta Herons,2,37,Lake Pike,Delta Herons,Lake Pike,Kill,24,12
+914,Lake Pike,Delta Herons,3,1,Lake Pike,Delta Herons,Delta Herons,Kill,0,0
+914,Lake Pike,Delta Herons,3,2,Delta Herons,Lake Pike,Delta Herons,Kill,0,1
+914,Lake Pike,Delta Herons,3,3,Delta Herons,Lake Pike,Delta Herons,Block,0,2
+914,Lake Pike,Delta Herons,3,4,Delta Herons,Lake Pike,Delta Herons,Block,0,3
+914,Lake Pike,Delta Herons,3,5,Delta Herons,Lake Pike,Delta Herons,Block,0,4
+914,Lake Pike,Delta Herons,3,6,Delta Herons,Lake Pike,Lake Pike,Kill,0,5
+914,Lake Pike,Delta Herons,3,7,Lake Pike,Delta Herons,Lake Pike,Attack error,1,5
+914,Lake Pike,Delta Herons,3,8,Lake Pike,Delta Herons,Delta Herons,Kill,2,5
+914,Lake Pike,Delta Herons,3,9,Delta Herons,Lake Pike,Delta Herons,Attack error,2,6
+914,Lake Pike,Delta Herons,3,10,Delta Herons,Lake Pike,Lake Pike,Kill,2,7
+914,Lake Pike,Delta Herons,3,11,Lake Pike,Delta Herons,Delta Herons,Service error,3,7
+914,Lake Pike,Delta Herons,3,12,Delta Herons,Lake Pike,Lake Pike,Kill,3,8
+914,Lake Pike,Delta Herons,3,13,Lake Pike,Delta Herons,Delta Herons,Block,4,8
+914,Lake Pike,Delta Herons,3,14,Delta Herons,Lake Pike,Delta Herons,Kill,4,9
+914,Lake Pike,Delta Herons,3,15,Delta Herons,Lake Pike,Lake Pike,Attack error,4,10
+914,Lake Pike,Delta Herons,3,16,Lake Pike,Delta Herons,Lake Pike,Ace,5,10
+914,Lake Pike,Delta Herons,3,17,Lake Pike,Delta Herons,Lake Pike,Kill,6,10
+914,Lake Pike,Delta Herons,3,18,Lake Pike,Delta Herons,Delta Herons,Kill,7,10
+914,Lake Pike,Delta Herons,3,19,Delta Herons,Lake Pike,Lake Pike,Kill,7,11
+914,Lake Pike,Delta Herons,3,20,Lake Pike,Delta Herons,Lake Pike,Ace,8,11
+914,Lake Pike,Delta Herons,3,21,Lake Pike,Delta Herons,Lake Pike,Attack error,9,11
+914,Lake Pike,Delta Herons,3,22,Lake Pike,Delta Herons,Lake Pike,Ace,10,11
+914,Lake Pike,Delta Herons,3,23,Lake Pike,Delta Herons,Lake Pike,Kill,11,11
+914,Lake Pike,Delta Herons,3,24,Lake Pike,Delta Herons,Delta Herons,Kill,12,11
+914,Lake Pike,Delta Herons,3,25,Delta Herons,Lake Pike,Lake Pike,Kill,12,12
+914,Lake Pike,Delta Herons,3,26,Lake Pike,Delta Herons,Lake Pike,Attack error,13,12
+914,Lake Pike,Delta Herons,3,27,Lake Pike,Delta Herons,Delta Herons,Attack error,14,12
+914,Lake Pike,Delta Herons,3,28,Delta Herons,Lake Pike,Lake Pike,Kill,14,13
+914,Lake Pike,Delta Herons,3,29,Lake Pike,Delta Herons,Delta Herons,Service error,15,13
+914,Lake Pike,Delta Herons,3,30,Delta Herons,Lake Pike,Delta Herons,Kill,15,14
+914,Lake Pike,Delta Herons,3,31,Delta Herons,Lake Pike,Delta Herons,Block,15,15
+914,Lake Pike,Delta Herons,3,32,Delta Herons,Lake Pike,Lake Pike,Service error,15,16
+914,Lake Pike,Delta Herons,3,33,Lake Pike,Delta Herons,Delta Herons,Kill,16,16
+914,Lake Pike,Delta Herons,3,34,Delta Herons,Lake Pike,Delta Herons,Service error,16,17
+914,Lake Pike,Delta Herons,3,35,Delta Herons,Lake Pike,Lake Pike,Kill,16,18
+914,Lake Pike,Delta Herons,3,36,Lake Pike,Delta Herons,Lake Pike,Service error,17,18
+914,Lake Pike,Delta Herons,3,37,Lake Pike,Delta Herons,Lake Pike,Service error,18,18
+914,Lake Pike,Delta Herons,3,38,Lake Pike,Delta Herons,Lake Pike,Attack error,19,18
+914,Lake Pike,Delta Herons,3,39,Lake Pike,Delta Herons,Lake Pike,Ace,20,18
+914,Lake Pike,Delta Herons,3,40,Lake Pike,Delta Herons,Lake Pike,Kill,21,18
+914,Lake Pike,Delta Herons,3,41,Lake Pike,Delta Herons,Delta Herons,Kill,22,18
+914,Lake Pike,Delta Herons,3,42,Delta Herons,Lake Pike,Delta Herons,Block,22,19
+914,Lake Pike,Delta Herons,3,43,Delta Herons,Lake Pike,Lake Pike,Kill,22,20
+914,Lake Pike,Delta Herons,3,44,Lake Pike,Delta Herons,Delta Herons,Attack error,23,20
+914,Lake Pike,Delta Herons,3,45,Delta Herons,Lake Pike,Lake Pike,Kill,23,21
+914,Lake Pike,Delta Herons,3,46,Lake Pike,Delta Herons,Delta Herons,Kill,24,21
+914,Lake Pike,Delta Herons,3,47,Delta Herons,Lake Pike,Lake Pike,Kill,24,22
+918,Canyon Wrens,Iron Owls,1,1,Canyon Wrens,Iron Owls,Iron Owls,Attack error,0,0
+918,Canyon Wrens,Iron Owls,1,2,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,0,1
+918,Canyon Wrens,Iron Owls,1,3,Canyon Wrens,Iron Owls,Iron Owls,Kill,1,1
+918,Canyon Wrens,Iron Owls,1,4,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,1,2
+918,Canyon Wrens,Iron Owls,1,5,Canyon Wrens,Iron Owls,Iron Owls,Block,2,2
+918,Canyon Wrens,Iron Owls,1,6,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,2,3
+918,Canyon Wrens,Iron Owls,1,7,Canyon Wrens,Iron Owls,Iron Owls,Kill,3,3
+918,Canyon Wrens,Iron Owls,1,8,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,3,4
+918,Canyon Wrens,Iron Owls,1,9,Canyon Wrens,Iron Owls,Iron Owls,Attack error,4,4
+918,Canyon Wrens,Iron Owls,1,10,Iron Owls,Canyon Wrens,Canyon Wrens,Block,4,5
+918,Canyon Wrens,Iron Owls,1,11,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,5,5
+918,Canyon Wrens,Iron Owls,1,12,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,6,5
+918,Canyon Wrens,Iron Owls,1,13,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,7,5
+918,Canyon Wrens,Iron Owls,1,14,Canyon Wrens,Iron Owls,Iron Owls,Kill,8,5
+918,Canyon Wrens,Iron Owls,1,15,Iron Owls,Canyon Wrens,Iron Owls,Kill,8,6
+918,Canyon Wrens,Iron Owls,1,16,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,8,7
+918,Canyon Wrens,Iron Owls,1,17,Canyon Wrens,Iron Owls,Iron Owls,Block,9,7
+918,Canyon Wrens,Iron Owls,1,18,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,9,8
+918,Canyon Wrens,Iron Owls,1,19,Canyon Wrens,Iron Owls,Iron Owls,Kill,10,8
+918,Canyon Wrens,Iron Owls,1,20,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,10,9
+918,Canyon Wrens,Iron Owls,1,21,Canyon Wrens,Iron Owls,Iron Owls,Service error,11,9
+918,Canyon Wrens,Iron Owls,1,22,Iron Owls,Canyon Wrens,Iron Owls,Attack error,11,10
+918,Canyon Wrens,Iron Owls,1,23,Iron Owls,Canyon Wrens,Iron Owls,Kill,11,11
+918,Canyon Wrens,Iron Owls,1,24,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,11,12
+918,Canyon Wrens,Iron Owls,1,25,Canyon Wrens,Iron Owls,Iron Owls,Kill,12,12
+918,Canyon Wrens,Iron Owls,1,26,Iron Owls,Canyon Wrens,Canyon Wrens,Block,12,13
+918,Canyon Wrens,Iron Owls,1,27,Canyon Wrens,Iron Owls,Iron Owls,Attack error,13,13
+918,Canyon Wrens,Iron Owls,1,28,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,13,14
+918,Canyon Wrens,Iron Owls,1,29,Canyon Wrens,Iron Owls,Iron Owls,Kill,14,14
+918,Canyon Wrens,Iron Owls,1,30,Iron Owls,Canyon Wrens,Iron Owls,Attack error,14,15
+918,Canyon Wrens,Iron Owls,1,31,Iron Owls,Canyon Wrens,Canyon Wrens,Block,14,16
+918,Canyon Wrens,Iron Owls,1,32,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,15,16
+918,Canyon Wrens,Iron Owls,1,33,Canyon Wrens,Iron Owls,Canyon Wrens,Block,16,16
+918,Canyon Wrens,Iron Owls,1,34,Canyon Wrens,Iron Owls,Iron Owls,Kill,17,16
+918,Canyon Wrens,Iron Owls,1,35,Iron Owls,Canyon Wrens,Canyon Wrens,Block,17,17
+918,Canyon Wrens,Iron Owls,1,36,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,18,17
+918,Canyon Wrens,Iron Owls,1,37,Canyon Wrens,Iron Owls,Canyon Wrens,Block,19,17
+918,Canyon Wrens,Iron Owls,1,38,Canyon Wrens,Iron Owls,Iron Owls,Kill,20,17
+918,Canyon Wrens,Iron Owls,1,39,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,20,18
+918,Canyon Wrens,Iron Owls,1,40,Canyon Wrens,Iron Owls,Iron Owls,Block,21,18
+918,Canyon Wrens,Iron Owls,1,41,Iron Owls,Canyon Wrens,Canyon Wrens,Block,21,19
+918,Canyon Wrens,Iron Owls,1,42,Canyon Wrens,Iron Owls,Iron Owls,Block,22,19
+918,Canyon Wrens,Iron Owls,1,43,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,22,20
+918,Canyon Wrens,Iron Owls,1,44,Canyon Wrens,Iron Owls,Iron Owls,Attack error,23,20
+918,Canyon Wrens,Iron Owls,1,45,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,23,21
+918,Canyon Wrens,Iron Owls,1,46,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,24,21
+918,Canyon Wrens,Iron Owls,2,1,Canyon Wrens,Iron Owls,Iron Owls,Kill,0,0
+918,Canyon Wrens,Iron Owls,2,2,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,0,1
+918,Canyon Wrens,Iron Owls,2,3,Canyon Wrens,Iron Owls,Iron Owls,Kill,1,1
+918,Canyon Wrens,Iron Owls,2,4,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,1,2
+918,Canyon Wrens,Iron Owls,2,5,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,2,2
+918,Canyon Wrens,Iron Owls,2,6,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,3,2
+918,Canyon Wrens,Iron Owls,2,7,Canyon Wrens,Iron Owls,Canyon Wrens,Block,4,2
+918,Canyon Wrens,Iron Owls,2,8,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,5,2
+918,Canyon Wrens,Iron Owls,2,9,Canyon Wrens,Iron Owls,Iron Owls,Kill,6,2
+918,Canyon Wrens,Iron Owls,2,10,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,6,3
+918,Canyon Wrens,Iron Owls,2,11,Canyon Wrens,Iron Owls,Iron Owls,Kill,7,3
+918,Canyon Wrens,Iron Owls,2,12,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,7,4
+918,Canyon Wrens,Iron Owls,2,13,Canyon Wrens,Iron Owls,Iron Owls,Kill,8,4
+918,Canyon Wrens,Iron Owls,2,14,Iron Owls,Canyon Wrens,Canyon Wrens,Block,8,5
+918,Canyon Wrens,Iron Owls,2,15,Canyon Wrens,Iron Owls,Iron Owls,Block,9,5
+918,Canyon Wrens,Iron Owls,2,16,Iron Owls,Canyon Wrens,Iron Owls,Kill,9,6
+918,Canyon Wrens,Iron Owls,2,17,Iron Owls,Canyon Wrens,Iron Owls,Kill,9,7
+918,Canyon Wrens,Iron Owls,2,18,Iron Owls,Canyon Wrens,Canyon Wrens,Ace,9,8
+918,Canyon Wrens,Iron Owls,2,19,Canyon Wrens,Iron Owls,Iron Owls,Kill,10,8
+918,Canyon Wrens,Iron Owls,2,20,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,10,9
+918,Canyon Wrens,Iron Owls,2,21,Canyon Wrens,Iron Owls,Iron Owls,Kill,11,9
+918,Canyon Wrens,Iron Owls,2,22,Iron Owls,Canyon Wrens,Iron Owls,Service error,11,10
+918,Canyon Wrens,Iron Owls,2,23,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,11,11
+918,Canyon Wrens,Iron Owls,2,24,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,12,11
+918,Canyon Wrens,Iron Owls,2,25,Canyon Wrens,Iron Owls,Iron Owls,Block,13,11
+918,Canyon Wrens,Iron Owls,2,26,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,13,12
+918,Canyon Wrens,Iron Owls,2,27,Canyon Wrens,Iron Owls,Canyon Wrens,Block,14,12
+918,Canyon Wrens,Iron Owls,2,28,Canyon Wrens,Iron Owls,Iron Owls,Kill,15,12
+918,Canyon Wrens,Iron Owls,2,29,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,15,13
+918,Canyon Wrens,Iron Owls,2,30,Canyon Wrens,Iron Owls,Iron Owls,Kill,16,13
+918,Canyon Wrens,Iron Owls,2,31,Iron Owls,Canyon Wrens,Iron Owls,Kill,16,14
+918,Canyon Wrens,Iron Owls,2,32,Iron Owls,Canyon Wrens,Canyon Wrens,Block,16,15
+918,Canyon Wrens,Iron Owls,2,33,Canyon Wrens,Iron Owls,Iron Owls,Kill,17,15
+918,Canyon Wrens,Iron Owls,2,34,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,17,16
+918,Canyon Wrens,Iron Owls,2,35,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,18,16
+918,Canyon Wrens,Iron Owls,2,36,Canyon Wrens,Iron Owls,Iron Owls,Kill,19,16
+918,Canyon Wrens,Iron Owls,2,37,Iron Owls,Canyon Wrens,Canyon Wrens,Block,19,17
+918,Canyon Wrens,Iron Owls,2,38,Canyon Wrens,Iron Owls,Iron Owls,Kill,20,17
+918,Canyon Wrens,Iron Owls,2,39,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,20,18
+918,Canyon Wrens,Iron Owls,2,40,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,21,18
+918,Canyon Wrens,Iron Owls,2,41,Canyon Wrens,Iron Owls,Iron Owls,Kill,22,18
+918,Canyon Wrens,Iron Owls,2,42,Iron Owls,Canyon Wrens,Canyon Wrens,Block,22,19
+918,Canyon Wrens,Iron Owls,2,43,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,23,19
+918,Canyon Wrens,Iron Owls,2,44,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,24,19
+918,Canyon Wrens,Iron Owls,3,1,Canyon Wrens,Iron Owls,Canyon Wrens,Block,0,0
+918,Canyon Wrens,Iron Owls,3,2,Canyon Wrens,Iron Owls,Iron Owls,Kill,1,0
+918,Canyon Wrens,Iron Owls,3,3,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,1,1
+918,Canyon Wrens,Iron Owls,3,4,Canyon Wrens,Iron Owls,Iron Owls,Block,2,1
+918,Canyon Wrens,Iron Owls,3,5,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,2,2
+918,Canyon Wrens,Iron Owls,3,6,Canyon Wrens,Iron Owls,Iron Owls,Kill,3,2
+918,Canyon Wrens,Iron Owls,3,7,Iron Owls,Canyon Wrens,Iron Owls,Kill,3,3
+918,Canyon Wrens,Iron Owls,3,8,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,3,4
+918,Canyon Wrens,Iron Owls,3,9,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,4,4
+918,Canyon Wrens,Iron Owls,3,10,Canyon Wrens,Iron Owls,Iron Owls,Kill,5,4
+918,Canyon Wrens,Iron Owls,3,11,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,5,5
+918,Canyon Wrens,Iron Owls,3,12,Canyon Wrens,Iron Owls,Iron Owls,Service error,6,5
+918,Canyon Wrens,Iron Owls,3,13,Iron Owls,Canyon Wrens,Iron Owls,Kill,6,6
+918,Canyon Wrens,Iron Owls,3,14,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,6,7
+918,Canyon Wrens,Iron Owls,3,15,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,7,7
+918,Canyon Wrens,Iron Owls,3,16,Canyon Wrens,Iron Owls,Iron Owls,Kill,8,7
+918,Canyon Wrens,Iron Owls,3,17,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,8,8
+918,Canyon Wrens,Iron Owls,3,18,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,9,8
+918,Canyon Wrens,Iron Owls,3,19,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,10,8
+918,Canyon Wrens,Iron Owls,3,20,Canyon Wrens,Iron Owls,Iron Owls,Kill,11,8
+918,Canyon Wrens,Iron Owls,3,21,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,11,9
+918,Canyon Wrens,Iron Owls,3,22,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,12,9
+918,Canyon Wrens,Iron Owls,3,23,Canyon Wrens,Iron Owls,Iron Owls,Kill,13,9
+918,Canyon Wrens,Iron Owls,3,24,Iron Owls,Canyon Wrens,Iron Owls,Attack error,13,10
+918,Canyon Wrens,Iron Owls,3,25,Iron Owls,Canyon Wrens,Iron Owls,Ace,13,11
+918,Canyon Wrens,Iron Owls,3,26,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,13,12
+918,Canyon Wrens,Iron Owls,3,27,Canyon Wrens,Iron Owls,Iron Owls,Kill,14,12
+918,Canyon Wrens,Iron Owls,3,28,Iron Owls,Canyon Wrens,Iron Owls,Attack error,14,13
+918,Canyon Wrens,Iron Owls,3,29,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,14,14
+918,Canyon Wrens,Iron Owls,3,30,Canyon Wrens,Iron Owls,Iron Owls,Service error,15,14
+918,Canyon Wrens,Iron Owls,3,31,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,15,15
+918,Canyon Wrens,Iron Owls,3,32,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,16,15
+918,Canyon Wrens,Iron Owls,3,33,Canyon Wrens,Iron Owls,Iron Owls,Attack error,17,15
+918,Canyon Wrens,Iron Owls,3,34,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,17,16
+918,Canyon Wrens,Iron Owls,3,35,Canyon Wrens,Iron Owls,Iron Owls,Kill,18,16
+918,Canyon Wrens,Iron Owls,3,36,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,18,17
+918,Canyon Wrens,Iron Owls,3,37,Canyon Wrens,Iron Owls,Iron Owls,Kill,19,17
+918,Canyon Wrens,Iron Owls,3,38,Iron Owls,Canyon Wrens,Iron Owls,Kill,19,18
+918,Canyon Wrens,Iron Owls,3,39,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,19,19
+918,Canyon Wrens,Iron Owls,3,40,Canyon Wrens,Iron Owls,Iron Owls,Attack error,20,19
+918,Canyon Wrens,Iron Owls,3,41,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,20,20
+918,Canyon Wrens,Iron Owls,3,42,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,21,20
+918,Canyon Wrens,Iron Owls,3,43,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,22,20
+918,Canyon Wrens,Iron Owls,3,44,Canyon Wrens,Iron Owls,Iron Owls,Service error,23,20
+918,Canyon Wrens,Iron Owls,3,45,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,23,21
+918,Canyon Wrens,Iron Owls,3,46,Canyon Wrens,Iron Owls,Iron Owls,Kill,24,21
+918,Canyon Wrens,Iron Owls,3,47,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,24,22
+919,Canyon Wrens,Delta Herons,1,1,Canyon Wrens,Delta Herons,Delta Herons,Kill,0,0
+919,Canyon Wrens,Delta Herons,1,2,Delta Herons,Canyon Wrens,Delta Herons,Attack error,0,1
+919,Canyon Wrens,Delta Herons,1,3,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,0,2
+919,Canyon Wrens,Delta Herons,1,4,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,1,2
+919,Canyon Wrens,Delta Herons,1,5,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,2,2
+919,Canyon Wrens,Delta Herons,1,6,Canyon Wrens,Delta Herons,Delta Herons,Kill,3,2
+919,Canyon Wrens,Delta Herons,1,7,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,3,3
+919,Canyon Wrens,Delta Herons,1,8,Canyon Wrens,Delta Herons,Delta Herons,Kill,4,3
+919,Canyon Wrens,Delta Herons,1,9,Delta Herons,Canyon Wrens,Delta Herons,Kill,4,4
+919,Canyon Wrens,Delta Herons,1,10,Delta Herons,Canyon Wrens,Delta Herons,Service error,4,5
+919,Canyon Wrens,Delta Herons,1,11,Delta Herons,Canyon Wrens,Delta Herons,Kill,4,6
+919,Canyon Wrens,Delta Herons,1,12,Delta Herons,Canyon Wrens,Delta Herons,Ace,4,7
+919,Canyon Wrens,Delta Herons,1,13,Delta Herons,Canyon Wrens,Delta Herons,Attack error,4,8
+919,Canyon Wrens,Delta Herons,1,14,Delta Herons,Canyon Wrens,Delta Herons,Kill,4,9
+919,Canyon Wrens,Delta Herons,1,15,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,4,10
+919,Canyon Wrens,Delta Herons,1,16,Canyon Wrens,Delta Herons,Delta Herons,Kill,5,10
+919,Canyon Wrens,Delta Herons,1,17,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,5,11
+919,Canyon Wrens,Delta Herons,1,18,Canyon Wrens,Delta Herons,Delta Herons,Attack error,6,11
+919,Canyon Wrens,Delta Herons,1,19,Delta Herons,Canyon Wrens,Delta Herons,Attack error,6,12
+919,Canyon Wrens,Delta Herons,1,20,Delta Herons,Canyon Wrens,Delta Herons,Attack error,6,13
+919,Canyon Wrens,Delta Herons,1,21,Delta Herons,Canyon Wrens,Delta Herons,Kill,6,14
+919,Canyon Wrens,Delta Herons,1,22,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,6,15
+919,Canyon Wrens,Delta Herons,1,23,Canyon Wrens,Delta Herons,Delta Herons,Ace,7,15
+919,Canyon Wrens,Delta Herons,1,24,Delta Herons,Canyon Wrens,Canyon Wrens,Service error,7,16
+919,Canyon Wrens,Delta Herons,1,25,Canyon Wrens,Delta Herons,Delta Herons,Kill,8,16
+919,Canyon Wrens,Delta Herons,1,26,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,8,17
+919,Canyon Wrens,Delta Herons,1,27,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,9,17
+919,Canyon Wrens,Delta Herons,1,28,Canyon Wrens,Delta Herons,Canyon Wrens,Block,10,17
+919,Canyon Wrens,Delta Herons,1,29,Canyon Wrens,Delta Herons,Canyon Wrens,Attack error,11,17
+919,Canyon Wrens,Delta Herons,1,30,Canyon Wrens,Delta Herons,Delta Herons,Kill,12,17
+919,Canyon Wrens,Delta Herons,1,31,Delta Herons,Canyon Wrens,Delta Herons,Attack error,12,18
+919,Canyon Wrens,Delta Herons,1,32,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,12,19
+919,Canyon Wrens,Delta Herons,1,33,Canyon Wrens,Delta Herons,Delta Herons,Attack error,13,19
+919,Canyon Wrens,Delta Herons,1,34,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,13,20
+919,Canyon Wrens,Delta Herons,1,35,Canyon Wrens,Delta Herons,Delta Herons,Kill,14,20
+919,Canyon Wrens,Delta Herons,1,36,Delta Herons,Canyon Wrens,Delta Herons,Kill,14,21
+919,Canyon Wrens,Delta Herons,1,37,Delta Herons,Canyon Wrens,Delta Herons,Kill,14,22
+919,Canyon Wrens,Delta Herons,1,38,Delta Herons,Canyon Wrens,Canyon Wrens,Attack error,14,23
+919,Canyon Wrens,Delta Herons,1,39,Canyon Wrens,Delta Herons,Delta Herons,Kill,15,23
+919,Canyon Wrens,Delta Herons,1,40,Delta Herons,Canyon Wrens,Canyon Wrens,Block,15,24
+919,Canyon Wrens,Delta Herons,1,41,Canyon Wrens,Delta Herons,Delta Herons,Kill,16,24
+919,Canyon Wrens,Delta Herons,2,1,Delta Herons,Canyon Wrens,Delta Herons,Service error,0,0
+919,Canyon Wrens,Delta Herons,2,2,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,0,1
+919,Canyon Wrens,Delta Herons,2,3,Canyon Wrens,Delta Herons,Delta Herons,Attack error,1,1
+919,Canyon Wrens,Delta Herons,2,4,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,1,2
+919,Canyon Wrens,Delta Herons,2,5,Canyon Wrens,Delta Herons,Delta Herons,Kill,2,2
+919,Canyon Wrens,Delta Herons,2,6,Delta Herons,Canyon Wrens,Canyon Wrens,Service error,2,3
+919,Canyon Wrens,Delta Herons,2,7,Canyon Wrens,Delta Herons,Delta Herons,Kill,3,3
+919,Canyon Wrens,Delta Herons,2,8,Delta Herons,Canyon Wrens,Delta Herons,Attack error,3,4
+919,Canyon Wrens,Delta Herons,2,9,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,3,5
+919,Canyon Wrens,Delta Herons,2,10,Canyon Wrens,Delta Herons,Delta Herons,Kill,4,5
+919,Canyon Wrens,Delta Herons,2,11,Delta Herons,Canyon Wrens,Delta Herons,Kill,4,6
+919,Canyon Wrens,Delta Herons,2,12,Delta Herons,Canyon Wrens,Canyon Wrens,Ace,4,7
+919,Canyon Wrens,Delta Herons,2,13,Canyon Wrens,Delta Herons,Canyon Wrens,Block,5,7
+919,Canyon Wrens,Delta Herons,2,14,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,6,7
+919,Canyon Wrens,Delta Herons,2,15,Canyon Wrens,Delta Herons,Delta Herons,Kill,7,7
+919,Canyon Wrens,Delta Herons,2,16,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,7,8
+919,Canyon Wrens,Delta Herons,2,17,Canyon Wrens,Delta Herons,Delta Herons,Kill,8,8
+919,Canyon Wrens,Delta Herons,2,18,Delta Herons,Canyon Wrens,Canyon Wrens,Service error,8,9
+919,Canyon Wrens,Delta Herons,2,19,Canyon Wrens,Delta Herons,Canyon Wrens,Ace,9,9
+919,Canyon Wrens,Delta Herons,2,20,Canyon Wrens,Delta Herons,Delta Herons,Kill,10,9
+919,Canyon Wrens,Delta Herons,2,21,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,10,10
+919,Canyon Wrens,Delta Herons,2,22,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,11,10
+919,Canyon Wrens,Delta Herons,2,23,Canyon Wrens,Delta Herons,Delta Herons,Attack error,12,10
+919,Canyon Wrens,Delta Herons,2,24,Delta Herons,Canyon Wrens,Delta Herons,Block,12,11
+919,Canyon Wrens,Delta Herons,2,25,Delta Herons,Canyon Wrens,Delta Herons,Ace,12,12
+919,Canyon Wrens,Delta Herons,2,26,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,12,13
+919,Canyon Wrens,Delta Herons,2,27,Canyon Wrens,Delta Herons,Canyon Wrens,Attack error,13,13
+919,Canyon Wrens,Delta Herons,2,28,Canyon Wrens,Delta Herons,Delta Herons,Kill,14,13
+919,Canyon Wrens,Delta Herons,2,29,Delta Herons,Canyon Wrens,Delta Herons,Service error,14,14
+919,Canyon Wrens,Delta Herons,2,30,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,14,15
+919,Canyon Wrens,Delta Herons,2,31,Canyon Wrens,Delta Herons,Delta Herons,Ace,15,15
+919,Canyon Wrens,Delta Herons,2,32,Delta Herons,Canyon Wrens,Canyon Wrens,Block,15,16
+919,Canyon Wrens,Delta Herons,2,33,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,16,16
+919,Canyon Wrens,Delta Herons,2,34,Canyon Wrens,Delta Herons,Delta Herons,Kill,17,16
+919,Canyon Wrens,Delta Herons,2,35,Delta Herons,Canyon Wrens,Canyon Wrens,Attack error,17,17
+919,Canyon Wrens,Delta Herons,2,36,Canyon Wrens,Delta Herons,Delta Herons,Kill,18,17
+919,Canyon Wrens,Delta Herons,2,37,Delta Herons,Canyon Wrens,Delta Herons,Kill,18,18
+919,Canyon Wrens,Delta Herons,2,38,Delta Herons,Canyon Wrens,Delta Herons,Block,18,19
+919,Canyon Wrens,Delta Herons,2,39,Delta Herons,Canyon Wrens,Canyon Wrens,Ace,18,20
+919,Canyon Wrens,Delta Herons,2,40,Canyon Wrens,Delta Herons,Delta Herons,Attack error,19,20
+919,Canyon Wrens,Delta Herons,2,41,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,19,21
+919,Canyon Wrens,Delta Herons,2,42,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,20,21
+919,Canyon Wrens,Delta Herons,2,43,Canyon Wrens,Delta Herons,Delta Herons,Kill,21,21
+919,Canyon Wrens,Delta Herons,2,44,Delta Herons,Canyon Wrens,Delta Herons,Kill,21,22
+919,Canyon Wrens,Delta Herons,2,45,Delta Herons,Canyon Wrens,Delta Herons,Kill,21,23
+919,Canyon Wrens,Delta Herons,2,46,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,21,24
+919,Canyon Wrens,Delta Herons,2,47,Canyon Wrens,Delta Herons,Canyon Wrens,Attack error,22,24
+919,Canyon Wrens,Delta Herons,2,48,Canyon Wrens,Delta Herons,Delta Herons,Kill,23,24
+919,Canyon Wrens,Delta Herons,3,1,Delta Herons,Canyon Wrens,Delta Herons,Kill,0,0
+919,Canyon Wrens,Delta Herons,3,2,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,0,1
+919,Canyon Wrens,Delta Herons,3,3,Canyon Wrens,Delta Herons,Delta Herons,Kill,1,1
+919,Canyon Wrens,Delta Herons,3,4,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,1,2
+919,Canyon Wrens,Delta Herons,3,5,Canyon Wrens,Delta Herons,Delta Herons,Kill,2,2
+919,Canyon Wrens,Delta Herons,3,6,Delta Herons,Canyon Wrens,Delta Herons,Attack error,2,3
+919,Canyon Wrens,Delta Herons,3,7,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,2,4
+919,Canyon Wrens,Delta Herons,3,8,Canyon Wrens,Delta Herons,Delta Herons,Kill,3,4
+919,Canyon Wrens,Delta Herons,3,9,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,3,5
+919,Canyon Wrens,Delta Herons,3,10,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,4,5
+919,Canyon Wrens,Delta Herons,3,11,Canyon Wrens,Delta Herons,Delta Herons,Kill,5,5
+919,Canyon Wrens,Delta Herons,3,12,Delta Herons,Canyon Wrens,Delta Herons,Kill,5,6
+919,Canyon Wrens,Delta Herons,3,13,Delta Herons,Canyon Wrens,Delta Herons,Kill,5,7
+919,Canyon Wrens,Delta Herons,3,14,Delta Herons,Canyon Wrens,Delta Herons,Service error,5,8
+919,Canyon Wrens,Delta Herons,3,15,Delta Herons,Canyon Wrens,Delta Herons,Service error,5,9
+919,Canyon Wrens,Delta Herons,3,16,Delta Herons,Canyon Wrens,Delta Herons,Ace,5,10
+919,Canyon Wrens,Delta Herons,3,17,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,5,11
+919,Canyon Wrens,Delta Herons,3,18,Canyon Wrens,Delta Herons,Canyon Wrens,Block,6,11
+919,Canyon Wrens,Delta Herons,3,19,Canyon Wrens,Delta Herons,Delta Herons,Kill,7,11
+919,Canyon Wrens,Delta Herons,3,20,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,7,12
+919,Canyon Wrens,Delta Herons,3,21,Canyon Wrens,Delta Herons,Canyon Wrens,Block,8,12
+919,Canyon Wrens,Delta Herons,3,22,Canyon Wrens,Delta Herons,Delta Herons,Kill,9,12
+919,Canyon Wrens,Delta Herons,3,23,Delta Herons,Canyon Wrens,Delta Herons,Attack error,9,13
+919,Canyon Wrens,Delta Herons,3,24,Delta Herons,Canyon Wrens,Delta Herons,Service error,9,14
+919,Canyon Wrens,Delta Herons,3,25,Delta Herons,Canyon Wrens,Delta Herons,Kill,9,15
+919,Canyon Wrens,Delta Herons,3,26,Delta Herons,Canyon Wrens,Delta Herons,Service error,9,16
+919,Canyon Wrens,Delta Herons,3,27,Delta Herons,Canyon Wrens,Delta Herons,Ace,9,17
+919,Canyon Wrens,Delta Herons,3,28,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,9,18
+919,Canyon Wrens,Delta Herons,3,29,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,10,18
+919,Canyon Wrens,Delta Herons,3,30,Canyon Wrens,Delta Herons,Delta Herons,Ace,11,18
+919,Canyon Wrens,Delta Herons,3,31,Delta Herons,Canyon Wrens,Canyon Wrens,Kill,11,19
+919,Canyon Wrens,Delta Herons,3,32,Canyon Wrens,Delta Herons,Canyon Wrens,Kill,12,19
+919,Canyon Wrens,Delta Herons,3,33,Canyon Wrens,Delta Herons,Delta Herons,Attack error,13,19
+919,Canyon Wrens,Delta Herons,3,34,Delta Herons,Canyon Wrens,Delta Herons,Service error,13,20
+919,Canyon Wrens,Delta Herons,3,35,Delta Herons,Canyon Wrens,Delta Herons,Service error,13,21
+919,Canyon Wrens,Delta Herons,3,36,Delta Herons,Canyon Wrens,Delta Herons,Block,13,22
+919,Canyon Wrens,Delta Herons,3,37,Delta Herons,Canyon Wrens,Delta Herons,Service error,13,23
+919,Canyon Wrens,Delta Herons,3,38,Delta Herons,Canyon Wrens,Delta Herons,Kill,13,24
+920,Iron Owls,Prairie Dogs,1,1,Iron Owls,Prairie Dogs,Iron Owls,Ace,0,0
+920,Iron Owls,Prairie Dogs,1,2,Iron Owls,Prairie Dogs,Iron Owls,Kill,1,0
+920,Iron Owls,Prairie Dogs,1,3,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,2,0
+920,Iron Owls,Prairie Dogs,1,4,Prairie Dogs,Iron Owls,Iron Owls,Block,2,1
+920,Iron Owls,Prairie Dogs,1,5,Iron Owls,Prairie Dogs,Prairie Dogs,Block,3,1
+920,Iron Owls,Prairie Dogs,1,6,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,3,2
+920,Iron Owls,Prairie Dogs,1,7,Prairie Dogs,Iron Owls,Iron Owls,Attack error,3,3
+920,Iron Owls,Prairie Dogs,1,8,Iron Owls,Prairie Dogs,Iron Owls,Kill,4,3
+920,Iron Owls,Prairie Dogs,1,9,Iron Owls,Prairie Dogs,Iron Owls,Service error,5,3
+920,Iron Owls,Prairie Dogs,1,10,Iron Owls,Prairie Dogs,Iron Owls,Kill,6,3
+920,Iron Owls,Prairie Dogs,1,11,Iron Owls,Prairie Dogs,Iron Owls,Block,7,3
+920,Iron Owls,Prairie Dogs,1,12,Iron Owls,Prairie Dogs,Iron Owls,Attack error,8,3
+920,Iron Owls,Prairie Dogs,1,13,Iron Owls,Prairie Dogs,Iron Owls,Attack error,9,3
+920,Iron Owls,Prairie Dogs,1,14,Iron Owls,Prairie Dogs,Iron Owls,Service error,10,3
+920,Iron Owls,Prairie Dogs,1,15,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,11,3
+920,Iron Owls,Prairie Dogs,1,16,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,11,4
+920,Iron Owls,Prairie Dogs,1,17,Prairie Dogs,Iron Owls,Prairie Dogs,Ace,11,5
+920,Iron Owls,Prairie Dogs,1,18,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,11,6
+920,Iron Owls,Prairie Dogs,1,19,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,11,7
+920,Iron Owls,Prairie Dogs,1,20,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,11,8
+920,Iron Owls,Prairie Dogs,1,21,Prairie Dogs,Iron Owls,Iron Owls,Kill,11,9
+920,Iron Owls,Prairie Dogs,1,22,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,12,9
+920,Iron Owls,Prairie Dogs,1,23,Prairie Dogs,Iron Owls,Iron Owls,Service error,12,10
+920,Iron Owls,Prairie Dogs,1,24,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,13,10
+920,Iron Owls,Prairie Dogs,1,25,Prairie Dogs,Iron Owls,Iron Owls,Block,13,11
+920,Iron Owls,Prairie Dogs,1,26,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,14,11
+920,Iron Owls,Prairie Dogs,1,27,Prairie Dogs,Iron Owls,Iron Owls,Attack error,14,12
+920,Iron Owls,Prairie Dogs,1,28,Iron Owls,Prairie Dogs,Iron Owls,Service error,15,12
+920,Iron Owls,Prairie Dogs,1,29,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,16,12
+920,Iron Owls,Prairie Dogs,1,30,Prairie Dogs,Iron Owls,Iron Owls,Kill,16,13
+920,Iron Owls,Prairie Dogs,1,31,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,17,13
+920,Iron Owls,Prairie Dogs,1,32,Prairie Dogs,Iron Owls,Iron Owls,Kill,17,14
+920,Iron Owls,Prairie Dogs,1,33,Iron Owls,Prairie Dogs,Iron Owls,Block,18,14
+920,Iron Owls,Prairie Dogs,1,34,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,19,14
+920,Iron Owls,Prairie Dogs,1,35,Prairie Dogs,Iron Owls,Iron Owls,Kill,19,15
+920,Iron Owls,Prairie Dogs,1,36,Iron Owls,Prairie Dogs,Iron Owls,Ace,20,15
+920,Iron Owls,Prairie Dogs,1,37,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,21,15
+920,Iron Owls,Prairie Dogs,1,38,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,21,16
+920,Iron Owls,Prairie Dogs,1,39,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,21,17
+920,Iron Owls,Prairie Dogs,1,40,Prairie Dogs,Iron Owls,Iron Owls,Kill,21,18
+920,Iron Owls,Prairie Dogs,1,41,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,22,18
+920,Iron Owls,Prairie Dogs,1,42,Prairie Dogs,Iron Owls,Iron Owls,Kill,22,19
+920,Iron Owls,Prairie Dogs,1,43,Iron Owls,Prairie Dogs,Iron Owls,Attack error,23,19
+920,Iron Owls,Prairie Dogs,1,44,Iron Owls,Prairie Dogs,Iron Owls,Kill,24,19
+920,Iron Owls,Prairie Dogs,2,1,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,0,0
+920,Iron Owls,Prairie Dogs,2,2,Prairie Dogs,Iron Owls,Iron Owls,Kill,0,1
+920,Iron Owls,Prairie Dogs,2,3,Iron Owls,Prairie Dogs,Iron Owls,Kill,1,1
+920,Iron Owls,Prairie Dogs,2,4,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,2,1
+920,Iron Owls,Prairie Dogs,2,5,Prairie Dogs,Iron Owls,Iron Owls,Service error,2,2
+920,Iron Owls,Prairie Dogs,2,6,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,3,2
+920,Iron Owls,Prairie Dogs,2,7,Prairie Dogs,Iron Owls,Iron Owls,Ace,3,3
+920,Iron Owls,Prairie Dogs,2,8,Iron Owls,Prairie Dogs,Iron Owls,Block,4,3
+920,Iron Owls,Prairie Dogs,2,9,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,5,3
+920,Iron Owls,Prairie Dogs,2,10,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,5,4
+920,Iron Owls,Prairie Dogs,2,11,Prairie Dogs,Iron Owls,Prairie Dogs,Block,5,5
+920,Iron Owls,Prairie Dogs,2,12,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,5,6
+920,Iron Owls,Prairie Dogs,2,13,Prairie Dogs,Iron Owls,Iron Owls,Ace,5,7
+920,Iron Owls,Prairie Dogs,2,14,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,6,7
+920,Iron Owls,Prairie Dogs,2,15,Prairie Dogs,Iron Owls,Iron Owls,Attack error,6,8
+920,Iron Owls,Prairie Dogs,2,16,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,7,8
+920,Iron Owls,Prairie Dogs,2,17,Prairie Dogs,Iron Owls,Iron Owls,Attack error,7,9
+920,Iron Owls,Prairie Dogs,2,18,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,8,9
+920,Iron Owls,Prairie Dogs,2,19,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,8,10
+920,Iron Owls,Prairie Dogs,2,20,Prairie Dogs,Iron Owls,Iron Owls,Kill,8,11
+920,Iron Owls,Prairie Dogs,2,21,Iron Owls,Prairie Dogs,Iron Owls,Kill,9,11
+920,Iron Owls,Prairie Dogs,2,22,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,10,11
+920,Iron Owls,Prairie Dogs,2,23,Prairie Dogs,Iron Owls,Iron Owls,Kill,10,12
+920,Iron Owls,Prairie Dogs,2,24,Iron Owls,Prairie Dogs,Iron Owls,Kill,11,12
+920,Iron Owls,Prairie Dogs,2,25,Iron Owls,Prairie Dogs,Iron Owls,Ace,12,12
+920,Iron Owls,Prairie Dogs,2,26,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,13,12
+920,Iron Owls,Prairie Dogs,2,27,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,13,13
+920,Iron Owls,Prairie Dogs,2,28,Prairie Dogs,Iron Owls,Iron Owls,Kill,13,14
+920,Iron Owls,Prairie Dogs,2,29,Iron Owls,Prairie Dogs,Iron Owls,Attack error,14,14
+920,Iron Owls,Prairie Dogs,2,30,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,15,14
+920,Iron Owls,Prairie Dogs,2,31,Prairie Dogs,Iron Owls,Iron Owls,Ace,15,15
+920,Iron Owls,Prairie Dogs,2,32,Iron Owls,Prairie Dogs,Iron Owls,Block,16,15
+920,Iron Owls,Prairie Dogs,2,33,Iron Owls,Prairie Dogs,Iron Owls,Kill,17,15
+920,Iron Owls,Prairie Dogs,2,34,Iron Owls,Prairie Dogs,Prairie Dogs,Block,18,15
+920,Iron Owls,Prairie Dogs,2,35,Prairie Dogs,Iron Owls,Iron Owls,Kill,18,16
+920,Iron Owls,Prairie Dogs,2,36,Iron Owls,Prairie Dogs,Iron Owls,Block,19,16
+920,Iron Owls,Prairie Dogs,2,37,Iron Owls,Prairie Dogs,Iron Owls,Kill,20,16
+920,Iron Owls,Prairie Dogs,2,38,Iron Owls,Prairie Dogs,Iron Owls,Attack error,21,16
+920,Iron Owls,Prairie Dogs,2,39,Iron Owls,Prairie Dogs,Iron Owls,Service error,22,16
+920,Iron Owls,Prairie Dogs,2,40,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,23,16
+920,Iron Owls,Prairie Dogs,2,41,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,23,17
+920,Iron Owls,Prairie Dogs,2,42,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,23,18
+920,Iron Owls,Prairie Dogs,2,43,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,23,19
+920,Iron Owls,Prairie Dogs,2,44,Prairie Dogs,Iron Owls,Iron Owls,Kill,23,20
+920,Iron Owls,Prairie Dogs,2,45,Iron Owls,Prairie Dogs,Iron Owls,Kill,24,20
+920,Iron Owls,Prairie Dogs,3,1,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,0,0
+920,Iron Owls,Prairie Dogs,3,2,Prairie Dogs,Iron Owls,Iron Owls,Kill,0,1
+920,Iron Owls,Prairie Dogs,3,3,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,1,1
+920,Iron Owls,Prairie Dogs,3,4,Prairie Dogs,Iron Owls,Iron Owls,Kill,1,2
+920,Iron Owls,Prairie Dogs,3,5,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,2,2
+920,Iron Owls,Prairie Dogs,3,6,Prairie Dogs,Iron Owls,Iron Owls,Service error,2,3
+920,Iron Owls,Prairie Dogs,3,7,Iron Owls,Prairie Dogs,Iron Owls,Kill,3,3
+920,Iron Owls,Prairie Dogs,3,8,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,4,3
+920,Iron Owls,Prairie Dogs,3,9,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,4,4
+920,Iron Owls,Prairie Dogs,3,10,Prairie Dogs,Iron Owls,Iron Owls,Ace,4,5
+920,Iron Owls,Prairie Dogs,3,11,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,5,5
+920,Iron Owls,Prairie Dogs,3,12,Prairie Dogs,Iron Owls,Iron Owls,Attack error,5,6
+920,Iron Owls,Prairie Dogs,3,13,Iron Owls,Prairie Dogs,Prairie Dogs,Ace,6,6
+920,Iron Owls,Prairie Dogs,3,14,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,6,7
+920,Iron Owls,Prairie Dogs,3,15,Prairie Dogs,Iron Owls,Iron Owls,Kill,6,8
+920,Iron Owls,Prairie Dogs,3,16,Iron Owls,Prairie Dogs,Iron Owls,Attack error,7,8
+920,Iron Owls,Prairie Dogs,3,17,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,8,8
+920,Iron Owls,Prairie Dogs,3,18,Prairie Dogs,Iron Owls,Iron Owls,Kill,8,9
+920,Iron Owls,Prairie Dogs,3,19,Iron Owls,Prairie Dogs,Iron Owls,Kill,9,9
+920,Iron Owls,Prairie Dogs,3,20,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,10,9
+920,Iron Owls,Prairie Dogs,3,21,Prairie Dogs,Iron Owls,Iron Owls,Kill,10,10
+920,Iron Owls,Prairie Dogs,3,22,Iron Owls,Prairie Dogs,Prairie Dogs,Block,11,10
+920,Iron Owls,Prairie Dogs,3,23,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,11,11
+920,Iron Owls,Prairie Dogs,3,24,Prairie Dogs,Iron Owls,Iron Owls,Ace,11,12
+920,Iron Owls,Prairie Dogs,3,25,Iron Owls,Prairie Dogs,Iron Owls,Block,12,12
+920,Iron Owls,Prairie Dogs,3,26,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,13,12
+920,Iron Owls,Prairie Dogs,3,27,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,13,13
+920,Iron Owls,Prairie Dogs,3,28,Prairie Dogs,Iron Owls,Iron Owls,Block,13,14
+920,Iron Owls,Prairie Dogs,3,29,Iron Owls,Prairie Dogs,Iron Owls,Kill,14,14
+920,Iron Owls,Prairie Dogs,3,30,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,15,14
+920,Iron Owls,Prairie Dogs,3,31,Prairie Dogs,Iron Owls,Prairie Dogs,Block,15,15
+920,Iron Owls,Prairie Dogs,3,32,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,15,16
+920,Iron Owls,Prairie Dogs,3,33,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,15,17
+920,Iron Owls,Prairie Dogs,3,34,Prairie Dogs,Iron Owls,Prairie Dogs,Block,15,18
+920,Iron Owls,Prairie Dogs,3,35,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,15,19
+920,Iron Owls,Prairie Dogs,3,36,Prairie Dogs,Iron Owls,Iron Owls,Kill,15,20
+920,Iron Owls,Prairie Dogs,3,37,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,16,20
+920,Iron Owls,Prairie Dogs,3,38,Prairie Dogs,Iron Owls,Prairie Dogs,Ace,16,21
+920,Iron Owls,Prairie Dogs,3,39,Prairie Dogs,Iron Owls,Iron Owls,Kill,16,22
+920,Iron Owls,Prairie Dogs,3,40,Iron Owls,Prairie Dogs,Iron Owls,Kill,17,22
+920,Iron Owls,Prairie Dogs,3,41,Iron Owls,Prairie Dogs,Iron Owls,Kill,18,22
+920,Iron Owls,Prairie Dogs,3,42,Iron Owls,Prairie Dogs,Prairie Dogs,Ace,19,22
+920,Iron Owls,Prairie Dogs,3,43,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,19,23
+920,Iron Owls,Prairie Dogs,3,44,Prairie Dogs,Iron Owls,Iron Owls,Attack error,19,24
+920,Iron Owls,Prairie Dogs,3,45,Iron Owls,Prairie Dogs,Iron Owls,Ace,20,24
+920,Iron Owls,Prairie Dogs,3,46,Iron Owls,Prairie Dogs,Iron Owls,Service error,21,24
+920,Iron Owls,Prairie Dogs,3,47,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,22,24
+920,Iron Owls,Prairie Dogs,4,1,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,0,0
+920,Iron Owls,Prairie Dogs,4,2,Prairie Dogs,Iron Owls,Iron Owls,Kill,0,1
+920,Iron Owls,Prairie Dogs,4,3,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,1,1
+920,Iron Owls,Prairie Dogs,4,4,Prairie Dogs,Iron Owls,Iron Owls,Block,1,2
+920,Iron Owls,Prairie Dogs,4,5,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,2,2
+920,Iron Owls,Prairie Dogs,4,6,Prairie Dogs,Iron Owls,Iron Owls,Kill,2,3
+920,Iron Owls,Prairie Dogs,4,7,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,3,3
+920,Iron Owls,Prairie Dogs,4,8,Prairie Dogs,Iron Owls,Iron Owls,Kill,3,4
+920,Iron Owls,Prairie Dogs,4,9,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,4,4
+920,Iron Owls,Prairie Dogs,4,10,Prairie Dogs,Iron Owls,Prairie Dogs,Block,4,5
+920,Iron Owls,Prairie Dogs,4,11,Prairie Dogs,Iron Owls,Prairie Dogs,Block,4,6
+920,Iron Owls,Prairie Dogs,4,12,Prairie Dogs,Iron Owls,Iron Owls,Kill,4,7
+920,Iron Owls,Prairie Dogs,4,13,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,5,7
+920,Iron Owls,Prairie Dogs,4,14,Prairie Dogs,Iron Owls,Iron Owls,Service error,5,8
+920,Iron Owls,Prairie Dogs,4,15,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,6,8
+920,Iron Owls,Prairie Dogs,4,16,Prairie Dogs,Iron Owls,Iron Owls,Kill,6,9
+920,Iron Owls,Prairie Dogs,4,17,Iron Owls,Prairie Dogs,Iron Owls,Kill,7,9
+920,Iron Owls,Prairie Dogs,4,18,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,8,9
+920,Iron Owls,Prairie Dogs,4,19,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,8,10
+920,Iron Owls,Prairie Dogs,4,20,Prairie Dogs,Iron Owls,Iron Owls,Block,8,11
+920,Iron Owls,Prairie Dogs,4,21,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,9,11
+920,Iron Owls,Prairie Dogs,4,22,Prairie Dogs,Iron Owls,Iron Owls,Kill,9,12
+920,Iron Owls,Prairie Dogs,4,23,Iron Owls,Prairie Dogs,Iron Owls,Service error,10,12
+920,Iron Owls,Prairie Dogs,4,24,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,11,12
+920,Iron Owls,Prairie Dogs,4,25,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,11,13
+920,Iron Owls,Prairie Dogs,4,26,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,11,14
+920,Iron Owls,Prairie Dogs,4,27,Prairie Dogs,Iron Owls,Iron Owls,Service error,11,15
+920,Iron Owls,Prairie Dogs,4,28,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,12,15
+920,Iron Owls,Prairie Dogs,4,29,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,12,16
+920,Iron Owls,Prairie Dogs,4,30,Prairie Dogs,Iron Owls,Iron Owls,Kill,12,17
+920,Iron Owls,Prairie Dogs,4,31,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,13,17
+920,Iron Owls,Prairie Dogs,4,32,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,13,18
+920,Iron Owls,Prairie Dogs,4,33,Prairie Dogs,Iron Owls,Iron Owls,Service error,13,19
+920,Iron Owls,Prairie Dogs,4,34,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,14,19
+920,Iron Owls,Prairie Dogs,4,35,Prairie Dogs,Iron Owls,Iron Owls,Block,14,20
+920,Iron Owls,Prairie Dogs,4,36,Iron Owls,Prairie Dogs,Iron Owls,Kill,15,20
+920,Iron Owls,Prairie Dogs,4,37,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,16,20
+920,Iron Owls,Prairie Dogs,4,38,Prairie Dogs,Iron Owls,Prairie Dogs,Attack error,16,21
+920,Iron Owls,Prairie Dogs,4,39,Prairie Dogs,Iron Owls,Iron Owls,Kill,16,22
+920,Iron Owls,Prairie Dogs,4,40,Iron Owls,Prairie Dogs,Iron Owls,Attack error,17,22
+920,Iron Owls,Prairie Dogs,4,41,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,18,22
+920,Iron Owls,Prairie Dogs,4,42,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,18,23
+920,Iron Owls,Prairie Dogs,4,43,Prairie Dogs,Iron Owls,Iron Owls,Attack error,18,24
+920,Iron Owls,Prairie Dogs,4,44,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,19,24
+920,Iron Owls,Prairie Dogs,5,1,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,0,0
+920,Iron Owls,Prairie Dogs,5,2,Prairie Dogs,Iron Owls,Iron Owls,Kill,0,1
+920,Iron Owls,Prairie Dogs,5,3,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,1,1
+920,Iron Owls,Prairie Dogs,5,4,Prairie Dogs,Iron Owls,Iron Owls,Block,1,2
+920,Iron Owls,Prairie Dogs,5,5,Iron Owls,Prairie Dogs,Iron Owls,Kill,2,2
+920,Iron Owls,Prairie Dogs,5,6,Iron Owls,Prairie Dogs,Iron Owls,Kill,3,2
+920,Iron Owls,Prairie Dogs,5,7,Iron Owls,Prairie Dogs,Prairie Dogs,Service error,4,2
+920,Iron Owls,Prairie Dogs,5,8,Prairie Dogs,Iron Owls,Iron Owls,Kill,4,3
+920,Iron Owls,Prairie Dogs,5,9,Iron Owls,Prairie Dogs,Prairie Dogs,Ace,5,3
+920,Iron Owls,Prairie Dogs,5,10,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,5,4
+920,Iron Owls,Prairie Dogs,5,11,Prairie Dogs,Iron Owls,Iron Owls,Block,5,5
+920,Iron Owls,Prairie Dogs,5,12,Iron Owls,Prairie Dogs,Prairie Dogs,Attack error,6,5
+920,Iron Owls,Prairie Dogs,5,13,Prairie Dogs,Iron Owls,Iron Owls,Ace,6,6
+920,Iron Owls,Prairie Dogs,5,14,Iron Owls,Prairie Dogs,Iron Owls,Kill,7,6
+920,Iron Owls,Prairie Dogs,5,15,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,8,6
+920,Iron Owls,Prairie Dogs,5,16,Prairie Dogs,Iron Owls,Iron Owls,Kill,8,7
+920,Iron Owls,Prairie Dogs,5,17,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,9,7
+920,Iron Owls,Prairie Dogs,5,18,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,9,8
+920,Iron Owls,Prairie Dogs,5,19,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,9,9
+920,Iron Owls,Prairie Dogs,5,20,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,9,10
+920,Iron Owls,Prairie Dogs,5,21,Prairie Dogs,Iron Owls,Iron Owls,Kill,9,11
+920,Iron Owls,Prairie Dogs,5,22,Iron Owls,Prairie Dogs,Prairie Dogs,Kill,10,11
+920,Iron Owls,Prairie Dogs,5,23,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,10,12
+920,Iron Owls,Prairie Dogs,5,24,Prairie Dogs,Iron Owls,Prairie Dogs,Kill,10,13
+920,Iron Owls,Prairie Dogs,5,25,Prairie Dogs,Iron Owls,Prairie Dogs,Service error,10,14
+922,Iron Owls,Lake Pike,1,1,Iron Owls,Lake Pike,Iron Owls,Attack error,0,0
+922,Iron Owls,Lake Pike,1,2,Iron Owls,Lake Pike,Lake Pike,Kill,1,0
+922,Iron Owls,Lake Pike,1,3,Lake Pike,Iron Owls,Lake Pike,Attack error,1,1
+922,Iron Owls,Lake Pike,1,4,Lake Pike,Iron Owls,Iron Owls,Attack error,1,2
+922,Iron Owls,Lake Pike,1,5,Iron Owls,Lake Pike,Lake Pike,Kill,2,2
+922,Iron Owls,Lake Pike,1,6,Lake Pike,Iron Owls,Lake Pike,Service error,2,3
+922,Iron Owls,Lake Pike,1,7,Lake Pike,Iron Owls,Lake Pike,Kill,2,4
+922,Iron Owls,Lake Pike,1,8,Lake Pike,Iron Owls,Iron Owls,Attack error,2,5
+922,Iron Owls,Lake Pike,1,9,Iron Owls,Lake Pike,Lake Pike,Ace,3,5
+922,Iron Owls,Lake Pike,1,10,Lake Pike,Iron Owls,Iron Owls,Ace,3,6
+922,Iron Owls,Lake Pike,1,11,Iron Owls,Lake Pike,Iron Owls,Block,4,6
+922,Iron Owls,Lake Pike,1,12,Iron Owls,Lake Pike,Lake Pike,Kill,5,6
+922,Iron Owls,Lake Pike,1,13,Lake Pike,Iron Owls,Lake Pike,Kill,5,7
+922,Iron Owls,Lake Pike,1,14,Lake Pike,Iron Owls,Iron Owls,Kill,5,8
+922,Iron Owls,Lake Pike,1,15,Iron Owls,Lake Pike,Lake Pike,Kill,6,8
+922,Iron Owls,Lake Pike,1,16,Lake Pike,Iron Owls,Lake Pike,Service error,6,9
+922,Iron Owls,Lake Pike,1,17,Lake Pike,Iron Owls,Lake Pike,Ace,6,10
+922,Iron Owls,Lake Pike,1,18,Lake Pike,Iron Owls,Iron Owls,Service error,6,11
+922,Iron Owls,Lake Pike,1,19,Iron Owls,Lake Pike,Lake Pike,Attack error,7,11
+922,Iron Owls,Lake Pike,1,20,Lake Pike,Iron Owls,Lake Pike,Attack error,7,12
+922,Iron Owls,Lake Pike,1,21,Lake Pike,Iron Owls,Iron Owls,Kill,7,13
+922,Iron Owls,Lake Pike,1,22,Iron Owls,Lake Pike,Lake Pike,Service error,8,13
+922,Iron Owls,Lake Pike,1,23,Lake Pike,Iron Owls,Lake Pike,Kill,8,14
+922,Iron Owls,Lake Pike,1,24,Lake Pike,Iron Owls,Iron Owls,Block,8,15
+922,Iron Owls,Lake Pike,1,25,Iron Owls,Lake Pike,Lake Pike,Attack error,9,15
+922,Iron Owls,Lake Pike,1,26,Lake Pike,Iron Owls,Iron Owls,Ace,9,16
+922,Iron Owls,Lake Pike,1,27,Iron Owls,Lake Pike,Lake Pike,Service error,10,16
+922,Iron Owls,Lake Pike,1,28,Lake Pike,Iron Owls,Lake Pike,Attack error,10,17
+922,Iron Owls,Lake Pike,1,29,Lake Pike,Iron Owls,Iron Owls,Kill,10,18
+922,Iron Owls,Lake Pike,1,30,Iron Owls,Lake Pike,Lake Pike,Attack error,11,18
+922,Iron Owls,Lake Pike,1,31,Lake Pike,Iron Owls,Lake Pike,Kill,11,19
+922,Iron Owls,Lake Pike,1,32,Lake Pike,Iron Owls,Iron Owls,Kill,11,20
+922,Iron Owls,Lake Pike,1,33,Iron Owls,Lake Pike,Lake Pike,Ace,12,20
+922,Iron Owls,Lake Pike,1,34,Lake Pike,Iron Owls,Iron Owls,Kill,12,21
+922,Iron Owls,Lake Pike,1,35,Iron Owls,Lake Pike,Lake Pike,Kill,13,21
+922,Iron Owls,Lake Pike,1,36,Lake Pike,Iron Owls,Lake Pike,Attack error,13,22
+922,Iron Owls,Lake Pike,1,37,Lake Pike,Iron Owls,Iron Owls,Kill,13,23
+922,Iron Owls,Lake Pike,1,38,Iron Owls,Lake Pike,Lake Pike,Kill,14,23
+922,Iron Owls,Lake Pike,1,39,Lake Pike,Iron Owls,Iron Owls,Block,14,24
+922,Iron Owls,Lake Pike,1,40,Iron Owls,Lake Pike,Lake Pike,Service error,15,24
+922,Iron Owls,Lake Pike,2,1,Lake Pike,Iron Owls,Iron Owls,Kill,0,0
+922,Iron Owls,Lake Pike,2,2,Iron Owls,Lake Pike,Iron Owls,Block,1,0
+922,Iron Owls,Lake Pike,2,3,Iron Owls,Lake Pike,Lake Pike,Kill,2,0
+922,Iron Owls,Lake Pike,2,4,Lake Pike,Iron Owls,Lake Pike,Kill,2,1
+922,Iron Owls,Lake Pike,2,5,Lake Pike,Iron Owls,Lake Pike,Kill,2,2
+922,Iron Owls,Lake Pike,2,6,Lake Pike,Iron Owls,Lake Pike,Kill,2,3
+922,Iron Owls,Lake Pike,2,7,Lake Pike,Iron Owls,Iron Owls,Block,2,4
+922,Iron Owls,Lake Pike,2,8,Iron Owls,Lake Pike,Lake Pike,Attack error,3,4
+922,Iron Owls,Lake Pike,2,9,Lake Pike,Iron Owls,Lake Pike,Kill,3,5
+922,Iron Owls,Lake Pike,2,10,Lake Pike,Iron Owls,Lake Pike,Kill,3,6
+922,Iron Owls,Lake Pike,2,11,Lake Pike,Iron Owls,Iron Owls,Kill,3,7
+922,Iron Owls,Lake Pike,2,12,Iron Owls,Lake Pike,Lake Pike,Kill,4,7
+922,Iron Owls,Lake Pike,2,13,Lake Pike,Iron Owls,Lake Pike,Kill,4,8
+922,Iron Owls,Lake Pike,2,14,Lake Pike,Iron Owls,Iron Owls,Kill,4,9
+922,Iron Owls,Lake Pike,2,15,Iron Owls,Lake Pike,Lake Pike,Block,5,9
+922,Iron Owls,Lake Pike,2,16,Lake Pike,Iron Owls,Iron Owls,Attack error,5,10
+922,Iron Owls,Lake Pike,2,17,Iron Owls,Lake Pike,Lake Pike,Kill,6,10
+922,Iron Owls,Lake Pike,2,18,Lake Pike,Iron Owls,Iron Owls,Kill,6,11
+922,Iron Owls,Lake Pike,2,19,Iron Owls,Lake Pike,Lake Pike,Service error,7,11
+922,Iron Owls,Lake Pike,2,20,Lake Pike,Iron Owls,Lake Pike,Kill,7,12
+922,Iron Owls,Lake Pike,2,21,Lake Pike,Iron Owls,Iron Owls,Kill,7,13
+922,Iron Owls,Lake Pike,2,22,Iron Owls,Lake Pike,Lake Pike,Block,8,13
+922,Iron Owls,Lake Pike,2,23,Lake Pike,Iron Owls,Lake Pike,Kill,8,14
+922,Iron Owls,Lake Pike,2,24,Lake Pike,Iron Owls,Lake Pike,Kill,8,15
+922,Iron Owls,Lake Pike,2,25,Lake Pike,Iron Owls,Lake Pike,Block,8,16
+922,Iron Owls,Lake Pike,2,26,Lake Pike,Iron Owls,Lake Pike,Service error,8,17
+922,Iron Owls,Lake Pike,2,27,Lake Pike,Iron Owls,Iron Owls,Kill,8,18
+922,Iron Owls,Lake Pike,2,28,Iron Owls,Lake Pike,Lake Pike,Kill,9,18
+922,Iron Owls,Lake Pike,2,29,Lake Pike,Iron Owls,Iron Owls,Attack error,9,19
+922,Iron Owls,Lake Pike,2,30,Iron Owls,Lake Pike,Lake Pike,Kill,10,19
+922,Iron Owls,Lake Pike,2,31,Lake Pike,Iron Owls,Iron Owls,Kill,10,20
+922,Iron Owls,Lake Pike,2,32,Iron Owls,Lake Pike,Iron Owls,Kill,11,20
+922,Iron Owls,Lake Pike,2,33,Iron Owls,Lake Pike,Iron Owls,Service error,12,20
+922,Iron Owls,Lake Pike,2,34,Iron Owls,Lake Pike,Lake Pike,Attack error,13,20
+922,Iron Owls,Lake Pike,2,35,Lake Pike,Iron Owls,Iron Owls,Block,13,21
+922,Iron Owls,Lake Pike,2,36,Iron Owls,Lake Pike,Iron Owls,Attack error,14,21
+922,Iron Owls,Lake Pike,2,37,Iron Owls,Lake Pike,Lake Pike,Kill,15,21
+922,Iron Owls,Lake Pike,2,38,Lake Pike,Iron Owls,Lake Pike,Kill,15,22
+922,Iron Owls,Lake Pike,2,39,Lake Pike,Iron Owls,Lake Pike,Kill,15,23
+922,Iron Owls,Lake Pike,2,40,Lake Pike,Iron Owls,Iron Owls,Kill,15,24
+922,Iron Owls,Lake Pike,2,41,Iron Owls,Lake Pike,Lake Pike,Kill,16,24
+922,Iron Owls,Lake Pike,3,1,Lake Pike,Iron Owls,Lake Pike,Kill,0,0
+922,Iron Owls,Lake Pike,3,2,Lake Pike,Iron Owls,Lake Pike,Kill,0,1
+922,Iron Owls,Lake Pike,3,3,Lake Pike,Iron Owls,Lake Pike,Block,0,2
+922,Iron Owls,Lake Pike,3,4,Lake Pike,Iron Owls,Iron Owls,Kill,0,3
+922,Iron Owls,Lake Pike,3,5,Iron Owls,Lake Pike,Lake Pike,Kill,1,3
+922,Iron Owls,Lake Pike,3,6,Lake Pike,Iron Owls,Lake Pike,Kill,1,4
+922,Iron Owls,Lake Pike,3,7,Lake Pike,Iron Owls,Iron Owls,Kill,1,5
+922,Iron Owls,Lake Pike,3,8,Iron Owls,Lake Pike,Iron Owls,Ace,2,5
+922,Iron Owls,Lake Pike,3,9,Iron Owls,Lake Pike,Lake Pike,Kill,3,5
+922,Iron Owls,Lake Pike,3,10,Lake Pike,Iron Owls,Lake Pike,Service error,3,6
+922,Iron Owls,Lake Pike,3,11,Lake Pike,Iron Owls,Iron Owls,Block,3,7
+922,Iron Owls,Lake Pike,3,12,Iron Owls,Lake Pike,Lake Pike,Service error,4,7
+922,Iron Owls,Lake Pike,3,13,Lake Pike,Iron Owls,Lake Pike,Attack error,4,8
+922,Iron Owls,Lake Pike,3,14,Lake Pike,Iron Owls,Iron Owls,Kill,4,9
+922,Iron Owls,Lake Pike,3,15,Iron Owls,Lake Pike,Lake Pike,Attack error,5,9
+922,Iron Owls,Lake Pike,3,16,Lake Pike,Iron Owls,Lake Pike,Kill,5,10
+922,Iron Owls,Lake Pike,3,17,Lake Pike,Iron Owls,Iron Owls,Ace,5,11
+922,Iron Owls,Lake Pike,3,18,Iron Owls,Lake Pike,Iron Owls,Kill,6,11
+922,Iron Owls,Lake Pike,3,19,Iron Owls,Lake Pike,Iron Owls,Kill,7,11
+922,Iron Owls,Lake Pike,3,20,Iron Owls,Lake Pike,Lake Pike,Block,8,11
+922,Iron Owls,Lake Pike,3,21,Lake Pike,Iron Owls,Iron Owls,Kill,8,12
+922,Iron Owls,Lake Pike,3,22,Iron Owls,Lake Pike,Lake Pike,Service error,9,12
+922,Iron Owls,Lake Pike,3,23,Lake Pike,Iron Owls,Iron Owls,Service error,9,13
+922,Iron Owls,Lake Pike,3,24,Iron Owls,Lake Pike,Iron Owls,Kill,10,13
+922,Iron Owls,Lake Pike,3,25,Iron Owls,Lake Pike,Lake Pike,Service error,11,13
+922,Iron Owls,Lake Pike,3,26,Lake Pike,Iron Owls,Lake Pike,Block,11,14
+922,Iron Owls,Lake Pike,3,27,Lake Pike,Iron Owls,Iron Owls,Ace,11,15
+922,Iron Owls,Lake Pike,3,28,Iron Owls,Lake Pike,Lake Pike,Kill,12,15
+922,Iron Owls,Lake Pike,3,29,Lake Pike,Iron Owls,Lake Pike,Kill,12,16
+922,Iron Owls,Lake Pike,3,30,Lake Pike,Iron Owls,Iron Owls,Block,12,17
+922,Iron Owls,Lake Pike,3,31,Iron Owls,Lake Pike,Lake Pike,Kill,13,17
+922,Iron Owls,Lake Pike,3,32,Lake Pike,Iron Owls,Lake Pike,Ace,13,18
+922,Iron Owls,Lake Pike,3,33,Lake Pike,Iron Owls,Lake Pike,Kill,13,19
+922,Iron Owls,Lake Pike,3,34,Lake Pike,Iron Owls,Iron Owls,Attack error,13,20
+922,Iron Owls,Lake Pike,3,35,Iron Owls,Lake Pike,Lake Pike,Kill,14,20
+922,Iron Owls,Lake Pike,3,36,Lake Pike,Iron Owls,Lake Pike,Kill,14,21
+922,Iron Owls,Lake Pike,3,37,Lake Pike,Iron Owls,Lake Pike,Kill,14,22
+922,Iron Owls,Lake Pike,3,38,Lake Pike,Iron Owls,Iron Owls,Attack error,14,23
+922,Iron Owls,Lake Pike,3,39,Iron Owls,Lake Pike,Lake Pike,Kill,15,23
+922,Iron Owls,Lake Pike,3,40,Lake Pike,Iron Owls,Lake Pike,Kill,15,24
+923,Iron Owls,Canyon Wrens,1,1,Iron Owls,Canyon Wrens,Iron Owls,Service error,0,0
+923,Iron Owls,Canyon Wrens,1,2,Iron Owls,Canyon Wrens,Iron Owls,Kill,1,0
+923,Iron Owls,Canyon Wrens,1,3,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,2,0
+923,Iron Owls,Canyon Wrens,1,4,Canyon Wrens,Iron Owls,Iron Owls,Service error,2,1
+923,Iron Owls,Canyon Wrens,1,5,Iron Owls,Canyon Wrens,Canyon Wrens,Block,3,1
+923,Iron Owls,Canyon Wrens,1,6,Canyon Wrens,Iron Owls,Iron Owls,Block,3,2
+923,Iron Owls,Canyon Wrens,1,7,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,4,2
+923,Iron Owls,Canyon Wrens,1,8,Canyon Wrens,Iron Owls,Iron Owls,Kill,4,3
+923,Iron Owls,Canyon Wrens,1,9,Iron Owls,Canyon Wrens,Iron Owls,Block,5,3
+923,Iron Owls,Canyon Wrens,1,10,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,6,3
+923,Iron Owls,Canyon Wrens,1,11,Canyon Wrens,Iron Owls,Iron Owls,Kill,6,4
+923,Iron Owls,Canyon Wrens,1,12,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,7,4
+923,Iron Owls,Canyon Wrens,1,13,Canyon Wrens,Iron Owls,Iron Owls,Attack error,7,5
+923,Iron Owls,Canyon Wrens,1,14,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,8,5
+923,Iron Owls,Canyon Wrens,1,15,Canyon Wrens,Iron Owls,Iron Owls,Kill,8,6
+923,Iron Owls,Canyon Wrens,1,16,Iron Owls,Canyon Wrens,Iron Owls,Kill,9,6
+923,Iron Owls,Canyon Wrens,1,17,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,10,6
+923,Iron Owls,Canyon Wrens,1,18,Canyon Wrens,Iron Owls,Iron Owls,Kill,10,7
+923,Iron Owls,Canyon Wrens,1,19,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,11,7
+923,Iron Owls,Canyon Wrens,1,20,Canyon Wrens,Iron Owls,Iron Owls,Kill,11,8
+923,Iron Owls,Canyon Wrens,1,21,Iron Owls,Canyon Wrens,Canyon Wrens,Block,12,8
+923,Iron Owls,Canyon Wrens,1,22,Canyon Wrens,Iron Owls,Iron Owls,Attack error,12,9
+923,Iron Owls,Canyon Wrens,1,23,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,13,9
+923,Iron Owls,Canyon Wrens,1,24,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,13,10
+923,Iron Owls,Canyon Wrens,1,25,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,13,11
+923,Iron Owls,Canyon Wrens,1,26,Canyon Wrens,Iron Owls,Iron Owls,Kill,13,12
+923,Iron Owls,Canyon Wrens,1,27,Iron Owls,Canyon Wrens,Iron Owls,Kill,14,12
+923,Iron Owls,Canyon Wrens,1,28,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,15,12
+923,Iron Owls,Canyon Wrens,1,29,Canyon Wrens,Iron Owls,Iron Owls,Block,15,13
+923,Iron Owls,Canyon Wrens,1,30,Iron Owls,Canyon Wrens,Iron Owls,Kill,16,13
+923,Iron Owls,Canyon Wrens,1,31,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,17,13
+923,Iron Owls,Canyon Wrens,1,32,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,17,14
+923,Iron Owls,Canyon Wrens,1,33,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,17,15
+923,Iron Owls,Canyon Wrens,1,34,Canyon Wrens,Iron Owls,Iron Owls,Kill,17,16
+923,Iron Owls,Canyon Wrens,1,35,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,18,16
+923,Iron Owls,Canyon Wrens,1,36,Canyon Wrens,Iron Owls,Iron Owls,Kill,18,17
+923,Iron Owls,Canyon Wrens,1,37,Iron Owls,Canyon Wrens,Iron Owls,Block,19,17
+923,Iron Owls,Canyon Wrens,1,38,Iron Owls,Canyon Wrens,Iron Owls,Service error,20,17
+923,Iron Owls,Canyon Wrens,1,39,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,21,17
+923,Iron Owls,Canyon Wrens,1,40,Canyon Wrens,Iron Owls,Iron Owls,Block,21,18
+923,Iron Owls,Canyon Wrens,1,41,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,22,18
+923,Iron Owls,Canyon Wrens,1,42,Canyon Wrens,Iron Owls,Iron Owls,Kill,22,19
+923,Iron Owls,Canyon Wrens,1,43,Iron Owls,Canyon Wrens,Iron Owls,Kill,23,19
+923,Iron Owls,Canyon Wrens,1,44,Iron Owls,Canyon Wrens,Iron Owls,Kill,24,19
+923,Iron Owls,Canyon Wrens,2,1,Iron Owls,Canyon Wrens,Iron Owls,Kill,0,0
+923,Iron Owls,Canyon Wrens,2,2,Iron Owls,Canyon Wrens,Iron Owls,Block,1,0
+923,Iron Owls,Canyon Wrens,2,3,Iron Owls,Canyon Wrens,Iron Owls,Block,2,0
+923,Iron Owls,Canyon Wrens,2,4,Iron Owls,Canyon Wrens,Iron Owls,Kill,3,0
+923,Iron Owls,Canyon Wrens,2,5,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,4,0
+923,Iron Owls,Canyon Wrens,2,6,Canyon Wrens,Iron Owls,Iron Owls,Kill,4,1
+923,Iron Owls,Canyon Wrens,2,7,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,5,1
+923,Iron Owls,Canyon Wrens,2,8,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,5,2
+923,Iron Owls,Canyon Wrens,2,9,Canyon Wrens,Iron Owls,Iron Owls,Ace,5,3
+923,Iron Owls,Canyon Wrens,2,10,Iron Owls,Canyon Wrens,Iron Owls,Ace,6,3
+923,Iron Owls,Canyon Wrens,2,11,Iron Owls,Canyon Wrens,Iron Owls,Kill,7,3
+923,Iron Owls,Canyon Wrens,2,12,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,8,3
+923,Iron Owls,Canyon Wrens,2,13,Canyon Wrens,Iron Owls,Iron Owls,Service error,8,4
+923,Iron Owls,Canyon Wrens,2,14,Iron Owls,Canyon Wrens,Iron Owls,Kill,9,4
+923,Iron Owls,Canyon Wrens,2,15,Iron Owls,Canyon Wrens,Iron Owls,Attack error,10,4
+923,Iron Owls,Canyon Wrens,2,16,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,11,4
+923,Iron Owls,Canyon Wrens,2,17,Canyon Wrens,Iron Owls,Iron Owls,Kill,11,5
+923,Iron Owls,Canyon Wrens,2,18,Iron Owls,Canyon Wrens,Iron Owls,Kill,12,5
+923,Iron Owls,Canyon Wrens,2,19,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,13,5
+923,Iron Owls,Canyon Wrens,2,20,Canyon Wrens,Iron Owls,Iron Owls,Attack error,13,6
+923,Iron Owls,Canyon Wrens,2,21,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,14,6
+923,Iron Owls,Canyon Wrens,2,22,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,14,7
+923,Iron Owls,Canyon Wrens,2,23,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,14,8
+923,Iron Owls,Canyon Wrens,2,24,Canyon Wrens,Iron Owls,Iron Owls,Block,14,9
+923,Iron Owls,Canyon Wrens,2,25,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,15,9
+923,Iron Owls,Canyon Wrens,2,26,Canyon Wrens,Iron Owls,Iron Owls,Kill,15,10
+923,Iron Owls,Canyon Wrens,2,27,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,16,10
+923,Iron Owls,Canyon Wrens,2,28,Canyon Wrens,Iron Owls,Canyon Wrens,Block,16,11
+923,Iron Owls,Canyon Wrens,2,29,Canyon Wrens,Iron Owls,Canyon Wrens,Block,16,12
+923,Iron Owls,Canyon Wrens,2,30,Canyon Wrens,Iron Owls,Iron Owls,Attack error,16,13
+923,Iron Owls,Canyon Wrens,2,31,Iron Owls,Canyon Wrens,Canyon Wrens,Block,17,13
+923,Iron Owls,Canyon Wrens,2,32,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,17,14
+923,Iron Owls,Canyon Wrens,2,33,Canyon Wrens,Iron Owls,Iron Owls,Kill,17,15
+923,Iron Owls,Canyon Wrens,2,34,Iron Owls,Canyon Wrens,Iron Owls,Attack error,18,15
+923,Iron Owls,Canyon Wrens,2,35,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,19,15
+923,Iron Owls,Canyon Wrens,2,36,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,19,16
+923,Iron Owls,Canyon Wrens,2,37,Canyon Wrens,Iron Owls,Iron Owls,Kill,19,17
+923,Iron Owls,Canyon Wrens,2,38,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,20,17
+923,Iron Owls,Canyon Wrens,2,39,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,20,18
+923,Iron Owls,Canyon Wrens,2,40,Canyon Wrens,Iron Owls,Canyon Wrens,Block,20,19
+923,Iron Owls,Canyon Wrens,2,41,Canyon Wrens,Iron Owls,Canyon Wrens,Block,20,20
+923,Iron Owls,Canyon Wrens,2,42,Canyon Wrens,Iron Owls,Iron Owls,Attack error,20,21
+923,Iron Owls,Canyon Wrens,2,43,Iron Owls,Canyon Wrens,Iron Owls,Kill,21,21
+923,Iron Owls,Canyon Wrens,2,44,Iron Owls,Canyon Wrens,Iron Owls,Ace,22,21
+923,Iron Owls,Canyon Wrens,2,45,Iron Owls,Canyon Wrens,Canyon Wrens,Ace,23,21
+923,Iron Owls,Canyon Wrens,2,46,Canyon Wrens,Iron Owls,Iron Owls,Kill,23,22
+923,Iron Owls,Canyon Wrens,2,47,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,24,22
+923,Iron Owls,Canyon Wrens,2,48,Canyon Wrens,Iron Owls,Canyon Wrens,Ace,24,23
+923,Iron Owls,Canyon Wrens,2,49,Canyon Wrens,Iron Owls,Canyon Wrens,Ace,24,24
+923,Iron Owls,Canyon Wrens,2,50,Canyon Wrens,Iron Owls,Iron Owls,Attack error,24,25
+923,Iron Owls,Canyon Wrens,2,51,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,25,25
+923,Iron Owls,Canyon Wrens,2,52,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,25,26
+923,Iron Owls,Canyon Wrens,3,1,Canyon Wrens,Iron Owls,Canyon Wrens,Block,0,0
+923,Iron Owls,Canyon Wrens,3,2,Canyon Wrens,Iron Owls,Iron Owls,Service error,0,1
+923,Iron Owls,Canyon Wrens,3,3,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,1,1
+923,Iron Owls,Canyon Wrens,3,4,Canyon Wrens,Iron Owls,Canyon Wrens,Ace,1,2
+923,Iron Owls,Canyon Wrens,3,5,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,1,3
+923,Iron Owls,Canyon Wrens,3,6,Canyon Wrens,Iron Owls,Iron Owls,Attack error,1,4
+923,Iron Owls,Canyon Wrens,3,7,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,2,4
+923,Iron Owls,Canyon Wrens,3,8,Canyon Wrens,Iron Owls,Iron Owls,Kill,2,5
+923,Iron Owls,Canyon Wrens,3,9,Iron Owls,Canyon Wrens,Iron Owls,Block,3,5
+923,Iron Owls,Canyon Wrens,3,10,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,4,5
+923,Iron Owls,Canyon Wrens,3,11,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,4,6
+923,Iron Owls,Canyon Wrens,3,12,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,4,7
+923,Iron Owls,Canyon Wrens,3,13,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,4,8
+923,Iron Owls,Canyon Wrens,3,14,Canyon Wrens,Iron Owls,Iron Owls,Kill,4,9
+923,Iron Owls,Canyon Wrens,3,15,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,5,9
+923,Iron Owls,Canyon Wrens,3,16,Canyon Wrens,Iron Owls,Iron Owls,Service error,5,10
+923,Iron Owls,Canyon Wrens,3,17,Iron Owls,Canyon Wrens,Iron Owls,Attack error,6,10
+923,Iron Owls,Canyon Wrens,3,18,Iron Owls,Canyon Wrens,Iron Owls,Kill,7,10
+923,Iron Owls,Canyon Wrens,3,19,Iron Owls,Canyon Wrens,Canyon Wrens,Block,8,10
+923,Iron Owls,Canyon Wrens,3,20,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,8,11
+923,Iron Owls,Canyon Wrens,3,21,Canyon Wrens,Iron Owls,Iron Owls,Attack error,8,12
+923,Iron Owls,Canyon Wrens,3,22,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,9,12
+923,Iron Owls,Canyon Wrens,3,23,Canyon Wrens,Iron Owls,Canyon Wrens,Ace,9,13
+923,Iron Owls,Canyon Wrens,3,24,Canyon Wrens,Iron Owls,Iron Owls,Kill,9,14
+923,Iron Owls,Canyon Wrens,3,25,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,10,14
+923,Iron Owls,Canyon Wrens,3,26,Canyon Wrens,Iron Owls,Iron Owls,Attack error,10,15
+923,Iron Owls,Canyon Wrens,3,27,Iron Owls,Canyon Wrens,Canyon Wrens,Block,11,15
+923,Iron Owls,Canyon Wrens,3,28,Canyon Wrens,Iron Owls,Iron Owls,Kill,11,16
+923,Iron Owls,Canyon Wrens,3,29,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,12,16
+923,Iron Owls,Canyon Wrens,3,30,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,12,17
+923,Iron Owls,Canyon Wrens,3,31,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,12,18
+923,Iron Owls,Canyon Wrens,3,32,Canyon Wrens,Iron Owls,Iron Owls,Kill,12,19
+923,Iron Owls,Canyon Wrens,3,33,Iron Owls,Canyon Wrens,Canyon Wrens,Service error,13,19
+923,Iron Owls,Canyon Wrens,3,34,Canyon Wrens,Iron Owls,Canyon Wrens,Block,13,20
+923,Iron Owls,Canyon Wrens,3,35,Canyon Wrens,Iron Owls,Iron Owls,Service error,13,21
+923,Iron Owls,Canyon Wrens,3,36,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,14,21
+923,Iron Owls,Canyon Wrens,3,37,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,14,22
+923,Iron Owls,Canyon Wrens,3,38,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,14,23
+923,Iron Owls,Canyon Wrens,3,39,Canyon Wrens,Iron Owls,Iron Owls,Service error,14,24
+923,Iron Owls,Canyon Wrens,3,40,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,15,24
+923,Iron Owls,Canyon Wrens,4,1,Canyon Wrens,Iron Owls,Iron Owls,Kill,0,0
+923,Iron Owls,Canyon Wrens,4,2,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,1,0
+923,Iron Owls,Canyon Wrens,4,3,Canyon Wrens,Iron Owls,Canyon Wrens,Service error,1,1
+923,Iron Owls,Canyon Wrens,4,4,Canyon Wrens,Iron Owls,Iron Owls,Service error,1,2
+923,Iron Owls,Canyon Wrens,4,5,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,2,2
+923,Iron Owls,Canyon Wrens,4,6,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,2,3
+923,Iron Owls,Canyon Wrens,4,7,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,2,4
+923,Iron Owls,Canyon Wrens,4,8,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,2,5
+923,Iron Owls,Canyon Wrens,4,9,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,2,6
+923,Iron Owls,Canyon Wrens,4,10,Canyon Wrens,Iron Owls,Iron Owls,Block,2,7
+923,Iron Owls,Canyon Wrens,4,11,Iron Owls,Canyon Wrens,Canyon Wrens,Block,3,7
+923,Iron Owls,Canyon Wrens,4,12,Canyon Wrens,Iron Owls,Iron Owls,Kill,3,8
+923,Iron Owls,Canyon Wrens,4,13,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,4,8
+923,Iron Owls,Canyon Wrens,4,14,Canyon Wrens,Iron Owls,Canyon Wrens,Block,4,9
+923,Iron Owls,Canyon Wrens,4,15,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,4,10
+923,Iron Owls,Canyon Wrens,4,16,Canyon Wrens,Iron Owls,Iron Owls,Kill,4,11
+923,Iron Owls,Canyon Wrens,4,17,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,5,11
+923,Iron Owls,Canyon Wrens,4,18,Canyon Wrens,Iron Owls,Iron Owls,Kill,5,12
+923,Iron Owls,Canyon Wrens,4,19,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,6,12
+923,Iron Owls,Canyon Wrens,4,20,Canyon Wrens,Iron Owls,Iron Owls,Attack error,6,13
+923,Iron Owls,Canyon Wrens,4,21,Iron Owls,Canyon Wrens,Iron Owls,Kill,7,13
+923,Iron Owls,Canyon Wrens,4,22,Iron Owls,Canyon Wrens,Iron Owls,Attack error,8,13
+923,Iron Owls,Canyon Wrens,4,23,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,9,13
+923,Iron Owls,Canyon Wrens,4,24,Canyon Wrens,Iron Owls,Iron Owls,Kill,9,14
+923,Iron Owls,Canyon Wrens,4,25,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,10,14
+923,Iron Owls,Canyon Wrens,4,26,Canyon Wrens,Iron Owls,Iron Owls,Kill,10,15
+923,Iron Owls,Canyon Wrens,4,27,Iron Owls,Canyon Wrens,Iron Owls,Kill,11,15
+923,Iron Owls,Canyon Wrens,4,28,Iron Owls,Canyon Wrens,Iron Owls,Kill,12,15
+923,Iron Owls,Canyon Wrens,4,29,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,13,15
+923,Iron Owls,Canyon Wrens,4,30,Canyon Wrens,Iron Owls,Canyon Wrens,Attack error,13,16
+923,Iron Owls,Canyon Wrens,4,31,Canyon Wrens,Iron Owls,Iron Owls,Kill,13,17
+923,Iron Owls,Canyon Wrens,4,32,Iron Owls,Canyon Wrens,Canyon Wrens,Attack error,14,17
+923,Iron Owls,Canyon Wrens,4,33,Canyon Wrens,Iron Owls,Iron Owls,Attack error,14,18
+923,Iron Owls,Canyon Wrens,4,34,Iron Owls,Canyon Wrens,Iron Owls,Attack error,15,18
+923,Iron Owls,Canyon Wrens,4,35,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,16,18
+923,Iron Owls,Canyon Wrens,4,36,Canyon Wrens,Iron Owls,Canyon Wrens,Kill,16,19
+923,Iron Owls,Canyon Wrens,4,37,Canyon Wrens,Iron Owls,Iron Owls,Ace,16,20
+923,Iron Owls,Canyon Wrens,4,38,Iron Owls,Canyon Wrens,Canyon Wrens,Block,17,20
+923,Iron Owls,Canyon Wrens,4,39,Canyon Wrens,Iron Owls,Iron Owls,Attack error,17,21
+923,Iron Owls,Canyon Wrens,4,40,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,18,21
+923,Iron Owls,Canyon Wrens,4,41,Canyon Wrens,Iron Owls,Iron Owls,Kill,18,22
+923,Iron Owls,Canyon Wrens,4,42,Iron Owls,Canyon Wrens,Iron Owls,Block,19,22
+923,Iron Owls,Canyon Wrens,4,43,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,20,22
+923,Iron Owls,Canyon Wrens,4,44,Canyon Wrens,Iron Owls,Iron Owls,Kill,20,23
+923,Iron Owls,Canyon Wrens,4,45,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,21,23
+923,Iron Owls,Canyon Wrens,4,46,Canyon Wrens,Iron Owls,Iron Owls,Attack error,21,24
+923,Iron Owls,Canyon Wrens,4,47,Iron Owls,Canyon Wrens,Canyon Wrens,Kill,22,24
+924,Iron Owls,Delta Herons,1,1,Iron Owls,Delta Herons,Iron Owls,Service error,0,0
+924,Iron Owls,Delta Herons,1,2,Iron Owls,Delta Herons,Delta Herons,Kill,1,0
+924,Iron Owls,Delta Herons,1,3,Delta Herons,Iron Owls,Iron Owls,Service error,1,1
+924,Iron Owls,Delta Herons,1,4,Iron Owls,Delta Herons,Delta Herons,Attack error,2,1
+924,Iron Owls,Delta Herons,1,5,Delta Herons,Iron Owls,Iron Owls,Service error,2,2
+924,Iron Owls,Delta Herons,1,6,Iron Owls,Delta Herons,Delta Herons,Block,3,2
+924,Iron Owls,Delta Herons,1,7,Delta Herons,Iron Owls,Iron Owls,Block,3,3
+924,Iron Owls,Delta Herons,1,8,Iron Owls,Delta Herons,Iron Owls,Kill,4,3
+924,Iron Owls,Delta Herons,1,9,Iron Owls,Delta Herons,Iron Owls,Kill,5,3
+924,Iron Owls,Delta Herons,1,10,Iron Owls,Delta Herons,Delta Herons,Kill,6,3
+924,Iron Owls,Delta Herons,1,11,Delta Herons,Iron Owls,Delta Herons,Block,6,4
+924,Iron Owls,Delta Herons,1,12,Delta Herons,Iron Owls,Delta Herons,Attack error,6,5
+924,Iron Owls,Delta Herons,1,13,Delta Herons,Iron Owls,Delta Herons,Kill,6,6
+924,Iron Owls,Delta Herons,1,14,Delta Herons,Iron Owls,Iron Owls,Ace,6,7
+924,Iron Owls,Delta Herons,1,15,Iron Owls,Delta Herons,Delta Herons,Kill,7,7
+924,Iron Owls,Delta Herons,1,16,Delta Herons,Iron Owls,Iron Owls,Kill,7,8
+924,Iron Owls,Delta Herons,1,17,Iron Owls,Delta Herons,Delta Herons,Kill,8,8
+924,Iron Owls,Delta Herons,1,18,Delta Herons,Iron Owls,Iron Owls,Ace,8,9
+924,Iron Owls,Delta Herons,1,19,Iron Owls,Delta Herons,Delta Herons,Kill,9,9
+924,Iron Owls,Delta Herons,1,20,Delta Herons,Iron Owls,Iron Owls,Kill,9,10
+924,Iron Owls,Delta Herons,1,21,Iron Owls,Delta Herons,Delta Herons,Attack error,10,10
+924,Iron Owls,Delta Herons,1,22,Delta Herons,Iron Owls,Delta Herons,Service error,10,11
+924,Iron Owls,Delta Herons,1,23,Delta Herons,Iron Owls,Delta Herons,Kill,10,12
+924,Iron Owls,Delta Herons,1,24,Delta Herons,Iron Owls,Delta Herons,Kill,10,13
+924,Iron Owls,Delta Herons,1,25,Delta Herons,Iron Owls,Delta Herons,Service error,10,14
+924,Iron Owls,Delta Herons,1,26,Delta Herons,Iron Owls,Iron Owls,Kill,10,15
+924,Iron Owls,Delta Herons,1,27,Iron Owls,Delta Herons,Delta Herons,Kill,11,15
+924,Iron Owls,Delta Herons,1,28,Delta Herons,Iron Owls,Iron Owls,Kill,11,16
+924,Iron Owls,Delta Herons,1,29,Iron Owls,Delta Herons,Delta Herons,Kill,12,16
+924,Iron Owls,Delta Herons,1,30,Delta Herons,Iron Owls,Delta Herons,Block,12,17
+924,Iron Owls,Delta Herons,1,31,Delta Herons,Iron Owls,Iron Owls,Attack error,12,18
+924,Iron Owls,Delta Herons,1,32,Iron Owls,Delta Herons,Delta Herons,Kill,13,18
+924,Iron Owls,Delta Herons,1,33,Delta Herons,Iron Owls,Delta Herons,Kill,13,19
+924,Iron Owls,Delta Herons,1,34,Delta Herons,Iron Owls,Iron Owls,Kill,13,20
+924,Iron Owls,Delta Herons,1,35,Iron Owls,Delta Herons,Delta Herons,Kill,14,20
+924,Iron Owls,Delta Herons,1,36,Delta Herons,Iron Owls,Iron Owls,Kill,14,21
+924,Iron Owls,Delta Herons,1,37,Iron Owls,Delta Herons,Delta Herons,Kill,15,21
+924,Iron Owls,Delta Herons,1,38,Delta Herons,Iron Owls,Iron Owls,Kill,15,22
+924,Iron Owls,Delta Herons,1,39,Iron Owls,Delta Herons,Delta Herons,Attack error,16,22
+924,Iron Owls,Delta Herons,1,40,Delta Herons,Iron Owls,Delta Herons,Kill,16,23
+924,Iron Owls,Delta Herons,1,41,Delta Herons,Iron Owls,Delta Herons,Block,16,24
+924,Iron Owls,Delta Herons,2,1,Delta Herons,Iron Owls,Iron Owls,Attack error,0,0
+924,Iron Owls,Delta Herons,2,2,Iron Owls,Delta Herons,Delta Herons,Kill,1,0
+924,Iron Owls,Delta Herons,2,3,Delta Herons,Iron Owls,Delta Herons,Block,1,1
+924,Iron Owls,Delta Herons,2,4,Delta Herons,Iron Owls,Delta Herons,Service error,1,2
+924,Iron Owls,Delta Herons,2,5,Delta Herons,Iron Owls,Iron Owls,Kill,1,3
+924,Iron Owls,Delta Herons,2,6,Iron Owls,Delta Herons,Delta Herons,Block,2,3
+924,Iron Owls,Delta Herons,2,7,Delta Herons,Iron Owls,Delta Herons,Kill,2,4
+924,Iron Owls,Delta Herons,2,8,Delta Herons,Iron Owls,Iron Owls,Attack error,2,5
+924,Iron Owls,Delta Herons,2,9,Iron Owls,Delta Herons,Delta Herons,Ace,3,5
+924,Iron Owls,Delta Herons,2,10,Delta Herons,Iron Owls,Iron Owls,Block,3,6
+924,Iron Owls,Delta Herons,2,11,Iron Owls,Delta Herons,Delta Herons,Service error,4,6
+924,Iron Owls,Delta Herons,2,12,Delta Herons,Iron Owls,Delta Herons,Block,4,7
+924,Iron Owls,Delta Herons,2,13,Delta Herons,Iron Owls,Delta Herons,Service error,4,8
+924,Iron Owls,Delta Herons,2,14,Delta Herons,Iron Owls,Delta Herons,Kill,4,9
+924,Iron Owls,Delta Herons,2,15,Delta Herons,Iron Owls,Iron Owls,Block,4,10
+924,Iron Owls,Delta Herons,2,16,Iron Owls,Delta Herons,Delta Herons,Kill,5,10
+924,Iron Owls,Delta Herons,2,17,Delta Herons,Iron Owls,Iron Owls,Service error,5,11
+924,Iron Owls,Delta Herons,2,18,Iron Owls,Delta Herons,Iron Owls,Kill,6,11
+924,Iron Owls,Delta Herons,2,19,Iron Owls,Delta Herons,Delta Herons,Kill,7,11
+924,Iron Owls,Delta Herons,2,20,Delta Herons,Iron Owls,Iron Owls,Kill,7,12
+924,Iron Owls,Delta Herons,2,21,Iron Owls,Delta Herons,Delta Herons,Kill,8,12
+924,Iron Owls,Delta Herons,2,22,Delta Herons,Iron Owls,Iron Owls,Block,8,13
+924,Iron Owls,Delta Herons,2,23,Iron Owls,Delta Herons,Iron Owls,Kill,9,13
+924,Iron Owls,Delta Herons,2,24,Iron Owls,Delta Herons,Delta Herons,Attack error,10,13
+924,Iron Owls,Delta Herons,2,25,Delta Herons,Iron Owls,Iron Owls,Kill,10,14
+924,Iron Owls,Delta Herons,2,26,Iron Owls,Delta Herons,Delta Herons,Block,11,14
+924,Iron Owls,Delta Herons,2,27,Delta Herons,Iron Owls,Delta Herons,Kill,11,15
+924,Iron Owls,Delta Herons,2,28,Delta Herons,Iron Owls,Iron Owls,Kill,11,16
+924,Iron Owls,Delta Herons,2,29,Iron Owls,Delta Herons,Delta Herons,Kill,12,16
+924,Iron Owls,Delta Herons,2,30,Delta Herons,Iron Owls,Iron Owls,Kill,12,17
+924,Iron Owls,Delta Herons,2,31,Iron Owls,Delta Herons,Iron Owls,Kill,13,17
+924,Iron Owls,Delta Herons,2,32,Iron Owls,Delta Herons,Iron Owls,Attack error,14,17
+924,Iron Owls,Delta Herons,2,33,Iron Owls,Delta Herons,Delta Herons,Kill,15,17
+924,Iron Owls,Delta Herons,2,34,Delta Herons,Iron Owls,Delta Herons,Kill,15,18
+924,Iron Owls,Delta Herons,2,35,Delta Herons,Iron Owls,Iron Owls,Kill,15,19
+924,Iron Owls,Delta Herons,2,36,Iron Owls,Delta Herons,Delta Herons,Kill,16,19
+924,Iron Owls,Delta Herons,2,37,Delta Herons,Iron Owls,Iron Owls,Kill,16,20
+924,Iron Owls,Delta Herons,2,38,Iron Owls,Delta Herons,Iron Owls,Kill,17,20
+924,Iron Owls,Delta Herons,2,39,Iron Owls,Delta Herons,Delta Herons,Block,18,20
+924,Iron Owls,Delta Herons,2,40,Delta Herons,Iron Owls,Delta Herons,Kill,18,21
+924,Iron Owls,Delta Herons,2,41,Delta Herons,Iron Owls,Iron Owls,Attack error,18,22
+924,Iron Owls,Delta Herons,2,42,Iron Owls,Delta Herons,Delta Herons,Attack error,19,22
+924,Iron Owls,Delta Herons,2,43,Delta Herons,Iron Owls,Delta Herons,Kill,19,23
+924,Iron Owls,Delta Herons,2,44,Delta Herons,Iron Owls,Delta Herons,Kill,19,24
+924,Iron Owls,Delta Herons,3,1,Delta Herons,Iron Owls,Iron Owls,Attack error,0,0
+924,Iron Owls,Delta Herons,3,2,Iron Owls,Delta Herons,Iron Owls,Kill,1,0
+924,Iron Owls,Delta Herons,3,3,Iron Owls,Delta Herons,Delta Herons,Kill,2,0
+924,Iron Owls,Delta Herons,3,4,Delta Herons,Iron Owls,Iron Owls,Block,2,1
+924,Iron Owls,Delta Herons,3,5,Iron Owls,Delta Herons,Iron Owls,Kill,3,1
+924,Iron Owls,Delta Herons,3,6,Iron Owls,Delta Herons,Delta Herons,Kill,4,1
+924,Iron Owls,Delta Herons,3,7,Delta Herons,Iron Owls,Iron Owls,Kill,4,2
+924,Iron Owls,Delta Herons,3,8,Iron Owls,Delta Herons,Delta Herons,Kill,5,2
+924,Iron Owls,Delta Herons,3,9,Delta Herons,Iron Owls,Iron Owls,Kill,5,3
+924,Iron Owls,Delta Herons,3,10,Iron Owls,Delta Herons,Delta Herons,Kill,6,3
+924,Iron Owls,Delta Herons,3,11,Delta Herons,Iron Owls,Iron Owls,Kill,6,4
+924,Iron Owls,Delta Herons,3,12,Iron Owls,Delta Herons,Iron Owls,Kill,7,4
+924,Iron Owls,Delta Herons,3,13,Iron Owls,Delta Herons,Delta Herons,Kill,8,4
+924,Iron Owls,Delta Herons,3,14,Delta Herons,Iron Owls,Delta Herons,Ace,8,5
+924,Iron Owls,Delta Herons,3,15,Delta Herons,Iron Owls,Delta Herons,Attack error,8,6
+924,Iron Owls,Delta Herons,3,16,Delta Herons,Iron Owls,Iron Owls,Kill,8,7
+924,Iron Owls,Delta Herons,3,17,Iron Owls,Delta Herons,Delta Herons,Kill,9,7
+924,Iron Owls,Delta Herons,3,18,Delta Herons,Iron Owls,Delta Herons,Attack error,9,8
+924,Iron Owls,Delta Herons,3,19,Delta Herons,Iron Owls,Iron Owls,Service error,9,9
+924,Iron Owls,Delta Herons,3,20,Iron Owls,Delta Herons,Iron Owls,Kill,10,9
+924,Iron Owls,Delta Herons,3,21,Iron Owls,Delta Herons,Iron Owls,Kill,11,9
+924,Iron Owls,Delta Herons,3,22,Iron Owls,Delta Herons,Delta Herons,Service error,12,9
+924,Iron Owls,Delta Herons,3,23,Delta Herons,Iron Owls,Delta Herons,Kill,12,10
+924,Iron Owls,Delta Herons,3,24,Delta Herons,Iron Owls,Iron Owls,Service error,12,11
+924,Iron Owls,Delta Herons,3,25,Iron Owls,Delta Herons,Iron Owls,Block,13,11
+924,Iron Owls,Delta Herons,3,26,Iron Owls,Delta Herons,Delta Herons,Kill,14,11
+924,Iron Owls,Delta Herons,3,27,Delta Herons,Iron Owls,Delta Herons,Kill,14,12
+924,Iron Owls,Delta Herons,3,28,Delta Herons,Iron Owls,Iron Owls,Attack error,14,13
+924,Iron Owls,Delta Herons,3,29,Iron Owls,Delta Herons,Delta Herons,Kill,15,13
+924,Iron Owls,Delta Herons,3,30,Delta Herons,Iron Owls,Delta Herons,Service error,15,14
+924,Iron Owls,Delta Herons,3,31,Delta Herons,Iron Owls,Delta Herons,Block,15,15
+924,Iron Owls,Delta Herons,3,32,Delta Herons,Iron Owls,Iron Owls,Kill,15,16
+924,Iron Owls,Delta Herons,3,33,Iron Owls,Delta Herons,Iron Owls,Attack error,16,16
+924,Iron Owls,Delta Herons,3,34,Iron Owls,Delta Herons,Delta Herons,Service error,17,16
+924,Iron Owls,Delta Herons,3,35,Delta Herons,Iron Owls,Iron Owls,Kill,17,17
+924,Iron Owls,Delta Herons,3,36,Iron Owls,Delta Herons,Delta Herons,Ace,18,17
+924,Iron Owls,Delta Herons,3,37,Delta Herons,Iron Owls,Iron Owls,Attack error,18,18
+924,Iron Owls,Delta Herons,3,38,Iron Owls,Delta Herons,Delta Herons,Service error,19,18
+924,Iron Owls,Delta Herons,3,39,Delta Herons,Iron Owls,Delta Herons,Kill,19,19
+924,Iron Owls,Delta Herons,3,40,Delta Herons,Iron Owls,Iron Owls,Ace,19,20
+924,Iron Owls,Delta Herons,3,41,Iron Owls,Delta Herons,Iron Owls,Kill,20,20
+924,Iron Owls,Delta Herons,3,42,Iron Owls,Delta Herons,Delta Herons,Kill,21,20
+924,Iron Owls,Delta Herons,3,43,Delta Herons,Iron Owls,Iron Owls,Kill,21,21
+924,Iron Owls,Delta Herons,3,44,Iron Owls,Delta Herons,Delta Herons,Kill,22,21
+924,Iron Owls,Delta Herons,3,45,Delta Herons,Iron Owls,Delta Herons,Attack error,22,22
+924,Iron Owls,Delta Herons,3,46,Delta Herons,Iron Owls,Delta Herons,Kill,22,23
+924,Iron Owls,Delta Herons,3,47,Delta Herons,Iron Owls,Delta Herons,Service error,22,24
+927,Delta Herons,Lake Pike,1,1,Delta Herons,Lake Pike,Lake Pike,Ace,0,0
+927,Delta Herons,Lake Pike,1,2,Lake Pike,Delta Herons,Delta Herons,Attack error,0,1
+927,Delta Herons,Lake Pike,1,3,Delta Herons,Lake Pike,Lake Pike,Attack error,1,1
+927,Delta Herons,Lake Pike,1,4,Lake Pike,Delta Herons,Lake Pike,Service error,1,2
+927,Delta Herons,Lake Pike,1,5,Lake Pike,Delta Herons,Lake Pike,Kill,1,3
+927,Delta Herons,Lake Pike,1,6,Lake Pike,Delta Herons,Delta Herons,Ace,1,4
+927,Delta Herons,Lake Pike,1,7,Delta Herons,Lake Pike,Delta Herons,Kill,2,4
+927,Delta Herons,Lake Pike,1,8,Delta Herons,Lake Pike,Lake Pike,Kill,3,4
+927,Delta Herons,Lake Pike,1,9,Lake Pike,Delta Herons,Delta Herons,Attack error,3,5
+927,Delta Herons,Lake Pike,1,10,Delta Herons,Lake Pike,Lake Pike,Block,4,5
+927,Delta Herons,Lake Pike,1,11,Lake Pike,Delta Herons,Delta Herons,Ace,4,6
+927,Delta Herons,Lake Pike,1,12,Delta Herons,Lake Pike,Lake Pike,Ace,5,6
+927,Delta Herons,Lake Pike,1,13,Lake Pike,Delta Herons,Lake Pike,Attack error,5,7
+927,Delta Herons,Lake Pike,1,14,Lake Pike,Delta Herons,Lake Pike,Kill,5,8
+927,Delta Herons,Lake Pike,1,15,Lake Pike,Delta Herons,Delta Herons,Kill,5,9
+927,Delta Herons,Lake Pike,1,16,Delta Herons,Lake Pike,Delta Herons,Attack error,6,9
+927,Delta Herons,Lake Pike,1,17,Delta Herons,Lake Pike,Lake Pike,Kill,7,9
+927,Delta Herons,Lake Pike,1,18,Lake Pike,Delta Herons,Lake Pike,Attack error,7,10
+927,Delta Herons,Lake Pike,1,19,Lake Pike,Delta Herons,Delta Herons,Attack error,7,11
+927,Delta Herons,Lake Pike,1,20,Delta Herons,Lake Pike,Delta Herons,Kill,8,11
+927,Delta Herons,Lake Pike,1,21,Delta Herons,Lake Pike,Lake Pike,Kill,9,11
+927,Delta Herons,Lake Pike,1,22,Lake Pike,Delta Herons,Lake Pike,Kill,9,12
+927,Delta Herons,Lake Pike,1,23,Lake Pike,Delta Herons,Lake Pike,Service error,9,13
+927,Delta Herons,Lake Pike,1,24,Lake Pike,Delta Herons,Lake Pike,Kill,9,14
+927,Delta Herons,Lake Pike,1,25,Lake Pike,Delta Herons,Delta Herons,Kill,9,15
+927,Delta Herons,Lake Pike,1,26,Delta Herons,Lake Pike,Delta Herons,Block,10,15
+927,Delta Herons,Lake Pike,1,27,Delta Herons,Lake Pike,Delta Herons,Attack error,11,15
+927,Delta Herons,Lake Pike,1,28,Delta Herons,Lake Pike,Delta Herons,Block,12,15
+927,Delta Herons,Lake Pike,1,29,Delta Herons,Lake Pike,Delta Herons,Kill,13,15
+927,Delta Herons,Lake Pike,1,30,Delta Herons,Lake Pike,Delta Herons,Kill,14,15
+927,Delta Herons,Lake Pike,1,31,Delta Herons,Lake Pike,Lake Pike,Service error,15,15
+927,Delta Herons,Lake Pike,1,32,Lake Pike,Delta Herons,Delta Herons,Kill,15,16
+927,Delta Herons,Lake Pike,1,33,Delta Herons,Lake Pike,Delta Herons,Kill,16,16
+927,Delta Herons,Lake Pike,1,34,Delta Herons,Lake Pike,Lake Pike,Kill,17,16
+927,Delta Herons,Lake Pike,1,35,Lake Pike,Delta Herons,Delta Herons,Ace,17,17
+927,Delta Herons,Lake Pike,1,36,Delta Herons,Lake Pike,Lake Pike,Block,18,17
+927,Delta Herons,Lake Pike,1,37,Lake Pike,Delta Herons,Delta Herons,Kill,18,18
+927,Delta Herons,Lake Pike,1,38,Delta Herons,Lake Pike,Lake Pike,Kill,19,18
+927,Delta Herons,Lake Pike,1,39,Lake Pike,Delta Herons,Lake Pike,Service error,19,19
+927,Delta Herons,Lake Pike,1,40,Lake Pike,Delta Herons,Delta Herons,Kill,19,20
+927,Delta Herons,Lake Pike,1,41,Delta Herons,Lake Pike,Lake Pike,Kill,20,20
+927,Delta Herons,Lake Pike,1,42,Lake Pike,Delta Herons,Delta Herons,Kill,20,21
+927,Delta Herons,Lake Pike,1,43,Delta Herons,Lake Pike,Lake Pike,Kill,21,21
+927,Delta Herons,Lake Pike,1,44,Lake Pike,Delta Herons,Delta Herons,Kill,21,22
+927,Delta Herons,Lake Pike,1,45,Delta Herons,Lake Pike,Lake Pike,Kill,22,22
+927,Delta Herons,Lake Pike,1,46,Lake Pike,Delta Herons,Lake Pike,Kill,22,23
+927,Delta Herons,Lake Pike,1,47,Lake Pike,Delta Herons,Delta Herons,Block,22,24
+927,Delta Herons,Lake Pike,1,48,Delta Herons,Lake Pike,Delta Herons,Kill,23,24
+927,Delta Herons,Lake Pike,1,49,Delta Herons,Lake Pike,Lake Pike,Ace,24,24
+927,Delta Herons,Lake Pike,1,50,Lake Pike,Delta Herons,Lake Pike,Kill,24,25
+927,Delta Herons,Lake Pike,2,1,Lake Pike,Delta Herons,Delta Herons,Service error,0,0
+927,Delta Herons,Lake Pike,2,2,Delta Herons,Lake Pike,Delta Herons,Ace,1,0
+927,Delta Herons,Lake Pike,2,3,Delta Herons,Lake Pike,Lake Pike,Kill,2,0
+927,Delta Herons,Lake Pike,2,4,Lake Pike,Delta Herons,Delta Herons,Service error,2,1
+927,Delta Herons,Lake Pike,2,5,Delta Herons,Lake Pike,Lake Pike,Kill,3,1
+927,Delta Herons,Lake Pike,2,6,Lake Pike,Delta Herons,Delta Herons,Ace,3,2
+927,Delta Herons,Lake Pike,2,7,Delta Herons,Lake Pike,Lake Pike,Kill,4,2
+927,Delta Herons,Lake Pike,2,8,Lake Pike,Delta Herons,Delta Herons,Block,4,3
+927,Delta Herons,Lake Pike,2,9,Delta Herons,Lake Pike,Lake Pike,Ace,5,3
+927,Delta Herons,Lake Pike,2,10,Lake Pike,Delta Herons,Delta Herons,Kill,5,4
+927,Delta Herons,Lake Pike,2,11,Delta Herons,Lake Pike,Lake Pike,Kill,6,4
+927,Delta Herons,Lake Pike,2,12,Lake Pike,Delta Herons,Delta Herons,Block,6,5
+927,Delta Herons,Lake Pike,2,13,Delta Herons,Lake Pike,Lake Pike,Block,7,5
+927,Delta Herons,Lake Pike,2,14,Lake Pike,Delta Herons,Delta Herons,Kill,7,6
+927,Delta Herons,Lake Pike,2,15,Delta Herons,Lake Pike,Delta Herons,Kill,8,6
+927,Delta Herons,Lake Pike,2,16,Delta Herons,Lake Pike,Lake Pike,Service error,9,6
+927,Delta Herons,Lake Pike,2,17,Lake Pike,Delta Herons,Lake Pike,Kill,9,7
+927,Delta Herons,Lake Pike,2,18,Lake Pike,Delta Herons,Lake Pike,Block,9,8
+927,Delta Herons,Lake Pike,2,19,Lake Pike,Delta Herons,Lake Pike,Kill,9,9
+927,Delta Herons,Lake Pike,2,20,Lake Pike,Delta Herons,Delta Herons,Kill,9,10
+927,Delta Herons,Lake Pike,2,21,Delta Herons,Lake Pike,Delta Herons,Kill,10,10
+927,Delta Herons,Lake Pike,2,22,Delta Herons,Lake Pike,Lake Pike,Attack error,11,10
+927,Delta Herons,Lake Pike,2,23,Lake Pike,Delta Herons,Lake Pike,Service error,11,11
+927,Delta Herons,Lake Pike,2,24,Lake Pike,Delta Herons,Delta Herons,Ace,11,12
+927,Delta Herons,Lake Pike,2,25,Delta Herons,Lake Pike,Lake Pike,Block,12,12
+927,Delta Herons,Lake Pike,2,26,Lake Pike,Delta Herons,Lake Pike,Kill,12,13
+927,Delta Herons,Lake Pike,2,27,Lake Pike,Delta Herons,Lake Pike,Kill,12,14
+927,Delta Herons,Lake Pike,2,28,Lake Pike,Delta Herons,Lake Pike,Attack error,12,15
+927,Delta Herons,Lake Pike,2,29,Lake Pike,Delta Herons,Delta Herons,Ace,12,16
+927,Delta Herons,Lake Pike,2,30,Delta Herons,Lake Pike,Lake Pike,Kill,13,16
+927,Delta Herons,Lake Pike,2,31,Lake Pike,Delta Herons,Delta Herons,Ace,13,17
+927,Delta Herons,Lake Pike,2,32,Delta Herons,Lake Pike,Delta Herons,Kill,14,17
+927,Delta Herons,Lake Pike,2,33,Delta Herons,Lake Pike,Lake Pike,Ace,15,17
+927,Delta Herons,Lake Pike,2,34,Lake Pike,Delta Herons,Delta Herons,Kill,15,18
+927,Delta Herons,Lake Pike,2,35,Delta Herons,Lake Pike,Lake Pike,Kill,16,18
+927,Delta Herons,Lake Pike,2,36,Lake Pike,Delta Herons,Delta Herons,Ace,16,19
+927,Delta Herons,Lake Pike,2,37,Delta Herons,Lake Pike,Lake Pike,Kill,17,19
+927,Delta Herons,Lake Pike,2,38,Lake Pike,Delta Herons,Delta Herons,Kill,17,20
+927,Delta Herons,Lake Pike,2,39,Delta Herons,Lake Pike,Delta Herons,Kill,18,20
+927,Delta Herons,Lake Pike,2,40,Delta Herons,Lake Pike,Delta Herons,Attack error,19,20
+927,Delta Herons,Lake Pike,2,41,Delta Herons,Lake Pike,Lake Pike,Block,20,20
+927,Delta Herons,Lake Pike,2,42,Lake Pike,Delta Herons,Lake Pike,Kill,20,21
+927,Delta Herons,Lake Pike,2,43,Lake Pike,Delta Herons,Delta Herons,Ace,20,22
+927,Delta Herons,Lake Pike,2,44,Delta Herons,Lake Pike,Lake Pike,Kill,21,22
+927,Delta Herons,Lake Pike,2,45,Lake Pike,Delta Herons,Lake Pike,Kill,21,23
+927,Delta Herons,Lake Pike,2,46,Lake Pike,Delta Herons,Delta Herons,Service error,21,24
+927,Delta Herons,Lake Pike,2,47,Delta Herons,Lake Pike,Lake Pike,Kill,22,24
+927,Delta Herons,Lake Pike,3,1,Lake Pike,Delta Herons,Lake Pike,Block,0,0
+927,Delta Herons,Lake Pike,3,2,Lake Pike,Delta Herons,Delta Herons,Service error,0,1
+927,Delta Herons,Lake Pike,3,3,Delta Herons,Lake Pike,Lake Pike,Kill,1,1
+927,Delta Herons,Lake Pike,3,4,Lake Pike,Delta Herons,Lake Pike,Kill,1,2
+927,Delta Herons,Lake Pike,3,5,Lake Pike,Delta Herons,Lake Pike,Kill,1,3
+927,Delta Herons,Lake Pike,3,6,Lake Pike,Delta Herons,Lake Pike,Kill,1,4
+927,Delta Herons,Lake Pike,3,7,Lake Pike,Delta Herons,Delta Herons,Kill,1,5
+927,Delta Herons,Lake Pike,3,8,Delta Herons,Lake Pike,Lake Pike,Kill,2,5
+927,Delta Herons,Lake Pike,3,9,Lake Pike,Delta Herons,Delta Herons,Kill,2,6
+927,Delta Herons,Lake Pike,3,10,Delta Herons,Lake Pike,Lake Pike,Attack error,3,6
+927,Delta Herons,Lake Pike,3,11,Lake Pike,Delta Herons,Delta Herons,Block,3,7
+927,Delta Herons,Lake Pike,3,12,Delta Herons,Lake Pike,Delta Herons,Attack error,4,7
+927,Delta Herons,Lake Pike,3,13,Delta Herons,Lake Pike,Lake Pike,Kill,5,7
+927,Delta Herons,Lake Pike,3,14,Lake Pike,Delta Herons,Lake Pike,Kill,5,8
+927,Delta Herons,Lake Pike,3,15,Lake Pike,Delta Herons,Lake Pike,Kill,5,9
+927,Delta Herons,Lake Pike,3,16,Lake Pike,Delta Herons,Delta Herons,Kill,5,10
+927,Delta Herons,Lake Pike,3,17,Delta Herons,Lake Pike,Delta Herons,Kill,6,10
+927,Delta Herons,Lake Pike,3,18,Delta Herons,Lake Pike,Delta Herons,Service error,7,10
+927,Delta Herons,Lake Pike,3,19,Delta Herons,Lake Pike,Lake Pike,Kill,8,10
+927,Delta Herons,Lake Pike,3,20,Lake Pike,Delta Herons,Delta Herons,Service error,8,11
+927,Delta Herons,Lake Pike,3,21,Delta Herons,Lake Pike,Lake Pike,Service error,9,11
+927,Delta Herons,Lake Pike,3,22,Lake Pike,Delta Herons,Lake Pike,Kill,9,12
+927,Delta Herons,Lake Pike,3,23,Lake Pike,Delta Herons,Delta Herons,Kill,9,13
+927,Delta Herons,Lake Pike,3,24,Delta Herons,Lake Pike,Delta Herons,Kill,10,13
+927,Delta Herons,Lake Pike,3,25,Delta Herons,Lake Pike,Lake Pike,Block,11,13
+927,Delta Herons,Lake Pike,3,26,Lake Pike,Delta Herons,Lake Pike,Attack error,11,14
+927,Delta Herons,Lake Pike,3,27,Lake Pike,Delta Herons,Lake Pike,Ace,11,15
+927,Delta Herons,Lake Pike,3,28,Lake Pike,Delta Herons,Delta Herons,Kill,11,16
+927,Delta Herons,Lake Pike,3,29,Delta Herons,Lake Pike,Lake Pike,Block,12,16
+927,Delta Herons,Lake Pike,3,30,Lake Pike,Delta Herons,Lake Pike,Kill,12,17
+927,Delta Herons,Lake Pike,3,31,Lake Pike,Delta Herons,Lake Pike,Kill,12,18
+927,Delta Herons,Lake Pike,3,32,Lake Pike,Delta Herons,Lake Pike,Kill,12,19
+927,Delta Herons,Lake Pike,3,33,Lake Pike,Delta Herons,Lake Pike,Attack error,12,20
+927,Delta Herons,Lake Pike,3,34,Lake Pike,Delta Herons,Delta Herons,Ace,12,21
+927,Delta Herons,Lake Pike,3,35,Delta Herons,Lake Pike,Delta Herons,Kill,13,21
+927,Delta Herons,Lake Pike,3,36,Delta Herons,Lake Pike,Lake Pike,Kill,14,21
+927,Delta Herons,Lake Pike,3,37,Lake Pike,Delta Herons,Delta Herons,Attack error,14,22
+927,Delta Herons,Lake Pike,3,38,Delta Herons,Lake Pike,Lake Pike,Kill,15,22
+927,Delta Herons,Lake Pike,3,39,Lake Pike,Delta Herons,Lake Pike,Block,15,23
+927,Delta Herons,Lake Pike,3,40,Lake Pike,Delta Herons,Delta Herons,Block,15,24
+927,Delta Herons,Lake Pike,3,41,Delta Herons,Lake Pike,Delta Herons,Kill,16,24
+927,Delta Herons,Lake Pike,3,42,Delta Herons,Lake Pike,Lake Pike,Ace,17,24
