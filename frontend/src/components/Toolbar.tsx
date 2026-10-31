@@ -1,7 +1,8 @@
-import { Play, Sparkles, Worm } from "lucide-react";
+import { Play, Sparkles, Workflow, Worm } from "lucide-react";
 import { useFlow } from "../store";
-import { runWorkflow, useMenus } from "../commands";
+import { runWorkflow, useCleanUp, useMenus } from "../commands";
 import Menubar from "./Menubar";
+import { keyLabel } from "../paths";
 
 export default function Toolbar() {
   const name = useFlow((s) => s.name);
@@ -16,6 +17,7 @@ export default function Toolbar() {
   const filePath = useFlow((s) => s.filePath);
   const autosave = useFlow((s) => s.autosave);
   const menus = useMenus();
+  const cleanUp = useCleanUp();
 
   return (
     <header className="toolbar">
@@ -33,6 +35,9 @@ export default function Toolbar() {
           Snek {update.latest?.replace(/^v/, "")} is available
         </a>
       )}
+      <button className="tidy-btn" onClick={cleanUp} disabled={!count} title={`Line the steps up in neat columns (${keyLabel("shift+L")})`}>
+        <Workflow size={15} /> Clean up
+      </button>
       <button className="ai-btn" onClick={() => useFlow.getState().setDialog("aiCreate")} title="Describe a workflow and let Claude build it">
         <Sparkles size={15} /> Create with AI
       </button>

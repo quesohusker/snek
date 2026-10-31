@@ -68,6 +68,7 @@ Snek edits like a desktop app:
 - Cut, copy, paste and duplicate tools with ⌘X, ⌘C, ⌘V and ⌘D. Connections between copied tools come along. Paste works between Snek windows.
 - Drag a box on the canvas, or Shift-click, to select several tools. Scroll to pan; ⌘-scroll or pinch to zoom.
 - Right-click a tool or the canvas for a menu.
+- Click **Clean up** in the toolbar, or press ⇧L, to line every step up in neat columns that follow the flow. One Undo puts them back.
 - Paste a table copied from Excel and Snek makes a Type or Paste Data step from it. Drop a data file on the canvas and Snek copies it into the project's `data/` folder and adds an Open File step.
 - The copy button above the results grid copies every row, ready to paste into Excel.
 - Snek asks before it closes a workflow with unsaved changes. Help ▸ Keyboard shortcuts lists every shortcut.

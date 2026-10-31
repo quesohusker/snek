@@ -342,6 +342,7 @@ const SHORTCUTS: [string, string][] = [
   ["Zoom out", "mod+−"],
   ["Actual size", "mod+0"],
   ["Fit to screen", "shift+1"],
+  ["Clean up layout", "shift+L"],
   ["Keyboard shortcuts", "mod+/"],
 ];
 

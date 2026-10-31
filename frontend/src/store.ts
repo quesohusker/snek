@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { applyEdgeChanges, applyNodeChanges, type Connection, type Edge, type EdgeChange, type Node, type NodeChange } from "@xyflow/react";
 import { api } from "./api";
 import { registerToolLooks } from "./icons";
+import { cleanLayout } from "./layout";
 import type { FlowNodeData, NodeResult, ProjectInfo, SnekSettings, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 export type ToolNode = Node<FlowNodeData, "tool">;
@@ -104,6 +105,7 @@ type State = {
   cutSelected: () => ClipboardData | null;
   selectNone: () => void;
   deleteNode: (id: string) => void;
+  cleanUpLayout: () => boolean;
   panels: Panels;
   togglePanel: (panel: keyof Panels) => void;
   focusLabel: number;
@@ -327,6 +329,31 @@ export const useFlow = create<State>()((set, get) => ({
       stale: true,
       version: s.version + 1,
     }));
+  },
+
+  cleanUpLayout: () => {
+    const { nodes, edges, tools } = get();
+    const target = cleanLayout(nodes, edges, tools);
+    const moved = nodes.some((n) => target[n.id] && (Math.round(n.position.x) !== target[n.id].x || Math.round(n.position.y) !== target[n.id].y));
+    if (!moved) return false;
+    get().checkpoint("Clean up layout");
+    const start = new Map(nodes.map((n) => [n.id, n.position]));
+    const began = performance.now();
+    const step = (now: number) => {
+      const k = Math.min(1, (now - began) / 280);
+      const e = k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2;
+      set((s) => {
+        const next = s.nodes.map((n) => {
+          const a = start.get(n.id);
+          const b = target[n.id];
+          return a && b ? { ...n, position: k === 1 ? b : { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e } } : n;
+        });
+        return { nodes: next, dirty: k === 1 ? signature(next, s.edges) !== s.savedSig : s.dirty };
+      });
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    return true;
   },
 
   setSettings: (settings) => set({ settings }),

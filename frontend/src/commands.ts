@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useReactFlow } from "@xyflow/react";
 import { useFlow } from "./store";
 import { api } from "./api";
@@ -223,8 +223,17 @@ function recentItems(workflows: string[]): MenuItem[] {
   return items.length && files.length ? [...items, { type: "separator" }, ...files] : [...items, ...files];
 }
 
+export function useCleanUp() {
+  const { fitView } = useReactFlow();
+  return useCallback(() => {
+    const moved = useFlow.getState().cleanUpLayout();
+    setTimeout(() => fitView({ padding: 0.2, maxZoom: 1.1, duration: 250 }), moved ? 300 : 0);
+  }, [fitView]);
+}
+
 export function useMenus(): Menu[] {
   const { fitView, zoomIn, zoomOut, zoomTo } = useReactFlow();
+  const cleanUp = useCleanUp();
   const past = useFlow((s) => s.past);
   const future = useFlow((s) => s.future);
   const undo = useFlow((s) => s.undo);
@@ -309,6 +318,7 @@ export function useMenus(): Menu[] {
           { label: "Zoom out", shortcut: keyLabel("mod+−"), onSelect: () => zoomOut({ duration: 150 }) },
           { label: "Actual size", shortcut: keyLabel("mod+0"), onSelect: () => zoomTo(1, { duration: 150 }) },
           { label: "Fit to screen", shortcut: keyLabel("shift+1"), onSelect: () => fitView({ padding: 0.2, maxZoom: 1.1, duration: 200 }) },
+          { label: "Clean up layout", shortcut: keyLabel("shift+L"), onSelect: cleanUp, disabled: !count },
           { type: "separator" },
           { label: `${panels.palette ? "✓ " : ""}Tool palette`, onSelect: () => togglePanel("palette") },
           { label: `${panels.results ? "✓ " : ""}Results`, onSelect: () => togglePanel("results") },
@@ -329,6 +339,6 @@ export function useMenus(): Menu[] {
         ],
       },
     ],
-    [count, running, recent, project, update, hasSelection, hasTools, past, future, panels, canRevert, setDialog, selectAll, selectNone, deleteSelected, duplicateSelected, undo, redo, togglePanel, fitView, zoomIn, zoomOut, zoomTo],
+    [count, running, recent, project, update, hasSelection, hasTools, past, future, panels, canRevert, setDialog, selectAll, selectNone, deleteSelected, duplicateSelected, undo, redo, togglePanel, fitView, zoomIn, zoomOut, zoomTo, cleanUp],
   );
 }

@@ -1783,7 +1783,8 @@ kbd {
   margin-bottom: 24px;
 }
 
-.ai-btn {
+.ai-btn,
+.tidy-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;

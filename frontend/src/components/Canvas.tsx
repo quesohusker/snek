@@ -3,7 +3,7 @@ import { Background, BackgroundVariant, Controls, MiniMap, ReactFlow, SelectionM
 import { useFlow, type ToolNode } from "../store";
 import { api } from "../api";
 import { copyTools, cutTools, pasteTools } from "../editing";
-import { openDroppedWorkflow, runWorkflow } from "../commands";
+import { openDroppedWorkflow, runWorkflow, useCleanUp } from "../commands";
 import { keyLabel } from "../paths";
 import ContextMenu, { type ContextMenuState } from "./ContextMenu";
 import type { MenuItem } from "./Menubar";
@@ -26,6 +26,7 @@ export default function Canvas() {
   const select = useFlow((s) => s.select);
   const loaded = useFlow((s) => s.loaded);
   const { screenToFlowPosition, fitView, zoomTo } = useReactFlow();
+  const cleanUp = useCleanUp();
   const [menu, setMenu] = useState<ContextMenuState>(null);
   const closeMenu = useCallback(() => setMenu(null), []);
 
@@ -79,10 +80,11 @@ export default function Canvas() {
           { type: "separator" },
           { label: "Fit to screen", shortcut: keyLabel("shift+1"), onSelect: () => fitView({ padding: 0.2, maxZoom: 1.1, duration: 200 }) },
           { label: "Actual size", shortcut: keyLabel("mod+0"), onSelect: () => zoomTo(1, { duration: 150 }) },
+          { label: "Clean up layout", shortcut: keyLabel("shift+L"), onSelect: cleanUp, disabled: !s.nodes.length },
         ],
       });
     },
-    [screenToFlowPosition, fitView, zoomTo],
+    [screenToFlowPosition, fitView, zoomTo, cleanUp],
   );
 
   const onEdgeContextMenu = useCallback((e: ReactMouseEvent, edge: Edge) => {
