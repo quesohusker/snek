@@ -1778,3 +1778,61 @@ kbd {
   border-radius: 6px;
   white-space: pre-wrap;
 }
+
+.key-box {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 0 0 10px;
+  font-size: 12.5px;
+}
+
+.key-box.ok {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ok);
+}
+
+.key-box.ok .link-btn {
+  font-size: 12px;
+}
+
+.key-box-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.key-box .spacer {
+  flex: 1;
+}
+
+.node-delete {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.tool-node:hover .node-delete,
+.tool-node.selected .node-delete {
+  display: flex;
+}
+
+.node-delete:hover {
+  background: var(--error);
+  border-color: var(--error);
+  color: #fff;
+}

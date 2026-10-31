@@ -11,6 +11,11 @@ import pandas as pd
 from snek.paths import snek_home
 
 NAME_RE = re.compile(r"^[a-z0-9_-]{1,40}$")
+DECLARED = {}
+
+
+def declare_connection(name, label, section, url="", help=""):
+    DECLARED[name] = {"label": label, "section": section, "url": url, "help": help}
 
 
 def connections_path():
@@ -27,10 +32,17 @@ def load_keys():
 
 def list_keys():
     keys = load_keys()
-    env = {name: os.environ.get(env_name(name)) for name in keys}
+    names = sorted(set(keys) | set(DECLARED))
     return [
-        {"name": name, "saved": name in keys, "hint": f"…{keys[name][-4:]}" if name in keys and len(keys[name]) > 8 else ("saved" if name in keys else ""), "env": env_name(name), "from_env": bool(env.get(name))}
-        for name in sorted(keys)
+        {
+            "name": name,
+            "saved": name in keys,
+            "hint": f"…{keys[name][-4:]}" if name in keys and len(keys[name]) > 8 else ("saved" if name in keys else ""),
+            "env": env_name(name),
+            "from_env": bool(os.environ.get(env_name(name))),
+            **({"declared": DECLARED[name]} if name in DECLARED else {}),
+        }
+        for name in names
     ]
 
 

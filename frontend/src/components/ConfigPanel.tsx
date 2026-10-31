@@ -4,6 +4,7 @@ import { api } from "../api";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
 import { Field, type FieldCtx } from "./Fields";
 import { keyLabel } from "../paths";
+import KeyBox from "./KeyBox";
 import type { NodeResult } from "../types";
 
 export default function ConfigPanel() {
@@ -108,6 +109,7 @@ export default function ConfigPanel() {
                 <strong>Input needed:</strong> {spec.needs}
               </p>
             )}
+            {spec.connection && <KeyBox name={spec.connection} />}
             {spec.inputs.length > 0 && (
               <div className="input-summary">
                 {spec.inputs.map((p) => {

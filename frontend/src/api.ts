@@ -65,7 +65,9 @@ export const api = {
   reveal: (path: string) => call<{ ok: boolean; path: string }>("POST", "/api/reveal", { path }),
 };
 
-export type Connections = { keys: { name: string; saved: boolean; hint: string; env: string; from_env: boolean }[]; file: string };
+export type ConnectionKey = { name: string; saved: boolean; hint: string; env: string; from_env: boolean; declared?: { label: string; section: string; url: string; help: string } };
+
+export type Connections = { keys: ConnectionKey[]; file: string };
 
 export type AIInfo = { models: { value: string; label: string }[]; model: string; key_saved: boolean; key_hint: string; key_from_env: boolean };
 

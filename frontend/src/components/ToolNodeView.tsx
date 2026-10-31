@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { X } from "lucide-react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useFlow, type ToolNode } from "../store";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
@@ -32,6 +33,19 @@ function ToolNodeView({ id, data, selected }: NodeProps<ToolNode>) {
             {p.label && <span className="handle-label right">{p.label}</span>}
           </Handle>
         ))}
+        <button
+          className="node-delete nodrag"
+          title="Delete this tool"
+          aria-label={`Delete ${data.label || spec.label}`}
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            tip.hide();
+            useFlow.getState().deleteNode(id);
+          }}
+        >
+          <X size={11} strokeWidth={2.5} />
+        </button>
         {running ? (
           <span className="badge running" />
         ) : status ? (

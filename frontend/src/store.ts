@@ -107,6 +107,7 @@ type State = {
   duplicateSelected: () => void;
   cutSelected: () => ClipboardData | null;
   selectNone: () => void;
+  deleteNode: (id: string) => void;
   panels: Panels;
   togglePanel: (panel: keyof Panels) => void;
   focusLabel: number;
@@ -317,6 +318,20 @@ export const useFlow = create<State>()((set, get) => ({
   },
 
   selectNone: () => set((s) => ({ selectedId: null, nodes: unselected(s.nodes), edges: unselected(s.edges) })),
+
+  deleteNode: (id) => {
+    const node = get().nodes.find((n) => n.id === id);
+    if (!node) return;
+    get().checkpoint(`Delete ${get().tools[node.data.type]?.label ?? "tool"}`);
+    set((s) => ({
+      nodes: s.nodes.filter((n) => n.id !== id),
+      edges: s.edges.filter((e) => e.source !== id && e.target !== id),
+      selectedId: s.selectedId === id ? null : s.selectedId,
+      dirty: true,
+      stale: true,
+      version: s.version + 1,
+    }));
+  },
 
   setSettings: (settings) => set({ settings }),
   paletteTab: stored("snek.paletteTab", "Favorites"),

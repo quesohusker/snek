@@ -26,6 +26,7 @@ export type ToolSpec = {
   needs?: string;
   icon?: string;
   color?: string;
+  connection?: string;
   inputs: PortSpec[];
   outputs: PortSpec[];
   fields: FieldSpec[];

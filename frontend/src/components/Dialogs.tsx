@@ -5,6 +5,7 @@ import { api, type AIInfo, type AIResult, type Connections } from "../api";
 import { REPO, openFile, openWorkflow, saveToFile, switchProject } from "../commands";
 import Modal from "./Modal";
 import FilePicker from "./FilePicker";
+import KeyBox from "./KeyBox";
 import { FILE_MANAGER, joinPath, keyLabel } from "../paths";
 
 export default function Dialogs() {
@@ -402,9 +403,16 @@ function ConnectionSettings() {
     }
   };
   const remove = async (keyName: string) => setInfo(await api.deleteConnection(keyName));
-  const others = info?.keys.filter((k) => k.name !== "anthropic" && k.saved) ?? [];
+  const declared = info?.keys.filter((k) => k.declared) ?? [];
+  const others = info?.keys.filter((k) => k.name !== "anthropic" && !k.declared && k.saved) ?? [];
   return (
     <>
+      {declared.map((k) => (
+        <div key={k.name}>
+          <h3 className="settings-head">{k.declared!.section}</h3>
+          <KeyBox name={k.name} />
+        </div>
+      ))}
       <h3 className="settings-head">Data Connections</h3>
       <div className="field">
         <span>API keys, by name, for API Request and add-on tools</span>

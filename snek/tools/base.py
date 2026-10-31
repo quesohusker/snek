@@ -124,6 +124,7 @@ class Tool:
     needs = ""
     icon = ""
     color = ""
+    connection = ""
     inputs = [Port("in")]
     outputs = [Port("out")]
     fields = []
@@ -154,6 +155,7 @@ class Tool:
             "needs": self.needs,
             "icon": self.icon,
             "color": self.color,
+            "connection": self.connection,
             "inputs": [asdict(p) for p in self.inputs],
             "outputs": [asdict(p) for p in self.outputs],
             "fields": self.fields,
