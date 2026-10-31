@@ -162,6 +162,7 @@ def file_stamp(path):
 
     parts = []
     for f in match_files(path):
+        f = os.path.abspath(f)
         try:
             st = os.stat(f)
             parts.append(f"{f}:{st.st_mtime_ns}:{st.st_size}")

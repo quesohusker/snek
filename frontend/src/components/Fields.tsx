@@ -1,6 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUp, FolderOpen, Plus, Trash2 } from "lucide-react";
 import FilePicker from "./FilePicker";
+import { api } from "../api";
+import { useFlow } from "../store";
 import type { Column, FieldSpec } from "../types";
 
 export type FieldCtx = { columns: (port?: string) => Column[] };
@@ -61,7 +63,7 @@ function Widget(props: Props) {
     case "python":
       return <CodeField {...props} />;
     case "file":
-      return <FileField value={value ?? ""} onChange={onChange} save={!!field.save} />;
+      return <FileField value={value ?? ""} onChange={onChange} save={!!field.save} fmt={String(props.config.format ?? "auto")} />;
     case "column":
       return <ColumnSelect value={value ?? ""} onChange={onChange} columns={ctx.columns(field.port)} />;
     case "columns":
@@ -108,18 +110,70 @@ function CodeField({ field, value, onChange, ctx }: Props) {
   );
 }
 
-function FileField({ value, onChange, save }: { value: string; onChange: (v: string) => void; save: boolean }) {
+const REVEAL_LABEL = navigator.userAgent.includes("Mac") ? "Show in Finder" : navigator.userAgent.includes("Win") ? "Show in Explorer" : "Show folder";
+
+const QUICK_SAVE = ["Project output", "Desktop", "Documents", "Downloads"];
+
+function FileField({ value, onChange, save, fmt }: { value: string; onChange: (v: string) => void; save: boolean; fmt: string }) {
   const [open, setOpen] = useState(false);
+  const [resolved, setResolved] = useState<{ path: string; exists: boolean; folder_exists: boolean } | null>(null);
+  const lastRun = useFlow((s) => s.lastRun);
+  const places = useFlow((s) => s.project?.places ?? []);
+  const quick = QUICK_SAVE.map((label) => places.find((p) => p.label === label)).filter((p): p is { label: string; path: string } => !!p);
+
+  useEffect(() => {
+    if (!save || !value.trim()) {
+      setResolved(null);
+      return;
+    }
+    const t = setTimeout(() => {
+      api
+        .resolve(value, fmt)
+        .then(setResolved)
+        .catch(() => setResolved(null));
+    }, 250);
+    return () => clearTimeout(t);
+  }, [save, value, fmt, lastRun]);
+
+  const saveIn = (dir: string) => {
+    const name = value.trim() ? value.trim().split(/[\\/]/).pop() : "results.csv";
+    onChange(`${dir}/${name}`);
+  };
+
   return (
-    <div className="file-field">
-      <input type="text" value={value} onChange={(e) => onChange(e.target.value)} placeholder={save ? "~/path/output.csv" : "~/path/file.csv or …/*.json"} spellCheck={false} />
-      <button type="button" className="icon-btn" onClick={() => setOpen(true)} title="Browse">
-        <FolderOpen size={16} />
-      </button>
+    <>
+      <div className="file-field">
+        <input type="text" value={value} onChange={(e) => onChange(e.target.value)} placeholder={save ? "results.csv" : "~/path/file.csv or …/*.json"} spellCheck={false} />
+        <button type="button" className="icon-btn" onClick={() => setOpen(true)} title="Browse">
+          <FolderOpen size={16} />
+        </button>
+      </div>
+      {save && quick.length > 0 && (
+        <div className="quick-save">
+          <span className="muted">Save in</span>
+          {quick.map((p) => (
+            <button key={p.label} type="button" className="chip" onClick={() => saveIn(p.path)} title={p.path}>
+              {p.label}
+            </button>
+          ))}
+        </div>
+      )}
+      {resolved && (
+        <div className="resolved">
+          <span className="muted">Saves to</span>
+          <code title={resolved.path}>{resolved.path}</code>
+          {!resolved.folder_exists && <span className="muted">The folder will be created.</span>}
+          {resolved.exists && (
+            <button type="button" className="link-btn" onClick={() => api.reveal(resolved.path)}>
+              {REVEAL_LABEL}
+            </button>
+          )}
+        </div>
+      )}
       {open && (
         <FilePicker
           initial={value}
-          save={save}
+          mode={save ? "save" : "open"}
           onClose={() => setOpen(false)}
           onPick={(p) => {
             onChange(p);
@@ -127,7 +181,7 @@ function FileField({ value, onChange, save }: { value: string; onChange: (v: str
           }}
         />
       )}
-    </div>
+    </>
   );
 }
 

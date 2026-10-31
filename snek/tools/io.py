@@ -84,7 +84,7 @@ class OutputData(Tool):
     outputs = []
     side_effect = True
     fields = [
-        fld("path", "File", "file", "", save=True),
+        fld("path", "File", "file", "", save=True, help="Writes when you click Run. A name with no folder saves inside the project folder. A name with no extension gets one from Format."),
         fld("format", "Format", "select", "auto", options=WRITE_FORMATS),
     ]
 

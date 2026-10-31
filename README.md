@@ -88,12 +88,22 @@ For hot reload, run the server, then `npm run dev` in `frontend/` and open http:
 
 Each tool lives in `snek/tools/` as a class that returns pandas source code. The engine runs that code, and Export writes the same code, so the canvas and the script cannot drift apart. See [CLAUDE.md](CLAUDE.md) for the architecture notes.
 
+## Projects
+
+A project is a folder for one piece of analysis. **File ▸ New project…** creates one with `data/`, `output/` and `workflows/` inside. **File ▸ Open project folder…** opens any existing folder as a project. While a project is open:
+
+- File ▸ Open recent lists that project's workflows.
+- A relative path such as `output/results.csv` or `data/games.csv` starts from the project folder.
+- Output Data offers one-click **Save in** buttons for the project's output folder, Desktop, Documents and Downloads, and shows the full path it will write to.
+
+The Snek folder itself is the built-in **Snek examples** project. Snek remembers the last project in `~/.snek/config.json`.
+
 ## File picker shortcuts
 
-The file picker lists Home, Examples, Workflows and Output. Add your own folders with the `SNEK_PLACES` environment variable:
+The file picker lists the project folders, Desktop, Documents, Downloads, Home and the bundled examples. Add your own folders with the `SNEK_PLACES` environment variable:
 
 ```bash
-SNEK_PLACES="Data=~/data;Downloads=~/Downloads" .venv/bin/python -m snek
+SNEK_PLACES="Data=~/data;Clients=~/work/clients" .venv/bin/python -m snek
 ```
 
 ## Caveats

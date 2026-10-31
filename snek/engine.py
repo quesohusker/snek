@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass, field
 
 import pandas as pd
 
-from snek.runtime import NAMESPACE
+from snek.runtime import NAMESPACE, output_path
 from snek.tools import TOOLS, Ctx, ToolError, output_var
 
 
@@ -219,7 +219,7 @@ class Engine:
 
     def message(self, tool, cfg, res):
         if tool.type == "output":
-            return f"Wrote {res.inputs['in']['rows']:,} rows to {cfg['path']}"
+            return f"Wrote {res.inputs['in']['rows']:,} rows to {output_path(cfg['path'], cfg['format'])}"
         if not tool.outputs:
             return f"{res.inputs.get('in', {}).get('rows', 0):,} rows"
         return ", ".join(f"{p}: {o['rows']:,}" if len(res.outputs) > 1 else f"{o['rows']:,} rows" for p, o in res.outputs.items())

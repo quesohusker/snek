@@ -17,6 +17,7 @@ A local, Alteryx-style workflow canvas. You drag tools onto a canvas, wire them,
 - `snek/runtime.py` holds the helpers the generated code calls (`read_any`, `write_any`, `join_lrj`, `unnest`, `iif`). Export copies their source into the script.
 - `snek/expr.py` turns `[Column Name]` into `df['Column Name']` for Filter and Formula expressions.
 - `snek/codegen.py` builds the exported script from the engine's generated code.
+- `snek/projects.py` tracks the open project folder. Opening a project changes the server's working directory to it, so relative paths in generated code resolve inside the project. Config lives in `~/.snek/config.json` (`SNEK_HOME` overrides the folder, which tests use).
 - `snek/server.py` is the FastAPI app. `/api/schema` dry-runs a tool to get its input columns and code. `/api/preview` runs up to a tool and returns a page of rows.
 - `frontend/` is React + React Flow (`@xyflow/react`) + zustand, built with Vite. `src/commands.ts` defines the menus once; the top menu bar and the sidebar's Menu section both render from it. Add new commands there.
 - `workflows/*.flow.json` are saved workflows. `scripts/make_samples.py` regenerates the bundled samples.
@@ -35,5 +36,5 @@ A local, Alteryx-style workflow canvas. You drag tools onto a canvas, wire them,
 ## Data
 
 - Bundle only openly licensed data (CC0 or similar) and record the source and license in `examples/data/README.md`.
-- Sample paths are relative to the repo root. `python -m snek` changes into the repo root when it finds `examples/`.
+- Sample paths are relative to the repo root, which is the built-in "Snek examples" project.
 - Sample outputs go to `output/`, which git ignores.

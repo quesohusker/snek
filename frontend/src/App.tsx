@@ -39,12 +39,12 @@ export default function App() {
   const dragging = useRef(false);
 
   useEffect(() => {
-    api
-      .tools()
-      .then(({ tools, categories }) => {
+    Promise.all([api.tools(), api.project()])
+      .then(([{ tools, categories }, project]) => {
         useFlow.getState().setTools(tools, categories);
-        const saved = readStorage<{ name: string | null; workflow: WorkflowFile; dirty: boolean }>(STORAGE_KEY);
-        if (saved?.workflow) {
+        useFlow.getState().setProject(project);
+        const saved = readStorage<{ name: string | null; workflow: WorkflowFile; dirty: boolean; project?: string }>(STORAGE_KEY);
+        if (saved?.workflow && saved.project === project.path) {
           useFlow.getState().load(saved.workflow, saved.name);
           useFlow.setState({ dirty: !!saved.dirty });
         }
@@ -58,7 +58,7 @@ export default function App() {
     if (!ready) return;
     const t = setTimeout(() => {
       const s = useFlow.getState();
-      writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty });
+      writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty, project: s.project?.path });
       api
         .summaries(s.toWorkflow())
         .then((r) => useFlow.getState().setSummaries(r.summaries))
@@ -70,8 +70,8 @@ export default function App() {
   useEffect(() => {
     if (!ready) return;
     return useFlow.subscribe((s, prev) => {
-      if (s.nodes !== prev.nodes || s.name !== prev.name || s.dirty !== prev.dirty) {
-        writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty });
+      if (s.nodes !== prev.nodes || s.name !== prev.name || s.dirty !== prev.dirty || s.project !== prev.project) {
+        writeStorage(STORAGE_KEY, { name: s.name, workflow: s.toWorkflow(), dirty: s.dirty, project: s.project?.path });
       }
     });
   }, [ready]);

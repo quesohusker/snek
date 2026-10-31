@@ -11,6 +11,7 @@ export default function Toolbar() {
   const stale = useFlow((s) => s.stale);
   const count = useFlow((s) => s.nodes.length);
   const loadRecent = useFlow((s) => s.loadRecent);
+  const project = useFlow((s) => s.project);
   const menus = useMenus();
 
   return (
@@ -19,7 +20,8 @@ export default function Toolbar() {
         <Worm size={18} /> Snek
       </div>
       <Menubar menus={menus} onOpen={(label) => label === "File" && loadRecent()} />
-      <div className="wf-name" title={name ?? "Unsaved workflow"}>
+      <div className="wf-name" title={`${project?.path ?? ""}${name ? ` · ${name}` : ""}`}>
+        {project && <span className="project-name">{project.name}</span>}
         {name ?? "Untitled"}
         {dirty && <span className="dirty" title="Unsaved changes" />}
       </div>

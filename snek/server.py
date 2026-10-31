@@ -1,6 +1,9 @@
 import json
 import os
 import re
+import subprocess
+import sys
+from contextlib import asynccontextmanager
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
@@ -12,22 +15,50 @@ from fastapi.staticfiles import StaticFiles
 from snek.codegen import export_script
 from snek.engine import Engine
 from snek.preview import preview
+from snek.projects import Projects
+from snek.runtime import output_path
 from snek.tools import CATEGORY_ORDER, TOOLS
 
 ROOT = Path(__file__).resolve().parent.parent
-WORKFLOWS = Path(os.environ.get("SNEK_WORKFLOWS", ROOT / "workflows"))
 DIST = ROOT / "frontend" / "dist"
 NAME_RE = re.compile(r"^[\w\- .]{1,80}$")
-EXAMPLES = ROOT / "examples" / "data"
-PLACES = [
-    ("Home", "~"),
-    ("Examples", str(EXAMPLES)),
-    ("Workflows", str(WORKFLOWS)),
-    ("Output", str(ROOT / "output")),
-] + [tuple(p.split("=", 1)) for p in os.environ.get("SNEK_PLACES", "").split(";") if "=" in p]
 
-app = FastAPI(title="Snek")
 engine = Engine()
+projects = Projects()
+
+
+@asynccontextmanager
+async def lifespan(app):
+    projects.load()
+    yield
+
+
+app = FastAPI(title="Snek", lifespan=lifespan)
+
+
+@app.get("/api/project")
+def project_info():
+    return projects.info()
+
+
+@app.post("/api/project/open")
+def open_project(path: str = Body(..., embed=True)):
+    try:
+        projects.open(path)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    engine.clear()
+    return projects.info()
+
+
+@app.post("/api/project/new")
+def new_project(parent: str = Body(...), name: str = Body(...)):
+    try:
+        projects.create(parent, name)
+    except (ValueError, OSError) as e:
+        raise HTTPException(400, str(e))
+    engine.clear()
+    return projects.info()
 
 
 @app.get("/api/tools")
@@ -104,11 +135,12 @@ def clear_cache():
 
 @app.get("/api/workflows")
 def list_workflows():
-    WORKFLOWS.mkdir(parents=True, exist_ok=True)
+    folder = projects.workflows
     items = []
-    for p in sorted(WORKFLOWS.glob("*.flow.json"), key=lambda p: p.stat().st_mtime, reverse=True):
+    files = sorted(folder.glob("*.flow.json"), key=lambda p: p.stat().st_mtime, reverse=True) if folder.is_dir() else []
+    for p in files:
         items.append({"name": p.name[: -len(".flow.json")], "modified": datetime.fromtimestamp(p.stat().st_mtime).isoformat(timespec="seconds")})
-    return {"workflows": items, "folder": str(WORKFLOWS)}
+    return {"workflows": items, "folder": str(folder)}
 
 
 @app.get("/api/workflows/{name}")
@@ -131,12 +163,12 @@ def save_workflow(name: str, workflow: dict = Body(...)):
 def workflow_path(name):
     if not NAME_RE.match(name) or name.startswith("."):
         raise HTTPException(400, "Use letters, numbers, spaces, dots, dashes or underscores")
-    return WORKFLOWS / f"{name}.flow.json"
+    return projects.workflows / f"{name}.flow.json"
 
 
 @app.get("/api/fs")
 def list_dir(path: str = ""):
-    target = Path(os.path.expanduser(path)) if path else EXAMPLES
+    target = Path(os.path.expanduser(path)).resolve() if path else projects.current
     if target.is_file():
         target = target.parent
     while not target.exists() and target != target.parent:
@@ -154,8 +186,27 @@ def list_dir(path: str = ""):
         except OSError:
             continue
         entries.append({"name": p.name, "path": str(p), "dir": p.is_dir(), "size": st.st_size, "modified": datetime.fromtimestamp(st.st_mtime).isoformat(timespec="minutes")})
-    places = [{"label": l, "path": os.path.expanduser(p)} for l, p in PLACES if Path(os.path.expanduser(p)).exists()]
-    return {"path": str(target), "parent": str(target.parent), "entries": entries, "places": places}
+    return {"path": str(target), "parent": str(target.parent), "entries": entries, "places": projects.places()}
+
+
+@app.get("/api/resolve")
+def resolve(path: str, fmt: str = "auto"):
+    target = output_path(path, fmt)
+    return {"path": target, "exists": os.path.isfile(target), "folder_exists": os.path.isdir(os.path.dirname(target))}
+
+
+@app.post("/api/reveal")
+def reveal(path: str = Body(..., embed=True)):
+    target = os.path.abspath(os.path.expanduser(path))
+    if not os.path.exists(target):
+        raise HTTPException(404, f"Not found: {target}")
+    if sys.platform == "darwin":
+        subprocess.run(["open", "-R", target], check=False)
+    elif sys.platform.startswith("win"):
+        subprocess.run(["explorer", f"/select,{target}"], check=False)
+    else:
+        subprocess.run(["xdg-open", os.path.dirname(target)], check=False)
+    return {"ok": True, "path": target}
 
 
 @app.exception_handler(Exception)

@@ -4,6 +4,8 @@ import Modal from "./Modal";
 import { api } from "../api";
 import type { FsListing } from "../types";
 
+export type PickerMode = "open" | "save" | "folder";
+
 function size(n: number) {
   if (n < 1024) return `${n} B`;
   if (n < 1024 ** 2) return `${(n / 1024).toFixed(1)} KB`;
@@ -16,6 +18,10 @@ function dirname(p: string) {
   return i > 0 ? p.slice(0, i) : p;
 }
 
+function basename(p: string) {
+  return p.slice(p.lastIndexOf("/") + 1);
+}
+
 function toPattern(p: string) {
   const dir = dirname(p);
   const base = p.slice(dir.length + 1);
@@ -23,9 +29,11 @@ function toPattern(p: string) {
   return m ? `${dir}/${m[1]}*${m[3]}` : `${dir}/*${base.includes(".") ? base.slice(base.lastIndexOf(".")) : ""}`;
 }
 
-export default function FilePicker({ initial, save, onPick, onClose }: { initial: string; save?: boolean; onPick: (path: string) => void; onClose: () => void }) {
+const TITLES: Record<PickerMode, string> = { open: "Choose input file", save: "Choose where to save", folder: "Choose a folder" };
+
+export default function FilePicker({ initial, mode, title, onPick, onClose }: { initial: string; mode: PickerMode; title?: string; onPick: (path: string) => void; onClose: () => void }) {
   const [listing, setListing] = useState<FsListing | null>(null);
-  const [typed, setTyped] = useState(initial);
+  const [typed, setTyped] = useState(mode === "save" ? basename(initial) : initial);
   const [error, setError] = useState("");
 
   const open = (path: string) => {
@@ -34,34 +42,43 @@ export default function FilePicker({ initial, save, onPick, onClose }: { initial
       .then((l) => {
         setListing(l);
         setError("");
+        if (mode === "folder") setTyped(l.path);
       })
       .catch((e) => setError(String(e.message ?? e)));
   };
 
   useEffect(() => {
-    open(initial ? dirname(initial) : "");
-  }, [initial]);
+    open(mode === "folder" ? initial : initial ? dirname(initial) : "");
+  }, [initial, mode]);
+
+  const finish = (p: string) => {
+    const bare = !p.includes("/") && !p.includes("\\") && !p.startsWith("~");
+    onPick(bare && listing ? `${listing.path}/${p}` : p);
+  };
+
+  const placeholder = mode === "save" ? "File name, e.g. results.csv" : mode === "folder" ? "Folder path" : "Path or pattern with *";
 
   const footer = (
     <>
-      <input className="picker-path" value={typed} onChange={(e) => setTyped(e.target.value)} placeholder={save ? "Folder and file name" : "Path or pattern with *"} />
-      {!save && (
+      {mode === "save" && listing && <span className="picker-into muted">Save in {basename(listing.path) || listing.path} as</span>}
+      <input className="picker-path" value={typed} onChange={(e) => setTyped(e.target.value)} onKeyDown={(e) => e.key === "Enter" && typed && finish(typed)} placeholder={placeholder} />
+      {mode === "open" && (
         <button onClick={() => typed && setTyped(toPattern(typed))} disabled={!typed} title="Replace the number in the file name with *">
           Make pattern
         </button>
       )}
-      <button className="primary" disabled={!typed} onClick={() => onPick(typed)}>
-        {save ? "Use this file" : "Select"}
+      <button className="primary" disabled={!typed} onClick={() => finish(typed)}>
+        {mode === "save" ? "Save here" : mode === "folder" ? "Open this folder" : "Select"}
       </button>
     </>
   );
 
   return (
-    <Modal title={save ? "Choose output file" : "Choose input file"} onClose={onClose} footer={footer} wide>
+    <Modal title={title ?? TITLES[mode]} onClose={onClose} footer={footer} wide>
       <div className="picker">
         <nav className="picker-places">
           {listing?.places.map((p) => (
-            <button key={p.path} onClick={() => open(p.path)}>
+            <button key={`${p.label}:${p.path}`} className={listing.path === p.path ? "active" : ""} onClick={() => open(p.path)} title={p.path}>
               <FolderOpen size={14} /> {p.label}
             </button>
           ))}
@@ -75,24 +92,24 @@ export default function FilePicker({ initial, save, onPick, onClose }: { initial
           </div>
           {error && <div className="error-box">{error}</div>}
           <ul className="picker-list">
-            {listing?.entries.map((e) => (
-              <li
-                key={e.path}
-                className={typed === e.path ? "active" : ""}
-                onClick={() => (e.dir ? open(e.path) : setTyped(e.path))}
-                onDoubleClick={() => !e.dir && onPick(e.path)}
-              >
-                {e.dir ? <Folder size={14} /> : <File size={14} />}
-                <span className="name">{e.name}</span>
-                <span className="meta">{e.dir ? "" : size(e.size)}</span>
-                <span className="meta">{e.modified.replace("T", " ")}</span>
-              </li>
-            ))}
-            {save && listing && (
-              <li className="picker-new" onClick={() => setTyped(`${listing.path}/output.csv`)}>
-                + New file in this folder
-              </li>
-            )}
+            {listing?.entries.map((e) => {
+              const pickable = e.dir || mode !== "folder";
+              const active = mode === "save" ? typed === e.name : typed === e.path;
+              return (
+                <li
+                  key={e.path}
+                  className={`${active ? "active" : ""}${pickable ? "" : " disabled"}`}
+                  onClick={() => (e.dir ? open(e.path) : mode === "save" ? setTyped(e.name) : mode === "open" && setTyped(e.path))}
+                  onDoubleClick={() => !e.dir && mode !== "folder" && finish(mode === "save" ? e.name : e.path)}
+                >
+                  {e.dir ? <Folder size={14} /> : <File size={14} />}
+                  <span className="name">{e.name}</span>
+                  <span className="meta">{e.dir ? "" : size(e.size)}</span>
+                  <span className="meta">{e.modified.replace("T", " ")}</span>
+                </li>
+              );
+            })}
+            {listing && !listing.entries.length && <li className="muted">This folder is empty.</li>}
           </ul>
         </div>
       </div>

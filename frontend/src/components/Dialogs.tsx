@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Copy, Download } from "lucide-react";
 import { useFlow } from "../store";
 import { api } from "../api";
-import { openWorkflow } from "../commands";
+import { openWorkflow, switchProject } from "../commands";
 import Modal from "./Modal";
+import FilePicker from "./FilePicker";
 
 export default function Dialogs() {
   const dialog = useFlow((s) => s.dialog);
@@ -12,7 +13,79 @@ export default function Dialogs() {
   if (dialog === "open") return <OpenDialog onClose={close} />;
   if (dialog === "saveAs") return <SaveDialog onClose={close} />;
   if (dialog === "export") return <ExportDialog onClose={close} />;
+  if (dialog === "newProject") return <NewProjectDialog onClose={close} />;
+  if (dialog === "openProject") return <OpenProjectDialog onClose={close} />;
   return null;
+}
+
+function OpenProjectDialog({ onClose }: { onClose: () => void }) {
+  const [error, setError] = useState("");
+  return (
+    <>
+      <FilePicker
+        initial="~/Documents"
+        mode="folder"
+        title="Open project folder"
+        onClose={onClose}
+        onPick={(path) => switchProject(() => api.openProject(path)).catch((e) => setError((e as Error).message))}
+      />
+      {error && (
+        <Modal title="Could not open project" onClose={() => setError("")}>
+          <div className="error-box">{error}</div>
+        </Modal>
+      )}
+    </>
+  );
+}
+
+function NewProjectDialog({ onClose }: { onClose: () => void }) {
+  const [name, setName] = useState("");
+  const [parent, setParent] = useState("~/Documents/Snek Projects");
+  const [browsing, setBrowsing] = useState(false);
+  const [error, setError] = useState("");
+  const create = () => switchProject(() => api.newProject(parent, name.trim())).catch((e) => setError((e as Error).message));
+  if (browsing) {
+    return (
+      <FilePicker
+        initial={parent}
+        mode="folder"
+        title="Where should the project live?"
+        onClose={() => setBrowsing(false)}
+        onPick={(p) => {
+          setParent(p);
+          setBrowsing(false);
+        }}
+      />
+    );
+  }
+  return (
+    <Modal
+      title="New project"
+      onClose={onClose}
+      footer={
+        <button className="primary" disabled={!name.trim()} onClick={create}>
+          Create project
+        </button>
+      }
+    >
+      <p className="muted">A project is a folder for one piece of analysis. Snek creates data, output and workflows folders inside it. Relative paths in this project's workflows start from the project folder.</p>
+      <label className="field">
+        <span>Name</span>
+        <input autoFocus value={name} placeholder="e.g. Nebraska 2025" onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && name.trim() && create()} />
+      </label>
+      <label className="field">
+        <span>Location</span>
+        <div className="file-field">
+          <input value={parent} onChange={(e) => setParent(e.target.value)} spellCheck={false} />
+          <button type="button" onClick={() => setBrowsing(true)}>
+            Browse
+          </button>
+        </div>
+      </label>
+      {name.trim() && <p className="muted">Creates {parent.replace(/\/$/, "")}/{name.trim()}</p>}
+      {error && <div className="error-box">{error}</div>}
+    </Modal>
+  );
 }
 
 function OpenDialog({ onClose }: { onClose: () => void }) {

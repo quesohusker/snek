@@ -97,5 +97,17 @@ export type FsListing = {
   path: string;
   parent: string;
   entries: FsEntry[];
-  places: { label: string; path: string }[];
+  places: Place[];
+};
+
+export type Place = { label: string; path: string };
+
+export type ProjectInfo = {
+  path: string;
+  name: string;
+  is_examples: boolean;
+  workflows: string;
+  recent: { path: string; name: string }[];
+  examples: string;
+  places: Place[];
 };

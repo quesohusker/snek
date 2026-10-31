@@ -64,14 +64,35 @@ def read_any(path, fmt="auto", sheet=None, sep=None, encoding="utf-8", flatten=F
     return pd.concat(frames, ignore_index=True)
 
 
+EXTENSIONS = {"csv": ".csv", "tsv": ".tsv", "excel": ".xlsx", "json": ".json", "jsonl": ".jsonl", "parquet": ".parquet"}
+
+
+def output_path(path, fmt="auto"):
+    target = os.path.abspath(os.path.expanduser(path))
+    if not os.path.splitext(target)[1]:
+        target += EXTENSIONS.get(fmt, ".csv")
+    return target
+
+
+def nested_to_json(df):
+    out = df
+    for i, col in enumerate(df.columns):
+        s = df.iloc[:, i]
+        if s.dtype == object and s.map(lambda v: isinstance(v, (dict, list))).any():
+            if out is df:
+                out = df.copy(deep=False)
+            out.iloc[:, i] = s.map(lambda v: json.dumps(v, default=str) if isinstance(v, (dict, list)) else v)
+    return out
+
+
 def write_any(df, path, fmt="auto"):
-    target = os.path.expanduser(path)
+    target = output_path(path, fmt)
     kind = fmt if fmt != "auto" else FORMATS.get(os.path.splitext(target)[1].lower(), "csv")
-    os.makedirs(os.path.dirname(target) or ".", exist_ok=True)
+    os.makedirs(os.path.dirname(target), exist_ok=True)
     if kind in ("csv", "tsv"):
-        df.to_csv(target, index=False, sep="\t" if kind == "tsv" else ",")
+        nested_to_json(df).to_csv(target, index=False, sep="\t" if kind == "tsv" else ",")
     elif kind == "excel":
-        out = df.copy(deep=False)
+        out = nested_to_json(df).copy(deep=False)
         for col in out.columns:
             if isinstance(out[col].dtype, pd.DatetimeTZDtype):
                 out[col] = out[col].dt.tz_localize(None)
@@ -118,7 +139,7 @@ def iif(cond, then, otherwise):
 
 HELPERS = {
     "read_any": [match_files, read_any],
-    "write_any": [write_any],
+    "write_any": [output_path, nested_to_json, write_any],
     "join_lrj": [join_lrj],
     "unnest": [unnest],
     "iif": [iif],
@@ -129,6 +150,9 @@ NAMESPACE = {
     "np": np,
     "io": io,
     "FORMATS": FORMATS,
+    "EXTENSIONS": EXTENSIONS,
+    "output_path": output_path,
+    "nested_to_json": nested_to_json,
     "match_files": match_files,
     "read_any": read_any,
     "write_any": write_any,

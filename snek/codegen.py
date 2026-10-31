@@ -2,7 +2,7 @@ import inspect
 import pprint
 import re
 
-from snek.runtime import FORMATS, HELPERS
+from snek.runtime import EXTENSIONS, FORMATS, HELPERS
 
 
 def export_script(ev, name="workflow"):
@@ -25,7 +25,9 @@ def prelude(body, name):
     used = [h for h in HELPERS if re.search(rf"\b{h}\(", body)]
     imports = []
     if "read_any" in used:
-        imports += ["import glob", "import json"]
+        imports.append("import glob")
+    if "read_any" in used or "write_any" in used:
+        imports.append("import json")
     if "io.StringIO" in body:
         imports.append("import io")
     if "read_any" in used or "write_any" in used:
@@ -36,6 +38,8 @@ def prelude(body, name):
     parts += ["import numpy as np", "import pandas as pd", ""]
     if "read_any" in used or "write_any" in used:
         parts += ["FORMATS = " + pprint.pformat(FORMATS, sort_dicts=False)]
+    if "write_any" in used:
+        parts += ["", "EXTENSIONS = " + pprint.pformat(EXTENSIONS, sort_dicts=False)]
     seen = set()
     for h in used:
         for fn in HELPERS[h]:

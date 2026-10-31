@@ -338,6 +338,33 @@ def test_output_formats_round_trip(tmp_path):
         assert back.shape == (5, 5), ext
 
 
+def test_output_bare_name_gets_extension_and_full_path(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    ev = run(workflow([(1, "text_input", {"data": GAMES}), (2, "output", {"path": "nebraska games"})], [(1, "out", 2, "in")]))
+    target = tmp_path / "nebraska games.csv"
+    assert target.exists()
+    assert not (tmp_path / "nebraska games").exists()
+    assert ev.results["2"].message == f"Wrote 5 rows to {target}"
+
+
+def test_output_extension_follows_format(tmp_path):
+    run(workflow([(1, "text_input", {"data": GAMES}), (2, "output", {"path": str(tmp_path / "book"), "format": "excel"})], [(1, "out", 2, "in")]))
+    assert (tmp_path / "book.xlsx").exists()
+
+
+def test_output_writes_nested_values_as_json(tmp_path):
+    import json
+
+    src = tmp_path / "nested.json"
+    src.write_text('[{"id": 1, "offense": {"plays": 77, "ppa": 0.15}, "tags": ["a", "b"]}, {"id": 2, "offense": null, "tags": []}]')
+    target = tmp_path / "out.csv"
+    run(workflow([(1, "input", {"path": str(src)}), (2, "output", {"path": str(target)})], [(1, "out", 2, "in")]))
+    back = pd.read_csv(target)
+    assert json.loads(back["offense"].iloc[0]) == {"plays": 77, "ppa": 0.15}
+    assert json.loads(back["tags"].iloc[0]) == ["a", "b"]
+    assert pd.isna(back["offense"].iloc[1])
+
+
 def test_glob_input_adds_filename(tmp_path):
     (tmp_path / "w1.csv").write_text("a\n1\n")
     (tmp_path / "w2.csv").write_text("a\n2\n3\n")
