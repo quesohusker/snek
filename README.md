@@ -39,22 +39,6 @@ Snek keeps its settings and a copy of the sample project in `~/.snek`.
 
 Drag-and-drop data tools are fast to learn but lock your work inside the tool. Snek generates real pandas code for every step. You can read it in the Python tab of any tool, and Export gives you a standalone script that runs anywhere pandas runs.
 
-## Build from source
-
-You need Python 3.12+ and Node 20.19+.
-
-```bash
-git clone https://github.com/quesohusker/snek.git
-cd snek
-python3 -m venv .venv
-.venv/bin/pip install -e ".[dev]"
-cd frontend && npm install && npm run build && cd ..
-.venv/bin/python -m snek
-```
-
-Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workflow, then press **Run** (⌘ Enter).
-
-
 ## Tools
 
 81 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
@@ -89,46 +73,9 @@ You can use `pd`, `np` and `iif(condition, then, else)`. Snek suggests a fix whe
 
 Multi-Row Formula reaches into other rows with `[Row-1:column]` and `[Row+1:column]`, for example `[pts] - [Row-1:pts]` for the change since the last game. Multi-Field Formula applies one expression to many columns, with `[_CurrentField_]` standing for each column in turn.
 
-## Sample workflows
+## Modeling
 
-The `workflows/` folder includes samples built on the bundled open data in `examples/data/`:
-
-- Penguins: body mass by species
-- Penguins: clean the raw field file
-- Flights: Q1 delays by airline (wildcard input and a join)
-- Flights: weather at departure (multi-key join)
-- Flights: fleets from nested JSON (explode and unnest)
-- Flights: daily delay trend (DateTime, Multi-Row Formula, Running Total, Rank, Tile)
-- Penguins: predict body mass (Field Summary, Correlation, Linear Regression)
-- Penguins: classify species (Create Samples, Decision Tree vs. Random Forest, Model Comparison, Score)
-- Flights: forecast daily departures (TS Filler, ETS and ARIMA with weekly seasonality)
-- Flights: forecast accuracy check (hold out two weeks, forecast them, grade with TS Compare; Seasonal Decomposition)
-- Penguins: model bake-off (five classifiers, 5-fold Cross-Validation)
-- Demo: league ratings for made-up teams (Team Ratings and Elo side by side)
-- Demo: no files needed
-
-All bundled data is CC0. See [examples/data/README.md](examples/data/README.md) for sources and citations.
-
-## Development
-
-Build a standalone app for the system you are on:
-
-```bash
-.venv/bin/pip install pyinstaller pillow
-.venv/bin/python packaging/build.py
-.venv/bin/python packaging/smoke_test.py packaging/dist/Snek.app/Contents/MacOS/Snek
-```
-
-Pushing a `v*` tag runs `.github/workflows/release.yml`, which builds and smoke-tests the macOS, Windows and Linux apps and attaches them to the GitHub release.
-
-```bash
-.venv/bin/python -m pytest -q
-cd frontend && npx tsc --noEmit && npm run build
-```
-
-For hot reload, run the server, then `npm run dev` in `frontend/` and open http://localhost:5173.
-
-Each tool lives in `snek/tools/` as a class that returns pandas source code. The engine runs that code, and Export writes the same code, so the canvas and the script cannot drift apart. See [CLAUDE.md](CLAUDE.md) for the architecture notes.
+Every model tool has an **M** output that carries the fitted model. Connect it to **Score** to predict new rows, or to **Model Comparison** with a validation sample to see which model holds up on data it never saw. Use **Create Samples** to make that split. Models come from scikit-learn and statsmodels, so exported scripts that use them list those packages at the top.
 
 ## Files, autosave and settings
 
@@ -154,9 +101,25 @@ The file picker lists the project folders, Desktop, Documents, Downloads, Home a
 SNEK_PLACES="Data=~/data;Clients=~/work/clients" .venv/bin/python -m snek
 ```
 
-## Modeling
+## Sample workflows
 
-Every model tool has an **M** output that carries the fitted model. Connect it to **Score** to predict new rows, or to **Model Comparison** with a validation sample to see which model holds up on data it never saw. Use **Create Samples** to make that split. Models come from scikit-learn and statsmodels, so exported scripts that use them list those packages at the top.
+The `workflows/` folder includes samples built on the bundled open data in `examples/data/`:
+
+- Penguins: body mass by species
+- Penguins: clean the raw field file
+- Flights: Q1 delays by airline (wildcard input and a join)
+- Flights: weather at departure (multi-key join)
+- Flights: fleets from nested JSON (explode and unnest)
+- Flights: daily delay trend (DateTime, Multi-Row Formula, Running Total, Rank, Tile)
+- Penguins: predict body mass (Field Summary, Correlation, Linear Regression)
+- Penguins: classify species (Create Samples, Decision Tree vs. Random Forest, Model Comparison, Score)
+- Flights: forecast daily departures (TS Filler, ETS and ARIMA with weekly seasonality)
+- Flights: forecast accuracy check (hold out two weeks, forecast them, grade with TS Compare; Seasonal Decomposition)
+- Penguins: model bake-off (five classifiers, 5-fold Cross-Validation)
+- Demo: league ratings for made-up teams (Team Ratings and Elo side by side)
+- Demo: no files needed
+
+All bundled data is CC0. See [examples/data/README.md](examples/data/README.md) for sources and citations.
 
 ## Updates
 
@@ -167,6 +130,21 @@ Once a day, Snek asks GitHub's public releases page whether a newer version exis
 - Formula and Python tools run any code you type. The server listens on 127.0.0.1 only. Do not expose it to a network.
 - Data is held in memory. Hundreds of thousands of rows are fast; tens of millions will strain it.
 - No undo/redo or copy/paste yet.
+
+## Build from source
+
+You need Python 3.12+ and Node 20.19+.
+
+```bash
+git clone https://github.com/quesohusker/snek.git
+cd snek
+python3 -m venv .venv
+.venv/bin/pip install -e ".[dev]"
+cd frontend && npm install && npm run build && cd ..
+.venv/bin/python -m snek
+```
+
+Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workflow, then press **Run** (⌘ Enter).
 
 ## License
 

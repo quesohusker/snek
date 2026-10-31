@@ -9,6 +9,8 @@ A local, Alteryx-style workflow canvas. You drag tools onto a canvas, wire them,
 - Frontend dev with hot reload: start the server, then `cd frontend && npm run dev` (port 5173, proxies `/api`).
 - Python changes need a server restart. There is no auto-reload.
 - Tests: `.venv/bin/python -m pytest -q`. Typecheck: `cd frontend && npx tsc --noEmit`.
+- Build the standalone app for this OS: `.venv/bin/pip install pyinstaller pillow`, then `.venv/bin/python packaging/build.py`, then `.venv/bin/python packaging/smoke_test.py packaging/dist/Snek.app/Contents/MacOS/Snek` (on Windows `packaging/dist/Snek/Snek.exe`, on Linux `packaging/dist/Snek/Snek`). The build regenerates THIRD_PARTY_NOTICES.md first.
+- These developer notes live here, not in the README: the PolyForm Strict license does not let others change the code, so the README covers only using and building Snek.
 
 ## Layout
 
