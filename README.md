@@ -2,7 +2,7 @@
 
 [![test](https://github.com/quesohusker/snek/actions/workflows/test.yml/badge.svg)](https://github.com/quesohusker/snek/actions/workflows/test.yml)
 
-A visual workflow canvas for pandas. Drag tools onto a canvas, wire them together, and watch the data change at every step. When you are done, export the whole workflow as a plain Python script.
+A visual workflow canvas for Python. Drag tools onto a canvas, wire them together, and watch the data change at every step. When you are done, export the whole workflow as a plain Python script.
 
 Snek runs on your own machine. A small Python server does the work, and your browser shows the canvas at http://127.0.0.1:8765. Your data never leaves your computer. Snek goes online only for a once-a-day check for new versions, which you can turn off (see [Updates](#updates)), and when you use the API Request or Create with AI features.
 
