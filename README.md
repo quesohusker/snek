@@ -57,7 +57,7 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 
 ## Tools
 
-45 tools so far, modeled on the core Alteryx palettes:
+50 tools so far, organized like the Alteryx palette. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
 
 | Category | Tools |
 |---|---|
@@ -66,6 +66,8 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 | Join | Join (L/J/R outputs), Join Multiple, Union, Append Fields, Find Replace (lookup table) |
 | Parse | Text to Columns, RegEx, DateTime, JSON Parse, Explode List, Unnest JSON |
 | Transform | Summarize, Cross Tab, Transpose, Running Total, Weighted Average, Count Records |
+| Data Investigation | Field Summary, Frequency Table, Correlation, Contingency Table |
+| Modeling | Linear Regression (predictions, coefficients with p-values, fit statistics) |
 | Developer | Python (your own pandas code), Dynamic Input, Dynamic Rename, Dynamic Select, Field Info |
 
 Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. Directory plus Dynamic Input reads every file in a folder.
@@ -93,6 +95,8 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Flights: Q1 delays by airline (wildcard input and a join)
 - Flights: weather at departure (multi-key join)
 - Flights: fleets from nested JSON (explode and unnest)
+- Flights: daily delay trend (DateTime, Multi-Row Formula, Running Total, Rank, Tile)
+- Penguins: predict body mass (Field Summary, Correlation, Linear Regression)
 - Demo: no files needed
 
 All bundled data is CC0. See [examples/data/README.md](examples/data/README.md) for sources and citations.

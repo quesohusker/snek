@@ -7,6 +7,25 @@ export type ToolNode = Node<FlowNodeData, "tool">;
 
 type Position = { x: number; y: number };
 
+const DEFAULT_FAVORITES = ["input", "output", "browse", "select", "filter", "formula", "join", "summarize", "sort"];
+
+function stored<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function remember(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    return;
+  }
+}
+
 export type Dialog = "open" | "saveAs" | "export" | "openProject" | "newProject" | "about" | null;
 
 type State = {
@@ -30,6 +49,10 @@ type State = {
   project: ProjectInfo | null;
   stopped: boolean;
   update: UpdateInfo | null;
+  paletteTab: string;
+  favorites: string[];
+  setPaletteTab: (tab: string) => void;
+  toggleFavorite: (type: string) => void;
   setUpdate: (u: UpdateInfo) => void;
   setProject: (p: ProjectInfo) => void;
   setDialog: (d: Dialog) => void;
@@ -100,6 +123,20 @@ export const useFlow = create<State>()((set, get) => ({
   project: null,
   stopped: false,
   update: null,
+  paletteTab: stored("snek.paletteTab", "Favorites"),
+  favorites: stored("snek.favorites", DEFAULT_FAVORITES),
+
+  setPaletteTab: (paletteTab) => {
+    remember("snek.paletteTab", paletteTab);
+    set({ paletteTab });
+  },
+
+  toggleFavorite: (type) => {
+    const current = get().favorites;
+    const favorites = current.includes(type) ? current.filter((t) => t !== type) : [...current, type];
+    remember("snek.favorites", favorites);
+    set({ favorites });
+  },
 
   setUpdate: (update) => set({ update }),
 

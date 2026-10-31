@@ -165,6 +165,18 @@ def main():
     )
 
     build(
+        "Penguins - predict body mass",
+        [
+            (1, "input", "Penguins", 0, 0.7, {"path": f"{PENGUINS}/penguins.csv"}),
+            (2, "field_summary", "Profile", 1, 0, {}),
+            (3, "correlation", "Measurements", 1, 1.4, {"columns": ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]}),
+            (4, "linear_regression", "Body mass model", 2, 0.7, {"target": "body_mass_g", "predictors": ["flipper_length_mm", "bill_length_mm", "bill_depth_mm"]}),
+            (5, "browse", "Coefficients", 3, 0.7, {}),
+        ],
+        [(1, "out", 2, "in"), (1, "out", 3, "in"), (1, "out", 4, "in"), (4, "coef", 5, "in")],
+    )
+
+    build(
         "Demo - no files needed",
         [
             (1, "text_input", "Scores", 0, 0, {"data": "team,opp,pts,opp_pts\nNebraska,Iowa,24,20\nIowa,Nebraska,20,24\nNebraska,Akron,68,0\nAkron,Nebraska,0,68\nIowa,Akron,31,7\nAkron,Iowa,7,31", "delimiter": ","}),

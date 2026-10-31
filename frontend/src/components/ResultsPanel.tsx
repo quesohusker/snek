@@ -10,7 +10,7 @@ const PAGE = 200;
 function cell(v: any) {
   if (v === null || v === undefined) return null;
   if (typeof v === "object") return JSON.stringify(v);
-  if (typeof v === "number" && !Number.isInteger(v)) return String(Number(v.toFixed(6)));
+  if (typeof v === "number" && !Number.isInteger(v)) return v !== 0 && Math.abs(v) < 1e-4 ? v.toExponential(2) : String(Number(v.toFixed(6)));
   return String(v);
 }
 

@@ -2,6 +2,10 @@ import {
   ArrowDownWideNarrow,
   Braces,
   CalendarClock,
+  ChartColumn,
+  ChartScatter,
+  ChartSpline,
+  ClipboardList,
   Clock,
   Code,
   Columns3,
@@ -41,6 +45,7 @@ import {
   SquareFunction,
   SquareStack,
   Table,
+  Table2,
   Tally5,
   TrendingUp,
   WandSparkles,
@@ -93,6 +98,11 @@ const ICONS: Record<string, LucideIcon> = {
   now: Clock,
   weighted_avg: Scale,
   count_records: Tally5,
+  field_summary: ClipboardList,
+  frequency: ChartColumn,
+  correlation: ChartScatter,
+  contingency: Table2,
+  linear_regression: ChartSpline,
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
@@ -101,6 +111,8 @@ export const CATEGORY_COLORS: Record<string, string> = {
   Join: "var(--cat-join)",
   Parse: "var(--cat-parse)",
   Transform: "var(--cat-transform)",
+  "Data Investigation": "var(--cat-investigate)",
+  Modeling: "var(--cat-model)",
   Developer: "var(--cat-dev)",
 };
 

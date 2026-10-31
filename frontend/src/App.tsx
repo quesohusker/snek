@@ -3,6 +3,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 import { useFlow } from "./store";
 import { api } from "./api";
 import Toolbar from "./components/Toolbar";
+import CategoryBar from "./components/CategoryBar";
 import Dialogs from "./components/Dialogs";
 import { runWorkflow, saveWorkflow } from "./commands";
 import Palette from "./components/Palette";
@@ -133,6 +134,7 @@ export default function App() {
     <ReactFlowProvider>
       <div className="app">
         <Toolbar />
+        <CategoryBar />
         <div className="main">
           <Palette />
           <div className="center" style={{ gridTemplateRows: `minmax(0, 1fr) 6px ${height}px` }}>

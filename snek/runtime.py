@@ -234,6 +234,95 @@ def parse_json(value, strict=False):
         return None
 
 
+def field_summary(df):
+    rows = []
+    for i, col in enumerate(df.columns):
+        s = df.iloc[:, i]
+        numeric = pd.api.types.is_numeric_dtype(s) and not pd.api.types.is_bool_dtype(s)
+        row = {"Name": str(col), "Type": str(s.dtype), "Count": int(s.notna().sum()), "Nulls": int(s.isna().sum()), "Null %": round(100 * float(s.isna().mean()), 2) if len(s) else 0.0}
+        try:
+            row["Unique"] = int(s.nunique())
+        except TypeError:
+            row["Unique"] = None
+        values = s.dropna()
+        if numeric and len(values):
+            v = values.astype(float)
+            row.update({"Min": v.min(), "Max": v.max(), "Mean": v.mean(), "Median": v.median(), "Std": v.std()})
+        elif row["Unique"] and len(values):
+            top = values.value_counts().head(1)
+            row.update({"Top": str(top.index[0]), "Top Count": int(top.iloc[0])})
+        rows.append(row)
+    return pd.DataFrame(rows, columns=["Name", "Type", "Count", "Nulls", "Null %", "Unique", "Min", "Max", "Mean", "Median", "Std", "Top", "Top Count"])
+
+
+def linear_regression(df, target, predictors, intercept=True):
+    import math
+
+    def betacf(a, b, x):
+        qab, qap, qam = a + b, a + 1, a - 1
+        c, d = 1.0, 1 - qab * x / qap
+        d = 1 / (d if abs(d) > 1e-300 else 1e-300)
+        h = d
+        for m in range(1, 300):
+            m2 = 2 * m
+            aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+            d = 1 + aa * d
+            d = 1 / (d if abs(d) > 1e-300 else 1e-300)
+            c = 1 + aa / (c if abs(c) > 1e-300 else 1e-300)
+            h *= d * c
+            aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+            d = 1 + aa * d
+            d = 1 / (d if abs(d) > 1e-300 else 1e-300)
+            c = 1 + aa / (c if abs(c) > 1e-300 else 1e-300)
+            delta = d * c
+            h *= delta
+            if abs(delta - 1) < 1e-12:
+                break
+        return h
+
+    def t_pvalue(t, dof):
+        if not math.isfinite(t):
+            return 0.0 if math.isinf(t) else float("nan")
+        x = dof / (dof + t * t)
+        a, b = dof / 2, 0.5
+        front = math.exp(math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b) + a * math.log(x) + b * math.log1p(-x)) if 0 < x < 1 else 0.0
+        if x == 0:
+            return 0.0
+        if x < (a + 1) / (a + b + 2):
+            return front * betacf(a, b, x) / a
+        return 1 - front * betacf(b, a, 1 - x) / b
+
+    predictors = list(predictors)
+    data = df[[target] + predictors].apply(pd.to_numeric, errors="coerce").dropna()
+    y = data[target].to_numpy(dtype=float)
+    X = data[predictors].to_numpy(dtype=float, na_value=np.nan)
+    names = predictors
+    if intercept:
+        X = np.column_stack([np.ones(len(X)), X])
+        names = ["(Intercept)"] + predictors
+    n, k = X.shape
+    if n <= k:
+        raise ValueError(f"Need more complete rows than terms: {n} rows, {k} terms")
+    beta, *_ = np.linalg.lstsq(X, y, rcond=None)
+    resid = y - X @ beta
+    dof = n - k
+    ssr = float(resid @ resid)
+    sst = float(((y - y.mean()) ** 2).sum()) if intercept else float(y @ y)
+    se = np.sqrt(np.clip(np.diag(ssr / dof * np.linalg.pinv(X.T @ X)), 0, None))
+    with np.errstate(divide="ignore", invalid="ignore"):
+        t = np.where(se > 0, beta / np.where(se > 0, se, 1), np.sign(beta) * np.inf)
+    coef = pd.DataFrame({"Term": names, "Coefficient": beta, "Std Error": se, "t": t, "p-value": [t_pvalue(float(v), dof) for v in t]})
+    r2 = 1 - ssr / sst if sst else float("nan")
+    adj = 1 - (1 - r2) * ((n - 1) if intercept else n) / dof
+    fit = pd.DataFrame({"Measure": ["Rows used", "Terms", "R squared", "Adjusted R squared", "RMSE"], "Value": [float(n), float(k), r2, adj, (ssr / n) ** 0.5]})
+    features = df[predictors].apply(pd.to_numeric, errors="coerce").to_numpy(dtype=float, na_value=np.nan)
+    predicted = features @ beta[1:] + beta[0] if intercept else features @ beta
+    scored = df.copy()
+    scored[f"{target}_predicted"] = predicted
+    scored[f"{target}_residual"] = pd.to_numeric(df[target], errors="coerce") - predicted
+    return scored, coef, fit
+
+
 HELPERS = {
     "read_any": ([match_files, read_any], ["glob", "json", "os"], ["FORMATS"]),
     "write_any": ([output_path, nested_to_json, write_any], ["json", "os"], ["FORMATS", "EXTENSIONS"]),
@@ -246,6 +335,8 @@ HELPERS = {
     "weighted_average": ([weighted_average], [], []),
     "select_rows": ([select_rows], [], []),
     "parse_json": ([parse_json], ["json"], []),
+    "field_summary": ([field_summary], [], []),
+    "linear_regression": ([linear_regression], [], []),
 }
 
 NAMESPACE = {
@@ -268,4 +359,6 @@ NAMESPACE = {
     "weighted_average": weighted_average,
     "select_rows": select_rows,
     "parse_json": parse_json,
+    "field_summary": field_summary,
+    "linear_regression": linear_regression,
 }
