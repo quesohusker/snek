@@ -12,10 +12,19 @@ from snek.paths import snek_home
 
 NAME_RE = re.compile(r"^[a-z0-9_-]{1,40}$")
 DECLARED = {}
+HOSTS = {"anthropic": "api.anthropic.com"}
 
 
-def declare_connection(name, label, section, url="", help=""):
+def declare_connection(name, label, section, url="", help="", host=""):
     DECLARED[name] = {"label": label, "section": section, "url": url, "help": help}
+    if host:
+        HOSTS[name] = host
+
+
+def check_host(key, url):
+    host = HOSTS.get(key)
+    if host and (urllib.parse.urlsplit(url).hostname or "").lower() != host:
+        raise ValueError(f"The {key} key only goes to {host}. Use a different saved key for {urllib.parse.urlsplit(url).hostname or url}.")
 
 
 def connections_path():

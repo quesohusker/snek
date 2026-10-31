@@ -98,6 +98,25 @@ def test_api_request_json_path_query_key_and_csv(api):
     assert res.status == "error" and "404" in res.error
 
 
+def test_declared_keys_only_go_to_their_own_host(api):
+    connect.set_key("anthropic", KEY)
+    connect.set_key("demo", KEY)
+    connect.declare_connection("locked", "Locked API", "Locked", host="api.locked.example")
+    connect.set_key("locked", KEY)
+    try:
+        for name in ("anthropic", "locked"):
+            _, res = run_tool("api_request", {"url": f"{api}/bearer", "auth": "bearer", "key": name})
+            assert res.status == "error" and f"The {name} key only goes to" in res.error and "127.0.0.1" in res.error
+        _, res = run_tool("api_request", {"url": f"{api}/bearer", "auth": "bearer", "key": "demo"})
+        assert res.status == "ok", res.error
+        connect.HOSTS["locked"] = "127.0.0.1"
+        _, res = run_tool("api_request", {"url": f"{api}/bearer", "auth": "bearer", "key": "locked"})
+        assert res.status == "ok", res.error
+    finally:
+        connect.DECLARED.pop("locked", None)
+        connect.HOSTS.pop("locked", None)
+
+
 def test_export_keeps_the_key_out_and_still_runs(api, tmp_path):
     connect.set_key("demo", KEY)
     out = tmp_path / "items.csv"

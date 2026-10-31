@@ -1,5 +1,6 @@
 import urllib.parse
 
+from snek import connect
 from snek.tools.base import Tool, ToolError, fld, opts, register, short
 
 
@@ -28,9 +29,14 @@ class APIRequest(Tool):
         params = {str(p.get("name", "")).strip(): str(p.get("value", "")) for p in cfg["params"] or [] if str(p.get("name", "")).strip()}
         args = [repr(url), repr(params)]
         if cfg["auth"] != "none":
-            if not str(cfg["key"] or "").strip():
+            key = str(cfg["key"] or "").strip()
+            if not key:
                 raise ToolError("Enter the name of the saved API key")
-            args += [f"auth={cfg['auth']!r}", f"key={str(cfg['key']).strip()!r}"]
+            try:
+                connect.check_host(key, url)
+            except ValueError as e:
+                raise ToolError(str(e)) from None
+            args += [f"auth={cfg['auth']!r}", f"key={key!r}"]
             if cfg["auth"] in ("header", "query"):
                 args.append(f"header={str(cfg['header'] or 'X-API-Key').strip()!r}")
         if cfg["fmt"] == "csv":
