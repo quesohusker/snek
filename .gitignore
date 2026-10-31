@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+frontend/node_modules/
+frontend/dist/
+output/
+.DS_Store
+CLAUDE.local.md
+scripts/make_cfbd_samples.py
+workflows/CFB*.flow.json
+*.egg-info/

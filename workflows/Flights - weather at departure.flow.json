@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "name": "Flights - weather at departure",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Q1 flights",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/flights_2013_*.csv.gz"
+      }
+    },
+    {
+      "id": "2",
+      "type": "input",
+      "label": "Hourly weather",
+      "position": {
+        "x": 0,
+        "y": 169.0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/weather_2013_q1.csv"
+      }
+    },
+    {
+      "id": "3",
+      "type": "join",
+      "label": "Same airport and hour",
+      "position": {
+        "x": 170,
+        "y": 78.0
+      },
+      "config": {
+        "keys": [
+          {
+            "left": "origin",
+            "right": "origin"
+          },
+          {
+            "left": "year",
+            "right": "year"
+          },
+          {
+            "left": "month",
+            "right": "month"
+          },
+          {
+            "left": "day",
+            "right": "day"
+          },
+          {
+            "left": "hour",
+            "right": "hour"
+          }
+        ],
+        "suffix": "_wx"
+      }
+    },
+    {
+      "id": "4",
+      "type": "formula",
+      "label": "Rain and late flags",
+      "position": {
+        "x": 340,
+        "y": 78.0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "conditions",
+            "expression": "iif([precip] > 0, 'rain', 'dry')",
+            "dtype": ""
+          },
+          {
+            "column": "late_15",
+            "expression": "iif([dep_delay] > 15, 1, 0)",
+            "dtype": "Int64"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "type": "summarize",
+      "label": "",
+      "position": {
+        "x": 510,
+        "y": 78.0
+      },
+      "config": {
+        "group_by": [
+          "origin",
+          "conditions"
+        ],
+        "aggs": [
+          {
+            "column": "origin",
+            "func": "size",
+            "name": "flights"
+          },
+          {
+            "column": "dep_delay",
+            "func": "mean",
+            "name": "avg_dep_delay"
+          },
+          {
+            "column": "late_15",
+            "func": "mean",
+            "name": "share_late_15"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6",
+      "type": "sort",
+      "label": "",
+      "position": {
+        "x": 680,
+        "y": 78.0
+      },
+      "config": {
+        "keys": [
+          {
+            "column": "origin",
+            "order": "asc"
+          },
+          {
+            "column": "conditions",
+            "order": "asc"
+          }
+        ],
+        "nulls": "last"
+      }
+    },
+    {
+      "id": "7",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 850,
+        "y": 78.0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-3.left",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e2.out-3.right",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "right"
+    },
+    {
+      "id": "e3.join-4.in",
+      "source": "3",
+      "sourceHandle": "join",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "name": "Flights - Q1 delays by airline",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Q1 flights",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/flights_2013_*.csv.gz",
+        "filename_col": "file"
+      }
+    },
+    {
+      "id": "2",
+      "type": "filter",
+      "label": "Departed",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "mode": "basic",
+        "column": "dep_delay",
+        "operator": "notna"
+      }
+    },
+    {
+      "id": "3",
+      "type": "formula",
+      "label": "Late flag",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "late_15",
+            "expression": "iif([dep_delay] > 15, 1, 0)",
+            "dtype": "Int64"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "type": "input",
+      "label": "Airlines",
+      "position": {
+        "x": 340,
+        "y": 169.0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/airlines.csv"
+      }
+    },
+    {
+      "id": "5",
+      "type": "join",
+      "label": "",
+      "position": {
+        "x": 510,
+        "y": 52.0
+      },
+      "config": {
+        "keys": [
+          {
+            "left": "carrier",
+            "right": "carrier"
+          }
+        ],
+        "suffix": "_right"
+      }
+    },
+    {
+      "id": "6",
+      "type": "summarize",
+      "label": "By airline",
+      "position": {
+        "x": 680,
+        "y": 52.0
+      },
+      "config": {
+        "group_by": [
+          "name"
+        ],
+        "aggs": [
+          {
+            "column": "carrier",
+            "func": "size",
+            "name": "flights"
+          },
+          {
+            "column": "dep_delay",
+            "func": "mean",
+            "name": "avg_dep_delay"
+          },
+          {
+            "column": "arr_delay",
+            "func": "mean",
+            "name": "avg_arr_delay"
+          },
+          {
+            "column": "late_15",
+            "func": "mean",
+            "name": "share_late_15"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7",
+      "type": "formula",
+      "label": "Round",
+      "position": {
+        "x": 850,
+        "y": 52.0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "avg_dep_delay",
+            "expression": "[avg_dep_delay].round(1)",
+            "dtype": ""
+          },
+          {
+            "column": "avg_arr_delay",
+            "expression": "[avg_arr_delay].round(1)",
+            "dtype": ""
+          },
+          {
+            "column": "share_late_15",
+            "expression": "[share_late_15].round(3)",
+            "dtype": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "8",
+      "type": "sort",
+      "label": "",
+      "position": {
+        "x": 1020,
+        "y": 52.0
+      },
+      "config": {
+        "keys": [
+          {
+            "column": "avg_dep_delay",
+            "order": "desc"
+          }
+        ],
+        "nulls": "last"
+      }
+    },
+    {
+      "id": "9",
+      "type": "output",
+      "label": "",
+      "position": {
+        "x": 1190,
+        "y": 52.0
+      },
+      "config": {
+        "path": "output/airline_delays_2013_q1.csv",
+        "format": "auto"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.true-3.in",
+      "source": "2",
+      "sourceHandle": "true",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-5.left",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e4.out-5.right",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "right"
+    },
+    {
+      "id": "e5.join-6.in",
+      "source": "5",
+      "sourceHandle": "join",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e7.out-8.in",
+      "source": "7",
+      "sourceHandle": "out",
+      "target": "8",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e8.out-9.in",
+      "source": "8",
+      "sourceHandle": "out",
+      "target": "9",
+      "targetHandle": "in"
+    }
+  ]
+}

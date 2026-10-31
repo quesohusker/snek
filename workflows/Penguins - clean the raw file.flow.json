@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "name": "Penguins - clean the raw file",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Raw field data",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/penguins/penguins_raw.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "select",
+      "label": "Rename and type",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "fields": [
+          {
+            "name": "Species",
+            "keep": true,
+            "rename": "species",
+            "dtype": ""
+          },
+          {
+            "name": "Island",
+            "keep": true,
+            "rename": "island",
+            "dtype": ""
+          },
+          {
+            "name": "Individual ID",
+            "keep": true,
+            "rename": "individual_id",
+            "dtype": ""
+          },
+          {
+            "name": "Date Egg",
+            "keep": true,
+            "rename": "date_egg",
+            "dtype": "datetime"
+          },
+          {
+            "name": "Culmen Length (mm)",
+            "keep": true,
+            "rename": "bill_length_mm",
+            "dtype": ""
+          },
+          {
+            "name": "Culmen Depth (mm)",
+            "keep": true,
+            "rename": "bill_depth_mm",
+            "dtype": ""
+          },
+          {
+            "name": "Flipper Length (mm)",
+            "keep": true,
+            "rename": "flipper_length_mm",
+            "dtype": ""
+          },
+          {
+            "name": "Body Mass (g)",
+            "keep": true,
+            "rename": "body_mass_g",
+            "dtype": ""
+          },
+          {
+            "name": "Sex",
+            "keep": true,
+            "rename": "sex",
+            "dtype": ""
+          }
+        ],
+        "keep_new": false
+      }
+    },
+    {
+      "id": "3",
+      "type": "cleanse",
+      "label": "Lowercase sex",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "columns": [
+          "sex"
+        ],
+        "trim": true,
+        "case": "lower"
+      }
+    },
+    {
+      "id": "4",
+      "type": "formula",
+      "label": "Short species, egg year",
+      "position": {
+        "x": 510,
+        "y": 0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "species",
+            "expression": "[species].str.split(' ').str[0]",
+            "dtype": ""
+          },
+          {
+            "column": "egg_year",
+            "expression": "[date_egg].dt.year",
+            "dtype": "Int64"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "type": "filter",
+      "label": "Known sex",
+      "position": {
+        "x": 680,
+        "y": 0
+      },
+      "config": {
+        "mode": "basic",
+        "column": "sex",
+        "operator": "in",
+        "value": "male, female"
+      }
+    },
+    {
+      "id": "6",
+      "type": "summarize",
+      "label": "",
+      "position": {
+        "x": 850,
+        "y": 0
+      },
+      "config": {
+        "group_by": [
+          "species",
+          "egg_year"
+        ],
+        "aggs": [
+          {
+            "column": "individual_id",
+            "func": "nunique",
+            "name": "birds"
+          },
+          {
+            "column": "body_mass_g",
+            "func": "mean",
+            "name": "avg_mass_g"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1020,
+        "y": 0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.true-6.in",
+      "source": "5",
+      "sourceHandle": "true",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    }
+  ]
+}

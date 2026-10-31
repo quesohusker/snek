@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "name": "Demo - no files needed",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "text_input",
+      "label": "Scores",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "data": "team,opp,pts,opp_pts\nNebraska,Iowa,24,20\nIowa,Nebraska,20,24\nNebraska,Akron,68,0\nAkron,Nebraska,0,68\nIowa,Akron,31,7\nAkron,Iowa,7,31",
+        "delimiter": ","
+      }
+    },
+    {
+      "id": "2",
+      "type": "formula",
+      "label": "Win flag",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "win",
+            "expression": "iif([pts] > [opp_pts], 1, 0)",
+            "dtype": "Int64"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "type": "summarize",
+      "label": "Record",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "group_by": [
+          "team"
+        ],
+        "aggs": [
+          {
+            "column": "win",
+            "func": "sum",
+            "name": "wins"
+          },
+          {
+            "column": "pts",
+            "func": "mean",
+            "name": "ppg"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "type": "sort",
+      "label": "",
+      "position": {
+        "x": 510,
+        "y": 0
+      },
+      "config": {
+        "keys": [
+          {
+            "column": "wins",
+            "order": "desc"
+          }
+        ],
+        "nulls": "last"
+      }
+    },
+    {
+      "id": "5",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 680,
+        "y": 0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    }
+  ]
+}

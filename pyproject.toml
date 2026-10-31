@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "snek"
+version = "0.1.0"
+description = "A visual workflow canvas that builds and runs pandas pipelines and exports them as Python"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pandas>=3",
+    "numpy",
+    "openpyxl",
+    "pyarrow",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx"]
+
+[project.scripts]
+snek = "snek.__main__:main"
+
+[tool.setuptools]
+packages = ["snek", "snek.tools"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

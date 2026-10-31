@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "name": "Penguins - body mass by species",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Penguins",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/penguins/penguins.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "filter",
+      "label": "Sex recorded",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "mode": "basic",
+        "column": "sex",
+        "operator": "notna"
+      }
+    },
+    {
+      "id": "3",
+      "type": "summarize",
+      "label": "",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "group_by": [
+          "species",
+          "sex"
+        ],
+        "aggs": [
+          {
+            "column": "species",
+            "func": "size",
+            "name": "birds"
+          },
+          {
+            "column": "body_mass_g",
+            "func": "mean",
+            "name": "avg_mass_g"
+          },
+          {
+            "column": "flipper_length_mm",
+            "func": "mean",
+            "name": "avg_flipper_mm"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "type": "formula",
+      "label": "Round",
+      "position": {
+        "x": 510,
+        "y": 0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "avg_mass_g",
+            "expression": "[avg_mass_g].round(0)",
+            "dtype": ""
+          },
+          {
+            "column": "avg_flipper_mm",
+            "expression": "[avg_flipper_mm].round(1)",
+            "dtype": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "type": "sort",
+      "label": "",
+      "position": {
+        "x": 680,
+        "y": 0
+      },
+      "config": {
+        "keys": [
+          {
+            "column": "species",
+            "order": "asc"
+          },
+          {
+            "column": "avg_mass_g",
+            "order": "desc"
+          }
+        ],
+        "nulls": "last"
+      }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 850,
+        "y": 0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.true-3.in",
+      "source": "2",
+      "sourceHandle": "true",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    }
+  ]
+}
