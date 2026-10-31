@@ -40,6 +40,16 @@
       }
     },
     {
+      "id": "3",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
       "id": "4",
       "type": "shooting",
       "label": "Team shooting",
@@ -58,6 +68,16 @@
         "fg3m": "fg3m",
         "fg3a": "fg3a"
       }
+    },
+    {
+      "id": "5",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 600,
+        "y": 120
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -69,10 +89,24 @@
       "targetHandle": "in"
     },
     {
+      "id": "e2.teams-3.in",
+      "source": "2",
+      "sourceHandle": "teams",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
       "id": "e1.out-4.in",
       "source": "1",
       "sourceHandle": "out",
       "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
       "targetHandle": "in"
     }
   ]

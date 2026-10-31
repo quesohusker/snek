@@ -5,7 +5,7 @@ from snek.tools.base import Port, Tool, ToolError, fld, lit, opts, register, sho
 class Join(Tool):
     type = "join"
     label = "Match Tables"
-    category = "Combine"
+    category = "SQL"
     description = "Match two tables on key columns. Outputs: rows only in the left table, matched rows, and rows only in the right table."
     needs = "Two tables (L and R) that share one or more key columns."
     inputs = [Port("left", "left"), Port("right", "right")]
@@ -40,7 +40,7 @@ class Join(Tool):
 class Union(Tool):
     type = "union"
     label = "Stack Tables"
-    category = "Combine"
+    category = "SQL"
     description = "Stack any number of inputs. Connect them in the order you want."
     needs = "Two or more tables. Columns are matched by name."
     inputs = [Port("in", "", multi=True)]
@@ -66,7 +66,7 @@ class Union(Tool):
 class AppendFields(Tool):
     type = "append"
     label = "Every Combination"
-    category = "Combine"
+    category = "SQL"
     description = "Cross join: add every source row to every target row."
     needs = "A target table and a source table, usually a small one."
     inputs = [Port("target", "target"), Port("source", "source")]
@@ -80,7 +80,7 @@ class AppendFields(Tool):
 class FindReplace(Tool):
     type = "find_replace"
     label = "Look Up Values"
-    category = "Combine"
+    category = "SQL"
     description = "Look values up in a second table. Replace them, or add columns from the lookup table. Inputs: the data, and the lookup table."
     needs = "data: the table to change. lookup: a table with a key column and the values to swap in or add."
     inputs = [Port("find", "data"), Port("lookup", "lookup")]
@@ -136,7 +136,7 @@ class FindReplace(Tool):
 class JoinMultiple(Tool):
     type = "join_multiple"
     label = "Match Many Tables"
-    category = "Combine"
+    category = "SQL"
     description = "Join three or more inputs on columns they share. Connect them in the order you want."
     needs = "Three or more tables that share the key columns."
     inputs = [Port("in", "", multi=True)]

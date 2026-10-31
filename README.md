@@ -41,7 +41,7 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-95 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
+96 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Steps |
 |---|---|
@@ -49,9 +49,9 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 | Rows | Keep Rows, Sort Rows, Take Rows, Rows by Position, Find Duplicates, Number Rows, Rank Rows, Bucket Values |
 | Columns | Choose Columns, Calculate, Calculate Many Columns, Use Previous Rows, Cumulative Total, Rename Many Columns, Choose Columns by Rule, Column List |
 | Clean | Tidy Up, Detect Types, Fill Blanks, Replace Text, Split Text, Text Pattern, Dates and Times, Read JSON Text, One Row per Item, Spread Out Fields |
-| Combine | Match Tables, Match Many Tables, Stack Tables, Every Combination, Look Up Values |
+| SQL | Match Tables, Match Many Tables, Stack Tables, Every Combination, Look Up Values |
 | Group & Pivot | Group and Total, Pivot Wider, Pivot Longer, Weighted Average, Count Rows |
-| Explore | Profile Columns, Count Values, Correlation, Cross Count, Compare Averages, Test Independence, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
+| Explore | Inspect, Profile Columns, Count Values, Correlation, Cross Count, Compare Averages, Test Independence, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
 | Model | Linear and Logistic Regression, Ridge and Lasso, Count and Gamma Regression, Decision Tree, Random Forest, Gradient Boosting, Naive Bayes, Nearest-Neighbor Model, Support Vector Machine, Neural Network, Predict, Compare Models, Cross-Validation, Train and Test Split, Check Overlap (VIF) |
 | Segment | K-Means Groups, Choose Number of Groups, Hierarchical Groups, Principal Components, Most Similar Rows |
 | Forecast | Fill Missing Dates, Rolling Window, Smoothing Forecast, ARIMA Forecast, Trend and Season, Check Forecast |

@@ -9,16 +9,14 @@ DEMO = "examples/data/demo_sports"
 
 
 def build(name, nodes, edges):
-    dropped = {str(i) for i, t, *_ in nodes if t == "browse"}
     wf = {
         "format": "snek",
         "version": 2,
         "name": name,
-        "nodes": [{"id": str(i), "type": t, "label": label, "position": {"x": x * 300, "y": y * 120}, "config": cfg} for i, t, label, x, y, cfg in nodes if str(i) not in dropped],
+        "nodes": [{"id": str(i), "type": t, "label": label, "position": {"x": x * 300, "y": y * 120}, "config": cfg} for i, t, label, x, y, cfg in nodes],
         "edges": [
             {"id": f"e{s}.{sh}-{t}.{th}", "source": str(s), "sourceHandle": sh, "target": str(t), "targetHandle": th}
             for s, sh, t, th in edges
-            if str(t) not in dropped
         ],
     }
     path = ROOT / "workflows" / f"{name}.snek"

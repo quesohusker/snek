@@ -41,6 +41,16 @@
       }
     },
     {
+      "id": "3",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
       "id": "4",
       "type": "input",
       "label": "Rally by rally",
@@ -65,6 +75,16 @@
         "winner": "winner",
         "receiving": "recv_team"
       }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 600,
+        "y": 120
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -76,10 +96,24 @@
       "targetHandle": "in"
     },
     {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
       "id": "e4.out-5.in",
       "source": "4",
       "sourceHandle": "out",
       "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
       "targetHandle": "in"
     }
   ]

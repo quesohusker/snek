@@ -162,6 +162,16 @@
         "tiles": 4,
         "name": "quartile"
       }
+    },
+    {
+      "id": "11",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1200,
+        "y": 168.0
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -226,6 +236,13 @@
       "source": "9",
       "sourceHandle": "out",
       "target": "10",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e10.out-11.in",
+      "source": "10",
+      "sourceHandle": "out",
+      "target": "11",
       "targetHandle": "in"
     }
   ]

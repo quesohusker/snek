@@ -67,6 +67,16 @@
         ],
         "suffix": "_elo"
       }
+    },
+    {
+      "id": "5",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 900,
+        "y": 84.0
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -97,6 +107,13 @@
       "sourceHandle": "ratings",
       "target": "4",
       "targetHandle": "right"
+    },
+    {
+      "id": "e4.join-5.in",
+      "source": "4",
+      "sourceHandle": "join",
+      "target": "5",
+      "targetHandle": "in"
     }
   ]
 }

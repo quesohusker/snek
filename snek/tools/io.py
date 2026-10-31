@@ -103,10 +103,9 @@ class OutputData(Tool):
 @register
 class Browse(Tool):
     type = "browse"
-    label = "Preview"
-    hidden = True
-    category = "Open & Save"
-    description = "Show the data at this point. Every step already shows its output, so this is only kept for older workflows."
+    label = "Inspect"
+    category = "Explore"
+    description = "Look closely at the data at this point in the flow: every row and column, with column profiles. Click any step to see its output too."
     needs = "Any table."
     outputs = []
     fields = []

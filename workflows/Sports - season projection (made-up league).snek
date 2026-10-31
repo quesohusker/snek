@@ -50,6 +50,16 @@
       }
     },
     {
+      "id": "4",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 900,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
       "id": "5",
       "type": "spread_win_prob",
       "label": "Spreads vs lines",
@@ -68,6 +78,16 @@
       }
     },
     {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 900,
+        "y": 120
+      },
+      "config": {}
+    },
+    {
       "id": "7",
       "type": "pythagorean",
       "label": "Luck",
@@ -81,6 +101,16 @@
         "home_points": "home_points",
         "away_points": "away_points"
       }
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 600,
+        "y": 240
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -106,6 +136,13 @@
       "targetHandle": "games"
     },
     {
+      "id": "e3.teams-4.in",
+      "source": "3",
+      "sourceHandle": "teams",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
       "id": "e2.ratings-5.ratings",
       "source": "2",
       "sourceHandle": "ratings",
@@ -120,10 +157,24 @@
       "targetHandle": "games"
     },
     {
+      "id": "e5.games-6.in",
+      "source": "5",
+      "sourceHandle": "games",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
       "id": "e1.out-7.in",
       "source": "1",
       "sourceHandle": "out",
       "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e7.teams-8.in",
+      "source": "7",
+      "sourceHandle": "teams",
+      "target": "8",
       "targetHandle": "in"
     }
   ]

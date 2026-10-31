@@ -137,6 +137,16 @@
         ],
         "nulls": "last"
       }
+    },
+    {
+      "id": "7",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1500,
+        "y": 72.0
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -173,6 +183,13 @@
       "source": "5",
       "sourceHandle": "out",
       "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
       "targetHandle": "in"
     }
   ]

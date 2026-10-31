@@ -195,7 +195,7 @@ export const CATEGORY_COLORS: Record<string, string> = {
   Rows: "var(--cat-prep)",
   Columns: "var(--cat-parse)",
   Clean: "var(--cat-transform)",
-  Combine: "var(--cat-join)",
+  SQL: "var(--cat-join)",
   "Group & Pivot": "var(--cat-investigate)",
   Explore: "var(--cat-grouping)",
   Model: "var(--cat-model)",

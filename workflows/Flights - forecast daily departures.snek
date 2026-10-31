@@ -101,6 +101,26 @@
         "seasonal": true,
         "season_length": 7
       }
+    },
+    {
+      "id": "7",
+      "type": "browse",
+      "label": "ETS forecast",
+      "position": {
+        "x": 1500,
+        "y": -84.0
+      },
+      "config": {}
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "ARIMA forecast",
+      "position": {
+        "x": 1500,
+        "y": 84.0
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -137,6 +157,20 @@
       "source": "4",
       "sourceHandle": "out",
       "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.forecast-7.in",
+      "source": "5",
+      "sourceHandle": "forecast",
+      "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.forecast-8.in",
+      "source": "6",
+      "sourceHandle": "forecast",
+      "target": "8",
       "targetHandle": "in"
     }
   ]

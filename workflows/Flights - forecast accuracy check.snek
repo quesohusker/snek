@@ -112,6 +112,16 @@
         "freq": "D",
         "period": 7
       }
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1800,
+        "y": 84.0
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -156,6 +166,13 @@
       "sourceHandle": "false",
       "target": "6",
       "targetHandle": "actual"
+    },
+    {
+      "id": "e6.metrics-8.in",
+      "source": "6",
+      "sourceHandle": "metrics",
+      "target": "8",
+      "targetHandle": "in"
     },
     {
       "id": "e3.out-7.in",

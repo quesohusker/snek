@@ -119,6 +119,16 @@
       "config": {
         "folds": 5
       }
+    },
+    {
+      "id": "8",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 900,
+        "y": 180.0
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -198,6 +208,13 @@
       "sourceHandle": "out",
       "target": "7",
       "targetHandle": "data"
+    },
+    {
+      "id": "e7.summary-8.in",
+      "source": "7",
+      "sourceHandle": "summary",
+      "target": "8",
+      "targetHandle": "in"
     }
   ]
 }

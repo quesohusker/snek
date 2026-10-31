@@ -61,6 +61,16 @@
       }
     },
     {
+      "id": "5",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1200,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
       "id": "6",
       "type": "summarize",
       "label": "EPA per game",
@@ -125,6 +135,16 @@
         "weight": "plays",
         "alpha": 1
       }
+    },
+    {
+      "id": "9",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1800,
+        "y": 120
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -150,6 +170,13 @@
       "targetHandle": "in"
     },
     {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
       "id": "e3.out-6.in",
       "source": "3",
       "sourceHandle": "out",
@@ -168,6 +195,13 @@
       "source": "7",
       "sourceHandle": "out",
       "target": "8",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e8.adjusted-9.in",
+      "source": "8",
+      "sourceHandle": "adjusted",
+      "target": "9",
       "targetHandle": "in"
     }
   ]

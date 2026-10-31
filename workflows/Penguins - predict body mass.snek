@@ -58,6 +58,16 @@
           "bill_depth_mm"
         ]
       }
+    },
+    {
+      "id": "5",
+      "type": "browse",
+      "label": "Coefficients",
+      "position": {
+        "x": 900,
+        "y": 84.0
+      },
+      "config": {}
     }
   ],
   "edges": [
@@ -80,6 +90,13 @@
       "source": "1",
       "sourceHandle": "out",
       "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.coef-5.in",
+      "source": "4",
+      "sourceHandle": "coef",
+      "target": "5",
       "targetHandle": "in"
     }
   ]
