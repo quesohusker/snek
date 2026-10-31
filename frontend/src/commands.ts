@@ -60,6 +60,19 @@ export async function quitSnek() {
   useFlow.setState({ stopped: true });
 }
 
+export const REPO = "https://github.com/quesohusker/snek";
+
+export async function checkForUpdates() {
+  const s = useFlow.getState();
+  s.setDialog("about");
+  s.setUpdate(await api.update(true));
+}
+
+export async function toggleUpdateChecks() {
+  const current = useFlow.getState().update?.enabled ?? true;
+  useFlow.getState().setUpdate(await api.updateSettings(!current));
+}
+
 export function revealProject() {
   const project = useFlow.getState().project;
   if (project) api.reveal(project.path);
@@ -83,6 +96,7 @@ export function useMenus(): Menu[] {
   const setDialog = useFlow((s) => s.setDialog);
   const selectAll = useFlow((s) => s.selectAll);
   const deleteSelected = useFlow((s) => s.deleteSelected);
+  const update = useFlow((s) => s.update);
 
   return useMemo<Menu[]>(
     () => [
@@ -131,7 +145,18 @@ export function useMenus(): Menu[] {
           { label: "Zoom out", onSelect: () => zoomOut({ duration: 150 }) },
         ],
       },
+      {
+        label: "Help",
+        items: [
+          { label: "Check for updates…", onSelect: checkForUpdates },
+          { label: `${update?.enabled === false ? "" : "✓ "}Check for updates automatically`, onSelect: toggleUpdateChecks },
+          { type: "separator" },
+          { label: "Snek on GitHub", onSelect: () => window.open(REPO, "_blank") },
+          { label: "Report a problem", onSelect: () => window.open(`${REPO}/issues/new`, "_blank") },
+          { label: "About Snek", onSelect: () => setDialog("about") },
+        ],
+      },
     ],
-    [count, running, recent, project, hasSelection, setDialog, selectAll, deleteSelected, fitView, zoomIn, zoomOut],
+    [count, running, recent, project, update, hasSelection, setDialog, selectAll, deleteSelected, fitView, zoomIn, zoomOut],
   );
 }

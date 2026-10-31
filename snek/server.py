@@ -19,6 +19,7 @@ from snek.paths import DIST
 from snek.preview import preview
 from snek.projects import Projects
 from snek.runtime import output_path
+from snek import updates
 from snek.tools import CATEGORY_ORDER, TOOLS
 
 NAME_RE = re.compile(r"^[\w\- .]{1,80}$")
@@ -125,6 +126,16 @@ def preview_node(
 def export(workflow: dict = Body(...), name: str = Body("workflow")):
     ev = engine.evaluate(workflow, run_side_effects=False)
     return {"code": export_script(ev, name)}
+
+
+@app.get("/api/update")
+def update_check(force: bool = False):
+    return updates.check(force=force)
+
+
+@app.post("/api/update/settings")
+def update_settings(enabled: bool = Body(..., embed=True)):
+    return updates.set_enabled(enabled)
 
 
 @app.post("/api/shutdown")

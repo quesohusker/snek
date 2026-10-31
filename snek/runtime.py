@@ -137,12 +137,115 @@ def iif(cond, then, otherwise):
     return then.where(cond, otherwise)
 
 
+def auto_type(df, columns=None):
+    bool_words = {"true": True, "false": False, "yes": True, "no": False, "t": True, "f": False, "y": True, "n": False}
+    date_like = r"^\s*(\d{4}-\d{1,2}-\d{1,2}|\d{1,2}/\d{1,2}/\d{2,4})"
+    out = df.copy()
+    for col in list(df.columns) if columns is None else columns:
+        s = out[col]
+        if not (pd.api.types.is_string_dtype(s) or s.dtype == object):
+            continue
+        values = s.dropna()
+        if not all(isinstance(v, str) for v in values):
+            continue
+        text = values.str.strip()
+        text = text[text != ""]
+        if text.empty:
+            continue
+        clean = s.where(s.isna(), s.astype("string").str.strip()).replace("", None)
+        nums = pd.to_numeric(text, errors="coerce")
+        if nums.notna().all() and not text.str.match(r"^0\d{3,}").any():
+            converted = pd.to_numeric(clean, errors="coerce")
+            out[col] = converted.astype("Int64") if (nums % 1 == 0).all() else converted.astype("float64")
+        elif text.str.lower().isin(bool_words).all():
+            out[col] = clean.str.lower().map(bool_words).astype("boolean")
+        elif text.str.match(date_like).all() and pd.to_datetime(text, errors="coerce", format="mixed").notna().all():
+            out[col] = pd.to_datetime(clean, errors="coerce", format="mixed")
+    return out
+
+
+def list_files(folder, pattern="*", recursive=False):
+    root = os.path.abspath(os.path.expanduser(folder))
+    found = glob.glob(os.path.join(root, "**", pattern), recursive=True) if recursive else glob.glob(os.path.join(root, pattern))
+    rows = []
+    for path in sorted(found):
+        if os.path.isfile(path):
+            st = os.stat(path)
+            rows.append({
+                "path": path,
+                "name": os.path.basename(path),
+                "folder": os.path.dirname(path),
+                "extension": os.path.splitext(path)[1].lower(),
+                "size_bytes": st.st_size,
+                "modified": pd.Timestamp.fromtimestamp(st.st_mtime).floor("s"),
+            })
+    return pd.DataFrame(rows, columns=["path", "name", "folder", "extension", "size_bytes", "modified"])
+
+
+def read_many(paths, filename_col=None, **options):
+    frames = []
+    for path in paths:
+        df = read_any(path, **options)
+        if filename_col:
+            df.insert(0, filename_col, os.path.basename(path))
+        frames.append(df)
+    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+
+
+def weighted_average(df, value, weight, group_by=(), name="WeightedAverage"):
+    group_by = list(group_by)
+    valid = df[value].notna() & df[weight].notna()
+    work = df.loc[valid, group_by].assign(_vw=df.loc[valid, value] * df.loc[valid, weight], _w=df.loc[valid, weight])
+    if group_by:
+        out = work.groupby(group_by, dropna=False)[["_vw", "_w"]].sum().reset_index()
+    else:
+        out = pd.DataFrame({"_vw": [work["_vw"].sum()], "_w": [work["_w"].sum()]})
+    out[name] = out["_vw"] / out["_w"]
+    return out.drop(columns=["_vw", "_w"])
+
+
+def select_rows(df, spec):
+    keep = []
+    n = len(df)
+    for token in str(spec).replace("\n", ",").split(","):
+        t = token.strip()
+        if not t:
+            continue
+        if t.endswith("+"):
+            keep.extend(range(int(t[:-1]) - 1, n))
+        elif t.startswith("-"):
+            keep.extend(range(0, int(t[1:])))
+        elif "-" in t:
+            a, b = t.split("-", 1)
+            keep.extend(range(int(a) - 1, int(b)))
+        else:
+            keep.append(int(t) - 1)
+    return df.iloc[sorted({i for i in keep if 0 <= i < n})].reset_index(drop=True)
+
+
+def parse_json(value, strict=False):
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        return json.loads(value)
+    except ValueError:
+        if strict:
+            raise
+        return None
+
+
 HELPERS = {
-    "read_any": [match_files, read_any],
-    "write_any": [output_path, nested_to_json, write_any],
-    "join_lrj": [join_lrj],
-    "unnest": [unnest],
-    "iif": [iif],
+    "read_any": ([match_files, read_any], ["glob", "json", "os"], ["FORMATS"]),
+    "write_any": ([output_path, nested_to_json, write_any], ["json", "os"], ["FORMATS", "EXTENSIONS"]),
+    "join_lrj": ([join_lrj], [], []),
+    "unnest": ([unnest], [], []),
+    "iif": ([iif], [], []),
+    "auto_type": ([auto_type], [], []),
+    "list_files": ([list_files], ["glob", "os"], []),
+    "read_many": ([match_files, read_any, read_many], ["glob", "json", "os"], ["FORMATS"]),
+    "weighted_average": ([weighted_average], [], []),
+    "select_rows": ([select_rows], [], []),
+    "parse_json": ([parse_json], ["json"], []),
 }
 
 NAMESPACE = {
@@ -159,4 +262,10 @@ NAMESPACE = {
     "join_lrj": join_lrj,
     "unnest": unnest,
     "iif": iif,
+    "auto_type": auto_type,
+    "list_files": list_files,
+    "read_many": read_many,
+    "weighted_average": weighted_average,
+    "select_rows": select_rows,
+    "parse_json": parse_json,
 }

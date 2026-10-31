@@ -69,6 +69,8 @@ function Widget(props: Props) {
       return <ColumnSelect value={value ?? ""} onChange={onChange} columns={ctx.columns(field.port)} />;
     case "columns":
       return <ColumnsMulti value={value ?? []} onChange={onChange} columns={ctx.columns(field.port)} />;
+    case "multi_select":
+      return <OptionChecks value={value ?? []} onChange={onChange} options={field.options ?? []} />;
     case "list":
       return <ListField {...props} />;
     case "select_fields":
@@ -234,6 +236,24 @@ function ColumnsMulti({ value, onChange, columns }: { value: string[]; onChange:
         ))}
         {columns.length === 0 && <div className="muted">Connect and configure the input first.</div>}
       </div>
+    </div>
+  );
+}
+
+function OptionChecks({ value, onChange, options }: { value: string[]; onChange: (v: string[]) => void; options: { value: string; label: string }[] }) {
+  const chosen = new Set(value);
+  return (
+    <div className="option-checks">
+      {options.map((o) => (
+        <label key={o.value}>
+          <input
+            type="checkbox"
+            checked={chosen.has(o.value)}
+            onChange={() => onChange(options.map((x) => x.value).filter((v) => (v === o.value ? !chosen.has(v) : chosen.has(v))))}
+          />
+          {o.label}
+        </label>
+      ))}
     </div>
   );
 }

@@ -4,7 +4,7 @@
 
 A visual workflow canvas for pandas. Drag tools onto a canvas, wire them together, and watch the data change at every step. When you are done, export the whole workflow as a plain Python script.
 
-Snek runs on your own machine. A small Python server does the work, and your browser shows the canvas at http://127.0.0.1:8765. Nothing leaves your computer.
+Snek runs on your own machine. A small Python server does the work, and your browser shows the canvas at http://127.0.0.1:8765. Your data never leaves your computer. The only network call is a once-a-day check for new versions, which you can turn off (see [Updates](#updates)).
 
 ## Download
 
@@ -57,16 +57,18 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 
 ## Tools
 
+45 tools so far, modeled on the core Alteryx palettes:
+
 | Category | Tools |
 |---|---|
-| In/Out | Input Data, Text Input, Output Data, Browse |
-| Preparation | Select, Filter, Formula, Sort, Sample, Unique, Record ID, Data Cleansing, Find Replace |
-| Join | Join (L/J/R outputs), Union, Append Fields |
-| Parse | Text to Columns, Explode List, Unnest JSON |
-| Transform | Summarize, Cross Tab, Transpose |
-| Developer | Python (your own pandas code) |
+| In/Out | Input Data, Text Input, Output Data, Browse, Directory, Date Time Now |
+| Preparation | Select, Filter, Formula, Multi-Field Formula, Multi-Row Formula, Sort, Sample, Select Records, Unique, Record ID, Rank, Tile, Auto Field, Data Cleansing, Imputation, Replace Text, Generate Rows |
+| Join | Join (L/J/R outputs), Join Multiple, Union, Append Fields, Find Replace (lookup table) |
+| Parse | Text to Columns, RegEx, DateTime, JSON Parse, Explode List, Unnest JSON |
+| Transform | Summarize, Cross Tab, Transpose, Running Total, Weighted Average, Count Records |
+| Developer | Python (your own pandas code), Dynamic Input, Dynamic Rename, Dynamic Select, Field Info |
 
-Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`.
+Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. Directory plus Dynamic Input reads every file in a folder.
 
 ## Expressions
 
@@ -79,6 +81,8 @@ iif([dep_delay] > 15, 'late', 'on time')
 ```
 
 You can use `pd`, `np` and `iif(condition, then, else)`. Snek suggests a fix when a column name is misspelled.
+
+Multi-Row Formula reaches into other rows with `[Row-1:column]` and `[Row+1:column]`, for example `[pts] - [Row-1:pts]` for the change since the last game. Multi-Field Formula applies one expression to many columns, with `[_CurrentField_]` standing for each column in turn.
 
 ## Sample workflows
 
@@ -131,6 +135,10 @@ The file picker lists the project folders, Desktop, Documents, Downloads, Home a
 ```bash
 SNEK_PLACES="Data=~/data;Clients=~/work/clients" .venv/bin/python -m snek
 ```
+
+## Updates
+
+Once a day, Snek asks GitHub's public releases page whether a newer version exists. If one does, a link appears in the toolbar. The check sends nothing about you or your data, and Snek never downloads or installs anything on its own. Turn it off with Help ▸ Check for updates automatically, or check on demand with Help ▸ Check for updates.
 
 ## Caveats
 

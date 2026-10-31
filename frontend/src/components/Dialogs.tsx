@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Copy, Download } from "lucide-react";
 import { useFlow } from "../store";
 import { api } from "../api";
-import { openWorkflow, switchProject } from "../commands";
+import { REPO, openWorkflow, switchProject } from "../commands";
 import Modal from "./Modal";
 import FilePicker from "./FilePicker";
 import { joinPath } from "../paths";
@@ -16,7 +16,41 @@ export default function Dialogs() {
   if (dialog === "export") return <ExportDialog onClose={close} />;
   if (dialog === "newProject") return <NewProjectDialog onClose={close} />;
   if (dialog === "openProject") return <OpenProjectDialog onClose={close} />;
+  if (dialog === "about") return <AboutDialog onClose={close} />;
   return null;
+}
+
+function AboutDialog({ onClose }: { onClose: () => void }) {
+  const update = useFlow((s) => s.update);
+  return (
+    <Modal title="About Snek" onClose={onClose}>
+      <p>
+        <strong>Snek {update?.current ?? ""}</strong>: a visual workflow canvas for pandas. MIT license.
+      </p>
+      {!update ? (
+        <p className="muted">Checking for updates…</p>
+      ) : update.error ? (
+        <div className="warn-box">{update.error}</div>
+      ) : update.update ? (
+        <p>
+          Snek {update.latest?.replace(/^v/, "")} is available.{" "}
+          <a href={update.url ?? `${REPO}/releases/latest`} target="_blank" rel="noreferrer">
+            Download it
+          </a>
+        </p>
+      ) : update.latest ? (
+        <p className="muted">You have the latest version.</p>
+      ) : null}
+      <p className="muted">
+        Update checks ask GitHub once a day whether a newer release exists. They send nothing about you or your data. Turn them off in Help ▸ Check for updates automatically.
+      </p>
+      <p>
+        <a href={REPO} target="_blank" rel="noreferrer">
+          {REPO.replace("https://", "")}
+        </a>
+      </p>
+    </Modal>
+  );
 }
 
 function OpenProjectDialog({ onClose }: { onClose: () => void }) {

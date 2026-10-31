@@ -111,3 +111,12 @@ export type ProjectInfo = {
   examples: string;
   places: Place[];
 };
+
+export type UpdateInfo = {
+  current: string;
+  latest: string | null;
+  url: string | null;
+  enabled: boolean;
+  update: boolean;
+  error: string;
+};

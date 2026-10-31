@@ -71,3 +71,86 @@ class AppendFields(Tool):
 
     def code(self, cfg, ctx):
         return f"{ctx.out()} = {ctx.var('target')}.merge({ctx.var('source')}, how='cross', suffixes=('', {lit(cfg['suffix'] or '_source')}))"
+
+
+@register
+class FindReplace(Tool):
+    type = "find_replace"
+    label = "Find Replace"
+    category = "Join"
+    description = "Look values up in a second table. Replace them, or add columns from the lookup table. F = data, R = lookup table."
+    inputs = [Port("find", "F"), Port("lookup", "R")]
+    fields = [
+        fld("column", "Column to look up", "column", "", port="find"),
+        fld("key", "Match it to (lookup column)", "column", "", port="lookup"),
+        fld("mode", "Then", "select", "replace", options=opts(("replace", "Replace the value"), ("append", "Add columns from the lookup"))),
+        fld("value", "Replace with (lookup column)", "column", "", port="lookup", show_if={"mode": ["replace"]}),
+        fld("append", "Columns to add", "columns", [], port="lookup", show_if={"mode": ["append"]}),
+        fld("case", "Case sensitive", "bool", True),
+    ]
+
+    def code(self, cfg, ctx):
+        data = ctx.var("find")
+        lookup = ctx.var("lookup")
+        out = ctx.out()
+        col, key = cfg["column"], cfg["key"]
+        ctx.require(col, "Pick the column to look up")
+        ctx.require(key, "Pick the lookup column to match")
+        ctx.require_columns([col], "find")
+        ctx.require_columns([key], "lookup")
+        fold = "" if cfg["case"] else ".astype('string').str.lower()"
+        if cfg["mode"] == "replace":
+            value = cfg["value"]
+            ctx.require(value, "Pick the replacement column")
+            ctx.require_columns([value], "lookup")
+            table = ctx.tmp("lookup")
+            return "\n".join([
+                f"{table} = {lookup}.dropna(subset=[{key!r}]).drop_duplicates({key!r})",
+                f"{table} = dict(zip({table}[{key!r}]{fold}, {table}[{value!r}]))",
+                f"{out} = {data}.copy()",
+                f"{out}[{col!r}] = {out}[{col!r}]{fold}.map({table}).fillna({out}[{col!r}])",
+            ])
+        cols = [c for c in cfg["append"] or [] if c != key]
+        ctx.require(cols, "Pick the columns to add")
+        ctx.require_columns(cols, "lookup")
+        if cfg["case"]:
+            right = f"{lookup}[{lit([key] + cols)}].drop_duplicates({key!r})"
+            lines = [f"{out} = {data}.merge({right}, left_on={col!r}, right_on={key!r}, how='left', suffixes=('', '_lookup'))"]
+            if key != col:
+                lines.append(f"{out} = {out}.drop(columns=[{key!r}])")
+            return "\n".join(lines)
+        right = f"{lookup}.assign(_key={lookup}[{key!r}]{fold})[['_key'] + {lit(cols)}].drop_duplicates('_key')"
+        return f"{out} = {data}.assign(_key={data}[{col!r}]{fold}).merge({right}, on='_key', how='left', suffixes=('', '_lookup')).drop(columns=['_key'])"
+
+    def summary(self, cfg):
+        if not cfg["column"]:
+            return ""
+        return short(f"{cfg['column']} → {cfg['value'] if cfg['mode'] == 'replace' else '+' + str(len(cfg['append'] or []))}")
+
+
+@register
+class JoinMultiple(Tool):
+    type = "join_multiple"
+    label = "Join Multiple"
+    category = "Join"
+    description = "Join three or more inputs on columns they share. Connect them in the order you want."
+    inputs = [Port("in", "", multi=True)]
+    fields = [
+        fld("keys", "Join on", "columns", []),
+        fld("how", "Keep", "select", "inner", options=opts(("inner", "Rows found in every input"), ("outer", "All rows from every input"), ("left", "Every row of the first input"))),
+    ]
+
+    def code(self, cfg, ctx):
+        names = ctx.vars()
+        keys = cfg["keys"] or []
+        ctx.require(keys, "Pick the shared key columns")
+        ctx.require_columns(keys)
+        if len(names) < 2:
+            raise ToolError("Connect at least two inputs")
+        expr = names[0]
+        for i, n in enumerate(names[1:], start=2):
+            expr += f".merge({n}, on={lit(keys)}, how={cfg['how']!r}, suffixes=('', '_{i}'))"
+        return f"{ctx.out()} = {expr}"
+
+    def summary(self, cfg):
+        return short(", ".join(cfg["keys"] or []))

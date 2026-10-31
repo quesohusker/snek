@@ -144,6 +144,27 @@ def main():
     )
 
     build(
+        "Flights - daily delay trend",
+        [
+            (1, "input", "Q1 flights", 0, 0, {"path": f"{NYC}/flights_2013_*.csv.gz"}),
+            (2, "datetime", "Parse departure hour", 1, 0, {"mode": "parse", "column": "time_hour", "utc": True}),
+            (3, "formula", "New York time", 2, 0, {"formulas": [{"column": "time_hour", "expression": "[time_hour].dt.tz_convert('America/New_York')", "dtype": ""}]}),
+            (4, "datetime", "Day of flight", 3, 0, {"mode": "extract", "column": "time_hour", "part": "date", "name": "day"}),
+            (5, "summarize", "Per day", 4, 0, {"group_by": ["day"], "aggs": [
+                {"column": "carrier", "func": "size", "name": "flights"},
+                {"column": "dep_delay", "func": "mean", "name": "avg_delay"},
+            ]}),
+            (6, "sort", "", 5, 0, {"keys": [{"column": "day", "order": "asc"}], "nulls": "last"}),
+            (7, "multirow", "Change vs prior day", 0, 1.4, {"column": "delay_change", "expression": "[avg_delay] - [Row-1:avg_delay]"}),
+            (8, "running_total", "Flights to date", 1, 1.4, {"columns": ["flights"]}),
+            (9, "rank", "Worst days", 2, 1.4, {"column": "avg_delay", "order": "desc", "method": "min", "name": "delay_rank"}),
+            (10, "tile", "Delay quartile", 3, 1.4, {"column": "avg_delay", "mode": "count", "tiles": 4, "name": "quartile"}),
+            (11, "browse", "", 4, 1.4, {}),
+        ],
+        chain(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+    )
+
+    build(
         "Demo - no files needed",
         [
             (1, "text_input", "Scores", 0, 0, {"data": "team,opp,pts,opp_pts\nNebraska,Iowa,24,20\nIowa,Nebraska,20,24\nNebraska,Akron,68,0\nAkron,Nebraska,0,68\nIowa,Akron,31,7\nAkron,Iowa,7,31", "delimiter": ","}),

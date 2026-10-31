@@ -1,4 +1,4 @@
-import type { FsListing, NodeResult, PreviewData, ProjectInfo, ToolSpec, WorkflowFile } from "./types";
+import type { FsListing, NodeResult, PreviewData, ProjectInfo, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 async function call<T>(method: string, url: string, body?: unknown): Promise<T> {
   const res = await fetch(url, {
@@ -35,6 +35,8 @@ export const api = {
   loadWorkflow: (name: string) => call<WorkflowFile>("GET", `/api/workflows/${encodeURIComponent(name)}`),
   saveWorkflow: (name: string, workflow: WorkflowFile) => call<{ ok: boolean; path: string }>("PUT", `/api/workflows/${encodeURIComponent(name)}`, workflow),
   fs: (path: string) => call<FsListing>("GET", `/api/fs?path=${encodeURIComponent(path)}`),
+  update: (force = false) => call<UpdateInfo>("GET", `/api/update?force=${force}`),
+  updateSettings: (enabled: boolean) => call<UpdateInfo>("POST", "/api/update/settings", { enabled }),
   shutdown: () => call<{ ok: boolean }>("POST", "/api/shutdown"),
   clearCache: () => call<{ ok: boolean }>("POST", "/api/cache/clear"),
   resolve: (path: string, fmt: string) => call<{ path: string; exists: boolean; folder_exists: boolean }>("GET", `/api/resolve?path=${encodeURIComponent(path)}&fmt=${encodeURIComponent(fmt)}`),

@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "name": "Flights - daily delay trend",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Q1 flights",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/flights_2013_*.csv.gz"
+      }
+    },
+    {
+      "id": "2",
+      "type": "datetime",
+      "label": "Parse departure hour",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "mode": "parse",
+        "column": "time_hour",
+        "utc": true
+      }
+    },
+    {
+      "id": "3",
+      "type": "formula",
+      "label": "New York time",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "time_hour",
+            "expression": "[time_hour].dt.tz_convert('America/New_York')",
+            "dtype": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "type": "datetime",
+      "label": "Day of flight",
+      "position": {
+        "x": 510,
+        "y": 0
+      },
+      "config": {
+        "mode": "extract",
+        "column": "time_hour",
+        "part": "date",
+        "name": "day"
+      }
+    },
+    {
+      "id": "5",
+      "type": "summarize",
+      "label": "Per day",
+      "position": {
+        "x": 680,
+        "y": 0
+      },
+      "config": {
+        "group_by": [
+          "day"
+        ],
+        "aggs": [
+          {
+            "column": "carrier",
+            "func": "size",
+            "name": "flights"
+          },
+          {
+            "column": "dep_delay",
+            "func": "mean",
+            "name": "avg_delay"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6",
+      "type": "sort",
+      "label": "",
+      "position": {
+        "x": 850,
+        "y": 0
+      },
+      "config": {
+        "keys": [
+          {
+            "column": "day",
+            "order": "asc"
+          }
+        ],
+        "nulls": "last"
+      }
+    },
+    {
+      "id": "7",
+      "type": "multirow",
+      "label": "Change vs prior day",
+      "position": {
+        "x": 0,
+        "y": 182.0
+      },
+      "config": {
+        "column": "delay_change",
+        "expression": "[avg_delay] - [Row-1:avg_delay]"
+      }
+    },
+    {
+      "id": "8",
+      "type": "running_total",
+      "label": "Flights to date",
+      "position": {
+        "x": 170,
+        "y": 182.0
+      },
+      "config": {
+        "columns": [
+          "flights"
+        ]
+      }
+    },
+    {
+      "id": "9",
+      "type": "rank",
+      "label": "Worst days",
+      "position": {
+        "x": 340,
+        "y": 182.0
+      },
+      "config": {
+        "column": "avg_delay",
+        "order": "desc",
+        "method": "min",
+        "name": "delay_rank"
+      }
+    },
+    {
+      "id": "10",
+      "type": "tile",
+      "label": "Delay quartile",
+      "position": {
+        "x": 510,
+        "y": 182.0
+      },
+      "config": {
+        "column": "avg_delay",
+        "mode": "count",
+        "tiles": 4,
+        "name": "quartile"
+      }
+    },
+    {
+      "id": "11",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 680,
+        "y": 182.0
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e7.out-8.in",
+      "source": "7",
+      "sourceHandle": "out",
+      "target": "8",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e8.out-9.in",
+      "source": "8",
+      "sourceHandle": "out",
+      "target": "9",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e9.out-10.in",
+      "source": "9",
+      "sourceHandle": "out",
+      "target": "10",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e10.out-11.in",
+      "source": "10",
+      "sourceHandle": "out",
+      "target": "11",
+      "targetHandle": "in"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import os
 
-from snek.tools.base import Port, Tool, file_stamp, fld, lit, opts, register, short
+from snek.tools.base import Tool, file_stamp, fld, lit, opts, register, short
 
 READ_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"))
 WRITE_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"))
@@ -46,7 +46,7 @@ class InputData(Tool):
             args.append(f"filename_col={lit(cfg['filename_col'])}")
         return f"{ctx.out()} = read_any({', '.join(args)})"
 
-    def stamp(self, cfg):
+    def stamp(self, cfg, inputs=None):
         return file_stamp(cfg["path"]) if cfg["path"] else ""
 
     def summary(self, cfg):
@@ -109,3 +109,86 @@ class Browse(Tool):
     def code(self, cfg, ctx):
         ctx.var()
         return ""
+
+
+@register
+class Directory(Tool):
+    type = "directory"
+    label = "Directory"
+    category = "In/Out"
+    description = "List the files in a folder: path, name, extension, size and date. Feed it to Dynamic Input to read them all."
+    inputs = []
+    fields = [
+        fld("folder", "Folder", "file", "", help="A folder path, e.g. data or ~/Downloads"),
+        fld("pattern", "File pattern", "text", "*", help="e.g. *.csv or games_*.json"),
+        fld("recursive", "Include subfolders", "bool", False),
+    ]
+
+    def code(self, cfg, ctx):
+        ctx.require(cfg["folder"], "Pick a folder")
+        args = [lit(cfg["folder"]), lit(cfg["pattern"] or "*")]
+        if cfg["recursive"]:
+            args.append("recursive=True")
+        return f"{ctx.out()} = list_files({', '.join(args)})"
+
+    def stamp(self, cfg, inputs=None):
+        from snek.runtime import list_files
+
+        if not cfg["folder"]:
+            return ""
+        listing = list_files(cfg["folder"], cfg["pattern"] or "*", bool(cfg["recursive"]))
+        return "|".join(f"{p}:{s}:{m}" for p, s, m in zip(listing["path"], listing["size_bytes"], listing["modified"]))
+
+    def summary(self, cfg):
+        return short(f"{os.path.basename(str(cfg['folder']).rstrip('/')) or cfg['folder']}/{cfg['pattern']}") if cfg["folder"] else ""
+
+
+@register
+class DynamicInput(Tool):
+    type = "dynamic_input"
+    label = "Dynamic Input"
+    category = "Developer"
+    description = "Read every file listed in a column, such as the path column from Directory, and stack them."
+    fields = [
+        fld("column", "Column with file paths", "column", ""),
+        fld("format", "Format", "select", "auto", options=READ_FORMATS),
+        fld("filename_col", "File name column", "text", "FileName", help="Blank skips it."),
+    ]
+
+    def code(self, cfg, ctx):
+        col = cfg["column"]
+        ctx.require(col, "Pick the column that holds file paths")
+        ctx.require_columns([col])
+        args = [f"{ctx.var()}[{col!r}].dropna().astype(str).tolist()"]
+        if cfg["filename_col"]:
+            args.append(f"filename_col={lit(cfg['filename_col'])}")
+        if cfg["format"] != "auto":
+            args.append(f"fmt={lit(cfg['format'])}")
+        return f"{ctx.out()} = read_many({', '.join(args)})"
+
+    def stamp(self, cfg, inputs=None):
+        frames = (inputs or {}).get("in") or []
+        if not frames or cfg["column"] not in frames[0].columns:
+            return ""
+        return "|".join(file_stamp(str(p)) for p in frames[0][cfg["column"]].dropna())
+
+    def summary(self, cfg):
+        return cfg["column"] or ""
+
+
+@register
+class DateTimeNow(Tool):
+    type = "now"
+    label = "Date Time Now"
+    category = "In/Out"
+    description = "One row with the current date and time, refreshed on every run."
+    inputs = []
+    volatile = True
+    fields = [
+        fld("name", "Column name", "text", "DateTimeNow"),
+        fld("what", "Value", "select", "datetime", options=opts(("datetime", "Date and time"), ("date", "Date only"))),
+    ]
+
+    def code(self, cfg, ctx):
+        value = "pd.Timestamp.now().floor('s')" if cfg["what"] == "datetime" else "pd.Timestamp.now().normalize()"
+        return f"{ctx.out()} = pd.DataFrame({{{(cfg['name'] or 'DateTimeNow')!r}: [{value}]}})"

@@ -1,11 +1,11 @@
+import re
 import sys
-import tomllib
 from pathlib import Path
 
 from PyInstaller.utils.hooks import collect_submodules
 
 ROOT = Path(SPECPATH).parent
-VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
+VERSION = re.search(r'__version__ = "([^"]+)"', (ROOT / "snek" / "__init__.py").read_text()).group(1)
 ICON = str(ROOT / "packaging" / ("snek.ico" if sys.platform.startswith("win") else "snek.png"))
 
 datas = [(str(ROOT / "frontend" / "dist"), "frontend/dist"), (str(ROOT / "examples"), "examples")]

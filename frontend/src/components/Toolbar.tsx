@@ -12,6 +12,7 @@ export default function Toolbar() {
   const count = useFlow((s) => s.nodes.length);
   const loadRecent = useFlow((s) => s.loadRecent);
   const project = useFlow((s) => s.project);
+  const update = useFlow((s) => s.update);
   const menus = useMenus();
 
   return (
@@ -25,6 +26,11 @@ export default function Toolbar() {
         {name ?? "Untitled"}
         {dirty && <span className="dirty" title="Unsaved changes" />}
       </div>
+      {update?.update && (
+        <a className="update-link" href={update.url ?? "https://github.com/quesohusker/snek/releases/latest"} target="_blank" rel="noreferrer" title={`You have ${update.current}`}>
+          Snek {update.latest?.replace(/^v/, "")} is available
+        </a>
+      )}
       <button className="primary run" onClick={() => runWorkflow()} disabled={running || !count} title="Run (⌘ Enter)">
         {running ? <span className="spinner small light" /> : <Play size={15} />} Run
       </button>

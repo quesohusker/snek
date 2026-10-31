@@ -33,6 +33,12 @@ A local, Alteryx-style workflow canvas. You drag tools onto a canvas, wire them,
 - pandas is 3.x: strings default to the `str` dtype, Copy-on-Write is always on, and datetimes parse as `datetime64[us, ...]`.
 - No comments in code.
 
+## Releases
+
+- The version lives in `snek/__init__.py` (`__version__`); `pyproject.toml` and the app bundle read it from there.
+- To release: bump `__version__`, commit, push, then push a `vX.Y.Z` tag. `.github/workflows/release.yml` builds and smoke-tests the macOS, Windows and Linux apps and publishes them with the source zip. Rewrite the release notes afterward; the workflow posts a placeholder.
+- `snek/updates.py` checks GitHub's releases API once a day, sends no user data, and can be turned off in Help.
+
 ## Data
 
 - Bundle only openly licensed data (CC0 or similar) and record the source and license in `examples/data/README.md`.

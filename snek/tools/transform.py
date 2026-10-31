@@ -146,3 +146,44 @@ class Python(Tool):
     def summary(self, cfg):
         lines = [l for l in (cfg["code"] or "").splitlines() if l.strip()]
         return short(lines[0]) if lines else ""
+
+
+@register
+class WeightedAverage(Tool):
+    type = "weighted_avg"
+    label = "Weighted Average"
+    category = "Transform"
+    description = "Average a column weighted by another, such as yards per play weighted by plays. Rows with a null value or weight are skipped."
+    fields = [
+        fld("value", "Value", "column", ""),
+        fld("weight", "Weight", "column", ""),
+        fld("group_by", "Group by", "columns", []),
+        fld("name", "Output column", "text", "WeightedAverage"),
+    ]
+
+    def code(self, cfg, ctx):
+        ctx.require(cfg["value"], "Pick the value column")
+        ctx.require(cfg["weight"], "Pick the weight column")
+        gb = cfg["group_by"] or []
+        ctx.require_columns([cfg["value"], cfg["weight"]] + gb)
+        args = [ctx.var(), lit(cfg["value"]), lit(cfg["weight"])]
+        if gb:
+            args.append(lit(gb))
+        args.append(f"name={lit(cfg['name'] or 'WeightedAverage')}")
+        return f"{ctx.out()} = weighted_average({', '.join(args)})"
+
+    def summary(self, cfg):
+        return short(f"{cfg['value']} by {cfg['weight']}") if cfg["value"] else ""
+
+
+@register
+class CountRecords(Tool):
+    type = "count_records"
+    label = "Count Records"
+    category = "Transform"
+    description = "One row holding the number of input rows."
+    fields = [fld("name", "Column name", "text", "Count")]
+
+    def code(self, cfg, ctx):
+        inp = ctx.var()
+        return f"{ctx.out()} = pd.DataFrame({{{(cfg['name'] or 'Count')!r}: [len({inp})]}})"

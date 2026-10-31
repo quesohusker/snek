@@ -8,7 +8,7 @@ NUMERIC_PREFIXES = ("int", "uint", "float", "Int", "UInt", "Float")
 DTYPE_OPTIONS = [
     ("", "(unchanged)"),
     ("string", "Text"),
-    ("Int64", "Integer"),
+    ("Int64", "Integer (rounded)"),
     ("float64", "Decimal"),
     ("boolean", "True/False"),
     ("datetime", "Date/time"),
@@ -50,7 +50,7 @@ def is_text(dtype):
 def convert_line(frame, column, dtype):
     ref = f"{frame}[{column!r}]"
     if dtype == "Int64":
-        return f"{ref} = pd.to_numeric({ref}, errors='coerce').astype('Int64')"
+        return f"{ref} = pd.to_numeric({ref}, errors='coerce').round().astype('Int64')"
     if dtype == "float64":
         return f"{ref} = pd.to_numeric({ref}, errors='coerce')"
     if dtype == "datetime":
@@ -124,6 +124,7 @@ class Tool:
     outputs = [Port("out")]
     fields = []
     side_effect = False
+    volatile = False
 
     def code(self, cfg, ctx):
         raise NotImplementedError
@@ -131,7 +132,7 @@ class Tool:
     def summary(self, cfg):
         return ""
 
-    def stamp(self, cfg):
+    def stamp(self, cfg, inputs=None):
         return ""
 
     def config(self, raw):

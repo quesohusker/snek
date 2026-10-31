@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import socket
 import sys
 import threading
@@ -21,6 +22,8 @@ def running_snek(host, port):
 
 def free_port(host, preferred):
     with socket.socket() as s:
+        if os.name != "nt":
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             s.bind((host, preferred))
             return preferred

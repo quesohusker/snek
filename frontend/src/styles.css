@@ -350,6 +350,16 @@ kbd {
   margin-left: 4px;
 }
 
+.update-link {
+  font-size: 12px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.modal-body a {
+  color: var(--accent);
+}
+
 .run-status {
   color: var(--text);
   font-size: 12px;
@@ -388,6 +398,8 @@ kbd {
   width: 100%;
   border: none;
   background: transparent;
+  text-align: left;
+  line-height: 1.25;
   padding: 3px 6px 3px 20px;
   gap: 8px;
   justify-content: flex-start;
@@ -954,6 +966,18 @@ kbd {
 
 .select-move {
   display: flex;
+}
+
+.option-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.option-checks label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .list-field {

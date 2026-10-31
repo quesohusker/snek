@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { applyEdgeChanges, applyNodeChanges, type Connection, type Edge, type EdgeChange, type Node, type NodeChange } from "@xyflow/react";
 import { api } from "./api";
-import type { FlowNodeData, NodeResult, ProjectInfo, ToolSpec, WorkflowFile } from "./types";
+import type { FlowNodeData, NodeResult, ProjectInfo, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 export type ToolNode = Node<FlowNodeData, "tool">;
 
 type Position = { x: number; y: number };
 
-export type Dialog = "open" | "saveAs" | "export" | "openProject" | "newProject" | null;
+export type Dialog = "open" | "saveAs" | "export" | "openProject" | "newProject" | "about" | null;
 
 type State = {
   tools: Record<string, ToolSpec>;
@@ -29,6 +29,8 @@ type State = {
   recent: string[];
   project: ProjectInfo | null;
   stopped: boolean;
+  update: UpdateInfo | null;
+  setUpdate: (u: UpdateInfo) => void;
   setProject: (p: ProjectInfo) => void;
   setDialog: (d: Dialog) => void;
   loadRecent: () => void;
@@ -97,6 +99,9 @@ export const useFlow = create<State>()((set, get) => ({
   recent: [],
   project: null,
   stopped: false,
+  update: null,
+
+  setUpdate: (update) => set({ update }),
 
   setProject: (project) => set({ project }),
 

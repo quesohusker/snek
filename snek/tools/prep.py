@@ -375,9 +375,9 @@ class Cleanse(Tool):
 @register
 class FindReplace(Tool):
     type = "replace"
-    label = "Find Replace"
+    label = "Replace Text"
     category = "Preparation"
-    description = "Find and replace text inside columns."
+    description = "Find and replace text inside columns. To swap values using a lookup table, use Find Replace in Join."
     fields = [
         fld("columns", "Columns", "columns", []),
         fld("find", "Find", "text", ""),

@@ -170,14 +170,17 @@ class Engine:
         except ToolError as e:
             res.status, res.error = "error", str(e)
             return res
-        fp = hashlib.sha256(json.dumps([tool.type, res.code, input_fps, tool.stamp(cfg)]).encode()).hexdigest()
+        stamp = tool.stamp(cfg, frames)
+        if tool.volatile:
+            stamp += f"|{time.time_ns()}"
+        fp = hashlib.sha256(json.dumps([tool.type, res.code, input_fps, stamp]).encode()).hexdigest()
         fingerprints[nid] = fp
         if not execute:
             return res
         if tool.side_effect and not run_side_effects:
             res.message = "Writes when you run the workflow"
             return res
-        outputs = None if tool.side_effect else self.cache_get(fp)
+        outputs = None if tool.side_effect or tool.volatile else self.cache_get(fp)
         if outputs is not None:
             res.cached = True
         else:
@@ -189,7 +192,7 @@ class Engine:
                 return res
             res.elapsed_ms = round((time.perf_counter() - started) * 1000, 1)
             res.executed = True
-            if not tool.side_effect:
+            if not tool.side_effect and not tool.volatile:
                 self.cache_put(fp, outputs)
         for port, df in outputs.items():
             ev.frames[(nid, port)] = df

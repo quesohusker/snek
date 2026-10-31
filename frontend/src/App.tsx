@@ -50,6 +50,10 @@ export default function App() {
           useFlow.setState({ dirty: !!saved.dirty });
         }
         useFlow.getState().loadRecent();
+        api
+          .update()
+          .then((u) => useFlow.getState().setUpdate(u))
+          .catch(() => undefined);
         setReady(true);
       })
       .catch((e) => setLoadError(String(e.message ?? e)));
