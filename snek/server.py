@@ -8,10 +8,12 @@ from contextlib import asynccontextmanager
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from fastapi import Body, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.datastructures import Headers
 
 from snek.codegen import export_script
 from snek.engine import Engine
@@ -37,6 +39,41 @@ async def lifespan(app):
 
 
 app = FastAPI(title="Snek", lifespan=lifespan)
+
+ALLOWED_HOSTS = {"127.0.0.1", "localhost", "::1", "[::1]"}
+
+
+def host_name(value):
+    value = (value or "").strip().lower()
+    if value.startswith("["):
+        return value.split("]", 1)[0] + "]"
+    return value.rsplit(":", 1)[0] if value.count(":") == 1 else value
+
+
+def local_request(headers, path):
+    if host_name(headers.get("host")) not in ALLOWED_HOSTS:
+        return False
+    if not path.startswith("/api/"):
+        return True
+    origin = headers.get("origin")
+    if origin and host_name(urlsplit(origin).netloc) not in ALLOWED_HOSTS:
+        return False
+    return headers.get("sec-fetch-site") != "cross-site"
+
+
+class LocalOnly:
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] == "http" and not local_request(Headers(scope=scope), scope["path"]):
+            response = JSONResponse(status_code=403, content={"detail": "Snek answers only its own browser tab on this computer"})
+            await response(scope, receive, send)
+            return
+        await self.app(scope, receive, send)
+
+
+app.add_middleware(LocalOnly)
 
 
 @app.get("/api/project")

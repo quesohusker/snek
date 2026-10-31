@@ -118,7 +118,7 @@ def test_export_keeps_the_key_out_and_still_runs(api, tmp_path):
 
 def test_connection_endpoints(api, tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    client = TestClient(server.app)
+    client = TestClient(server.app, base_url="http://127.0.0.1:8765")
     assert client.put("/api/connections", json={"name": "Weather", "key": KEY}).status_code == 200
     keys = {k["name"]: k for k in client.get("/api/connections").json()["keys"]}
     assert keys["weather"]["saved"] and KEY not in json.dumps(keys)

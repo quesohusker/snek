@@ -61,13 +61,14 @@ def main():
         return
     port = free_port(args.host, args.port)
     url = f"http://{args.host}:{port}{query}"
-    from snek.server import app
+    from snek import server
 
+    server.ALLOWED_HOSTS.add(args.host.lower())
     if not args.no_browser:
         threading.Timer(1.2, webbrowser.open, [url]).start()
     print(f"Snek is running at http://{args.host}:{port}")
     print("Keep this window open while you use Snek. Close it, or choose File > Quit Snek, to stop.")
-    uvicorn.run(app, host=args.host, port=port, log_level="warning", loop="asyncio", http="h11", ws="none", log_config=None)
+    uvicorn.run(server.app, host=args.host, port=port, log_level="warning", loop="asyncio", http="h11", ws="none", log_config=None)
 
 
 if __name__ == "__main__":

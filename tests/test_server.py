@@ -13,9 +13,40 @@ from snek.projects import ROOT
 def client(tmp_path, monkeypatch):
     monkeypatch.setenv("SNEK_HOME", str(tmp_path / "home"))
     monkeypatch.chdir(tmp_path)
-    yield TestClient(server.app)
+    yield TestClient(server.app, base_url="http://127.0.0.1:8765")
     server.projects.current = ROOT
     server.projects.recent = []
+
+
+def python_marker_workflow(marker):
+    return {
+        "nodes": [
+            {"id": "1", "type": "text_input", "config": {"data": "a\n1"}},
+            {"id": "2", "type": "python", "config": {"code": f"import pathlib\npathlib.Path({str(marker)!r}).write_text('ran')"}},
+        ],
+        "edges": [{"source": "1", "sourceHandle": "out", "target": "2", "targetHandle": "in"}],
+    }
+
+
+def test_only_this_computers_browser_can_call_the_api(client, tmp_path):
+    marker = tmp_path / "ran.txt"
+    wf = python_marker_workflow(marker)
+    assert client.get("/api/project", headers={"Host": "evil.example"}).status_code == 403
+    assert client.post("/api/run", json={"workflow": wf}, headers={"Host": "evil.example", "Origin": "http://evil.example"}).status_code == 403
+    assert client.post("/api/run", json={"workflow": wf}, headers={"Origin": "https://evil.example"}).status_code == 403
+    assert client.post("/api/run", json={"workflow": wf}, headers={"Sec-Fetch-Site": "cross-site"}).status_code == 403
+    assert client.post("/api/upload?name=x.csv", content=b"a\n1\n", headers={"Origin": "https://evil.example", "Content-Type": "text/plain"}).status_code == 403
+    assert client.post("/api/cache/clear", headers={"Origin": "null"}).status_code == 403
+    assert not marker.exists()
+    assert client.get("/api/project", headers={"Host": "localhost:5173", "Origin": "http://localhost:5173", "Sec-Fetch-Site": "same-origin"}).status_code == 200
+    assert client.get("/api/project", headers={"Host": "[::1]:8765"}).status_code == 200
+    server.ALLOWED_HOSTS.add("192.168.1.9")
+    try:
+        assert client.get("/api/project", headers={"Host": "192.168.1.9:8765"}).status_code == 200
+    finally:
+        server.ALLOWED_HOSTS.discard("192.168.1.9")
+    assert client.post("/api/run", json={"workflow": wf}, headers={"Origin": "http://127.0.0.1:8765", "Sec-Fetch-Site": "same-origin"}).status_code == 200
+    assert marker.exists()
 
 
 def simple_output_workflow(path):
