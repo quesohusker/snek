@@ -141,7 +141,7 @@ def table_text(workflow: dict = Body(...), node: str = Body(...), port: str | No
         df = frames[0] if frames else None
     if df is None:
         raise HTTPException(400, "Nothing to copy")
-    return {"text": df.head(COPY_LIMIT).to_csv(sep="\t", index=False), "rows": int(min(len(df), COPY_LIMIT)), "total": int(len(df))}
+    return {"text": df.head(COPY_LIMIT).to_csv(sep="\t", index=False, lineterminator="\n"), "rows": int(min(len(df), COPY_LIMIT)), "total": int(len(df))}
 
 
 @app.post("/api/chart")
