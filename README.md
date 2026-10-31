@@ -8,16 +8,22 @@ Snek runs on your own machine. A small Python server does the work, and your bro
 
 ## Download
 
-**[Download Snek (zip)](https://github.com/quesohusker/snek/releases/latest/download/snek.zip)**
+Pick your system. These apps include everything Snek needs, so you do not need Python.
 
-1. Install [Python 3.12 or newer](https://www.python.org/downloads/) if you do not have it.
-2. Unzip the file.
-3. Start Snek:
-   - macOS: double-click `snek.command`. If macOS blocks it, open System Settings ▸ Privacy & Security and click Open Anyway, or run `sh snek.command` in Terminal.
-   - Windows: double-click `snek.bat`.
-   - Linux: run `sh snek.command`.
+| System | Download |
+|---|---|
+| macOS, Apple Silicon (M1 and newer) | [Snek-macOS-AppleSilicon.zip](https://github.com/quesohusker/snek/releases/latest/download/Snek-macOS-AppleSilicon.zip) |
+| macOS, Intel | [Snek-macOS-Intel.zip](https://github.com/quesohusker/snek/releases/latest/download/Snek-macOS-Intel.zip) |
+| Windows 10 and 11 | [Snek-Windows.zip](https://github.com/quesohusker/snek/releases/latest/download/Snek-Windows.zip) |
+| Linux x86-64 (Ubuntu 22.04 or newer) | [Snek-Linux.tar.gz](https://github.com/quesohusker/snek/releases/latest/download/Snek-Linux.tar.gz) |
 
-The first start installs Snek's Python packages into a `.venv` folder inside the Snek folder, which takes about a minute. After that it starts in seconds. Your browser opens Snek; choose **File ▸ Open recent** and pick a sample.
+- **macOS:** unzip, drag Snek to Applications, and open it. The first time, macOS blocks it because the app is not signed yet: open System Settings ▸ Privacy & Security, scroll down, and click Open Anyway. Snek opens in your browser. Stop it with File ▸ Quit Snek.
+- **Windows:** unzip, open the Snek folder, and double-click `Snek.exe`. If Windows shows "Windows protected your PC", click More info ▸ Run anyway. A console window stays open while Snek runs; close it, or use File ▸ Quit Snek, to stop.
+- **Linux:** extract and run `Snek/Snek`.
+
+Snek keeps its settings and a copy of the sample project in `~/.snek`.
+
+**Already have Python 3.12+?** The smaller [snek.zip](https://github.com/quesohusker/snek/releases/latest/download/snek.zip) runs from source: unzip it and double-click `snek.command` (macOS) or `snek.bat` (Windows), or run `sh snek.command` on Linux. The first start installs Snek's packages into a `.venv` folder.
 
 ## Why
 
@@ -78,6 +84,16 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 All bundled data is CC0. See [examples/data/README.md](examples/data/README.md) for sources and citations.
 
 ## Development
+
+Build a standalone app for the system you are on:
+
+```bash
+.venv/bin/pip install pyinstaller pillow
+.venv/bin/python packaging/build.py
+.venv/bin/python packaging/smoke_test.py packaging/dist/Snek.app/Contents/MacOS/Snek
+```
+
+Pushing a `v*` tag runs `.github/workflows/release.yml`, which builds and smoke-tests the macOS, Windows and Linux apps and attaches them to the GitHub release.
 
 ```bash
 .venv/bin/python -m pytest -q
