@@ -9,3 +9,5 @@ CLAUDE.local.md
 scripts/make_cfbd_samples.py
 workflows/CFB*.flow.json
 *.egg-info/
+packaging/build/
+packaging/dist/

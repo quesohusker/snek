@@ -394,7 +394,7 @@ def test_export_matches_engine(tmp_path):
     engine = Engine()
     ev = engine.evaluate(wf, run_side_effects=True)
     assert all(r.status == "ok" for r in ev.results.values())
-    code = export_script(ev, "test").replace(str(engine_out), str(script_out))
+    code = export_script(ev, "test").replace(repr(str(engine_out)), repr(str(script_out)))
     script = tmp_path / "exported.py"
     script.write_text(code)
     subprocess.run([sys.executable, str(script)], check=True, cwd=tmp_path)

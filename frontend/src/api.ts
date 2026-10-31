@@ -35,6 +35,7 @@ export const api = {
   loadWorkflow: (name: string) => call<WorkflowFile>("GET", `/api/workflows/${encodeURIComponent(name)}`),
   saveWorkflow: (name: string, workflow: WorkflowFile) => call<{ ok: boolean; path: string }>("PUT", `/api/workflows/${encodeURIComponent(name)}`, workflow),
   fs: (path: string) => call<FsListing>("GET", `/api/fs?path=${encodeURIComponent(path)}`),
+  shutdown: () => call<{ ok: boolean }>("POST", "/api/shutdown"),
   clearCache: () => call<{ ok: boolean }>("POST", "/api/cache/clear"),
   resolve: (path: string, fmt: string) => call<{ path: string; exists: boolean; folder_exists: boolean }>("GET", `/api/resolve?path=${encodeURIComponent(path)}&fmt=${encodeURIComponent(fmt)}`),
   project: () => call<ProjectInfo>("GET", "/api/project"),

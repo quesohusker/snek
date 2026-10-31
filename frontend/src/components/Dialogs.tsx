@@ -5,6 +5,7 @@ import { api } from "../api";
 import { openWorkflow, switchProject } from "../commands";
 import Modal from "./Modal";
 import FilePicker from "./FilePicker";
+import { joinPath } from "../paths";
 
 export default function Dialogs() {
   const dialog = useFlow((s) => s.dialog);
@@ -82,7 +83,7 @@ function NewProjectDialog({ onClose }: { onClose: () => void }) {
           </button>
         </div>
       </label>
-      {name.trim() && <p className="muted">Creates {parent.replace(/\/$/, "")}/{name.trim()}</p>}
+      {name.trim() && <p className="muted">Creates {joinPath(parent, name.trim())}</p>}
       {error && <div className="error-box">{error}</div>}
     </Modal>
   );

@@ -3,6 +3,7 @@ import { ArrowDown, ArrowUp, FolderOpen, Plus, Trash2 } from "lucide-react";
 import FilePicker from "./FilePicker";
 import { api } from "../api";
 import { useFlow } from "../store";
+import { FILE_MANAGER, basename, joinPath } from "../paths";
 import type { Column, FieldSpec } from "../types";
 
 export type FieldCtx = { columns: (port?: string) => Column[] };
@@ -110,8 +111,6 @@ function CodeField({ field, value, onChange, ctx }: Props) {
   );
 }
 
-const REVEAL_LABEL = navigator.userAgent.includes("Mac") ? "Show in Finder" : navigator.userAgent.includes("Win") ? "Show in Explorer" : "Show folder";
-
 const QUICK_SAVE = ["Project output", "Desktop", "Documents", "Downloads"];
 
 function FileField({ value, onChange, save, fmt }: { value: string; onChange: (v: string) => void; save: boolean; fmt: string }) {
@@ -135,10 +134,7 @@ function FileField({ value, onChange, save, fmt }: { value: string; onChange: (v
     return () => clearTimeout(t);
   }, [save, value, fmt, lastRun]);
 
-  const saveIn = (dir: string) => {
-    const name = value.trim() ? value.trim().split(/[\\/]/).pop() : "results.csv";
-    onChange(`${dir}/${name}`);
-  };
+  const saveIn = (dir: string) => onChange(joinPath(dir, basename(value.trim()) || "results.csv"));
 
   return (
     <>
@@ -165,7 +161,7 @@ function FileField({ value, onChange, save, fmt }: { value: string; onChange: (v
           {!resolved.folder_exists && <span className="muted">The folder will be created.</span>}
           {resolved.exists && (
             <button type="button" className="link-btn" onClick={() => api.reveal(resolved.path)}>
-              {REVEAL_LABEL}
+              Show in {FILE_MANAGER}
             </button>
           )}
         </div>

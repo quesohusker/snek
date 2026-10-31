@@ -36,6 +36,7 @@ export default function App() {
   const [loadError, setLoadError] = useState("");
   const [height, setHeight] = useState(() => readStorage<number>(HEIGHT_KEY) ?? 300);
   const version = useFlow((s) => s.version);
+  const stopped = useFlow((s) => s.stopped);
   const dragging = useRef(false);
 
   useEffect(() => {
@@ -114,6 +115,13 @@ export default function App() {
     };
   }, []);
 
+  if (stopped)
+    return (
+      <div className="boot">
+        <h2>Snek has stopped</h2>
+        <p className="muted">You can close this tab. Start Snek again to keep working; your saved workflows are in your project folder.</p>
+      </div>
+    );
   if (loadError) return <div className="boot error-box">Cannot reach the Snek server: {loadError}</div>;
   if (!ready) return <div className="boot muted">Loading…</div>;
 

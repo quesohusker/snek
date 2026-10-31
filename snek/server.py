@@ -3,6 +3,7 @@ import os
 import re
 import subprocess
 import sys
+import threading
 from contextlib import asynccontextmanager
 from dataclasses import asdict
 from datetime import datetime
@@ -14,13 +15,12 @@ from fastapi.staticfiles import StaticFiles
 
 from snek.codegen import export_script
 from snek.engine import Engine
+from snek.paths import DIST
 from snek.preview import preview
 from snek.projects import Projects
 from snek.runtime import output_path
 from snek.tools import CATEGORY_ORDER, TOOLS
 
-ROOT = Path(__file__).resolve().parent.parent
-DIST = ROOT / "frontend" / "dist"
 NAME_RE = re.compile(r"^[\w\- .]{1,80}$")
 
 engine = Engine()
@@ -125,6 +125,12 @@ def preview_node(
 def export(workflow: dict = Body(...), name: str = Body("workflow")):
     ev = engine.evaluate(workflow, run_side_effects=False)
     return {"code": export_script(ev, name)}
+
+
+@app.post("/api/shutdown")
+def shutdown():
+    threading.Timer(0.3, os._exit, [0]).start()
+    return {"ok": True}
 
 
 @app.post("/api/cache/clear")

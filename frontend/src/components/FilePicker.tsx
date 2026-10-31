@@ -3,6 +3,7 @@ import { File, Folder, FolderOpen } from "lucide-react";
 import Modal from "./Modal";
 import { api } from "../api";
 import type { FsListing } from "../types";
+import { basename, dirname, isBareName, joinPath } from "../paths";
 
 export type PickerMode = "open" | "save" | "folder";
 
@@ -13,20 +14,11 @@ function size(n: number) {
   return `${(n / 1024 ** 3).toFixed(1)} GB`;
 }
 
-function dirname(p: string) {
-  const i = p.lastIndexOf("/");
-  return i > 0 ? p.slice(0, i) : p;
-}
-
-function basename(p: string) {
-  return p.slice(p.lastIndexOf("/") + 1);
-}
-
 function toPattern(p: string) {
   const dir = dirname(p);
-  const base = p.slice(dir.length + 1);
+  const base = basename(p);
   const m = base.match(/^(.*?)(\d+)(\D*)$/);
-  return m ? `${dir}/${m[1]}*${m[3]}` : `${dir}/*${base.includes(".") ? base.slice(base.lastIndexOf(".")) : ""}`;
+  return joinPath(dir, m ? `${m[1]}*${m[3]}` : `*${base.includes(".") ? base.slice(base.lastIndexOf(".")) : ""}`);
 }
 
 const TITLES: Record<PickerMode, string> = { open: "Choose input file", save: "Choose where to save", folder: "Choose a folder" };
@@ -51,10 +43,7 @@ export default function FilePicker({ initial, mode, title, onPick, onClose }: { 
     open(mode === "folder" ? initial : initial ? dirname(initial) : "");
   }, [initial, mode]);
 
-  const finish = (p: string) => {
-    const bare = !p.includes("/") && !p.includes("\\") && !p.startsWith("~");
-    onPick(bare && listing ? `${listing.path}/${p}` : p);
-  };
+  const finish = (p: string) => onPick(isBareName(p) && listing ? joinPath(listing.path, p) : p);
 
   const placeholder = mode === "save" ? "File name, e.g. results.csv" : mode === "folder" ? "Folder path" : "Path or pattern with *";
 

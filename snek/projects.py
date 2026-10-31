@@ -2,13 +2,15 @@ import json
 import os
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+from snek.paths import examples_root, snek_home
+
+ROOT = examples_root()
 EXAMPLES_NAME = "Snek examples"
 SUBFOLDERS = ("data", "output", "workflows")
 
 
 def config_path():
-    return Path(os.environ.get("SNEK_HOME", Path.home() / ".snek")) / "config.json"
+    return snek_home() / "config.json"
 
 
 class Projects:

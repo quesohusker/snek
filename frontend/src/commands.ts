@@ -4,6 +4,7 @@ import { useFlow } from "./store";
 import { api } from "./api";
 import type { Menu, MenuItem } from "./components/Menubar";
 import type { ProjectInfo } from "./types";
+import { FILE_MANAGER } from "./paths";
 
 function confirmDiscard() {
   return !useFlow.getState().dirty || confirm("Discard unsaved changes?");
@@ -53,6 +54,12 @@ export async function switchProject(action: () => Promise<ProjectInfo>) {
   return true;
 }
 
+export async function quitSnek() {
+  if (!confirmDiscard()) return;
+  await api.shutdown().catch(() => undefined);
+  useFlow.setState({ stopped: true });
+}
+
 export function revealProject() {
   const project = useFlow.getState().project;
   if (project) api.reveal(project.path);
@@ -88,7 +95,7 @@ export function useMenus(): Menu[] {
             label: "Recent projects",
             submenu: recentProjectItems(project),
           },
-          { label: "Show project in Finder", onSelect: revealProject, disabled: !project },
+          { label: `Show project in ${FILE_MANAGER}`, onSelect: revealProject, disabled: !project },
           { type: "separator" },
           { label: "New workflow", onSelect: newWorkflow },
           { label: "Open workflow…", onSelect: () => setDialog("open") },
@@ -98,6 +105,8 @@ export function useMenus(): Menu[] {
           { label: "Save as…", onSelect: () => setDialog("saveAs") },
           { type: "separator" },
           { label: "Export", submenu: [{ label: "Python script…", onSelect: () => setDialog("export"), disabled: !count }] },
+          { type: "separator" },
+          { label: "Quit Snek", onSelect: quitSnek },
         ],
       },
       {

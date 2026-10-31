@@ -28,6 +28,7 @@ type State = {
   dialog: Dialog;
   recent: string[];
   project: ProjectInfo | null;
+  stopped: boolean;
   setProject: (p: ProjectInfo) => void;
   setDialog: (d: Dialog) => void;
   loadRecent: () => void;
@@ -95,6 +96,7 @@ export const useFlow = create<State>()((set, get) => ({
   dialog: null,
   recent: [],
   project: null,
+  stopped: false,
 
   setProject: (project) => set({ project }),
 
