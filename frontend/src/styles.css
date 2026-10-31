@@ -511,33 +511,17 @@ kbd {
   text-overflow: ellipsis;
 }
 
-.star {
-  border: none;
-  background: transparent;
-  padding: 4px;
-  color: var(--muted);
-  opacity: 0;
-}
-
-.tool-row:hover .star,
-.star.on,
-.star:focus-visible {
-  opacity: 1;
-}
-
-.star.on {
-  color: var(--warn);
-}
-
-.star:hover:not(:disabled) {
-  background: transparent;
-  color: var(--warn);
-}
-
 .palette-commands {
-  margin-top: 16px;
-  border-top: 1px solid var(--border);
-  padding-top: 4px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  max-height: 45vh;
+  overflow-y: auto;
+  flex: none;
+}
+
+.palette-commands .tree-head.depth-0 {
+  margin-top: 0;
 }
 
 .palette-hint {

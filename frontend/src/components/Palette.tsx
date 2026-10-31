@@ -1,6 +1,6 @@
 import { useState, type DragEvent, type ReactNode } from "react";
 import { useReactFlow } from "@xyflow/react";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useFlow } from "../store";
 import { useMenus } from "../commands";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
@@ -79,7 +79,6 @@ function ToolButton({ tool, color, showCategory, onDragStart, onAdd }: { tool: T
 }
 
 const TAB_HINTS: Record<string, string> = {
-  Favorites: "Star any tool to pin it here.",
   All: "Every tool, grouped by category.",
 };
 
@@ -87,8 +86,6 @@ export default function Palette() {
   const toolList = useFlow((s) => s.toolList);
   const categories = useFlow((s) => s.categories);
   const tab = useFlow((s) => s.paletteTab);
-  const favorites = useFlow((s) => s.favorites);
-  const toggleFavorite = useFlow((s) => s.toggleFavorite);
   const addNode = useFlow((s) => s.addNode);
   const selectedId = useFlow((s) => s.selectedId);
   const menus = useMenus();
@@ -122,14 +119,10 @@ export default function Palette() {
   };
 
   const toolRow = (t: ToolSpec, showCategory = false) => {
-    const fav = favorites.includes(t.type);
     const color = CATEGORY_COLORS[t.category] ?? "var(--cat-dev)";
     return (
       <div key={t.type} className="tool-row">
         <ToolButton tool={t} color={color} showCategory={showCategory} onDragStart={onDragStart} onAdd={onAddTool} />
-        <button className={`star${fav ? " on" : ""}`} onClick={() => toggleFavorite(t.type)} title={fav ? "Remove from Favorites" : "Add to Favorites"} aria-label={fav ? `Remove ${t.label} from Favorites` : `Add ${t.label} to Favorites`}>
-          <Star size={13} fill={fav ? "currentColor" : "none"} />
-        </button>
       </div>
     );
   };
@@ -168,16 +161,12 @@ export default function Palette() {
       );
     });
 
-  const byType = new Map(toolList.map((t) => [t.type, t]));
   const matches = q ? toolList.filter((t) => `${t.label} ${t.description} ${t.category}`.toLowerCase().includes(q)) : [];
   const visibleMenus = menus.map((m) => ({ ...m, items: filterItems(m.items, q) })).filter((m) => m.items.length);
 
   let body: ReactNode;
   if (q) {
     body = matches.length ? matches.map((t) => toolRow(t, true)) : <div className="muted pad">No tools match.</div>;
-  } else if (tab === "Favorites") {
-    const favs = favorites.map((f) => byType.get(f)).filter((t): t is ToolSpec => !!t);
-    body = favs.length ? favs.map((t) => toolRow(t)) : <div className="muted pad">No favorites yet. Click the star next to any tool.</div>;
   } else if (tab === "All") {
     body = categories.map((c) => {
       const items = toolList.filter((t) => t.category === c);
@@ -200,12 +189,6 @@ export default function Palette() {
 
   return (
     <aside className="palette">
-      <input className="palette-search" placeholder="Search all tools and commands" value={query} onChange={(e) => setQuery(e.target.value)} />
-      <div className="palette-heading" style={color && !q ? { color } : undefined}>
-        {heading}
-      </div>
-      <div className="palette-hint">{q ? "Results from every category." : (TAB_HINTS[tab] ?? "Drag onto the canvas, or click to add after the selected tool.")}</div>
-      <div className="palette-tools">{body}</div>
       {visibleMenus.length > 0 && (
         <div className="palette-commands">
           <Group label="Commands" open={isOpen("menu", false)} onToggle={() => toggle("menu", false)} depth={0}>
@@ -217,6 +200,12 @@ export default function Palette() {
           </Group>
         </div>
       )}
+      <input className="palette-search" placeholder="Search all tools and commands" value={query} onChange={(e) => setQuery(e.target.value)} />
+      <div className="palette-heading" style={color && !q ? { color } : undefined}>
+        {heading}
+      </div>
+      <div className="palette-hint">{q ? "Results from every category." : (TAB_HINTS[tab] ?? "Drag onto the canvas, or click to add after the selected tool.")}</div>
+      <div className="palette-tools">{body}</div>
     </aside>
   );
 }

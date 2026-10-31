@@ -41,7 +41,7 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-96 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category. Hover over any tool, in the sidebar or on the canvas, to see what input it needs.
+96 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any tool, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Tools |
 |---|---|
