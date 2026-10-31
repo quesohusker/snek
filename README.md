@@ -57,7 +57,7 @@ Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workf
 
 ## Tools
 
-50 tools so far, organized like the Alteryx palette. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
+87 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category.
 
 | Category | Tools |
 |---|---|
