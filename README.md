@@ -37,7 +37,7 @@ Snek keeps its settings and a copy of the sample project in `~/.snek`.
 
 ## Why
 
-Drag-and-drop data tools are fast to learn but lock your work inside the tool. Snek generates real pandas code for every step. You can read it in the Python tab of any tool, and Export gives you a standalone script that runs anywhere pandas runs.
+Drag-and-drop data tools are fast to learn but lock your work inside the tool. Snek generates real Python code for every step. You can read it in the Python tab of any tool, and Export gives you a standalone script that runs anywhere Python runs.
 
 ## Tools
 
@@ -56,7 +56,7 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 | Segment | K-Means Groups, Choose Number of Groups, Hierarchical Groups, Principal Components, Most Similar Rows |
 | Forecast | Fill Missing Dates, Rolling Window, Smoothing Forecast, ARIMA Forecast, Trend and Season, Check Forecast |
 | Sports | **All sports:** Team Ratings (SRS/Massey), Elo Ratings, Opponent Adjust, Spread & Win Probability (grades picks against betting lines), Season Simulation, Pythagorean Expectation. **Football:** Garbage-Time Filter, Success Rate, Football Efficiency (EPA, success rate, explosiveness, havoc). **Basketball:** Four Factors (with offensive, defensive and net rating), Shooting Efficiency. **Baseball:** Batting Stats (through wOBA), Pitching Stats (through FIP). **Volleyball:** Volleyball Box Stats, Side-Out & Serve |
-| Code | Python Code (your own pandas code) |
+| Code | Python Code (your own Python code) |
 
 Open File reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. List Files plus Read Listed Files reads every file in a folder.
 
@@ -74,7 +74,7 @@ Snek edits like a desktop app:
 
 ## Expressions
 
-Keep Rows and Calculate take pandas expressions. Write a column as `[Column Name]`:
+Keep Rows and Calculate take Python expressions. Write a column as `[Column Name]`:
 
 ```
 [pts] - [opp_pts]
