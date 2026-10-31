@@ -50,7 +50,9 @@ def test_html_output_and_export_match(tmp_path):
     }
     ev = Engine().evaluate(wf, run_side_effects=True)
     page = (tmp_path / "chart.html").read_text(encoding="utf-8")
-    assert "vegaEmbed('#chart0'" in page and "vega-lite@6.5.0" in page and "</script>,8" not in page
+    assert "vegaEmbed('#chart0'" in page and "vega-lite@6.5.0/build/vega-lite.min.js" in page and "</script>,8" not in page
+    assert page.count('integrity="sha384-') == 3 and page.count('crossorigin="anonymous"') == 3
+    assert '"source": false, "compiled": false, "editor": false' in page
     script = tmp_path / "flow.py"
     script.write_text(export_script(ev), encoding="utf-8")
     (tmp_path / "chart.html").unlink()

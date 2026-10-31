@@ -66,9 +66,15 @@ def make_chart(df, kind, x, y=None, color=None, agg="none", title="", bins=20, f
 
 
 def chart_html(df):
+    libraries = (
+        ("vega@6.4.0/build/vega.min.js", "sha384-VKdcJr3ZaBIJMbVcopTAI/JEuUkSY6qnwVu9iLuw0DnQ9gQ1JjsfZJhXFQAgNi43"),
+        ("vega-lite@6.5.0/build/vega-lite.min.js", "sha384-pV2l7nzmyxZh02knvUH7N8zvtyCYsYiGt+SsE/emG/dFiBI6G0YJZFZ2FzEX72P3"),
+        ("vega-embed@7.3.0/build/vega-embed.min.js", "sha384-Muy1QRxYFeNrA1zShc1KtN4OfipkR/61gt+HWqN57c1Zxu3Oe16TsilsruVVjfKL"),
+    )
+    options = '{"actions": {"export": true, "source": false, "compiled": false, "editor": false}}'
     specs = [json.loads(s) for s in df["Vega-Lite"]]
     title = html.escape(str(specs[0].get("title", "Chart")) if specs else "Chart")
-    scripts = "".join(f'<script src="https://cdn.jsdelivr.net/npm/{name}"></script>' for name in ("vega@6.4.0", "vega-lite@6.5.0", "vega-embed@7.3.0"))
+    scripts = "".join(f'<script src="https://cdn.jsdelivr.net/npm/{name}" integrity="{sri}" crossorigin="anonymous"></script>' for name, sri in libraries)
     blocks = "".join(f'<div id="chart{i}" style="width:100%;margin-bottom:32px"></div>' for i in range(len(specs)))
-    calls = "".join(f"vegaEmbed('#chart{i}', {json.dumps(s).replace('</', '<' + chr(92) + '/')});" for i, s in enumerate(specs))
+    calls = "".join(f"vegaEmbed('#chart{i}', {json.dumps(s).replace('</', '<' + chr(92) + '/')}, {options});" for i, s in enumerate(specs))
     return f'<!doctype html><html><head><meta charset="utf-8"><title>{title}</title>{scripts}<style>body{{font-family:system-ui,sans-serif;margin:24px}}</style></head><body>{blocks}<script>{calls}</script></body></html>'
