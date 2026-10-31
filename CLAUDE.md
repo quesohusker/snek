@@ -1,6 +1,6 @@
 # Snek
 
-A local, Alteryx-style workflow canvas. You drag tools onto a canvas, wire them, and each tool runs pandas code. Export Python turns the whole workflow into one standalone script.
+A local workflow canvas for pandas. You drag tools onto a canvas, wire them, and each tool runs pandas code. Export Python turns the whole workflow into one standalone script.
 
 ## Run it
 
