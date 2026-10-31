@@ -13,3 +13,4 @@ workflows/CFB*.snek
 packaging/build/
 packaging/dist/
 *.tsbuildinfo
+/*.csv
