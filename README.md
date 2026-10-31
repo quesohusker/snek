@@ -6,13 +6,26 @@ A visual workflow canvas for pandas. Drag tools onto a canvas, wire them togethe
 
 Snek runs on your own machine. A small Python server does the work, and your browser shows the canvas at http://127.0.0.1:8765. Nothing leaves your computer.
 
+## Download
+
+**[Download Snek (zip)](https://github.com/quesohusker/snek/releases/latest/download/snek.zip)**
+
+1. Install [Python 3.12 or newer](https://www.python.org/downloads/) if you do not have it.
+2. Unzip the file.
+3. Start Snek:
+   - macOS: double-click `snek.command`. If macOS blocks it, open System Settings ▸ Privacy & Security and click Open Anyway, or run `sh snek.command` in Terminal.
+   - Windows: double-click `snek.bat`.
+   - Linux: run `sh snek.command`.
+
+The first start installs Snek's Python packages into a `.venv` folder inside the Snek folder, which takes about a minute. After that it starts in seconds. Your browser opens Snek; choose **File ▸ Open recent** and pick a sample.
+
 ## Why
 
 Drag-and-drop data tools are fast to learn but lock your work inside the tool. Snek generates real pandas code for every step. You can read it in the Python tab of any tool, and Export gives you a standalone script that runs anywhere pandas runs.
 
-## Quick start
+## Build from source
 
-You need Python 3.12+ and Node 20+.
+You need Python 3.12+ and Node 20.19+.
 
 ```bash
 git clone https://github.com/quesohusker/snek.git
@@ -25,7 +38,6 @@ cd frontend && npm install && npm run build && cd ..
 
 Your browser opens Snek. Choose **File ▸ Open recent** and pick a sample workflow, then press **Run** (⌘ Enter).
 
-On macOS you can double-click `snek.command` after the first setup.
 
 ## Tools
 
