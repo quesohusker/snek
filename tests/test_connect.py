@@ -42,6 +42,8 @@ class FakeAPI(BaseHTTPRequestHandler):
             return self.reply(200, {"data": {"items": [{"a": 1, "b": {"c": 2}}, {"a": 3, "b": {"c": 4}}]}})
         if url.path == "/table.csv":
             return self.reply(200, "x,y\n1,2\n3,4\n", "text/csv")
+        if url.path == "/echo":
+            return self.reply(500, {"error": "bad request", "you_sent": self.headers.get("Authorization"), "query": url.query})
         return self.reply(404, {"message": "missing"})
 
 
@@ -96,6 +98,14 @@ def test_api_request_json_path_query_key_and_csv(api):
     assert ev.frames[("1", "out")].to_dict("list") == {"x": [1, 3], "y": [2, 4]}
     _, res = run_tool("api_request", {"url": f"{api}/nothing"})
     assert res.status == "error" and "404" in res.error
+
+
+def test_error_text_never_repeats_the_key(api):
+    connect.set_key("demo", KEY)
+    for auth in ("bearer", "query"):
+        _, res = run_tool("api_request", {"url": f"{api}/echo", "auth": auth, "key": "demo", "header": "api_key"})
+        assert res.status == "error" and "500" in res.error and "you_sent" in res.error
+        assert KEY not in res.error and "…6789" in res.error
 
 
 def test_declared_keys_only_go_to_their_own_host(api):

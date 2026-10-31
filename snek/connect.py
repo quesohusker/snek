@@ -126,7 +126,7 @@ def json_frame(data, records=""):
 
 
 def api_request(url, params=None, auth="none", key="", header="X-API-Key", records="", fmt="json"):
-    params, headers = dict(params or {}), {}
+    params, headers, secret = dict(params or {}), {}, ""
     if auth != "none":
         secret = api_key(key)
         if not secret:
@@ -137,7 +137,10 @@ def api_request(url, params=None, auth="none", key="", header="X-API-Key", recor
             headers[header] = secret
         else:
             params[header] = secret
-    text = http_get(url, params, headers)
+    try:
+        text = http_get(url, params, headers)
+    except ValueError as e:
+        raise ValueError(str(e).replace(secret, f"…{secret[-4:]}") if secret else str(e)) from None
     if fmt == "csv":
         return pd.read_csv(io.StringIO(text))
     return json_frame(json.loads(text), records)
