@@ -3,7 +3,7 @@ import os
 from snek.tools.base import Tool, file_stamp, fld, lit, opts, register, short
 
 READ_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"))
-WRITE_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"))
+WRITE_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"), ("html", "HTML (a chart page, or a table)"))
 
 
 @register

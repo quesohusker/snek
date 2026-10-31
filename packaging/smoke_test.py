@@ -33,11 +33,11 @@ def main(executable):
         tools = call("/api/tools")["tools"]
         project = call("/api/project")
         print("tools:", len(tools), "project:", project["name"], project["path"])
-        if len(tools) < 94:
+        if len(tools) < int(os.environ.get("SNEK_MIN_TOOLS", "96")):
             raise SystemExit(f"Only {len(tools)} tools are bundled")
         names = [w["name"] for w in call("/api/workflows")["workflows"]]
         print("workflows:", names)
-        for name in ["Penguins - body mass by species", "Flights - fleets from nested JSON", "Flights - Q1 delays by airline", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - league ratings (made-up teams)", "Penguins - model bake-off", "Flights - forecast accuracy check", "Sports - football play-by-play kit (made-up league)", "Sports - season projection (made-up league)", "Sports - basketball four factors (made-up league)", "Sports - baseball batting and pitching (made-up players)", "Sports - volleyball box and side-out (made-up matches)"]:
+        for name in ["Penguins - body mass by species", "Flights - fleets from nested JSON", "Flights - Q1 delays by airline", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - league ratings (made-up teams)", "Penguins - model bake-off", "Flights - forecast accuracy check", "Sports - football play-by-play kit (made-up league)", "Sports - season projection (made-up league)", "Sports - basketball four factors (made-up league)", "Sports - baseball batting and pitching (made-up players)", "Sports - volleyball box and side-out (made-up matches)", "Penguins - charts"]:
             wf = json.loads((Path(project["path"]) / "workflows" / f"{name}.snek").read_text(encoding="utf-8"))
             results = call("/api/run", {"workflow": wf})["results"]
             bad = {k: v["error"] for k, v in results.items() if v["status"] != "ok"}

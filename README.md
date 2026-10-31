@@ -4,7 +4,7 @@
 
 A visual workflow canvas for pandas. Drag tools onto a canvas, wire them together, and watch the data change at every step. When you are done, export the whole workflow as a plain Python script.
 
-Snek runs on your own machine. A small Python server does the work, and your browser shows the canvas at http://127.0.0.1:8765. Your data never leaves your computer. The only network call is a once-a-day check for new versions, which you can turn off (see [Updates](#updates)).
+Snek runs on your own machine. A small Python server does the work, and your browser shows the canvas at http://127.0.0.1:8765. Your data never leaves your computer. Snek goes online only for a once-a-day check for new versions, which you can turn off (see [Updates](#updates)), and when you use the API Request or Create with AI features.
 
 ## Download
 
@@ -41,16 +41,17 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-94 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category. Hover over any tool, in the sidebar or on the canvas, to see what input it needs.
+96 working tools so far. Pick a category in the tab bar under the menus and its tools appear in the sidebar. Star the ones you use most to keep them on the Favorites tab, or search across every category. Hover over any tool, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Tools |
 |---|---|
 | In/Out | Input Data, Text Input, Output Data, Browse, Directory, Date Time Now |
+| Data Connections | API Request (JSON or CSV from any web API) |
 | Preparation | Select, Filter, Formula, Multi-Field Formula, Multi-Row Formula, Sort, Sample, Select Records, Unique, Record ID, Rank, Tile, Auto Field, Data Cleansing, Imputation, Replace Text, Generate Rows |
 | Join | Join (L/J/R outputs), Join Multiple, Union, Append Fields, Find Replace (lookup table) |
 | Parse | Text to Columns, RegEx, DateTime, JSON Parse, Explode List, Unnest JSON |
 | Transform | Summarize, Cross Tab, Transpose, Running Total, Weighted Average, Count Records |
-| Data Investigation | Field Summary, Frequency Table, Correlation, Contingency Table, Test of Means, Chi-Square Test |
+| Data Investigation | Field Summary, Frequency Table, Correlation, Contingency Table, Test of Means, Chi-Square Test, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
 | Modeling | Linear, Logistic, Regularized (Ridge/Lasso/Elastic Net), Count (Poisson/negative binomial) and Gamma Regression, Decision Tree, Random Forest, Boosted Model, Naive Bayes, K-Nearest Neighbors, Support Vector Machine, Neural Network, Score, Model Comparison, Cross-Validation, Create Samples, Variance Inflation Factors |
 | Predictive Grouping | K-Means Clusters, Cluster Diagnostics, Hierarchical Clustering, Principal Components, Find Nearest Neighbors |
 | Time Series | TS Filler, Rolling Window, Seasonal Decomposition, ETS Forecast, ARIMA Forecast, TS Compare |
@@ -58,6 +59,18 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 | Developer | Python (your own pandas code), Dynamic Input, Dynamic Rename, Dynamic Select, Field Info |
 
 Input Data reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. Directory plus Dynamic Input reads every file in a folder.
+
+## Editing
+
+Snek edits like a desktop app:
+
+- Undo and redo every change with ⌘Z and ⇧⌘Z (Ctrl+Z and Ctrl+Shift+Z on Windows and Linux).
+- Cut, copy, paste and duplicate tools with ⌘X, ⌘C, ⌘V and ⌘D. Connections between copied tools come along. Paste works between Snek windows.
+- Drag a box on the canvas, or Shift-click, to select several tools. Scroll to pan; ⌘-scroll or pinch to zoom.
+- Right-click a tool or the canvas for a menu.
+- Paste a table copied from Excel and Snek makes a Text Input tool from it. Drop a data file on the canvas and Snek copies it into the project's `data/` folder and adds an Input Data tool.
+- The copy button above the results grid copies every row, ready to paste into Excel.
+- Snek asks before it closes a workflow with unsaved changes. Help ▸ Keyboard shortcuts lists every shortcut.
 
 ## Expressions
 
@@ -76,6 +89,23 @@ Multi-Row Formula reaches into other rows with `[Row-1:column]` and `[Row+1:colu
 ## Modeling
 
 Every model tool has an **M** output that carries the fitted model. Connect it to **Score** to predict new rows, or to **Model Comparison** with a validation sample to see which model holds up on data it never saw. Use **Create Samples** to make that split. Models come from scikit-learn and statsmodels, so exported scripts that use them list those packages at the top.
+
+## Create a workflow with AI
+
+Click **Create with AI** in the toolbar, or choose **Workflow ▸ Create workflow with AI…**, and describe what you want in plain words: "Rate the teams in the made-up football league with a 28-point margin cap, simulate the unplayed games, and chart projected wins." Claude designs the workflow, and Snek runs it. If a tool fails, Snek sends the error back to Claude for a fix, up to two times. The finished tools land on the canvas, ready to adjust; one Undo removes them.
+
+- It needs an Anthropic API key, saved in **Edit ▸ Settings ▸ AI**. Anthropic bills your account for each request. Settings also picks the model: Claude Opus 5.5 by default, or the faster and cheaper Sonnet 5.5 or Haiku 5.5.
+- Snek sends Claude your description, the list of Snek's tools, and the names and column names of the data files in the open project. It never sends the data itself. The dialog's **Show exactly what is sent** link shows the full text.
+
+## Data Connections
+
+**API Request** downloads JSON or CSV from any other web API. If the API needs a key, save the key under a name in the same Settings section and give that name to the tool.
+
+Keys stay on your computer in `~/.snek/connections.json`. They never go into workflow files or exported scripts. An exported script reads the same file, or an environment variable named after the key, such as `WEATHER_API_KEY`.
+
+## Charts
+
+The **Chart** tool draws bar, line, scatter, area, histogram, box plot and heat map charts. The chart shows in the results panel, where its menu saves a PNG or SVG. To save a web page, connect Output Data with a path ending in `.html`; Union several charts first to put them on one page. Chart pages load the charting library from the web, so they need an internet connection to display.
 
 ## Sports analytics
 
@@ -136,6 +166,7 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Sports: basketball four factors (Four Factors, Shooting Efficiency)
 - Sports: baseball batting and pitching (Batting Stats, Pitching Stats)
 - Sports: volleyball box and side-out (Volleyball Box Stats, Side-Out & Serve)
+- Penguins: charts (four chart types saved together as one web page)
 - Demo: no files needed
 
 All bundled data is CC0, and the sports data is made up. See [examples/data/README.md](examples/data/README.md) for sources and citations.
@@ -148,7 +179,6 @@ Once a day, Snek asks GitHub's public releases page whether a newer version exis
 
 - Formula and Python tools run any code you type. The server listens on 127.0.0.1 only. Do not expose it to a network.
 - Data is held in memory. Hundreds of thousands of rows are fast; tens of millions will strain it.
-- No undo/redo or copy/paste yet.
 
 ## Build from source
 

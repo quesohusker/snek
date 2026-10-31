@@ -1,0 +1,168 @@
+{
+  "format": "snek",
+  "version": 1,
+  "name": "Penguins - charts",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "Penguins",
+      "position": {
+        "x": 0,
+        "y": 195.0
+      },
+      "config": {
+        "path": "examples/data/penguins/penguins.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "chart",
+      "label": "Mass by species",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "config": {
+        "kind": "bar",
+        "x": "species",
+        "y": "body_mass_g",
+        "agg": "mean",
+        "color": "species",
+        "title": "Average body mass (g)"
+      }
+    },
+    {
+      "id": "3",
+      "type": "chart",
+      "label": "Flipper vs mass",
+      "position": {
+        "x": 170,
+        "y": 130
+      },
+      "config": {
+        "kind": "scatter",
+        "x": "flipper_length_mm",
+        "y": "body_mass_g",
+        "color": "species"
+      }
+    },
+    {
+      "id": "4",
+      "type": "chart",
+      "label": "Mass spread",
+      "position": {
+        "x": 170,
+        "y": 260
+      },
+      "config": {
+        "kind": "histogram",
+        "x": "body_mass_g",
+        "color": "species",
+        "bins": 25
+      }
+    },
+    {
+      "id": "5",
+      "type": "chart",
+      "label": "Bill length",
+      "position": {
+        "x": 170,
+        "y": 390
+      },
+      "config": {
+        "kind": "box",
+        "x": "species",
+        "y": "bill_length_mm"
+      }
+    },
+    {
+      "id": "6",
+      "type": "union",
+      "label": "All charts",
+      "position": {
+        "x": 340,
+        "y": 195.0
+      },
+      "config": {}
+    },
+    {
+      "id": "7",
+      "type": "output",
+      "label": "Save as a web page",
+      "position": {
+        "x": 510,
+        "y": 195.0
+      },
+      "config": {
+        "path": "output/penguin charts.html",
+        "format": "html"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-3.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-4.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-5.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-6.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-6.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-6.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e6.out-7.in",
+      "source": "6",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    }
+  ]
+}

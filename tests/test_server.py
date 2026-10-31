@@ -121,3 +121,19 @@ def test_settings_and_autosave(client, tmp_path):
     path = Path(r["path"])
     assert path.parent == tmp_path / "home" / "autosave" and path.name == "Week 5_draft.snek"
     assert path.exists()
+
+
+def test_upload_saves_into_project_data(client, tmp_path):
+    client.post("/api/project/new", json={"parent": str(tmp_path), "name": "proj"})
+    r = client.post("/api/upload?name=games.csv", content=b"a,b\n1,2\n")
+    data = (tmp_path / "proj").resolve() / "data"
+    assert r.json()["path"] == str(data / "games.csv")
+    assert client.post("/api/upload?name=games.csv", content=b"a,b\n1,2\n").json()["path"] == str(data / "games.csv")
+    assert client.post("/api/upload?name=games.csv", content=b"a,b\n3,4\n").json()["path"] == str(data / "games (2).csv")
+    assert client.post("/api/upload?name=evil.sh", content=b"x").status_code == 400
+    assert client.post("/api/upload?name=../../x.csv", content=b"a\n1\n").json()["path"] == str(data / "x.csv")
+
+
+def test_table_copies_as_tab_separated(client):
+    r = client.post("/api/table", json={"workflow": simple_output_workflow("output/x.csv"), "node": "1"})
+    assert r.json() == {"text": "a\tb\n1\t2\n3\t4\n", "rows": 2, "total": 2}

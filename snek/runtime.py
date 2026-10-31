@@ -6,7 +6,8 @@ import os
 import numpy as np
 import pandas as pd
 
-from snek import modeling, sports_math
+from snek import connect, modeling, sports_math
+from snek.charts import chart_html, make_chart
 
 FORMATS = {
     ".csv": "csv",
@@ -66,7 +67,7 @@ def read_any(path, fmt="auto", sheet=None, sep=None, encoding="utf-8", flatten=F
     return pd.concat(frames, ignore_index=True)
 
 
-EXTENSIONS = {"csv": ".csv", "tsv": ".tsv", "excel": ".xlsx", "json": ".json", "jsonl": ".jsonl", "parquet": ".parquet"}
+EXTENSIONS = {"csv": ".csv", "tsv": ".tsv", "excel": ".xlsx", "json": ".json", "jsonl": ".jsonl", "parquet": ".parquet", "html": ".html"}
 
 
 def output_path(path, fmt="auto"):
@@ -89,7 +90,8 @@ def nested_to_json(df):
 
 def write_any(df, path, fmt="auto"):
     target = output_path(path, fmt)
-    kind = fmt if fmt != "auto" else FORMATS.get(os.path.splitext(target)[1].lower(), "csv")
+    ext = os.path.splitext(target)[1].lower()
+    kind = fmt if fmt != "auto" else "html" if ext in (".html", ".htm") else FORMATS.get(ext, "csv")
     os.makedirs(os.path.dirname(target), exist_ok=True)
     if kind in ("csv", "tsv"):
         nested_to_json(df).to_csv(target, index=False, sep="\t" if kind == "tsv" else ",")
@@ -105,6 +107,9 @@ def write_any(df, path, fmt="auto"):
         df.to_json(target, orient="records", lines=True, date_format="iso")
     elif kind == "json":
         df.to_json(target, orient="records", indent=2, date_format="iso")
+    elif kind == "html":
+        with open(target, "w", encoding="utf-8") as f:
+            f.write(chart_html(df) if "Vega-Lite" in df.columns else df.to_html(index=False))
     else:
         raise ValueError(f"Unknown format {kind!r}")
     return target
@@ -327,7 +332,8 @@ def linear_regression(df, target, predictors, intercept=True):
 
 HELPERS = {
     "read_any": ([match_files, read_any], ["glob", "json", "os"], ["FORMATS"]),
-    "write_any": ([output_path, nested_to_json, write_any], ["json", "os"], ["FORMATS", "EXTENSIONS"]),
+    "write_any": ([output_path, nested_to_json, chart_html, write_any], ["html", "json", "os"], ["FORMATS", "EXTENSIONS"]),
+    "make_chart": ([make_chart], ["json"], []),
     "join_lrj": ([join_lrj], [], []),
     "unnest": ([unnest], [], []),
     "iif": ([iif], [], []),
@@ -378,6 +384,7 @@ HELPERS.update({
     "pitching_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.innings, sports_math.pitching_stats], [], [], []),
     "volleyball_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.volleyball_stats], [], [], []),
     "sideout_stats": ([sports_math.safe_div, sports_math.sideout_stats], [], [], []),
+    "api_request": ([connect.api_key, connect.http_get, connect.json_frame, connect.api_request], ["io", "json", "os", "re", "urllib.error", "urllib.parse", "urllib.request"], [], []),
 })
 
 NAMESPACE = {
@@ -391,6 +398,7 @@ NAMESPACE = {
     "match_files": match_files,
     "read_any": read_any,
     "write_any": write_any,
+    "make_chart": make_chart,
     "join_lrj": join_lrj,
     "unnest": unnest,
     "iif": iif,
@@ -404,4 +412,10 @@ NAMESPACE = {
     "linear_regression": linear_regression,
     **{name: getattr(modeling, name) for name in ["linear_model_row", "fit_supervised", "fit_logistic", "score_model", "compare_models", "split_samples", "kmeans_cluster", "principal_components", "fill_periods", "ets_forecast", "arima_forecast", "fit_estimator", "fit_regularized", "fit_glm", "cross_validate", "vif_table", "test_of_means", "chi_square_test", "seasonal_decompose", "compare_forecast", "cluster_diagnostics", "hierarchical_cluster", "nearest_neighbors", "team_ratings", "elo_ratings"]},
     **{name: getattr(sports_math, name) for name in ["opponent_adjust", "game_predictions", "simulate_season", "pythagorean", "football_efficiency", "four_factors", "shooting_stats", "batting_stats", "pitching_stats", "volleyball_stats", "sideout_stats"]},
+    "api_request": connect.api_request,
 }
+
+
+def register_helper(name, fns, imports=(), constants=(), packages=()):
+    HELPERS[name] = (list(fns), list(imports), list(constants), list(packages))
+    NAMESPACE[name] = fns[-1]

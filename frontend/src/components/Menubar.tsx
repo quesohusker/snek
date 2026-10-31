@@ -51,7 +51,7 @@ export default function Menubar({ menus, onOpen }: { menus: Menu[]; onOpen?: (la
   );
 }
 
-function MenuList({ items, close, nested }: { items: MenuItem[]; close: () => void; nested?: boolean }) {
+export function MenuList({ items, close, nested }: { items: MenuItem[]; close: () => void; nested?: boolean }) {
   const [active, setActive] = useState<number | null>(null);
   return (
     <ul className={`menu${nested ? " nested" : ""}`} role="menu">

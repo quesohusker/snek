@@ -1,8 +1,9 @@
+import os
 import re
 import sys
 from pathlib import Path
 
-from PyInstaller.utils.hooks import collect_submodules
+from PyInstaller.utils.hooks import collect_submodules, copy_metadata
 
 ROOT = Path(SPECPATH).parent
 VERSION = re.search(r'__version__ = "([^"]+)"', (ROOT / "snek" / "__init__.py").read_text(encoding="utf-8")).group(1)
@@ -10,12 +11,17 @@ ICON = str(ROOT / "packaging" / ("snek.ico" if sys.platform.startswith("win") el
 
 datas = [(str(ROOT / "frontend" / "dist"), "frontend/dist"), (str(ROOT / "examples"), "examples"), (str(ROOT / "LICENSE"), "."), (str(ROOT / "THIRD_PARTY_NOTICES.md"), ".")]
 datas += [(str(p), "workflows") for p in sorted((ROOT / "workflows").glob("*.snek")) if not p.name.startswith("CFB")]
+PLUGINS = [name.strip() for name in os.environ.get("SNEK_BUNDLE_PLUGINS", "").split(",") if name.strip()]
+plugin_imports = []
+for dist in PLUGINS:
+    datas += copy_metadata(dist)
+    plugin_imports += collect_submodules(dist.replace("-", "_"))
 
 a = Analysis(
     [str(ROOT / "packaging" / "snek_app.py")],
     pathex=[str(ROOT)],
     datas=datas,
-    hiddenimports=collect_submodules("snek") + collect_submodules("uvicorn"),
+    hiddenimports=collect_submodules("snek") + collect_submodules("uvicorn") + plugin_imports,
     excludes=["tkinter", "matplotlib", "IPython", "pytest", "PIL"],
 )
 pyz = PYZ(a.pure)

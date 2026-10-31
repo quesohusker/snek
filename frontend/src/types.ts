@@ -24,6 +24,8 @@ export type ToolSpec = {
   group?: string;
   description: string;
   needs?: string;
+  icon?: string;
+  color?: string;
   inputs: PortSpec[];
   outputs: PortSpec[];
   fields: FieldSpec[];
@@ -126,5 +128,6 @@ export type UpdateInfo = {
 export type SnekSettings = {
   autosave_minutes: number;
   autosave_mode: "file" | "backup";
+  ai_model?: string;
   autosave_folder: string;
 };

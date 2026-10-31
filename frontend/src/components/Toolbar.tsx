@@ -1,4 +1,4 @@
-import { Play, Worm } from "lucide-react";
+import { Play, Sparkles, Worm } from "lucide-react";
 import { useFlow } from "../store";
 import { runWorkflow, useMenus } from "../commands";
 import Menubar from "./Menubar";
@@ -33,6 +33,9 @@ export default function Toolbar() {
           Snek {update.latest?.replace(/^v/, "")} is available
         </a>
       )}
+      <button className="ai-btn" onClick={() => useFlow.getState().setDialog("aiCreate")} title="Describe a workflow and let Claude build it">
+        <Sparkles size={15} /> Create with AI
+      </button>
       <button className="primary run" onClick={() => runWorkflow()} disabled={running || !count} title="Run (⌘ Enter)">
         {running ? <span className="spinner small light" /> : <Play size={15} />} Run
       </button>

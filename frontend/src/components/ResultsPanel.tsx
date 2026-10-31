@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Copy, RefreshCw } from "lucide-react";
 import { useFlow } from "../store";
 import { api } from "../api";
 import { shortType } from "./Fields";
+import ChartView from "./ChartView";
 import type { NodeResult, PreviewData } from "../types";
 
 const PAGE = 200;
@@ -28,7 +29,7 @@ export default function ResultsPanel() {
   const lastRun = useFlow((s) => s.lastRun);
   const mergeResult = useFlow((s) => s.mergeResult);
   const select = useFlow((s) => s.select);
-  const [tab, setTab] = useState<"data" | "columns" | "messages">("data");
+  const [tab, setTab] = useState<"data" | "columns" | "messages" | "chart">("data");
   const [port, setPort] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const [data, setData] = useState<PreviewData | null>(null);
@@ -36,6 +37,19 @@ export default function ResultsPanel() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [tick, setTick] = useState(0);
+  const [copied, setCopied] = useState("");
+
+  const copyTable = async () => {
+    if (!selectedId) return;
+    try {
+      const r = await api.table(useFlow.getState().toWorkflow(), selectedId, port);
+      await navigator.clipboard.writeText(r.text);
+      setCopied(r.rows < r.total ? `Copied first ${r.rows.toLocaleString()} rows` : `Copied ${r.rows.toLocaleString()} rows`);
+    } catch (e) {
+      setCopied(`Copy failed: ${(e as Error).message}`);
+    }
+    setTimeout(() => setCopied(""), 2500);
+  };
   const seq = useRef(0);
 
   useEffect(() => {
@@ -69,6 +83,12 @@ export default function ResultsPanel() {
     return () => clearTimeout(t);
   }, [selectedId, port, offset, version, tab, lastRun, tick, mergeResult]);
 
+  const hasChart = !!data?.columns.some((c) => c.name === "Vega-Lite");
+  useEffect(() => {
+    if (hasChart) setTab((t) => (t === "data" ? "chart" : t));
+    else setTab((t) => (t === "chart" ? "data" : t));
+  }, [hasChart, selectedId]);
+
   const outputs = spec?.outputs ?? [];
   const activePort = port ?? outputs[0]?.name ?? null;
 
@@ -76,6 +96,11 @@ export default function ResultsPanel() {
     <section className="results">
       <div className="results-bar">
         <div className="tabs">
+          {hasChart && (
+            <button className={tab === "chart" ? "active" : ""} onClick={() => setTab("chart")}>
+              Chart
+            </button>
+          )}
           <button className={tab === "data" ? "active" : ""} onClick={() => setTab("data")}>
             Data
           </button>
@@ -117,6 +142,10 @@ export default function ResultsPanel() {
                 </button>
               </span>
             )}
+            {copied && <span className="muted">{copied}</span>}
+            <button className="icon-btn" title="Copy all rows (paste into Excel)" disabled={!data} onClick={copyTable}>
+              {copied ? <Check size={14} /> : <Copy size={14} />}
+            </button>
             <button className="icon-btn" title="Refresh" onClick={() => setTick(tick + 1)}>
               <RefreshCw size={14} />
             </button>
@@ -136,6 +165,8 @@ export default function ResultsPanel() {
           </div>
         ) : !data ? (
           <div className="muted pad">{loading ? "Loading…" : result?.message || "No data."}</div>
+        ) : tab === "chart" && selectedId ? (
+          <ChartView node={selectedId} port={activePort} refresh={version * 1000 + tick + (lastRun ? 1 : 0)} />
         ) : tab === "data" ? (
           <Grid data={data} />
         ) : (

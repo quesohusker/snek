@@ -3,6 +3,7 @@ import { useFlow } from "../store";
 import { api } from "../api";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
 import { Field, type FieldCtx } from "./Fields";
+import { keyLabel } from "../paths";
 import type { NodeResult } from "../types";
 
 export default function ConfigPanel() {
@@ -12,6 +13,11 @@ export default function ConfigPanel() {
   const version = useFlow((s) => s.version);
   const updateConfig = useFlow((s) => s.updateConfig);
   const setLabel = useFlow((s) => s.setLabel);
+  const focusLabel = useFlow((s) => s.focusLabel);
+  const labelRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (focusLabel) setTimeout(() => labelRef.current?.select(), 30);
+  }, [focusLabel]);
   const [tab, setTab] = useState<"config" | "code">("config");
   const [schema, setSchema] = useState<NodeResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -44,15 +50,20 @@ export default function ConfigPanel() {
           <h4>Shortcuts</h4>
           <ul>
             <li>
-              <kbd>⌘</kbd> <kbd>Enter</kbd> run the workflow
+              <kbd>{keyLabel("mod+↵")}</kbd> run the workflow
             </li>
             <li>
-              <kbd>⌘</kbd> <kbd>S</kbd> save
+              <kbd>{keyLabel("mod+S")}</kbd> save
             </li>
             <li>
-              <kbd>Delete</kbd> remove selected tool or link
+              <kbd>{keyLabel("mod+Z")}</kbd> undo, <kbd>{keyLabel("mod+shift+Z")}</kbd> redo
             </li>
+            <li>
+              <kbd>{keyLabel("mod+C")}</kbd> <kbd>{keyLabel("mod+V")}</kbd> copy and paste tools
+            </li>
+            <li>Right-click a tool or the canvas for more</li>
           </ul>
+          <p className="muted">Help ▸ Keyboard shortcuts lists them all.</p>
           <h4>Expressions</h4>
           <p>
             Filter and Formula take pandas expressions. Write a column as <code>[Column Name]</code>. You can use <code>np</code>, <code>pd</code> and <code>iif(cond, a, b)</code>.
@@ -76,7 +87,7 @@ export default function ConfigPanel() {
           <div className="config-title">
             {spec.label} <span className="muted">#{node.id}</span>
           </div>
-          <input className="config-label" placeholder="Add a name" value={node.data.label} onChange={(e) => setLabel(node.id, e.target.value)} />
+          <input ref={labelRef} className="config-label" placeholder="Add a name" value={node.data.label} onChange={(e) => setLabel(node.id, e.target.value)} />
         </div>
       </header>
       <div className="tabs">

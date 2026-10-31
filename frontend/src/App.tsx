@@ -5,7 +5,8 @@ import { api } from "./api";
 import Toolbar from "./components/Toolbar";
 import CategoryBar from "./components/CategoryBar";
 import Dialogs from "./components/Dialogs";
-import { autosaveNow, runWorkflow, saveWorkflow } from "./commands";
+import { autosaveNow } from "./commands";
+import Shortcuts from "./components/Shortcuts";
 import Palette from "./components/Palette";
 import Canvas from "./components/Canvas";
 import ConfigPanel from "./components/ConfigPanel";
@@ -40,6 +41,7 @@ export default function App() {
   const stopped = useFlow((s) => s.stopped);
   const autosaveMinutes = useFlow((s) => s.settings?.autosave_minutes ?? 0);
   const dragging = useRef(false);
+  const panels = useFlow((s) => s.panels);
 
   useEffect(() => {
     Promise.all([api.tools(), api.project()])
@@ -56,7 +58,7 @@ export default function App() {
             .catch((e) => alert(`Could not open ${toOpen}: ${e.message}`));
         } else if (saved?.workflow && saved.project === project.path) {
           useFlow.getState().load(saved.workflow, saved.name, saved.filePath ?? null);
-          useFlow.setState({ dirty: !!saved.dirty });
+          useFlow.setState(saved.dirty ? { dirty: true, savedSig: "" } : { dirty: false });
         }
         useFlow.getState().loadRecent();
         api
@@ -101,21 +103,6 @@ export default function App() {
   }, [ready, autosaveMinutes]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!(e.metaKey || e.ctrlKey)) return;
-      if (e.key === "Enter") {
-        e.preventDefault();
-        runWorkflow();
-      } else if (e.key === "s") {
-        e.preventDefault();
-        saveWorkflow();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (!dragging.current) return;
       setHeight(Math.min(Math.max(window.innerHeight - e.clientY, 120), window.innerHeight - 200));
@@ -150,12 +137,13 @@ export default function App() {
 
   return (
     <ReactFlowProvider>
+      <Shortcuts />
       <div className="app">
         <Toolbar />
         <CategoryBar />
-        <div className="main">
-          <Palette />
-          <div className="center" style={{ gridTemplateRows: `minmax(0, 1fr) 6px ${height}px` }}>
+        <div className={`main${panels.palette ? "" : " no-palette"}${panels.config ? "" : " no-config"}`}>
+          {panels.palette && <Palette />}
+          <div className={`center${panels.results ? "" : " no-results"}`} style={{ gridTemplateRows: panels.results ? `minmax(0, 1fr) 6px ${height}px` : "minmax(0, 1fr)" }}>
             <Canvas />
             <div
               className="splitter"
@@ -166,7 +154,7 @@ export default function App() {
             />
             <ResultsPanel />
           </div>
-          <ConfigPanel />
+          {panels.config && <ConfigPanel />}
         </div>
         <Dialogs />
       </div>

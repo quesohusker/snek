@@ -9,16 +9,17 @@ from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import Body, FastAPI, HTTPException
+from fastapi import Body, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from snek.codegen import export_script
 from snek.engine import Engine
-from snek.paths import DIST
+from snek.paths import DIST, snek_home
 from snek.preview import preview
 from snek.projects import Projects
 from snek.runtime import output_path
+from snek import ai, connect
 from snek import settings as user_settings
 from snek import updates
 from snek.tools import CATEGORY_ORDER, TOOLS
@@ -121,6 +122,43 @@ def preview_node(
     payload["port"] = port
     payload["data"] = preview(df, offset, limit, profile) if df is not None else None
     return payload
+
+
+COPY_LIMIT = 100_000
+
+
+@app.post("/api/table")
+def table_text(workflow: dict = Body(...), node: str = Body(...), port: str | None = Body(None)):
+    ev = engine.evaluate(workflow, targets=[node], include_targets=True, run_side_effects=False)
+    res = ev.results.get(node)
+    if res is None or res.status != "ok":
+        raise HTTPException(400, res.error if res else "No such tool")
+    tool = TOOLS[ev.graph.nodes[node]["type"]]
+    if tool.outputs:
+        df = ev.frames.get((node, port if port in res.outputs else tool.outputs[0].name))
+    else:
+        frames = ev.input_frames.get(node, {}).get("in") or []
+        df = frames[0] if frames else None
+    if df is None:
+        raise HTTPException(400, "Nothing to copy")
+    return {"text": df.head(COPY_LIMIT).to_csv(sep="\t", index=False), "rows": int(min(len(df), COPY_LIMIT)), "total": int(len(df))}
+
+
+@app.post("/api/chart")
+def chart_specs(workflow: dict = Body(...), node: str = Body(...), port: str | None = Body(None)):
+    ev = engine.evaluate(workflow, targets=[node], include_targets=True, run_side_effects=False)
+    res = ev.results.get(node)
+    if res is None or res.status != "ok":
+        raise HTTPException(400, res.error if res else "No such tool")
+    tool = TOOLS[ev.graph.nodes[node]["type"]]
+    if tool.outputs:
+        df = ev.frames.get((node, port if port in res.outputs else tool.outputs[0].name))
+    else:
+        frames = ev.input_frames.get(node, {}).get("in") or []
+        df = frames[0] if frames else None
+    if df is None or "Vega-Lite" not in df.columns:
+        raise HTTPException(400, "No chart here")
+    return {"specs": [json.loads(s) for s in df["Vega-Lite"].head(20)]}
 
 
 @app.post("/api/export")
@@ -228,6 +266,48 @@ def put_settings(changes: dict = Body(...)):
     return {**saved, "autosave_folder": str(user_settings.autosave_folder())}
 
 
+@app.get("/api/ai")
+def ai_info():
+    keys = {k["name"]: k for k in connect.list_keys()}
+    anthropic_key = keys.get("anthropic", {"saved": False, "hint": "", "from_env": False})
+    return {"models": [{"value": k, "label": v} for k, v in user_settings.AI_MODELS.items()], "model": user_settings.load()["ai_model"], "key_saved": anthropic_key["saved"], "key_hint": anthropic_key["hint"], "key_from_env": bool(connect.api_key("anthropic")) and not anthropic_key["saved"]}
+
+
+@app.post("/api/ai/context")
+def ai_context(request: str = Body("", embed=True)):
+    info = projects.info()
+    return {"text": ai.context_message(request or "(your description)", projects.current, info["name"]), "catalog_chars": len(ai.tool_catalog())}
+
+
+@app.post("/api/ai/workflow")
+def ai_workflow(request: str = Body(...), model: str | None = Body(None)):
+    info = projects.info()
+    try:
+        return ai.create_workflow(request, projects.current, info["name"], model or user_settings.load()["ai_model"], engine=engine)
+    except ai.AIError as e:
+        raise HTTPException(400, str(e))
+
+
+@app.get("/api/connections")
+def get_connections():
+    return {"keys": connect.list_keys(), "file": str(connect.connections_path())}
+
+
+@app.put("/api/connections")
+def put_connection(name: str = Body(...), key: str = Body(...)):
+    try:
+        connect.set_key(name.strip().lower(), key)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    return get_connections()
+
+
+@app.delete("/api/connections/{name}")
+def delete_connection(name: str):
+    connect.delete_key(name)
+    return get_connections()
+
+
 @app.post("/api/autosave")
 def autosave(workflow: dict = Body(...), name: str = Body(...)):
     safe = re.sub(r"[^\w\- .(),'&+#]", "_", name).strip(" .")[:80] or "Untitled"
@@ -253,6 +333,28 @@ def save_file(path: str = Body(...), workflow: dict = Body(...)):
         target = target.with_name(target.name + EXT)
     write_workflow(target, workflow, workflow_name(target))
     return {"ok": True, "path": str(target), "name": workflow_name(target)}
+
+
+DATA_SUFFIXES = (".csv", ".tsv", ".txt", ".xlsx", ".xls", ".json", ".jsonl", ".ndjson", ".parquet", ".gz")
+
+
+@app.post("/api/upload")
+async def upload(request: Request, name: str):
+    safe = Path(name).name
+    if not safe or safe.startswith(".") or not safe.lower().endswith(DATA_SUFFIXES):
+        raise HTTPException(400, "Drop a CSV, TSV, Excel, JSON, JSON Lines or Parquet file")
+    body = await request.body()
+    folder = snek_home() / "uploads" if projects.info()["is_examples"] else Path(projects.current) / "data"
+    folder.mkdir(parents=True, exist_ok=True)
+    target = folder / safe
+    stem, suffix = safe.split(".", 1)[0], safe[len(safe.split(".", 1)[0]):]
+    n = 2
+    while target.exists() and target.read_bytes() != body:
+        target = folder / f"{stem} ({n}){suffix}"
+        n += 1
+    if not target.exists():
+        target.write_bytes(body)
+    return {"path": str(target), "name": target.name}
 
 
 @app.get("/api/fs")

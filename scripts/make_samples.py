@@ -334,6 +334,20 @@ def main():
         chain(1, 2, 3) + chain(4, 5, 6),
     )
 
+    build(
+        "Penguins - charts",
+        [
+            (1, "input", "Penguins", 0, 1.5, {"path": f"{PENGUINS}/penguins.csv"}),
+            (2, "chart", "Mass by species", 1, 0, {"kind": "bar", "x": "species", "y": "body_mass_g", "agg": "mean", "color": "species", "title": "Average body mass (g)"}),
+            (3, "chart", "Flipper vs mass", 1, 1, {"kind": "scatter", "x": "flipper_length_mm", "y": "body_mass_g", "color": "species"}),
+            (4, "chart", "Mass spread", 1, 2, {"kind": "histogram", "x": "body_mass_g", "color": "species", "bins": 25}),
+            (5, "chart", "Bill length", 1, 3, {"kind": "box", "x": "species", "y": "bill_length_mm"}),
+            (6, "union", "All charts", 2, 1.5, {}),
+            (7, "output", "Save as a web page", 3, 1.5, {"path": f"{OUT}/penguin charts.html", "format": "html"}),
+        ],
+        [(1, "out", n, "in") for n in (2, 3, 4, 5)] + [(n, "out", 6, "in") for n in (2, 3, 4, 5)] + [(6, "out", 7, "in")],
+    )
+
 
 if __name__ == "__main__":
     main()

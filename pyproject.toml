@@ -19,6 +19,7 @@ dependencies = [
     "pyarrow",
     "scikit-learn",
     "statsmodels",
+    "anthropic",
 ]
 
 [project.optional-dependencies]

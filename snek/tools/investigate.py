@@ -154,3 +154,55 @@ class ChiSquareTest(Tool):
 
     def summary(self, cfg):
         return short(f"{cfg['rows']} × {cfg['columns']}") if cfg["rows"] else ""
+
+
+@register
+class Chart(Tool):
+    type = "chart"
+    label = "Chart"
+    category = CATEGORY
+    description = "Bar, line, scatter, area, histogram, box plot or heat map. The chart shows in the results panel; connect Output Data with an .html path to save it."
+    needs = "Any table with the columns to plot. Charts embed up to the row limit, so summarize large data first."
+    fields = [
+        fld("kind", "Chart type", "select", "bar", options=opts(("bar", "Bar"), ("line", "Line"), ("scatter", "Scatter"), ("area", "Area"), ("histogram", "Histogram"), ("box", "Box plot"), ("heatmap", "Heat map"))),
+        fld("x", "X axis", "column", ""),
+        fld("y", "Y axis", "column", "", help="Leave blank to count rows. Histograms use only X; box plots use Y for the values and X for groups."),
+        fld("agg", "Combine Y values by", "select", "sum", options=opts(("none", "Don't combine"), ("sum", "Sum"), ("mean", "Average"), ("median", "Median"), ("min", "Minimum"), ("max", "Maximum"), ("count", "Count")), show_if={"kind": ["bar", "line", "area", "heatmap"]}),
+        fld("color", "Color by (optional)", "column", "", help="For a heat map, the value that sets each cell's color."),
+        fld("facet", "Small multiples by (optional)", "column", ""),
+        fld("bins", "Number of bins", "number", 20, show_if={"kind": ["histogram"]}),
+        fld("title", "Title (optional)", "text", ""),
+        fld("max_rows", "Plot at most this many rows", "number", 5000),
+    ]
+
+    def code(self, cfg, ctx):
+        if not cfg["x"]:
+            raise ToolError("Pick the column for the X axis")
+        if cfg["kind"] in ("scatter", "heatmap") and not cfg["y"]:
+            raise ToolError("Pick the column for the Y axis")
+        cols = [c for c in (cfg["x"], cfg["y"], cfg["color"], cfg["facet"]) if c]
+        ctx.require_columns(cols)
+        numeric = {"histogram": cfg["x"], "scatter": cfg["y"], "box": cfg["y"] or cfg["x"]}.get(cfg["kind"])
+        if numeric and not is_numeric(ctx.dtype(numeric)):
+            raise ToolError(f"{numeric} must be numeric for this chart")
+        args = [ctx.var(), repr(cfg["kind"]), repr(cfg["x"])]
+        if cfg["y"] and cfg["kind"] != "histogram":
+            args.append(f"y={cfg['y']!r}")
+        if cfg["kind"] in ("bar", "line", "area", "heatmap") and cfg["agg"] != "none" and (cfg["y"] or cfg["kind"] == "heatmap"):
+            args.append(f"agg={cfg['agg']!r}")
+        for key in ("color", "facet"):
+            if cfg[key]:
+                args.append(f"{key}={cfg[key]!r}")
+        if cfg["kind"] == "histogram":
+            args.append(f"bins={int(cfg['bins'] or 20)}")
+        if cfg["title"]:
+            args.append(f"title={cfg['title']!r}")
+        limit = int(cfg["max_rows"] or 5000)
+        if not 1 <= limit <= 100000:
+            raise ToolError("Plot between 1 and 100,000 rows")
+        if limit != 5000:
+            args.append(f"max_rows={limit}")
+        return f"{ctx.out()} = make_chart({', '.join(args)})"
+
+    def summary(self, cfg):
+        return short(f"{cfg['kind']}: {cfg['y'] or 'count'} by {cfg['x']}") if cfg["x"] else ""

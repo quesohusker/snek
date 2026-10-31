@@ -12,3 +12,4 @@ workflows/CFB*.snek
 *.egg-info/
 packaging/build/
 packaging/dist/
+*.tsbuildinfo

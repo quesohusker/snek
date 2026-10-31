@@ -37,6 +37,7 @@ import {
   Gauge,
   GitBranch,
   GitCompare,
+  Globe,
   Grid2x2,
   Grid2x2Check,
   Grid3x3,
@@ -186,10 +187,12 @@ const ICONS: Record<string, LucideIcon> = {
   pitching: CircleDot,
   volleyball_stats: Volleyball,
   sideout: ArrowLeftRight,
+  api_request: Globe,
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
   "In/Out": "var(--cat-io)",
+  "Data Connections": "var(--cat-connect)",
   Preparation: "var(--cat-prep)",
   Join: "var(--cat-join)",
   Parse: "var(--cat-parse)",
@@ -205,4 +208,13 @@ export const CATEGORY_COLORS: Record<string, string> = {
 export function ToolIcon({ type, size = 22 }: { type: string; size?: number }) {
   const Icon = ICONS[type] ?? Code;
   return <Icon size={size} strokeWidth={1.8} />;
+}
+
+const NAMED_ICONS: Record<string, LucideIcon> = { trophy: Trophy, globe: Globe, chart: ChartColumn, code: Code };
+
+export function registerToolLooks(tools: { type: string; category: string; icon?: string; color?: string }[]) {
+  for (const t of tools) {
+    if (!ICONS[t.type] && t.icon && NAMED_ICONS[t.icon]) ICONS[t.type] = NAMED_ICONS[t.icon];
+    if (!CATEGORY_COLORS[t.category] && t.color) CATEGORY_COLORS[t.category] = t.color;
+  }
 }

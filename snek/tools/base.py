@@ -122,6 +122,8 @@ class Tool:
     group = ""
     description = ""
     needs = ""
+    icon = ""
+    color = ""
     inputs = [Port("in")]
     outputs = [Port("out")]
     fields = []
@@ -150,6 +152,8 @@ class Tool:
             "group": self.group,
             "description": self.description,
             "needs": self.needs,
+            "icon": self.icon,
+            "color": self.color,
             "inputs": [asdict(p) for p in self.inputs],
             "outputs": [asdict(p) for p in self.outputs],
             "fields": self.fields,
