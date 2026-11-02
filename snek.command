@@ -17,6 +17,15 @@ if [ ! -x .venv/bin/python ]; then
   .venv/bin/python -m pip install --quiet --upgrade pip || exit 1
   .venv/bin/python -m pip install --quiet -e . || exit 1
 fi
+if ! .venv/bin/python -m snek --check quick >/dev/null 2>&1; then
+  echo "Snek needs to add or update some packages. They go into .venv. Your own Python is not changed."
+  .venv/bin/python -m pip install --quiet --upgrade -e . || exit 1
+  if ! .venv/bin/python -m snek --check; then
+    echo "Snek could not finish setting up. The list above shows what is wrong."
+    echo "If it does not clear, delete the .venv folder and start Snek again."
+    exit 1
+  fi
+fi
 if [ ! -f frontend/dist/index.html ]; then
   (cd frontend && npm ci --ignore-scripts && npm run build) || exit 1
 fi

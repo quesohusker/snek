@@ -22,7 +22,7 @@ from snek.paths import DIST, snek_home
 from snek.preview import preview
 from snek.projects import Projects
 from snek.runtime import output_path
-from snek import ai, connect, sandbox
+from snek import ai, connect, health, sandbox
 from snek import settings as user_settings
 from snek import updates
 from snek.tools import CATEGORY_ORDER, TOOLS
@@ -78,6 +78,11 @@ class LocalOnly:
 
 
 app.add_middleware(LocalOnly)
+
+
+@app.get("/api/health")
+def get_health(deep: bool = False):
+    return health.check(deep)
 
 
 @app.get("/api/project")

@@ -8,6 +8,14 @@ if not exist .venv\Scripts\python.exe goto nopython
 .venv\Scripts\python -m pip install --quiet -e .
 if errorlevel 1 goto failed
 :run
+.venv\Scripts\python -m snek --check quick >nul 2>&1
+if not errorlevel 1 goto start
+echo Snek needs to add or update some packages. They go into .venv. Your own Python is not changed.
+.venv\Scripts\python -m pip install --quiet --upgrade -e .
+if errorlevel 1 goto failed
+.venv\Scripts\python -m snek --check
+if errorlevel 1 goto failed
+:start
 .venv\Scripts\python -m snek %*
 goto :eof
 :nopython

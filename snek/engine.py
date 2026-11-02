@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass, field
 
 import pandas as pd
 
-from snek import sandbox
+from snek import health, sandbox
 from snek.runtime import NAMESPACE, output_path
 from snek.tools import TOOLS, Ctx, ToolError, output_var
 
@@ -260,6 +260,10 @@ def explain(exc, code, nid):
     msg = sandbox.rewrite(exc, plain)
     if msg != plain:
         return msg
+    if isinstance(exc, ModuleNotFoundError):
+        hint = health.import_hint(exc.name)
+        if hint:
+            return hint
     tb = traceback.extract_tb(exc.__traceback__)
     lines = code.splitlines()
     for frame in reversed(tb):

@@ -60,8 +60,15 @@ def main():
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--no-browser", action="store_true")
+    parser.add_argument("--check", nargs="?", const="deep", choices=["deep", "quick"], help="Check that every package Snek needs is installed, then exit. quick looks without importing")
     parser.add_argument("file", nargs="?", help="A .snek workflow to open")
     args, _ = parser.parse_known_args()
+    if args.check:
+        from snek import health
+
+        result = health.check(deep=args.check == "deep")
+        print(health.report(result))
+        sys.exit(0 if result["ok"] else 1)
     ensure_streams()
     trust_store()
     query = f"/?open={urllib.parse.quote(str(Path(args.file).expanduser().resolve()))}" if args.file else ""
