@@ -36,6 +36,7 @@ import {
   FolderSearch,
   Gauge,
   GitBranch,
+  GitPullRequest,
   GitCompare,
   Globe,
   Grid2x2,
@@ -188,6 +189,7 @@ const ICONS: Record<string, LucideIcon> = {
   volleyball_stats: Volleyball,
   sideout: ArrowLeftRight,
   api_request: Globe,
+  github: GitPullRequest,
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {

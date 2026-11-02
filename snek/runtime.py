@@ -385,6 +385,7 @@ HELPERS.update({
     "volleyball_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.volleyball_stats], [], [], []),
     "sideout_stats": ([sports_math.safe_div, sports_math.sideout_stats], [], [], []),
     "api_request": ([connect.api_key, connect.http_get, connect.json_frame, connect.api_request], ["io", "json", "os", "re", "urllib.error", "urllib.parse", "urllib.request"], [], []),
+    "github": ([connect.api_key, connect.json_frame, connect.github_next, connect.github_request, connect.github_file, connect.github], ["io", "json", "os", "re", "time", "urllib.error", "urllib.parse", "urllib.request", "warnings"], [], []),
 })
 
 NAMESPACE = {
@@ -413,6 +414,7 @@ NAMESPACE = {
     **{name: getattr(modeling, name) for name in ["linear_model_row", "fit_supervised", "fit_logistic", "score_model", "compare_models", "split_samples", "kmeans_cluster", "principal_components", "fill_periods", "ets_forecast", "arima_forecast", "fit_estimator", "fit_regularized", "fit_glm", "cross_validate", "vif_table", "test_of_means", "chi_square_test", "seasonal_decompose", "compare_forecast", "cluster_diagnostics", "hierarchical_cluster", "nearest_neighbors", "team_ratings", "elo_ratings"]},
     **{name: getattr(sports_math, name) for name in ["opponent_adjust", "game_predictions", "simulate_season", "pythagorean", "football_efficiency", "four_factors", "shooting_stats", "batting_stats", "pitching_stats", "volleyball_stats", "sideout_stats"]},
     "api_request": connect.api_request,
+    "github": connect.github,
 }
 
 

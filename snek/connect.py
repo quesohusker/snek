@@ -2,9 +2,11 @@ import io
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import warnings
 
 import pandas as pd
 
@@ -12,7 +14,13 @@ from snek.paths import snek_home
 
 NAME_RE = re.compile(r"^[a-z0-9_-]{1,40}$")
 DECLARED = {}
-HOSTS = {"anthropic": "api.anthropic.com"}
+HOSTS = {"anthropic": "api.anthropic.com", "github": "api.github.com"}
+DECLARED["github"] = {
+    "label": "GitHub token",
+    "section": "GitHub",
+    "url": "https://github.com/settings/personal-access-tokens",
+    "help": "Optional. Public repositories work without a token, but GitHub limits how many requests an anonymous user can make. A private repository needs a token with read access to it. The token only goes to api.github.com.",
+}
 
 
 def declare_connection(name, label, section, url="", help="", host=""):
@@ -144,3 +152,109 @@ def api_request(url, params=None, auth="none", key="", header="X-API-Key", recor
     if fmt == "csv":
         return pd.read_csv(io.StringIO(text))
     return json_frame(json.loads(text), records)
+
+
+def github_next(link):
+    for part in link.split(","):
+        pieces = part.split(";")
+        if len(pieces) > 1 and 'rel="next"' in pieces[1]:
+            return pieces[0].strip().strip("<>")
+    return ""
+
+
+def github_request(url, params=None, token="", raw=False):
+    query = urllib.parse.urlencode({k: v for k, v in (params or {}).items() if v not in (None, "")})
+    headers = {"Accept": "application/vnd.github.raw+json" if raw else "application/vnd.github+json", "User-Agent": "Snek"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    request = urllib.request.Request(url + (("&" if "?" in url else "?") + query if query else ""), headers=headers)
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            return response.read(), response.headers.get("Link", "")
+    except urllib.error.HTTPError as e:
+        if e.code in (403, 429) and e.headers.get("X-RateLimit-Remaining") == "0":
+            reset = e.headers.get("X-RateLimit-Reset", "")
+            when = time.strftime("%H:%M", time.localtime(int(reset))) if reset.isdigit() else "later"
+            hint = "" if token else " Save a GitHub token in Edit ▸ Settings to raise the limit."
+            raise ValueError(f"GitHub rate limit reached. It resets at {when}.{hint}") from None
+        if e.code == 401:
+            raise ValueError("GitHub rejected the saved token. Save a new one in Edit ▸ Settings." if token else "This needs a GitHub token. Save one in Edit ▸ Settings.") from None
+        if e.code == 404:
+            hint = "" if token else " A private repository needs a saved GitHub token."
+            raise ValueError(f"GitHub could not find that. Check the owner, repository and path.{hint}") from None
+        detail = e.read().decode("utf-8", errors="replace").strip()[:200]
+        if token:
+            detail = detail.replace(token, "…")
+        raise ValueError(f"{e.code} {e.reason} from GitHub" + (f": {detail}" if detail else "")) from None
+    except urllib.error.URLError as e:
+        raise ValueError(f"Could not reach GitHub: {e.reason}") from None
+
+
+def github_file(data, name, fmt="auto"):
+    kinds = {".csv": "csv", ".txt": "csv", ".tsv": "tsv", ".tab": "tsv", ".json": "json", ".jsonl": "jsonl", ".ndjson": "jsonl", ".xlsx": "excel", ".xlsm": "excel", ".xls": "excel", ".parquet": "parquet", ".pq": "parquet"}
+    kind = fmt if fmt != "auto" else kinds.get(os.path.splitext(name)[1].lower(), "csv")
+    buf = io.BytesIO(data)
+    if kind in ("csv", "tsv"):
+        return pd.read_csv(buf, sep="\t" if kind == "tsv" else ",")
+    if kind == "excel":
+        return pd.read_excel(buf)
+    if kind == "parquet":
+        return pd.read_parquet(buf)
+    if kind == "jsonl":
+        return pd.read_json(buf, lines=True)
+    return json_frame(json.loads(data))
+
+
+def github(what, owner="", repo="", path="", ref="", state="all", limit=500, fmt="auto", key="github"):
+    token = api_key(key)
+    api = "https://api.github.com"
+    owner, repo, path = str(owner or "").strip(), str(repo or "").strip(), str(path or "").strip().strip("/")
+    where = f"{api}/repos/{urllib.parse.quote(owner)}/{urllib.parse.quote(repo)}"
+    if what == "file":
+        data, _ = github_request(f"{where}/contents/{urllib.parse.quote(path)}", {"ref": ref}, token, raw=True)
+        return github_file(data, path, fmt)
+    urls = {
+        "repos": f"{api}/users/{urllib.parse.quote(owner)}/repos" if owner else f"{api}/user/repos",
+        "issues": f"{where}/issues",
+        "pulls": f"{where}/pulls",
+        "commits": f"{where}/commits",
+        "releases": f"{where}/releases",
+        "files": f"{where}/contents/{urllib.parse.quote(path)}",
+    }
+    columns = {
+        "repos": ["name", "full_name", "private", "description", "language", "stargazers_count", "forks_count", "open_issues_count", "default_branch", "archived", "created_at", "updated_at", "pushed_at", "owner.login", "html_url"],
+        "issues": ["number", "title", "state", "is_pull_request", "user.login", "labels", "assignee.login", "comments", "created_at", "updated_at", "closed_at", "html_url", "body"],
+        "pulls": ["number", "title", "state", "draft", "user.login", "head.ref", "base.ref", "created_at", "updated_at", "closed_at", "merged_at", "html_url"],
+        "commits": ["sha", "commit.author.name", "commit.author.date", "commit.message", "author.login", "html_url"],
+        "releases": ["tag_name", "name", "draft", "prerelease", "published_at", "author.login", "html_url"],
+        "files": ["name", "path", "type", "size", "sha", "download_url"],
+    }[what]
+    params = {"per_page": 100}
+    if what in ("issues", "pulls"):
+        params["state"] = state
+    elif what == "commits":
+        params["sha"] = ref
+    elif what == "files":
+        params = {"ref": ref}
+    elif what == "repos" and not owner:
+        params["sort"] = "updated"
+    rows, url, more = [], urls[what], False
+    while url:
+        data, link = github_request(url, params, token)
+        page = json.loads(data)
+        rows += page if isinstance(page, list) else [page]
+        url, params = github_next(link), None
+        if len(rows) >= limit:
+            more = bool(url)
+            break
+    if more:
+        warnings.warn(f"Stopped at {limit} rows. Raise the row limit to fetch more.")
+    rows = rows[:limit]
+    frame = json_frame(rows)
+    if what == "issues" and len(frame):
+        frame["is_pull_request"] = frame["pull_request.url"].notna() if "pull_request.url" in frame else False
+    if "labels" in frame:
+        frame["labels"] = frame["labels"].map(lambda v: ", ".join(x.get("name", "") for x in v) if isinstance(v, list) else "")
+    if not len(frame):
+        return pd.DataFrame(columns=columns)
+    return frame[[c for c in columns if c in frame.columns]].reset_index(drop=True)

@@ -42,11 +42,11 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-96 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
+97 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Steps |
 |---|---|
-| Open & Save | Open File, Type or Paste Data, Save File, List Files, Read Listed Files, Current Time, Make a Sequence, Web API |
+| Open & Save | Open File, Type or Paste Data, Save File, List Files, Read Listed Files, Current Time, Make a Sequence, Web API, GitHub |
 | Rows | Keep Rows, Sort Rows, Take Rows, Rows by Position, Find Duplicates, Number Rows, Rank Rows, Bucket Values |
 | Columns | Choose Columns, Calculate, Calculate Many Columns, Use Previous Rows, Cumulative Total, Rename Many Columns, Choose Columns by Rule, Column List |
 | Clean | Tidy Up, Detect Types, Fill Blanks, Replace Text, Split Text, Text Pattern, Dates and Times, Read JSON Text, One Row per Item, Spread Out Fields |
@@ -102,6 +102,8 @@ Click **Create with AI** in the toolbar, or choose **Workflow ▸ Create workflo
 ## Data Connections
 
 **API Request** downloads JSON or CSV from any other web API. If the API needs a key, save the key under a name in the same Settings section and give that name to the tool.
+
+**GitHub** reads a user's or organization's repositories, a repository's issues, pull requests, commits and releases, a folder listing, or a data file (CSV, TSV, Excel, JSON, JSON Lines or Parquet) stored in a repository. Public data works with no setup. For private repositories, save a GitHub token in **Edit ▸ Settings ▸ GitHub**. Give the token read access to the repositories you want to read. The token goes only to `api.github.com`. GitHub limits anonymous requests per hour; the tool says when you hit the limit. It reads only. It never commits or changes anything on GitHub.
 
 Keys stay on your computer in `~/.snek/connections.json`. They never go into workflow files or exported scripts. An exported script reads the same file, or an environment variable named after the key, such as `WEATHER_API_KEY`.
 
