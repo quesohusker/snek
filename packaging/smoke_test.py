@@ -47,12 +47,15 @@ def main(executable):
         export_flow = {
             "nodes": [
                 {"id": "1", "type": "text_input", "config": {"data": "name,sales,day\n  Ann Lee ,120.456,2024-03-05\nbob,80,2024-12-31"}},
-                {"id": "2", "type": "formula", "config": {"formulas": [{"column": "tidy", "expression": "PROPER(TRIM([name]))", "dtype": ""}, {"column": "level", "expression": 'IF([sales] > 100, "high", "low")', "dtype": ""}, {"column": "flag", "expression": "iif([sales] > 100, 1, 0)", "dtype": ""}]}},
+                {"id": "2", "type": "formula", "config": {"formulas": [{"column": "tidy", "expression": "PROPER(TRIM([name]))", "dtype": ""}, {"column": "level", "expression": 'IF([sales] > 100, "high", "low")', "dtype": ""}, {"column": "flag", "expression": "iif([sales] > 100, 1, 0)", "dtype": ""}, {"column": "p", "expression": "NORM.DIST([sales], 100, 20, TRUE)", "dtype": ""}, {"column": "tot", "expression": "SUMIF([name], [name], [sales])", "dtype": ""}, {"column": "pay", "expression": "PMT(0.05 / 12, 12, [sales])", "dtype": ""}]}},
             ],
             "edges": [{"source": "1", "sourceHandle": "out", "target": "2", "targetHandle": "in"}],
         }
         script = call("/api/export", {"workflow": export_flow, "name": "smoke"})["code"]
         assert "def PROPER" in script and "def IF" in script and "def iif" in script, "Export Python did not include the helper functions"
+        assert "def NORM_DIST" in script and "def SUMIF" in script and "scipy" in script.split('"""')[1], "Export Python lost the statistics functions"
+        ran = call("/api/run", {"workflow": export_flow})["results"]["2"]
+        assert ran["status"] == "ok", ran["error"]
         notebook = json.loads(call("/api/export", {"workflow": export_flow, "name": "smoke", "fmt": "ipynb"})["code"])
         assert notebook["nbformat"] == 4 and len(notebook["cells"]) == 7, "Notebook export is wrong"
         print("export: ok")

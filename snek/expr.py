@@ -4,7 +4,7 @@ import re
 from snek.fx import DOTTED
 
 IDENT_LIKE = re.compile(r"^[A-Za-z_][\w .\-]*$")
-CALL = re.compile(r"[A-Z][A-Z0-9_]*(?:\.[A-Z][A-Z0-9_]*)*(?=\s*\()")
+CALL = re.compile(r"[A-Z][A-Z0-9_]*(?:\.[A-Z0-9_]+)*(?=\s*\()")
 LOGICAL = re.compile(r"(TRUE|FALSE)\b(?!\s*\()")
 
 

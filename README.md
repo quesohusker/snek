@@ -92,7 +92,7 @@ You can use `pd`, `np` and `iif(condition, then, else)`. Snek suggests a fix whe
 
 ### Spreadsheet functions
 
-Expressions also know 138 spreadsheet functions with Excel's names and rules: `IF`, `IFS`, `IFERROR`, `SWITCH`, `LEFT`, `TRIM`, `TEXT`, `DATE`, `EDATE`, `NETWORKDAYS`, `WORKDAY`, `ROUND`, `CEILING`, `MOD` and more. The groups are Logical, Information, Text, Date and time, Math and trigonometry, and Engineering. Click **Functions** under an expression box to search them by name or by plain words ("remove spaces" finds `TRIM`). Type a name in capitals and press Tab to complete it.
+Expressions also know 305 spreadsheet functions with Excel's names and rules: `IF`, `IFS`, `IFERROR`, `SWITCH`, `LEFT`, `TRIM`, `TEXT`, `DATE`, `WORKDAY`, `ROUND`, `SUMIF`, `COUNTIFS`, `STDEV.S`, `PERCENTILE.INC`, `NORM.DIST`, `T.TEST`, `PMT`, `IRR`, `MATCH`, `XMATCH`, `INDEX` and more. The groups are Logical, Information, Text, Date and time, Math and trigonometry, Statistical, Distributions, Financial, Lookup, and Engineering. 39 old Excel names such as `STDEV` and `NORMDIST` work too. Click **Functions** under an expression box to search them by name or by plain words ("remove spaces" finds `TRIM`). Type a name in capitals and press Tab to complete it.
 
 ```
 IF([sales] > 100, "high", "low")
@@ -100,17 +100,25 @@ ROUND([price] * 1.08, 2)
 TEXT([game_date], "mmm d, yyyy")
 WORKDAY([ordered], 3)
 [sales] / SUM([sales])
+SUMIF([region], [region], [sales])
+PMT([rate] / 12, [months], [amount])
+NORM.DIST([score], AVERAGE([score]), STDEV.S([score]), TRUE)
 ```
 
 - Write names in capitals, with the dot where Excel has one: `CEILING.MATH`, `NETWORKDAYS.INTL`. Snek also accepts `TRUE`, `FALSE` and `<>`. Lowercase `round`, `sum` and `max` stay Python's own.
-- Most functions work row by row on a column. `SUM`, `PRODUCT`, `SUMSQ` and `SUMPRODUCT` give one number, so `[sales] / SUM([sales])` is each row's share of the total.
+- Most functions work row by row on a column. The summary functions (`SUM`, `AVERAGE`, `MEDIAN`, `STDEV.S`, `CORREL`, `SLOPE`, `IRR` and the like) read the whole column and give one number, so `[sales] / SUM([sales])` is each row's share of the total. A few give a column back: `TREND`, `FREQUENCY`.
+- The criteria functions (`SUMIF`, `COUNTIF`, `AVERAGEIF`, `SUMIFS`, `COUNTIFS`, `AVERAGEIFS`, `MAXIFS`, `MINIFS`) take Excel's criteria: `">5"`, `"<>West"`, `"w*"`, `""`. Give a column as the criteria and each row gets the answer for its own value, like a spreadsheet's formula filled down: `SUMIF([region], [region], [sales])` is each row's region total. The columns must have the same length.
+- In a column that holds numbers and other things, the summary functions skip text, blanks and True/False, as Excel does. A column that is all True/False adds as 1 and 0, so `SUM([flag])` counts the true rows. Text that looks like a number is skipped inside a column; a value written straight in the formula, such as `SUM(1, "2")`, is read as a number.
+- `MATCH`, `XMATCH`, `INDEX` and `LOOKUP` count positions from 1. Give a column as the lookup value to look up every row. A blank in a looked-up column stays blank, where Excel shows 0. Searches that need a sorted list (`MATCH` type 1 or -1, `LOOKUP`) give a blank when the value is out of range.
+- `IRR`, `XIRR`, `RATE` and `MIRR` solve for the rate. They agree with Excel to about 7 digits, because Excel stops its search early.
+- The distribution functions use scipy, which the apps already include. Exported scripts that use them list scipy at the top.
 - Dates are real dates, not day numbers. `TIME` gives a time of day you can add to a date. A text such as `"2024-03-05"` works wherever a date is expected.
 - A blank in gives a blank out. The exceptions follow Excel: `LEN`, `CONCAT`, `TEXTJOIN` and `ISBLANK` treat a blank as empty text, and `N` gives 0. An error such as a negative square root gives a blank. `IFERROR` replaces a blank or an infinite result, so it cannot tell an error from a real blank.
 - `RAND()` gives one number. Pass a column to get a new number on every row: `RAND([id])`. For repeatable draws use Random Data.
 - `CHAR` and `CODE` use Windows-1252 on every computer. `TEXT` does not support fraction formats such as `# ?/?`. `VALUE` reads `1/2` as an error, where Excel reads it as a date. A whole-number column keeps every digit when it becomes text. Excel cuts a typed constant to 15 digits.
 - Exported scripts carry only the functions the workflow uses.
 
-The functions were checked against Microsoft Excel for Mac 16.113.2 with about 1,200 formulas: many of the worked examples in Microsoft's function pages, and edge cases such as leap days, ties in rounding, negative numbers and blanks. The Excel answers are stored in `tests/data/excel_fx.json`, so the check runs without Excel.
+The functions were checked against Microsoft Excel for Mac 16.113.2 with about 2,500 formulas: many of the worked examples in Microsoft's function pages, and edge cases such as leap days, ties in rounding, negative numbers, mixed columns and blanks. The Excel answers are stored in `tests/data/excel_fx.json` and `tests/data/excel_fx_ranges.json`, so the check runs without Excel. Each place where Snek chooses to differ is listed in those files with its reason.
 
 Use Previous Rows reaches into other rows with `[Row-1:column]` and `[Row+1:column]`, for example `[pts] - [Row-1:pts]` for the change since the last game. Calculate Many Columns applies one expression to many columns, with `[_CurrentField_]` standing for each column in turn.
 

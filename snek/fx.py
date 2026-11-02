@@ -75,12 +75,7 @@ def _vec(func, *args):
 
 
 def _flat(args):
-    parts = []
-    for a in args:
-        s = a if isinstance(a, pd.Series) else pd.Series(list(a) if _is_seq(a) else [a])
-        parts.append(_f64(s))
-    v = np.concatenate(parts) if parts else np.array([], dtype="float64")
-    return v[~np.isnan(v)]
+    return _values(args)
 
 
 def _truth(s):
@@ -1751,6 +1746,1537 @@ def CONVERT(number, from_unit, to_unit):
     return _each(one, number, from_unit, to_unit)
 
 
+
+def _sp():
+    from scipy import special, stats
+
+    return special, stats
+
+
+def _range_f64(s):
+    kind = s.dtype.kind if isinstance(s.dtype, np.dtype) else "O"
+    if kind == "M":
+        return s.map(lambda t: np.nan if pd.isna(t) else _serial(t)).to_numpy(dtype="float64")
+    if kind in "biuf":
+        return _f64(s)
+    if kind == "m":
+        return np.full(len(s), np.nan)
+    if isinstance(s.dtype, pd.api.extensions.ExtensionDtype) and not pd.api.types.is_string_dtype(s.dtype):
+        return _f64(s)
+    return np.fromiter((float(v) if isinstance(v, (int, float, np.integer, np.floating)) and not isinstance(v, (bool, np.bool_)) else (_serial(v) if isinstance(v, pd.Timestamp) else np.nan) for v in s), dtype="float64", count=len(s))
+
+
+def _values(args, text_zero=False):
+    parts = []
+    for a in args:
+        if isinstance(a, (pd.Series, pd.Index, list, tuple, np.ndarray)):
+            s = a if isinstance(a, pd.Series) else pd.Series(list(a))
+            if text_zero:
+                parts.append(np.array([_a_value(v) for v in s if not _blank(v)], dtype="float64"))
+            else:
+                parts.append(_range_f64(s))
+        else:
+            parts.append(np.array([_a_value(a, True)], dtype="float64") if text_zero else _f64(pd.Series([a])))
+    v = np.concatenate(parts) if parts else np.array([], dtype="float64")
+    return v[~np.isnan(v)]
+
+
+def _a_value(v, direct=False):
+    if isinstance(v, (bool, np.bool_)):
+        return float(v)
+    if isinstance(v, str):
+        if direct:
+            return _strict_number(v)
+        return 0.0
+    if isinstance(v, pd.Timestamp):
+        return _serial(v)
+    return float(v)
+
+
+def AVERAGE(*numbers):
+    v = _values(numbers)
+    return float(v.mean()) if len(v) else np.nan
+
+
+def AVERAGEA(*values):
+    v = _values(values, True)
+    return float(v.mean()) if len(v) else np.nan
+
+
+def MEDIAN(*numbers):
+    v = _values(numbers)
+    return float(np.median(v)) if len(v) else np.nan
+
+
+def MODE_SNGL(*numbers):
+    v = _values(numbers)
+    if not len(v):
+        return np.nan
+    seen = {}
+    for x in v:
+        seen[x] = seen.get(x, 0) + 1
+    top = max(seen.values())
+    if top < 2:
+        return np.nan
+    return float(next(x for x in v if seen[x] == top))
+
+
+def _extreme(args, func, text_zero):
+    dates = [a for a in args if isinstance(a, pd.Series) and isinstance(a.dtype, np.dtype) and a.dtype.kind == "M"]
+    if dates and len(dates) == len(args):
+        stamps = pd.concat(dates).dropna()
+        return (stamps.min() if func is np.min else stamps.max()) if len(stamps) else pd.NaT
+    v = _values(args, text_zero)
+    return float(func(v)) if len(v) else 0.0
+
+
+def MIN(*numbers):
+    return _extreme(numbers, np.min, False)
+
+
+def MAX(*numbers):
+    return _extreme(numbers, np.max, False)
+
+
+def MINA(*values):
+    return _extreme(values, np.min, True)
+
+
+def MAXA(*values):
+    return _extreme(values, np.max, True)
+
+
+def COUNT(*values):
+    return float(len(_values(values)))
+
+
+def COUNTA(*values):
+    total = 0
+    for a in values:
+        if _is_seq(a):
+            total += sum(1 for v in (a if isinstance(a, pd.Series) else pd.Series(list(a))) if not _blank(v))
+        else:
+            total += 0 if _blank(a) else 1
+    return float(total)
+
+
+def COUNTBLANK(range):
+    s = range if isinstance(range, pd.Series) else pd.Series(list(range) if _is_seq(range) else [range])
+    return float(sum(1 for v in s if _blank(v) or (isinstance(v, str) and v == "")))
+
+
+def _spread(numbers, ddof, minimum):
+    v = _values(numbers)
+    return v, len(v) >= minimum
+
+
+def STDEV_S(*numbers):
+    v, ok = _spread(numbers, 1, 2)
+    return float(v.std(ddof=1)) if ok else np.nan
+
+
+def STDEV_P(*numbers):
+    v, ok = _spread(numbers, 0, 1)
+    return float(v.std(ddof=0)) if ok else np.nan
+
+
+def VAR_S(*numbers):
+    v, ok = _spread(numbers, 1, 2)
+    return float(v.var(ddof=1)) if ok else np.nan
+
+
+def VAR_P(*numbers):
+    v, ok = _spread(numbers, 0, 1)
+    return float(v.var(ddof=0)) if ok else np.nan
+
+
+def SKEW(*numbers):
+    v = _values(numbers)
+    n = len(v)
+    sd = v.std(ddof=1) if n > 1 else 0
+    if n < 3 or sd == 0:
+        return np.nan
+    return float(n / ((n - 1) * (n - 2)) * (((v - v.mean()) / sd) ** 3).sum())
+
+
+def SKEW_P(*numbers):
+    v = _values(numbers)
+    sd = v.std(ddof=0) if len(v) else 0
+    if len(v) < 1 or sd == 0:
+        return np.nan
+    return float((((v - v.mean()) / sd) ** 3).mean())
+
+
+def KURT(*numbers):
+    v = _values(numbers)
+    n = len(v)
+    sd = v.std(ddof=1) if n > 1 else 0
+    if n < 4 or sd == 0:
+        return np.nan
+    return float(n * (n + 1) / ((n - 1) * (n - 2) * (n - 3)) * (((v - v.mean()) / sd) ** 4).sum() - 3 * (n - 1) ** 2 / ((n - 2) * (n - 3)))
+
+
+def DEVSQ(*numbers):
+    v = _values(numbers)
+    return float(((v - v.mean()) ** 2).sum()) if len(v) else np.nan
+
+
+def AVEDEV(*numbers):
+    v = _values(numbers)
+    return float(np.abs(v - v.mean()).mean()) if len(v) else np.nan
+
+
+def GEOMEAN(*numbers):
+    v = _values(numbers)
+    return float(np.exp(np.log(v).mean())) if len(v) and (v > 0).all() else np.nan
+
+
+def HARMEAN(*numbers):
+    v = _values(numbers)
+    return float(len(v) / (1 / v).sum()) if len(v) and (v > 0).all() else np.nan
+
+
+def TRIMMEAN(array, percent):
+    v = np.sort(_values((array,)))
+    p = float(percent)
+    if not len(v) or p < 0 or p >= 1:
+        return np.nan
+    cut = int(math.floor(len(v) * p + 1e-12)) // 2
+    return float(v[cut:len(v) - cut].mean())
+
+
+def _interp_percentile(v, k, exclusive):
+    n = len(v)
+    if n == 0 or math.isnan(k):
+        return np.nan
+    if exclusive:
+        if k < 1 / (n + 1) or k > n / (n + 1):
+            return np.nan
+        rank = k * (n + 1)
+        lo = int(math.floor(rank + 1e-12))
+        frac = rank - lo
+        if lo >= n:
+            return float(v[n - 1])
+        return float(v[lo - 1] + frac * (v[lo] - v[lo - 1]))
+    if k < 0 or k > 1:
+        return np.nan
+    rank = k * (n - 1)
+    lo = int(math.floor(rank + 1e-12))
+    frac = rank - lo
+    if lo >= n - 1:
+        return float(v[n - 1])
+    return float(v[lo] + frac * (v[lo + 1] - v[lo]))
+
+
+def _percentile(array, k, exclusive):
+    v = np.sort(_values((array,)))
+    return _each(lambda kk: _interp_percentile(v, _num1(kk), exclusive), k)
+
+
+def PERCENTILE_INC(array, k):
+    return _percentile(array, k, False)
+
+
+def PERCENTILE_EXC(array, k):
+    return _percentile(array, k, True)
+
+
+def QUARTILE_INC(array, quart):
+    v = np.sort(_values((array,)))
+
+    def one(q):
+        k = int(_num1(q))
+        if k < 0 or k > 4:
+            return np.nan
+        return _interp_percentile(v, k / 4, False)
+
+    return _each(one, quart)
+
+
+def QUARTILE_EXC(array, quart):
+    v = np.sort(_values((array,)))
+
+    def one(q):
+        k = int(_num1(q))
+        if k < 1 or k > 3:
+            return np.nan
+        return _interp_percentile(v, k / 4, True)
+
+    return _each(one, quart)
+
+
+def _percent_rank(array, x, significance, exclusive):
+    v = np.sort(_values((array,)))
+    n = len(v)
+    digits = int(significance)
+    if digits < 1:
+        raise ValueError("significance")
+
+    def one(xx):
+        t = _num1(xx)
+        if n == 0 or t < v[0] or t > v[-1]:
+            raise ValueError("range")
+        if (v == t).any():
+            if n == 1:
+                return 1.0
+            position = float((v < t).sum())
+        else:
+            lo, hi = v[v < t].max(), v[v > t].min()
+            last_lo = float((v <= lo).sum() - 1)
+            first_hi = float((v < hi).sum())
+            position = last_lo + (t - lo) / (hi - lo) * (first_hi - last_lo)
+        r = (position + 1) / (n + 1) if exclusive else position / (n - 1)
+        scale = 10.0 ** digits
+        return float(np.floor(_snap(np.array(r * scale))) / scale)
+
+    return _each(one, x)
+
+
+def PERCENTRANK_INC(array, x, significance=3):
+    return _percent_rank(array, x, significance, False)
+
+
+def PERCENTRANK_EXC(array, x, significance=3):
+    return _percent_rank(array, x, significance, True)
+
+
+def _rank(number, ref, order, average):
+    v = _values((ref,))
+    ascending = bool(_num1(order))
+
+    def one(x):
+        t = _num1(x)
+        ties = int((v == t).sum())
+        if ties == 0:
+            raise ValueError("not found")
+        first = int((v < t).sum() if ascending else (v > t).sum()) + 1
+        return first + (ties - 1) / 2 if average else first
+
+    return _each(one, number)
+
+
+def RANK_EQ(number, ref, order=0):
+    return _rank(number, ref, order, False)
+
+
+def RANK_AVG(number, ref, order=0):
+    return _rank(number, ref, order, True)
+
+
+def _kth(array, k, largest):
+    v = np.sort(_values((array,)))
+
+    def one(kk):
+        kv = _num1(kk)
+        if kv < 1:
+            raise ValueError("k")
+        pos = int(math.ceil(kv - 1e-12)) if largest else int(math.floor(kv + 1e-12))
+        if pos > len(v):
+            raise ValueError("k")
+        return float(v[-pos] if largest else v[pos - 1])
+
+    return _each(one, k)
+
+
+def LARGE(array, k):
+    return _kth(array, k, True)
+
+
+def SMALL(array, k):
+    return _kth(array, k, False)
+
+
+def STANDARDIZE(x, mean, standard_dev):
+    return _vec(lambda a, m, s: np.where(s > 0, (a - m) / np.where(s > 0, s, 1.0), np.nan), x, mean, standard_dev)
+
+
+def _pairs(array1, array2):
+    a = array1 if isinstance(array1, pd.Series) else pd.Series(list(array1))
+    b = array2 if isinstance(array2, pd.Series) else pd.Series(list(array2))
+    if len(a) != len(b):
+        raise ValueError("arrays differ in size")
+    x, y = _range_f64(a), _range_f64(b)
+    keep = ~(np.isnan(x) | np.isnan(y))
+    return x[keep], y[keep]
+
+
+def CORREL(array1, array2):
+    x, y = _pairs(array1, array2)
+    if len(x) < 2 or x.std() == 0 or y.std() == 0:
+        return np.nan
+    return float(np.corrcoef(x, y)[0, 1])
+
+
+def PEARSON(array1, array2):
+    return CORREL(array1, array2)
+
+
+def COVARIANCE_P(array1, array2):
+    x, y = _pairs(array1, array2)
+    return float(((x - x.mean()) * (y - y.mean())).mean()) if len(x) else np.nan
+
+
+def COVARIANCE_S(array1, array2):
+    x, y = _pairs(array1, array2)
+    return float(((x - x.mean()) * (y - y.mean())).sum() / (len(x) - 1)) if len(x) > 1 else np.nan
+
+
+def _line(known_y, known_x):
+    x, y = _pairs(known_x, known_y)
+    if len(x) < 2:
+        raise ValueError("too few points")
+    sxx = ((x - x.mean()) ** 2).sum()
+    if sxx == 0:
+        raise ValueError("constant x")
+    slope = ((x - x.mean()) * (y - y.mean())).sum() / sxx
+    return slope, y.mean() - slope * x.mean(), x, y
+
+
+def SLOPE(known_y_s, known_x_s):
+    try:
+        return float(_line(known_y_s, known_x_s)[0])
+    except ValueError:
+        return np.nan
+
+
+def INTERCEPT(known_y_s, known_x_s):
+    try:
+        return float(_line(known_y_s, known_x_s)[1])
+    except ValueError:
+        return np.nan
+
+
+def RSQ(known_y_s, known_x_s):
+    r = CORREL(known_y_s, known_x_s)
+    return r * r
+
+
+def STEYX(known_y_s, known_x_s):
+    try:
+        slope, intercept, x, y = _line(known_y_s, known_x_s)
+    except ValueError:
+        return np.nan
+    if len(x) < 3:
+        return np.nan
+    return float(np.sqrt(((y - (intercept + slope * x)) ** 2).sum() / (len(x) - 2)))
+
+
+def FORECAST_LINEAR(x, known_y_s, known_x_s):
+    try:
+        slope, intercept, _, _ = _line(known_y_s, known_x_s)
+    except ValueError:
+        return np.nan
+    return _vec(lambda t: intercept + slope * t, x)
+
+
+def TREND(known_y_s, known_x_s=None, new_x_s=None, const=True):
+    y = known_y_s if isinstance(known_y_s, pd.Series) else pd.Series(list(known_y_s))
+    x = pd.Series(np.arange(1, len(y) + 1), index=y.index) if known_x_s is None else (known_x_s if isinstance(known_x_s, pd.Series) else pd.Series(list(known_x_s)))
+    target = x if new_x_s is None else (new_x_s if isinstance(new_x_s, pd.Series) else pd.Series(list(new_x_s) if _is_seq(new_x_s) else [new_x_s]))
+    kx, ky = _pairs(y, x)[1], _pairs(y, x)[0]
+    if len(kx) < 2:
+        return pd.Series(np.nan, index=target.index)
+    if bool(_truth(pd.Series([const]))[0]):
+        sxx = ((kx - kx.mean()) ** 2).sum()
+        if sxx == 0:
+            return pd.Series(np.nan, index=target.index)
+        slope = ((kx - kx.mean()) * (ky - ky.mean())).sum() / sxx
+        intercept = ky.mean() - slope * kx.mean()
+    else:
+        slope, intercept = (kx * ky).sum() / (kx * kx).sum(), 0.0
+    return pd.Series(intercept + slope * _f64(target), index=target.index)
+
+
+def PERMUT(number, number_chosen):
+    def one(n, k):
+        a, b = int(_num1(n)), int(_num1(k))
+        if a < 0 or b < 0 or b > a:
+            raise ValueError("range")
+        return float(math.perm(a, b))
+
+    return _each(one, number, number_chosen)
+
+
+def FREQUENCY(data_array, bins_array):
+    v = _values((data_array,))
+    bins = np.sort(_values((bins_array,)))
+    counts, previous = [], -np.inf
+    for b in bins:
+        counts.append(float(((v > previous) & (v <= b)).sum()))
+        previous = b
+    counts.append(float((v > previous).sum()))
+    return pd.Series(counts)
+
+
+
+def _crit_parts(criterion):
+    if isinstance(criterion, str):
+        m = re.fullmatch(r"(<=|>=|<>|<|>|=)?(.*)", criterion, re.S)
+        return m.group(1) or "=", m.group(2)
+    return "=", criterion
+
+
+def _number_text(text):
+    try:
+        return _strict_number(text)
+    except ValueError:
+        return None
+
+
+def _compare(op, a, b):
+    return {"=": a == b, "<>": a != b, "<": a < b, "<=": a <= b, ">": a > b, ">=": a >= b}[op]
+
+
+def _match(series, criterion):
+    op, val = _crit_parts(criterion)
+    return _match_op(series, op, val)
+
+
+def _match_op(series, op, val):
+    if isinstance(val, str) and val.upper() in ("TRUE", "FALSE"):
+        val = val.upper() == "TRUE"
+    n = len(series)
+    if isinstance(val, str) and val == "":
+        blank = np.fromiter((_blank(v) or (isinstance(v, str) and v == "") for v in series), dtype=bool, count=n)
+        return ~blank if op == "<>" else blank if op == "=" else np.zeros(n, dtype=bool)
+    if op == "<>":
+        return ~_match_op(series, "=", val) if not _numeric_criterion(val) else ~_numeric_cells(series, "=", val, False)
+    kind = series.dtype.kind if isinstance(series.dtype, np.dtype) else "O"
+    if kind == "M":
+        stamp = None
+        try:
+            stamp = _ts(val) if isinstance(val, str) and _number_text(val) is None else None
+        except (ValueError, TypeError):
+            stamp = None
+        if stamp is not None:
+            return np.asarray(_compare(op, series.to_numpy(), np.datetime64(stamp)) & ~series.isna().to_numpy())
+        num = _number_text(val) if isinstance(val, str) else (_serial(val) if isinstance(val, pd.Timestamp) else float(val))
+        serials = series.map(lambda t: np.nan if pd.isna(t) else _serial(t)).to_numpy(dtype="float64")
+        return np.asarray(_compare(op, serials, num) & ~np.isnan(serials)) if num is not None else np.zeros(n, dtype=bool)
+    if isinstance(val, (bool, np.bool_)):
+        return np.fromiter((isinstance(v, (bool, np.bool_)) and _compare(op, bool(v), bool(val)) for v in series), dtype=bool, count=n)
+    if isinstance(val, pd.Timestamp):
+        val = _serial(val)
+    if _numeric_criterion(val):
+        return _numeric_cells(series, op, val, True)
+    if op == "=":
+        rx = _wildcard(val)
+        return np.fromiter((isinstance(v, str) and rx.fullmatch(v) is not None for v in series), dtype=bool, count=n)
+    text = val.lower()
+    return np.fromiter((isinstance(v, str) and bool(_compare(op, v.lower(), text)) for v in series), dtype=bool, count=n)
+
+
+def _numeric_criterion(val):
+    return (_number_text(val) is not None) if isinstance(val, str) else True
+
+
+def _numeric_cells(series, op, val, text_numbers):
+    num = _number_text(val) if isinstance(val, str) else float(val)
+
+    def numeric(v):
+        if isinstance(v, (bool, np.bool_)) or _blank(v):
+            return None
+        if isinstance(v, str):
+            return _number_text(v) if (op == "=" and text_numbers) else None
+        if isinstance(v, pd.Timestamp):
+            return _serial(v)
+        return float(v)
+
+    return np.fromiter((x is not None and bool(_compare(op, x, num)) for x in (numeric(v) for v in series)), dtype=bool, count=len(series))
+
+
+def _hkey(v):
+    return "nan" if _blank(v) else (type(v).__name__, v)
+
+
+def _criteria_reduce(how, target, mask):
+    if how == "count":
+        return float(mask.sum())
+    v = target[mask]
+    v = v[~np.isnan(v)]
+    if how == "sum":
+        return float(v.sum())
+    if how == "average":
+        return float(v.mean()) if len(v) else np.nan
+    if how == "max":
+        return float(v.max()) if len(v) else 0.0
+    return float(v.min()) if len(v) else 0.0
+
+
+def _ifs(how, target, pairs):
+    ranges = [r if isinstance(r, pd.Series) else pd.Series(list(r) if _is_seq(r) else [r]) for r, _ in pairs]
+    size = len(ranges[0])
+    if any(len(r) != size for r in ranges):
+        raise ValueError("the ranges differ in size")
+    tvals = None
+    if target is not None:
+        t = target if isinstance(target, pd.Series) else pd.Series(list(target) if _is_seq(target) else [target])
+        if len(t) != size:
+            raise ValueError("the ranges differ in size")
+        tvals = _range_f64(t)
+    index, ccols = _cols(tuple(c for _, c in pairs))
+    cache, out = {}, []
+    for key in zip(*ccols):
+        token = tuple(_hkey(k) for k in key)
+        if token not in cache:
+            mask = np.logical_and.reduce([_match(r, c) for r, c in zip(ranges, key)])
+            cache[token] = _criteria_reduce(how, tvals, mask)
+        out.append(cache[token])
+    return _done(pd.Series(out, index=ccols[0].index, dtype="float64"), index)
+
+
+def SUMIF(range, criteria, sum_range=None):
+    return _ifs("sum", range if sum_range is None else sum_range, [(range, criteria)])
+
+
+def COUNTIF(range, criteria):
+    return _ifs("count", None, [(range, criteria)])
+
+
+def AVERAGEIF(range, criteria, average_range=None):
+    return _ifs("average", range if average_range is None else average_range, [(range, criteria)])
+
+
+def _pairs_of(args):
+    if len(args) % 2:
+        raise ValueError("criteria ranges and criteria come in pairs")
+    return [(args[i], args[i + 1]) for i in range(0, len(args), 2)]
+
+
+def SUMIFS(sum_range, *criteria):
+    return _ifs("sum", sum_range, _pairs_of(criteria))
+
+
+def COUNTIFS(*criteria):
+    return _ifs("count", None, _pairs_of(criteria))
+
+
+def AVERAGEIFS(average_range, *criteria):
+    return _ifs("average", average_range, _pairs_of(criteria))
+
+
+def MAXIFS(max_range, *criteria):
+    return _ifs("max", max_range, _pairs_of(criteria))
+
+
+def MINIFS(min_range, *criteria):
+    return _ifs("min", min_range, _pairs_of(criteria))
+
+
+def SUBTOTAL(function_num, *ref):
+    code = int(_num1(function_num)) % 100
+    table = {1: AVERAGE, 2: COUNT, 3: COUNTA, 4: MAX, 5: MIN, 6: PRODUCT, 7: STDEV_S, 8: STDEV_P, 9: SUM, 10: VAR_S, 11: VAR_P}
+    if code not in table or int(_num1(function_num)) not in list(range(1, 12)) + list(range(101, 112)):
+        return np.nan
+    return table[code](*ref)
+
+
+def AGGREGATE(function_num, options, *ref):
+    code = int(_num1(function_num))
+    simple = {1: AVERAGE, 2: COUNT, 3: COUNTA, 4: MAX, 5: MIN, 6: PRODUCT, 7: STDEV_S, 8: STDEV_P, 9: SUM, 10: VAR_S, 11: VAR_P, 12: MEDIAN, 13: MODE_SNGL}
+    if code in simple:
+        return simple[code](*ref)
+    keyed = {14: LARGE, 15: SMALL, 16: PERCENTILE_INC, 17: QUARTILE_INC, 18: PERCENTILE_EXC, 19: QUARTILE_EXC}
+    if code in keyed and len(ref) == 2:
+        return keyed[code](ref[0], ref[1])
+    return np.nan
+
+
+def PERCENTOF(subset, total):
+    whole = SUM(total)
+    return SUM(subset) / whole if whole else np.nan
+
+
+
+def _flag(c):
+    return c != 0
+
+
+def _dist(core, *args):
+    special, stats = _sp()
+    return _vec(lambda *a: core(special, stats, *a), *args)
+
+
+def NORM_DIST(x, mean, standard_dev, cumulative):
+    def core(special, stats, x, m, sd, c):
+        sd = np.where(sd > 0, sd, np.nan)
+        return np.where(_flag(c), stats.norm.cdf(x, m, sd), stats.norm.pdf(x, m, sd))
+
+    return _dist(core, x, mean, standard_dev, cumulative)
+
+
+def NORM_INV(probability, mean, standard_dev):
+    def core(special, stats, p, m, sd):
+        return np.where((p > 0) & (p < 1) & (sd > 0), stats.norm.ppf(p, m, np.where(sd > 0, sd, 1.0)), np.nan)
+
+    return _dist(core, probability, mean, standard_dev)
+
+
+def NORM_S_DIST(z, cumulative=True):
+    def core(special, stats, z, c):
+        return np.where(_flag(c), stats.norm.cdf(z), stats.norm.pdf(z))
+
+    return _dist(core, z, cumulative)
+
+
+def NORM_S_INV(probability):
+    def core(special, stats, p):
+        return np.where((p > 0) & (p < 1), stats.norm.ppf(p), np.nan)
+
+    return _dist(core, probability)
+
+
+def GAUSS(z):
+    return _dist(lambda special, stats, z: stats.norm.cdf(z) - 0.5, z)
+
+
+def PHI(x):
+    return _dist(lambda special, stats, x: stats.norm.pdf(x), x)
+
+
+def T_DIST(x, deg_freedom, cumulative):
+    def core(special, stats, x, df, c):
+        df = np.floor(df)
+        df = np.where(df >= 1, df, np.nan)
+        return np.where(_flag(c), stats.t.cdf(x, df), stats.t.pdf(x, df))
+
+    return _dist(core, x, deg_freedom, cumulative)
+
+
+def T_DIST_2T(x, deg_freedom):
+    def core(special, stats, x, df):
+        df = np.floor(df)
+        return np.where((x >= 0) & (df >= 1), 2 * stats.t.sf(x, np.where(df >= 1, df, 1.0)), np.nan)
+
+    return _dist(core, x, deg_freedom)
+
+
+def T_DIST_RT(x, deg_freedom):
+    def core(special, stats, x, df):
+        df = np.floor(df)
+        return np.where(df >= 1, stats.t.sf(x, np.where(df >= 1, df, 1.0)), np.nan)
+
+    return _dist(core, x, deg_freedom)
+
+
+def T_INV(probability, deg_freedom):
+    def core(special, stats, p, df):
+        df = np.floor(df)
+        return np.where((p > 0) & (p < 1) & (df >= 1), stats.t.ppf(p, np.where(df >= 1, df, 1.0)), np.nan)
+
+    return _dist(core, probability, deg_freedom)
+
+
+def T_INV_2T(probability, deg_freedom):
+    def core(special, stats, p, df):
+        df = np.floor(df)
+        return np.where((p > 0) & (p <= 1) & (df >= 1), stats.t.isf(p / 2, np.where(df >= 1, df, 1.0)), np.nan)
+
+    return _dist(core, probability, deg_freedom)
+
+
+def CHISQ_DIST(x, deg_freedom, cumulative):
+    def core(special, stats, x, df, c):
+        df = np.floor(df)
+        ok = (x >= 0) & (df >= 1)
+        df = np.where(ok, df, np.nan)
+        return np.where(_flag(c), stats.chi2.cdf(x, df), stats.chi2.pdf(x, df))
+
+    return _dist(core, x, deg_freedom, cumulative)
+
+
+def CHISQ_DIST_RT(x, deg_freedom):
+    def core(special, stats, x, df):
+        df = np.floor(df)
+        return np.where((x >= 0) & (df >= 1), stats.chi2.sf(x, np.where(df >= 1, df, 1.0)), np.nan)
+
+    return _dist(core, x, deg_freedom)
+
+
+def CHISQ_INV(probability, deg_freedom):
+    def core(special, stats, p, df):
+        df = np.floor(df)
+        return np.where((p >= 0) & (p < 1) & (df >= 1), stats.chi2.ppf(p, np.where(df >= 1, df, 1.0)), np.nan)
+
+    return _dist(core, probability, deg_freedom)
+
+
+def CHISQ_INV_RT(probability, deg_freedom):
+    def core(special, stats, p, df):
+        df = np.floor(df)
+        return np.where((p > 0) & (p <= 1) & (df >= 1), stats.chi2.isf(p, np.where(df >= 1, df, 1.0)), np.nan)
+
+    return _dist(core, probability, deg_freedom)
+
+
+def F_DIST(x, deg_freedom1, deg_freedom2, cumulative):
+    def core(special, stats, x, d1, d2, c):
+        d1, d2 = np.floor(d1), np.floor(d2)
+        ok = (x >= 0) & (d1 >= 1) & (d2 >= 1)
+        d1, d2 = np.where(ok, d1, np.nan), np.where(ok, d2, np.nan)
+        return np.where(_flag(c), stats.f.cdf(x, d1, d2), stats.f.pdf(x, d1, d2))
+
+    return _dist(core, x, deg_freedom1, deg_freedom2, cumulative)
+
+
+def F_DIST_RT(x, deg_freedom1, deg_freedom2):
+    def core(special, stats, x, d1, d2):
+        d1, d2 = np.floor(d1), np.floor(d2)
+        ok = (x >= 0) & (d1 >= 1) & (d2 >= 1)
+        return np.where(ok, stats.f.sf(x, np.where(ok, d1, 1.0), np.where(ok, d2, 1.0)), np.nan)
+
+    return _dist(core, x, deg_freedom1, deg_freedom2)
+
+
+def F_INV(probability, deg_freedom1, deg_freedom2):
+    def core(special, stats, p, d1, d2):
+        d1, d2 = np.floor(d1), np.floor(d2)
+        ok = (p >= 0) & (p < 1) & (d1 >= 1) & (d2 >= 1)
+        return np.where(ok, stats.f.ppf(p, np.where(ok, d1, 1.0), np.where(ok, d2, 1.0)), np.nan)
+
+    return _dist(core, probability, deg_freedom1, deg_freedom2)
+
+
+def F_INV_RT(probability, deg_freedom1, deg_freedom2):
+    def core(special, stats, p, d1, d2):
+        d1, d2 = np.floor(d1), np.floor(d2)
+        ok = (p > 0) & (p <= 1) & (d1 >= 1) & (d2 >= 1)
+        return np.where(ok, stats.f.isf(p, np.where(ok, d1, 1.0), np.where(ok, d2, 1.0)), np.nan)
+
+    return _dist(core, probability, deg_freedom1, deg_freedom2)
+
+
+def BINOM_DIST(number_s, trials, probability_s, cumulative):
+    def core(special, stats, k, n, p, c):
+        k, n = np.floor(k), np.floor(n)
+        ok = (k >= 0) & (k <= n) & (p >= 0) & (p <= 1) & (n >= 0)
+        k, n, p = np.where(ok, k, 0.0), np.where(ok, n, 1.0), np.where(ok, p, 0.5)
+        return np.where(ok, np.where(_flag(c), stats.binom.cdf(k, n, p), stats.binom.pmf(k, n, p)), np.nan)
+
+    return _dist(core, number_s, trials, probability_s, cumulative)
+
+
+def BINOM_INV(trials, probability_s, alpha):
+    def core(special, stats, n, p, a):
+        n = np.floor(n)
+        ok = (n >= 0) & (p >= 0) & (p <= 1) & (a > 0) & (a < 1)
+        return np.where(ok, stats.binom.ppf(np.where(ok, a, 0.5), np.where(ok, n, 1.0), np.where(ok, p, 0.5)), np.nan)
+
+    return _dist(core, trials, probability_s, alpha)
+
+
+def POISSON_DIST(x, mean, cumulative):
+    def core(special, stats, k, m, c):
+        k = np.floor(k)
+        ok = (k >= 0) & (m >= 0)
+        k, m = np.where(ok, k, 0.0), np.where(ok, m, 1.0)
+        return np.where(ok, np.where(_flag(c), stats.poisson.cdf(k, m), stats.poisson.pmf(k, m)), np.nan)
+
+    return _dist(core, x, mean, cumulative)
+
+
+def EXPON_DIST(x, lambda_, cumulative):
+    def core(special, stats, x, lam, c):
+        ok = (x >= 0) & (lam > 0)
+        scale = np.where(ok, 1 / np.where(lam > 0, lam, 1.0), 1.0)
+        xx = np.where(ok, x, 0.0)
+        return np.where(ok, np.where(_flag(c), stats.expon.cdf(xx, scale=scale), stats.expon.pdf(xx, scale=scale)), np.nan)
+
+    return _dist(core, x, lambda_, cumulative)
+
+
+def GAMMA_DIST(x, alpha, beta, cumulative):
+    def core(special, stats, x, a, b, c):
+        ok = (x >= 0) & (a > 0) & (b > 0) & (_flag(c) | (x > 0) | (a > 1))
+        xx, aa, bb = np.where(ok, x, 0.5), np.where(ok, a, 1.0), np.where(ok, b, 1.0)
+        return np.where(ok, np.where(_flag(c), stats.gamma.cdf(xx, aa, scale=bb), stats.gamma.pdf(xx, aa, scale=bb)), np.nan)
+
+    return _dist(core, x, alpha, beta, cumulative)
+
+
+def GAMMA_INV(probability, alpha, beta):
+    def core(special, stats, p, a, b):
+        ok = (p >= 0) & (p < 1) & (a > 0) & (b > 0)
+        return np.where(ok, stats.gamma.ppf(p, np.where(ok, a, 1.0), scale=np.where(ok, b, 1.0)), np.nan)
+
+    return _dist(core, probability, alpha, beta)
+
+
+def GAMMA(x):
+    def core(special, stats, x):
+        bad = (x <= 0) & (x == np.floor(x))
+        return np.where(bad, np.nan, special.gamma(np.where(bad, 1.0, x)))
+
+    return _dist(core, x)
+
+
+def GAMMALN(x):
+    return _dist(lambda special, stats, x: np.where(x > 0, special.gammaln(np.where(x > 0, x, 1.0)), np.nan), x)
+
+
+def BETA_DIST(x, alpha, beta, cumulative, a=0, b=1):
+    def core(special, stats, x, al, be, c, lo, hi):
+        ok = (al > 0) & (be > 0) & (x >= lo) & (x <= hi) & (lo < hi)
+        t = np.where(ok, (x - lo) / np.where(ok, hi - lo, 1.0), 0.5)
+        al, be = np.where(ok, al, 1.0), np.where(ok, be, 1.0)
+        value = np.where(_flag(c), stats.beta.cdf(t, al, be), stats.beta.pdf(t, al, be) / np.where(ok, hi - lo, 1.0))
+        return np.where(ok, value, np.nan)
+
+    return _dist(core, x, alpha, beta, cumulative, a, b)
+
+
+def BETA_INV(probability, alpha, beta, a=0, b=1):
+    def core(special, stats, p, al, be, lo, hi):
+        ok = (p > 0) & (p < 1) & (al > 0) & (be > 0) & (lo < hi)
+        t = stats.beta.ppf(np.where(ok, p, 0.5), np.where(ok, al, 1.0), np.where(ok, be, 1.0))
+        return np.where(ok, lo + t * (hi - lo), np.nan)
+
+    return _dist(core, probability, alpha, beta, a, b)
+
+
+def LOGNORM_DIST(x, mean, standard_dev, cumulative):
+    def core(special, stats, x, m, sd, c):
+        ok = (x > 0) & (sd > 0)
+        xx, ss = np.where(ok, x, 1.0), np.where(ok, sd, 1.0)
+        return np.where(ok, np.where(_flag(c), stats.lognorm.cdf(xx, ss, scale=np.exp(m)), stats.lognorm.pdf(xx, ss, scale=np.exp(m))), np.nan)
+
+    return _dist(core, x, mean, standard_dev, cumulative)
+
+
+def LOGNORM_INV(probability, mean, standard_dev):
+    def core(special, stats, p, m, sd):
+        ok = (p > 0) & (p < 1) & (sd > 0)
+        return np.where(ok, stats.lognorm.ppf(np.where(ok, p, 0.5), np.where(ok, sd, 1.0), scale=np.exp(m)), np.nan)
+
+    return _dist(core, probability, mean, standard_dev)
+
+
+def WEIBULL_DIST(x, alpha, beta, cumulative):
+    def core(special, stats, x, a, b, c):
+        ok = (x >= 0) & (a > 0) & (b > 0)
+        xx, aa, bb = np.where(ok, x, 1.0), np.where(ok, a, 1.0), np.where(ok, b, 1.0)
+        density = np.where(xx == 0, 0.0, stats.weibull_min.pdf(xx, aa, scale=bb))
+        return np.where(ok, np.where(_flag(c), stats.weibull_min.cdf(xx, aa, scale=bb), density), np.nan)
+
+    return _dist(core, x, alpha, beta, cumulative)
+
+
+def HYPGEOM_DIST(sample_s, number_sample, population_s, number_pop, cumulative):
+    def core(special, stats, k, n, K, M, c):
+        k, n, K, M = np.floor(k), np.floor(n), np.floor(K), np.floor(M)
+        ok = (n >= 1) & (n <= M) & (K >= 1) & (K <= M) & (k >= np.maximum(0, n - M + K))
+        kk, nn, KK, MM = np.where(ok, np.minimum(k, np.minimum(n, K)), 0.0), np.where(ok, n, 1.0), np.where(ok, K, 1.0), np.where(ok, M, 2.0)
+        over = k > np.minimum(n, K)
+        value = np.where(_flag(c), np.where(over, 1.0, stats.hypergeom.cdf(kk, MM, KK, nn)), np.where(over, 0.0, stats.hypergeom.pmf(kk, MM, KK, nn)))
+        return np.where(ok, value, np.nan)
+
+    return _dist(core, sample_s, number_sample, population_s, number_pop, cumulative)
+
+
+def NEGBINOM_DIST(number_f, number_s, probability_s, cumulative):
+    def core(special, stats, f, s, p, c):
+        f, s = np.floor(f), np.floor(s)
+        ok = (f >= 0) & (s >= 1) & (p > 0) & (p < 1)
+        ff, ss, pp = np.where(ok, f, 0.0), np.where(ok, s, 1.0), np.where(ok, p, 0.5)
+        return np.where(ok, np.where(_flag(c), stats.nbinom.cdf(ff, ss, pp), stats.nbinom.pmf(ff, ss, pp)), np.nan)
+
+    return _dist(core, number_f, number_s, probability_s, cumulative)
+
+
+def CONFIDENCE_NORM(alpha, standard_dev, size):
+    def core(special, stats, a, sd, n):
+        n = np.floor(n)
+        ok = (a > 0) & (a < 1) & (sd > 0) & (n >= 1)
+        return np.where(ok, stats.norm.isf(np.where(ok, a, 0.5) / 2) * sd / np.sqrt(np.where(ok, n, 1.0)), np.nan)
+
+    return _dist(core, alpha, standard_dev, size)
+
+
+def CONFIDENCE_T(alpha, standard_dev, size):
+    def core(special, stats, a, sd, n):
+        n = np.floor(n)
+        ok = (a > 0) & (a < 1) & (sd > 0) & (n > 1)
+        nn = np.where(ok, n, 2.0)
+        return np.where(ok, stats.t.isf(np.where(ok, a, 0.5) / 2, nn - 1) * sd / np.sqrt(nn), np.nan)
+
+    return _dist(core, alpha, standard_dev, size)
+
+
+def FISHER(x):
+    return _vec(lambda x: np.where(np.abs(x) < 1, np.arctanh(np.where(np.abs(x) < 1, x, 0.0)), np.nan), x)
+
+
+def FISHERINV(y):
+    return _vec(np.tanh, y)
+
+
+def Z_TEST(array, x, sigma=None):
+    special, stats = _sp()
+    v = _values((array,))
+    n = len(v)
+    sd = float(v.std(ddof=1)) if sigma is None and n > 1 else (float(sigma) if sigma is not None else np.nan)
+    if n == 0 or not sd > 0:
+        return np.nan
+    return _vec(lambda t: stats.norm.sf((v.mean() - t) / (sd / np.sqrt(n))), x)
+
+
+def T_TEST(array1, array2, tails, type):
+    special, stats = _sp()
+    a, b = _values((array1,)), _values((array2,))
+    kind, tail = int(_num1(type)), int(_num1(tails))
+    if tail not in (1, 2) or kind not in (1, 2, 3):
+        return np.nan
+    if kind == 1:
+        x, y = _pairs(array1, array2)
+        if len(x) < 2:
+            return np.nan
+        p = stats.ttest_rel(x, y).pvalue
+    else:
+        if len(a) < 2 or len(b) < 2:
+            return np.nan
+        p = stats.ttest_ind(a, b, equal_var=kind == 2).pvalue
+    return float(p / 2 if tail == 1 else p)
+
+
+def CHISQ_TEST(actual_range, expected_range):
+    special, stats = _sp()
+    a, e = _f64(pd.Series(list(actual_range)) if not isinstance(actual_range, pd.Series) else actual_range), _f64(pd.Series(list(expected_range)) if not isinstance(expected_range, pd.Series) else expected_range)
+    if len(a) != len(e) or len(a) < 2 or (e <= 0).any():
+        return np.nan
+    return float(stats.chi2.sf(((a - e) ** 2 / e).sum(), len(a) - 1))
+
+
+def F_TEST(array1, array2):
+    special, stats = _sp()
+    a, b = _values((array1,)), _values((array2,))
+    if len(a) < 2 or len(b) < 2 or a.var(ddof=1) == 0 or b.var(ddof=1) == 0:
+        return np.nan
+    f = a.var(ddof=1) / b.var(ddof=1)
+    p = 2 * min(stats.f.cdf(f, len(a) - 1, len(b) - 1), stats.f.sf(f, len(a) - 1, len(b) - 1))
+    return float(min(p, 1.0))
+
+
+
+def _annuity(r, n, t):
+    growth = (1 + r) ** n
+    return np.where(r == 0, n, (1 + r * t) * (growth - 1) / np.where(r == 0, 1.0, r)), growth
+
+
+def PMT(rate, nper, pv, fv=0, type=0):
+    def core(r, n, pv, fv, t):
+        ann, growth = _annuity(r, n, t)
+        return np.where(r == 0, -(pv + fv) / np.where(n == 0, np.nan, n), -(pv * growth + fv) / np.where(ann == 0, np.nan, ann))
+
+    return _vec(core, rate, nper, pv, fv, type)
+
+
+def FV(rate, nper, pmt, pv=0, type=0):
+    def core(r, n, pmt, pv, t):
+        ann, growth = _annuity(r, n, t)
+        return -(pv * growth + pmt * ann)
+
+    return _vec(core, rate, nper, pmt, pv, type)
+
+
+def PV(rate, nper, pmt, fv=0, type=0):
+    def core(r, n, pmt, fv, t):
+        ann, growth = _annuity(r, n, t)
+        return -(fv + pmt * ann) / growth
+
+    return _vec(core, rate, nper, pmt, fv, type)
+
+
+def NPER(rate, pmt, pv, fv=0, type=0):
+    def core(r, pmt, pv, fv, t):
+        flat = np.where(pmt == 0, np.nan, -(pv + fv) / np.where(pmt == 0, np.nan, pmt))
+        top = pmt * (1 + r * t) - fv * r
+        bottom = pmt * (1 + r * t) + pv * r
+        grown = np.log(top / np.where(bottom == 0, np.nan, bottom)) / np.log1p(np.where(r == 0, 1.0, r))
+        return np.where(r == 0, flat, grown)
+
+    return _vec(core, rate, pmt, pv, fv, type)
+
+
+def _ipmt_value(r, per, n, pv, fv, t):
+    pay = PMT(r, n, pv, fv, t)
+    balance = FV(r, per - 1, pay, pv, t) if t == 0 else (0.0 if per == 1 else FV(r, per - 2, pay, pv, 1) - pay)
+    return float(balance * r) if t == 0 else float(balance * r) if per > 1 else 0.0
+
+
+def IPMT(rate, per, nper, pv, fv=0, type=0):
+    def one(r, k, n, p, f, t):
+        r, k, n, p, f, t = (float(_num1(x)) for x in (r, k, n, p, f, t))
+        if k < 1 or k > n or t not in (0, 1):
+            raise ValueError("period")
+        return _ipmt_value(r, k, n, p, f, int(t))
+
+    return _each(one, rate, per, nper, pv, fv, type)
+
+
+def PPMT(rate, per, nper, pv, fv=0, type=0):
+    def one(r, k, n, p, f, t):
+        r, k, n, p, f, t = (float(_num1(x)) for x in (r, k, n, p, f, t))
+        if k < 1 or k > n or t not in (0, 1):
+            raise ValueError("period")
+        return float(PMT(r, n, p, f, t)) - _ipmt_value(r, k, n, p, f, int(t))
+
+    return _each(one, rate, per, nper, pv, fv, type)
+
+
+def CUMIPMT(rate, nper, pv, start_period, end_period, type):
+    def one(r, n, p, a, b, t):
+        r, n, p, a, b, t = (float(_num1(x)) for x in (r, n, p, a, b, t))
+        if r <= 0 or n <= 0 or p <= 0 or a < 1 or b < a or b > n or t not in (0, 1):
+            raise ValueError("arguments")
+        return sum(_ipmt_value(r, k, n, p, 0.0, int(t)) for k in range(int(a), int(b) + 1))
+
+    return _each(one, rate, nper, pv, start_period, end_period, type)
+
+
+def CUMPRINC(rate, nper, pv, start_period, end_period, type):
+    def one(r, n, p, a, b, t):
+        r, n, p, a, b, t = (float(_num1(x)) for x in (r, n, p, a, b, t))
+        if r <= 0 or n <= 0 or p <= 0 or a < 1 or b < a or b > n or t not in (0, 1):
+            raise ValueError("arguments")
+        pay = float(PMT(r, n, p, 0.0, t))
+        return sum(pay - _ipmt_value(r, k, n, p, 0.0, int(t)) for k in range(int(a), int(b) + 1))
+
+    return _each(one, rate, nper, pv, start_period, end_period, type)
+
+
+def ISPMT(rate, per, nper, pv):
+    return _vec(lambda r, k, n, p: p * r * (k / np.where(n == 0, np.nan, n) - 1), rate, per, nper, pv)
+
+
+def _solve(func, guess, low=-0.999999, high=1e6):
+    special, stats = _sp()
+    from scipy import optimize
+
+    x = guess
+    for _ in range(60):
+        step = 1e-6 * max(1.0, abs(x))
+        f0 = func(x)
+        slope = (func(x + step) - f0) / step
+        if not np.isfinite(slope) or slope == 0:
+            break
+        nxt = x - f0 / slope
+        if not np.isfinite(nxt) or nxt <= low:
+            break
+        if abs(nxt - x) < 1e-13 * max(1.0, abs(x)):
+            return float(nxt)
+        x = nxt
+    grid = np.concatenate([np.linspace(low + 1e-6, 1, 400), np.geomspace(1, high, 200)])
+    vals = np.array([func(g) for g in grid])
+    for i in range(len(grid) - 1):
+        if np.isfinite(vals[i]) and np.isfinite(vals[i + 1]) and vals[i] * vals[i + 1] <= 0:
+            return float(optimize.brentq(func, grid[i], grid[i + 1], xtol=1e-14, rtol=1e-14))
+    return np.nan
+
+
+def RATE(nper, pmt, pv, fv=0, type=0, guess=0.1):
+    def one(n, pmt, pv, fv, t, g):
+        n, pmt, pv, fv, t, g = (float(_num1(x)) for x in (n, pmt, pv, fv, t, g))
+
+        def balance(r):
+            r = np.asarray(r)
+            ann, growth = _annuity(r, n, t)
+            return float(pv * growth + pmt * ann + fv)
+
+        return _solve(balance, g)
+
+    return _each(one, nper, pmt, pv, fv, type, guess)
+
+
+def NPV(rate, *values):
+    v = _values(values)
+    return _each(lambda r: float((v / (1 + _num1(r)) ** np.arange(1, len(v) + 1)).sum()), rate)
+
+
+def IRR(values, guess=0.1):
+    v = _values((values,))
+    if len(v) < 2 or not ((v > 0).any() and (v < 0).any()):
+        return np.nan
+    t = np.arange(len(v))
+    return _solve(lambda r: float((v / (1 + r) ** t).sum()), float(guess))
+
+
+def _dated(values, dates):
+    v = values if isinstance(values, pd.Series) else pd.Series(list(values))
+    d = _dates(dates if isinstance(dates, pd.Series) else pd.Series(list(dates)))
+    if len(v) != len(d):
+        raise ValueError("values and dates differ in size")
+    amounts = _f64(v)
+    days = d.map(lambda t: np.nan if pd.isna(t) else _serial(t)).to_numpy(dtype="float64")
+    keep = ~(np.isnan(amounts) | np.isnan(days))
+    amounts, days = amounts[keep], days[keep]
+    return amounts, days - days[0]
+
+
+def XNPV(rate, values, dates):
+    amounts, days = _dated(values, dates)
+    return _each(lambda r: float((amounts / (1 + _num1(r)) ** (days / 365)).sum()) if _num1(r) > 0 else np.nan, rate)
+
+
+def XIRR(values, dates, guess=0.1):
+    amounts, days = _dated(values, dates)
+    if not ((amounts > 0).any() and (amounts < 0).any()):
+        return np.nan
+    return _solve(lambda r: float((amounts / (1 + r) ** (days / 365)).sum()), float(guess))
+
+
+def MIRR(values, finance_rate, reinvest_rate):
+    v = _values((values,))
+    n = len(v)
+    pos, neg = np.where(v > 0, v, 0.0), np.where(v < 0, v, 0.0)
+    if n < 2 or not ((v > 0).any() and (v < 0).any()):
+        return np.nan
+    fr, rr = float(finance_rate), float(reinvest_rate)
+    t = np.arange(1, n + 1)
+    pv_neg = (neg / (1 + fr) ** t).sum() * (1 + fr)
+    fv_pos = (pos / (1 + rr) ** t).sum() * (1 + rr) ** n
+    return float((fv_pos / -pv_neg) ** (1 / (n - 1)) - 1)
+
+
+def FVSCHEDULE(principal, schedule):
+    return _vec(lambda p: p * np.prod(1 + _values((schedule,))), principal)
+
+
+def SLN(cost, salvage, life):
+    return _vec(lambda c, s, l: (c - s) / np.where(l == 0, np.nan, l), cost, salvage, life)
+
+
+def SYD(cost, salvage, life, per):
+    return _vec(lambda c, s, l, p: np.where((p >= 1) & (p <= l) & (l > 0), (c - s) * (l - p + 1) * 2 / (l * (l + 1)), np.nan), cost, salvage, life, per)
+
+
+def DDB(cost, salvage, life, period, factor=2):
+    def one(c, s, l, p, f):
+        c, s, l, p, f = (float(_num1(x)) for x in (c, s, l, p, f))
+        if c < 0 or s < 0 or l <= 0 or p <= 0 or p > l or f <= 0:
+            raise ValueError("arguments")
+        keep = max(0.0, 1 - f / l)
+        before = c * (1 - keep ** (p - 1))
+        return min(c * keep ** (p - 1) * (f / l), max(c - s - before, 0.0))
+
+    return _each(one, cost, salvage, life, period, factor)
+
+
+def DB(cost, salvage, life, period, month=12):
+    def one(c, s, l, p, m):
+        c, s, l, p, m = (float(_num1(x)) for x in (c, s, l, p, m))
+        if c < 0 or s < 0 or l <= 0 or p <= 0 or m < 1 or m > 12 or p > l + (1 if m < 12 else 0) or c == 0 and False:
+            raise ValueError("arguments")
+        rate = math.floor((1 - (s / c) ** (1 / l)) * 1000 + 0.5) / 1000 if c else 0.0
+        total = 0.0
+        dep = 0.0
+        for k in range(1, int(p) + 1):
+            if k == 1:
+                dep = c * rate * m / 12
+            elif k == int(l) + 1:
+                dep = (c - total) * rate * (12 - m) / 12
+            else:
+                dep = (c - total) * rate
+            total += dep
+        return dep
+
+    return _each(one, cost, salvage, life, period, month)
+
+
+def EFFECT(nominal_rate, npery):
+    return _vec(lambda r, n: np.where((r > 0) & (np.floor(n) >= 1), (1 + r / np.floor(np.where(n >= 1, n, 1.0))) ** np.floor(np.where(n >= 1, n, 1.0)) - 1, np.nan), nominal_rate, npery)
+
+
+def NOMINAL(effect_rate, npery):
+    return _vec(lambda e, n: np.where((e > 0) & (np.floor(n) >= 1), np.floor(np.where(n >= 1, n, 1.0)) * ((1 + e) ** (1 / np.floor(np.where(n >= 1, n, 1.0))) - 1), np.nan), effect_rate, npery)
+
+
+def RRI(nper, pv, fv):
+    return _vec(lambda n, p, f: np.where((n > 0) & (p != 0), (f / np.where(p == 0, np.nan, p)) ** (1 / np.where(n > 0, n, np.nan)) - 1, np.nan), nper, pv, fv)
+
+
+def PDURATION(rate, pv, fv):
+    return _vec(lambda r, p, f: np.where((r > 0) & (p > 0) & (f > 0), (np.log(np.where(f > 0, f, 1.0)) - np.log(np.where(p > 0, p, 1.0))) / np.log1p(np.where(r > 0, r, 1.0)), np.nan), rate, pv, fv)
+
+
+def CHOOSE(index_num, *value):
+    if not value:
+        raise ValueError("CHOOSE needs at least one value")
+    index, cols = _cols((index_num,) + value)
+    picks = np.floor(_f64(cols[0]))
+    out = np.full(len(picks), np.nan, dtype=object)
+    for i, k in enumerate(picks):
+        if 1 <= k <= len(value):
+            out[i] = cols[int(k)].iloc[i]
+    return _done(pd.Series(out, index=cols[0].index).infer_objects(), index)
+
+
+def _lookup_array(array):
+    return array if isinstance(array, pd.Series) else pd.Series(list(array) if _is_seq(array) else [array])
+
+
+def _comparable(v):
+    if isinstance(v, str):
+        return (1, v.lower())
+    if isinstance(v, (bool, np.bool_)):
+        return (2, bool(v))
+    if isinstance(v, pd.Timestamp):
+        return (0, _serial(v))
+    return (0, float(v))
+
+
+def MATCH(lookup_value, lookup_array, match_type=1):
+    arr = list(_lookup_array(lookup_array))
+    kind = int(np.sign(_num1(match_type)))
+
+    def one(x):
+        key = _comparable(x)
+        if kind == 0:
+            if isinstance(x, str):
+                rx = _wildcard(x)
+                for i, v in enumerate(arr):
+                    if isinstance(v, str) and rx.fullmatch(v):
+                        return i + 1
+            else:
+                for i, v in enumerate(arr):
+                    if not _blank(v) and not isinstance(v, str) and _comparable(v) == key:
+                        return i + 1
+            raise ValueError("not found")
+        best = None
+        for i, v in enumerate(arr):
+            if _blank(v) or _comparable(v)[0] != key[0]:
+                continue
+            ck = _comparable(v)
+            if kind == 1 and ck <= key and (best is None or ck >= _comparable(arr[best])):
+                best = i
+            if kind == -1 and ck >= key and (best is None or ck <= _comparable(arr[best])):
+                best = i
+        if best is None:
+            raise ValueError("not found")
+        return best + 1
+
+    return _each(one, lookup_value)
+
+
+def XMATCH(lookup_value, lookup_array, match_mode=0, search_mode=1):
+    arr = list(_lookup_array(lookup_array))
+    mode, search = int(_num1(match_mode)), int(_num1(search_mode))
+    order = range(len(arr)) if search in (1, 2) else range(len(arr) - 1, -1, -1)
+
+    def one(x):
+        key = _comparable(x)
+        best = None
+        for i in order:
+            v = arr[i]
+            if _blank(v):
+                continue
+            ck = _comparable(v)
+            if mode == 2 and isinstance(x, str):
+                if isinstance(v, str) and _wildcard(x).fullmatch(v):
+                    return i + 1
+                continue
+            if ck == key:
+                return i + 1
+            if ck[0] != key[0]:
+                continue
+            if mode == -1 and ck < key and (best is None or ck > _comparable(arr[best])):
+                best = i
+            if mode == 1 and ck > key and (best is None or ck < _comparable(arr[best])):
+                best = i
+        if best is None:
+            raise ValueError("not found")
+        return best + 1
+
+    return _each(one, lookup_value)
+
+
+def INDEX(array, row_num, column_num=None):
+    arr = _lookup_array(array)
+
+    def one(k):
+        pos = int(_num1(k))
+        if pos < 1 or pos > len(arr):
+            raise ValueError("row")
+        return arr.iloc[pos - 1]
+
+    return _each(one, row_num)
+
+
+def LOOKUP(lookup_value, lookup_vector, result_vector=None):
+    keys = list(_lookup_array(lookup_vector))
+    results = _lookup_array(lookup_vector if result_vector is None else result_vector)
+
+    def one(x):
+        key = _comparable(x)
+        best = None
+        for i, v in enumerate(keys):
+            if _blank(v) or _comparable(v)[0] != key[0]:
+                continue
+            if _comparable(v) <= key and (best is None or _comparable(v) >= _comparable(keys[best])):
+                best = i
+        if best is None or best >= len(results):
+            raise ValueError("not found")
+        return results.iloc[best]
+
+    return _each(one, lookup_value)
+
+
+
+def BETADIST(x, alpha, beta, a=0, b=1):
+    return BETA_DIST(x, alpha, beta, True, a, b)
+
+
+def BETAINV(probability, alpha, beta, a=0, b=1):
+    return BETA_INV(probability, alpha, beta, a, b)
+
+
+def BINOMDIST(number_s, trials, probability_s, cumulative):
+    return BINOM_DIST(number_s, trials, probability_s, cumulative)
+
+
+def CHIDIST(x, deg_freedom):
+    return CHISQ_DIST_RT(x, deg_freedom)
+
+
+def CHIINV(probability, deg_freedom):
+    return CHISQ_INV_RT(probability, deg_freedom)
+
+
+def CHITEST(actual_range, expected_range):
+    return CHISQ_TEST(actual_range, expected_range)
+
+
+def CONFIDENCE(alpha, standard_dev, size):
+    return CONFIDENCE_NORM(alpha, standard_dev, size)
+
+
+def COVAR(array1, array2):
+    return COVARIANCE_P(array1, array2)
+
+
+def CRITBINOM(trials, probability_s, alpha):
+    return BINOM_INV(trials, probability_s, alpha)
+
+
+def EXPONDIST(x, lambda_, cumulative):
+    return EXPON_DIST(x, lambda_, cumulative)
+
+
+def FDIST(x, deg_freedom1, deg_freedom2):
+    return F_DIST_RT(x, deg_freedom1, deg_freedom2)
+
+
+def FINV(probability, deg_freedom1, deg_freedom2):
+    return F_INV_RT(probability, deg_freedom1, deg_freedom2)
+
+
+def FORECAST(x, known_y_s, known_x_s):
+    return FORECAST_LINEAR(x, known_y_s, known_x_s)
+
+
+def FTEST(array1, array2):
+    return F_TEST(array1, array2)
+
+
+def GAMMADIST(x, alpha, beta, cumulative):
+    return GAMMA_DIST(x, alpha, beta, cumulative)
+
+
+def GAMMAINV(probability, alpha, beta):
+    return GAMMA_INV(probability, alpha, beta)
+
+
+def HYPGEOMDIST(sample_s, number_sample, population_s, number_pop):
+    return HYPGEOM_DIST(sample_s, number_sample, population_s, number_pop, False)
+
+
+def LOGINV(probability, mean, standard_dev):
+    return LOGNORM_INV(probability, mean, standard_dev)
+
+
+def LOGNORMDIST(x, mean, standard_dev):
+    return LOGNORM_DIST(x, mean, standard_dev, True)
+
+
+def MODE(*number):
+    return MODE_SNGL(*number)
+
+
+def NEGBINOMDIST(number_f, number_s, probability_s):
+    return NEGBINOM_DIST(number_f, number_s, probability_s, False)
+
+
+def NORMDIST(x, mean, standard_dev, cumulative):
+    return NORM_DIST(x, mean, standard_dev, cumulative)
+
+
+def NORMINV(probability, mean, standard_dev):
+    return NORM_INV(probability, mean, standard_dev)
+
+
+def NORMSDIST(z):
+    return NORM_S_DIST(z, True)
+
+
+def NORMSINV(probability):
+    return NORM_S_INV(probability)
+
+
+def PERCENTILE(array, k):
+    return PERCENTILE_INC(array, k)
+
+
+def PERCENTRANK(array, x, significance=3):
+    return PERCENTRANK_INC(array, x, significance)
+
+
+def POISSON(x, mean, cumulative):
+    return POISSON_DIST(x, mean, cumulative)
+
+
+def QUARTILE(array, quart):
+    return QUARTILE_INC(array, quart)
+
+
+def RANK(number, ref, order=0):
+    return RANK_EQ(number, ref, order)
+
+
+def STDEV(*number):
+    return STDEV_S(*number)
+
+
+def STDEVP(*number):
+    return STDEV_P(*number)
+
+
+def TDIST(x, deg_freedom, tails):
+    return T_DIST_2T(x, deg_freedom) if int(_num1(tails)) == 2 else T_DIST_RT(x, deg_freedom) if int(_num1(tails)) == 1 else np.nan
+
+
+def TINV(probability, deg_freedom):
+    return T_INV_2T(probability, deg_freedom)
+
+
+def TTEST(array1, array2, tails, type):
+    return T_TEST(array1, array2, tails, type)
+
+
+def VAR(*number):
+    return VAR_S(*number)
+
+
+def VARP(*number):
+    return VAR_P(*number)
+
+
+def WEIBULL(x, alpha, beta, cumulative):
+    return WEIBULL_DIST(x, alpha, beta, cumulative)
+
+
+def ZTEST(array, x, sigma=None):
+    return Z_TEST(array, x, sigma)
+
+
 FUNCTIONS = {n: o for n, o in list(globals().items()) if re.fullmatch(r"[A-Z][A-Z0-9_]*", n) and callable(o)}
 DOTTED = {n.replace("_", "."): n for n in FUNCTIONS if "_" in n}
 
@@ -1767,18 +3293,21 @@ def registry():
     scope = globals()
     out = {}
 
-    def collect(fn, seen, order, mods):
-        for name in sorted(_code_names(fn.__code__)):
+    def collect(fn, seen, order, mods, pkgs):
+        names = _code_names(fn.__code__)
+        if "scipy" in names:
+            pkgs.add("scipy")
+        for name in sorted(names):
             target = scope.get(name)
             if callable(target) and getattr(target, "__module__", None) == __name__ and name not in seen:
                 seen.add(name)
-                collect(target, seen, order, mods)
+                collect(target, seen, order, mods, pkgs)
                 order.append(target)
             elif hasattr(target, "__name__") and hasattr(target, "__file__") and target.__name__ not in ("numpy", "pandas"):
                 mods.add(target.__name__)
 
     for name, fn in FUNCTIONS.items():
-        seen, order, mods = {name}, [], set()
-        collect(fn, seen, order, mods)
-        out[name] = (order + [fn], sorted(mods), [], [])
+        seen, order, mods, pkgs = {name}, [], set(), set()
+        collect(fn, seen, order, mods, pkgs)
+        out[name] = (order + [fn], sorted(mods), [], sorted(pkgs))
     return out

@@ -30,7 +30,7 @@ def test_every_function_is_documented_once():
     assert len(names) == len(set(names))
     assert set(names) == set(fx.FUNCTIONS)
     assert {d[1] for d in DOCS} <= set(GROUPS)
-    assert len(DOCS) == 138
+    assert len(DOCS) == 305
 
 
 @pytest.mark.parametrize("doc", DOCS, ids=[d[0] for d in DOCS])
@@ -353,5 +353,165 @@ def test_helpers_cover_every_function():
     for name in fx.FUNCTIONS:
         fns, imports, constants, packages = HELPERS[name]
         assert fns[-1] is fx.FUNCTIONS[name]
-        assert not constants and not packages
+        assert not constants and set(packages) <= {"scipy"}
         assert set(imports) <= {"math", "re", "decimal"}
+
+
+def test_aggregates_ignore_blanks_text_and_booleans_in_mixed_columns():
+    mixed = pd.Series([1, "abc", True, np.nan, 5.5, False, -3, ""], dtype=object)
+    assert fx.AVERAGE(mixed) == pytest.approx(3.5 / 3)
+    assert fx.COUNT(mixed) == 3
+    assert fx.SUM(mixed) == 3.5
+    assert fx.AVERAGEA(mixed) == pytest.approx(4.5 / 7)
+    assert fx.COUNTA(mixed) == 7
+    assert fx.COUNTBLANK(mixed) == 2
+    assert fx.SMALL(mixed, 2) == 1
+
+
+def test_a_true_false_column_adds_as_ones_and_zeros():
+    flag = pd.Series([True, False, True, True])
+    assert fx.SUM(flag) == 3
+    assert fx.AVERAGE(flag) == 0.75
+    assert fx.COUNTIF(flag, True) == 3
+
+
+def test_group_totals_on_every_row_like_a_spreadsheet_filled_down():
+    region = pd.Series(["West", "east", "West", "North", None, "WEST"])
+    sales = pd.Series([10.0, 20, 30, 40, 50, 60])
+    totals = fx.SUMIF(region, region, sales)
+    assert totals.tolist() == [100, 20, 100, 40, 0, 100]
+    assert fx.COUNTIF(region, region).tolist() == [3, 1, 3, 1, 0, 3]
+    assert fx.AVERAGEIF(region, region, sales).tolist()[:4] == [100 / 3, 20, 100 / 3, 40]
+    assert (sales / totals).round(3).tolist()[:3] == [0.1, 1.0, 0.3]
+
+
+def test_criteria_follow_excel_rules():
+    region = pd.Series(["West", "east", "West", "North", None, "west"])
+    sales = pd.Series([10, 20, 30, 40, 50, 60])
+    assert fx.SUMIF(region, "w*", sales) == 100
+    assert fx.SUMIF(region, "<>West", sales) == 110
+    assert fx.COUNTIF(region, "") == 1
+    assert fx.COUNTIF(region, "<>") == 5
+    assert fx.SUMIF(sales, ">=40") == 150
+    assert fx.SUMIF(sales, "<>40") == 170
+    assert fx.COUNTIFS(region, "west", sales, ">20") == 2
+    assert fx.MAXIFS(sales, region, "west") == 60
+    assert fx.MINIFS(sales, region, "zzz") == 0
+    when = pd.Series(pd.to_datetime(["2024-01-05", "2024-02-03", None, "2024-03-01"]))
+    assert fx.COUNTIF(when, ">2024-02-01") == 2
+    assert fx.COUNTIF(when, "") == 1
+    with pytest.raises(ValueError):
+        fx.SUMIF(region, "west", sales.head(3))
+
+
+def test_percent_rank_with_ties_matches_excel():
+    data = [4, 8, 15, 16, 23, 42, 8, 15, 4, 16]
+    assert fx.PERCENTRANK_INC(data, 10) == 0.365
+    assert fx.PERCENTRANK_INC(data, 15) == 0.444
+    assert fx.PERCENTRANK_EXC(data, 10) == 0.389
+    assert fx.PERCENTRANK_INC(pd.Series([5]), 5) == 1
+
+
+def test_small_and_large_round_k_like_excel():
+    data = [4, 8, 15, 16, 23, 42, 8, 15, 4, 16]
+    assert fx.SMALL(data, 2.9) == 4
+    assert fx.LARGE(data, 2.2) == 16
+    assert math.isnan(fx.LARGE(data, 0.5))
+    assert math.isnan(fx.SMALL(data, 11))
+
+
+def test_distributions_work_row_by_row():
+    x = pd.Series([-1.0, 0.0, 1.0], index=[7, 8, 9])
+    cdf = fx.NORM_S_DIST(x, True)
+    assert cdf.index.tolist() == [7, 8, 9]
+    assert cdf.tolist() == pytest.approx([0.15865525393145707, 0.5, 0.8413447460685429])
+    assert fx.NORM_DIST(x, 0, pd.Series([1, 0, 2]), True).isna().tolist() == [False, True, False]
+    assert fx.BINOM_DIST(pd.Series([2, 4]), 10, 0.5, False).tolist() == pytest.approx([0.0439453125, 0.205078125])
+    assert fx.T_DIST_2T(pd.Series([0.0, 2.0]), 10).tolist() == pytest.approx([1.0, 0.07338803477074057])
+
+
+def test_finance_functions_work_row_by_row_and_on_cash_flows():
+    rate = pd.Series([0.05, 0.0, 0.08])
+    pay = fx.PMT(rate / 12, 12, 1000)
+    assert pay.round(4).tolist() == [-85.6075, -83.3333, -86.9884]
+    assert fx.IPMT(0.1, pd.Series([1, 2, 3]), 3, 1000).round(2).tolist() == [-100.0, -69.79, -36.56]
+    flows = pd.Series([-1000, 300, 400, 500, 200, 100])
+    assert fx.NPV(0.1, flows[1:]) == pytest.approx(fx.NPV(0.1, 300, 400, 500, 200, 100))
+    assert fx.IRR(flows) == pytest.approx(0.1764, abs=1e-4)
+    assert math.isnan(fx.IRR(pd.Series([100, 200])))
+    days = np.array([0, 182, 366, 547, 731, 912])
+    assert fx.XNPV(0.1, flows, ["2020-01-01", "2020-07-01", "2021-01-01", "2021-07-01", "2022-01-01", "2022-07-01"]) == pytest.approx((flows.to_numpy() / 1.1 ** (days / 365)).sum())
+
+
+def test_lookup_functions_use_a_column_of_lookup_values():
+    keys = pd.Series([1, 3, 5, 7, 9, 11])
+    names = pd.Series(list("abcdef"))
+    wanted = pd.Series([5, 6, 0, 12])
+    assert fx.MATCH(wanted, keys, 0).isna().tolist() == [False, True, True, True]
+    assert fx.MATCH(wanted, keys, 1).tolist()[:2] == [3, 3]
+    assert fx.LOOKUP(wanted, keys, names).tolist()[:2] == ["c", "c"]
+    assert fx.LOOKUP(wanted, keys, names).isna().tolist() == [False, False, True, False]
+    assert fx.INDEX(names, fx.MATCH(pd.Series([7, 9]), keys, 0)).tolist() == ["d", "e"]
+    assert fx.CHOOSE(pd.Series([1, 2, 3, 9]), "a", "b", "c").isna().tolist() == [False, False, False, True]
+    assert fx.XMATCH(pd.Series([4, 5]), keys, -1).tolist() == [2, 3]
+
+
+def test_old_names_give_the_same_answers():
+    data = pd.Series([4, 8, 15, 16, 23, 42, 8, 15, 4, 16])
+    assert fx.STDEV(data) == fx.STDEV_S(data) and fx.VARP(data) == fx.VAR_P(data) and fx.MODE(data) == fx.MODE_SNGL(data)
+    assert fx.PERCENTILE(data, 0.3) == fx.PERCENTILE_INC(data, 0.3)
+    assert fx.TDIST(1.96, 60, 2) == fx.T_DIST_2T(1.96, 60)
+    assert fx.TDIST(1.96, 60, 1) == fx.T_DIST_RT(1.96, 60)
+    assert math.isnan(fx.TDIST(1.96, 60, 3))
+    assert fx.NORMSDIST(1) == fx.NORM_S_DIST(1, True)
+
+
+def test_regression_helpers_on_columns():
+    x = pd.Series([1.0, 2, 3, 4, 5], index=list("abcde"))
+    y = pd.Series([2.1, 3.9, 6.2, 7.8, 10.1], index=list("abcde"))
+    fitted = fx.TREND(y, x)
+    assert fitted.index.tolist() == list("abcde")
+    assert fitted.round(3).tolist() == [2.04, 4.03, 6.02, 8.01, 10.0]
+    assert fx.TREND(y, x, pd.Series([6, 7])).round(2).tolist() == [11.99, 13.98]
+    assert fx.FORECAST_LINEAR(pd.Series([6, 7]), y, x).round(2).tolist() == [11.99, 13.98]
+    assert fx.FREQUENCY(y, [3, 6, 9]).tolist() == [1, 1, 2, 1]
+
+
+def test_formula_tool_with_statistics_and_dotted_names():
+    data = "g,v\na,10\nb,20\na,30\nb,50\n"
+    steps = [("formula", {"formulas": [
+        {"column": "group_total", "expression": "SUMIF([g], [g], [v])", "dtype": ""},
+        {"column": "share", "expression": "[v] / SUM([v])", "dtype": ""},
+        {"column": "rank", "expression": "RANK.EQ([v], [v])", "dtype": ""},
+        {"column": "z", "expression": "STANDARDIZE([v], AVERAGE([v]), STDEV.S([v]))", "dtype": ""},
+        {"column": "p", "expression": "T.DIST.2T(ABS([z]), 3)", "dtype": ""},
+    ]})]
+    df = out(run(chain(*steps, data=data)), 2)
+    assert df["group_total"].tolist() == [40, 70, 40, 70]
+    assert df["share"].round(3).tolist() == [0.091, 0.182, 0.273, 0.455]
+    assert df["rank"].tolist() == [4, 3, 2, 1]
+    assert df["z"].tolist() == pytest.approx(((df["v"] - df["v"].mean()) / df["v"].std()).tolist())
+    assert df["p"].between(0, 1).all()
+
+
+def test_export_of_a_distribution_formula_names_scipy_and_runs(tmp_path):
+    data = "x,mu\n1,0\n2,1\n"
+    steps = [("formula", {"formulas": [{"column": "p", "expression": "NORM.DIST([x], [mu], 1, TRUE)", "dtype": ""}, {"column": "s", "expression": "STDEV([x])", "dtype": ""}]})]
+    ev = run(chain(*steps, data=data))
+    code = export_script(ev, "dist")
+    assert "Requires pandas, numpy, scipy." in code
+    assert "def NORM_DIST" in code and "def STDEV_S" in code and "def STDEV(" in code and "def T_DIST" not in code
+    script = tmp_path / "exported.py"
+    script.write_text(code)
+    proc = subprocess.run([sys.executable, "-I", str(script)], capture_output=True, text=True, cwd=tmp_path)
+    assert proc.returncode == 0, proc.stderr
+    ns = {}
+    exec(compile(code, str(script), "exec"), ns)
+    pd.testing.assert_frame_equal(ns["formula_2"], out(ev, 2))
+
+
+def test_every_function_has_a_group_and_a_plain_description():
+    for name, group, syntax, description, example, expected, words in DOCS:
+        assert group in GROUPS
+        assert len(description) >= 10 and description.endswith(".")
+        assert syntax.startswith(name + "(")
