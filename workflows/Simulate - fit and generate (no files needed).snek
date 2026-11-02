@@ -1,0 +1,132 @@
+{
+  "format": "snek",
+  "version": 2,
+  "name": "Simulate - fit and generate (no files needed)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "random_data",
+      "label": "Pretend service times",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "rows": 2000,
+        "seed": 3,
+        "columns": [
+          {
+            "name": "service_seconds",
+            "dist": "gamma",
+            "p1": 2.5,
+            "p2": 18
+          }
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "type": "fit_distribution",
+      "label": "Which distribution fits?",
+      "position": {
+        "x": 300,
+        "y": 0
+      },
+      "config": {
+        "column": "service_seconds",
+        "kind": "auto",
+        "top": 3
+      }
+    },
+    {
+      "id": "3",
+      "type": "browse",
+      "label": "Ranked fits",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
+      "id": "4",
+      "type": "random_data",
+      "label": "500 new times from the best fit",
+      "position": {
+        "x": 600,
+        "y": 120
+      },
+      "config": {
+        "rows": 500,
+        "seed": 9,
+        "fit_rank": 1,
+        "fit_name": "service_seconds"
+      }
+    },
+    {
+      "id": "5",
+      "type": "inference",
+      "label": "Estimates and tests",
+      "position": {
+        "x": 900,
+        "y": 120
+      },
+      "config": {
+        "columns": [],
+        "group_by": [],
+        "confidence": 95,
+        "mu": 45,
+        "alternative": "two-sided",
+        "categories": false,
+        "max_levels": 20
+      }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1200,
+        "y": 120
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.fits-3.in",
+      "source": "2",
+      "sourceHandle": "fits",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.fits-4.fit",
+      "source": "2",
+      "sourceHandle": "fits",
+      "target": "4",
+      "targetHandle": "fit"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.numeric-6.in",
+      "source": "5",
+      "sourceHandle": "numeric",
+      "target": "6",
+      "targetHandle": "in"
+    }
+  ]
+}

@@ -51,7 +51,7 @@ function ToolNodeView({ id, data, selected }: NodeProps<ToolNode>) {
         </div>
       )}
       {spec.inputs.map((p, i) => (
-        <Handle key={p.name} type="target" position={Position.Left} id={p.name} style={{ top: spread(i, spec.inputs.length) }} className={p.multi ? "handle multi" : "handle"} title={p.label || p.name}>
+        <Handle key={p.name} type="target" position={Position.Left} id={p.name} style={{ top: spread(i, spec.inputs.length) }} className={p.multi ? "handle multi" : p.optional ? "handle optional" : "handle"} title={`${p.label || p.name}${p.optional ? " (optional)" : ""}`}>
           {spec.inputs.length > 1 && <span className="handle-label left">{p.label || p.name}</span>}
         </Handle>
       ))}

@@ -15,7 +15,7 @@ export type FieldSpec = {
   save?: boolean;
 };
 
-export type PortSpec = { name: string; label: string; multi: boolean };
+export type PortSpec = { name: string; label: string; multi: boolean; optional?: boolean };
 
 export type ToolSpec = {
   type: string;

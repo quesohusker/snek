@@ -269,11 +269,12 @@ function ListField({ field, value, onChange, ctx }: Props) {
     next.splice(i + d, 0, it);
     onChange(next);
   };
-  const compact = sub.every((f) => f.kind !== "code");
+  const compact = sub.length <= 4 && sub.every((f) => f.kind !== "code");
+  const wide = !compact && sub.length > 4 && sub.every((f) => f.kind !== "code");
   return (
     <div className="list-field">
       {items.map((item, i) => (
-        <div key={i} className={`list-item${compact ? " compact" : ""}`}>
+        <div key={i} className={`list-item${compact ? " compact" : ""}${wide ? " wide" : ""}`}>
           <div className="list-item-fields" style={compact ? { gridTemplateColumns: `repeat(${sub.length}, minmax(0, 1fr))` } : undefined}>
             {sub.map((f) => (
               <Field key={f.key} field={f} value={item[f.key] ?? f.default} config={{ ...blank(), ...item }} onChange={(v) => setItem(i, { [f.key]: v })} ctx={ctx} />

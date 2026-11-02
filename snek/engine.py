@@ -133,6 +133,9 @@ class Engine:
             links = graph.inbound[nid].get(port.name, [])
             if not port.multi:
                 links = links[-1:]
+            if not links and port.optional:
+                names[port.name], frames[port.name], schema[port.name] = [], [], []
+                continue
             if not links:
                 name = port.label or ("" if port.name == "in" else port.name)
                 raise ToolError(f"Connect the {name + ' ' if name else ''}input")

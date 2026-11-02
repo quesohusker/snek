@@ -1,0 +1,123 @@
+{
+  "format": "snek",
+  "version": 2,
+  "name": "Simulate - drive-thru lane (made-up numbers)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "simulate_process",
+      "label": "Order board, pay window, pickup window",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "gap_dist": "exponential",
+        "gap_p1": 50,
+        "attributes": [
+          {
+            "name": "items",
+            "dist": "integer_uniform",
+            "p1": 1,
+            "p2": 6
+          }
+        ],
+        "until": 14400,
+        "warmup": 1200,
+        "replications": 10,
+        "seed": 7,
+        "stations": [
+          {
+            "name": "Order board",
+            "servers": 1,
+            "capacity": 6,
+            "dist": "triangular",
+            "p1": 20,
+            "p2": 30,
+            "p3": 70,
+            "block": true,
+            "next": "Pay window"
+          },
+          {
+            "name": "Pay window",
+            "servers": 1,
+            "capacity": 1,
+            "dist": "normal",
+            "p1": 15,
+            "p2": 4,
+            "block": true,
+            "next": "Pickup window"
+          },
+          {
+            "name": "Pickup window",
+            "servers": 1,
+            "capacity": 1,
+            "dist": "gamma",
+            "p1": 4,
+            "p2": 2,
+            "scale_by": "items",
+            "next": "Exit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "type": "browse",
+      "label": "Summary over 10 runs",
+      "position": {
+        "x": 300,
+        "y": 0
+      },
+      "config": {}
+    },
+    {
+      "id": "3",
+      "type": "browse",
+      "label": "By station",
+      "position": {
+        "x": 300,
+        "y": 120
+      },
+      "config": {}
+    },
+    {
+      "id": "4",
+      "type": "chart",
+      "label": "Time in system",
+      "position": {
+        "x": 300,
+        "y": 240
+      },
+      "config": {
+        "kind": "histogram",
+        "x": "time_in_system",
+        "bins": 30,
+        "title": "Seconds from arrival to leaving"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.summary-2.in",
+      "source": "1",
+      "sourceHandle": "summary",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.stations-3.in",
+      "source": "1",
+      "sourceHandle": "stations",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.entities-4.in",
+      "source": "1",
+      "sourceHandle": "entities",
+      "target": "4",
+      "targetHandle": "in"
+    }
+  ]
+}

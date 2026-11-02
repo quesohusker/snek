@@ -69,6 +69,8 @@ import {
   ShieldCheck,
   Shuffle,
   Sigma,
+  Route,
+  Timer,
   Sparkles,
   Spline,
   Split,
@@ -190,6 +192,11 @@ const ICONS: Record<string, LucideIcon> = {
   sideout: ArrowLeftRight,
   api_request: Globe,
   github: GitPullRequest,
+  random_data: Dices,
+  fit_distribution: ChartSpline,
+  make_arrivals: Timer,
+  simulate_process: Route,
+  inference: Sigma,
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
@@ -203,6 +210,7 @@ export const CATEGORY_COLORS: Record<string, string> = {
   Model: "var(--cat-model)",
   Segment: "var(--cat-connect)",
   Forecast: "var(--cat-timeseries)",
+  Simulate: "var(--cat-simulate)",
   Sports: "var(--cat-sports)",
   Code: "var(--cat-dev)",
 };

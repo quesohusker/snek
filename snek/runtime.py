@@ -6,7 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from snek import connect, modeling, sports_math
+from snek import connect, distributions, inference, modeling, simulation, sports_math
 from snek.charts import chart_html, make_chart
 
 FORMATS = {
@@ -385,6 +385,11 @@ HELPERS.update({
     "volleyball_stats": ([sports_math.box_totals, sports_math.safe_div, sports_math.volleyball_stats], [], [], []),
     "sideout_stats": ([sports_math.safe_div, sports_math.sideout_stats], [], [], []),
     "api_request": ([connect.api_key, connect.http_get, connect.json_frame, connect.api_request], ["io", "json", "os", "re", "urllib.error", "urllib.parse", "urllib.request"], [], []),
+    "random_data": ([distributions.check_params, distributions.parse_choices, distributions.draw_values, distributions.random_data], [], ["FAMILIES"], []),
+    "fit_distribution": ([distributions.fit_candidates, distributions.ks_statistic, distributions.fit_chart, distributions.fit_distribution], ["json"], ["FAMILIES"], ["scipy"]),
+    "make_arrivals": ([distributions.check_params, distributions.parse_choices, distributions.draw_values, distributions.random_data, simulation.Sampler, simulation.generate_arrivals, simulation.make_arrivals], [], ["FAMILIES"], []),
+    "simulate_process": ([distributions.check_params, distributions.parse_choices, distributions.draw_values, distributions.random_data, simulation.Sampler, simulation.build_stations, simulation.Sim, simulation.generate_arrivals, simulation.simulate_process], ["collections", "heapq", "warnings"], ["FAMILIES"], ["scipy"]),
+    "inference_summary": ([inference.inference_summary], [], [], ["scipy", "statsmodels"]),
     "github": ([connect.api_key, connect.json_frame, connect.github_next, connect.github_request, connect.github_file, connect.github], ["io", "json", "os", "re", "time", "urllib.error", "urllib.parse", "urllib.request", "warnings"], [], []),
 })
 
@@ -415,6 +420,11 @@ NAMESPACE = {
     **{name: getattr(sports_math, name) for name in ["opponent_adjust", "game_predictions", "simulate_season", "pythagorean", "football_efficiency", "four_factors", "shooting_stats", "batting_stats", "pitching_stats", "volleyball_stats", "sideout_stats"]},
     "api_request": connect.api_request,
     "github": connect.github,
+    "inference_summary": inference.inference_summary,
+    "random_data": distributions.random_data,
+    "make_arrivals": simulation.make_arrivals,
+    "simulate_process": simulation.simulate_process,
+    "fit_distribution": distributions.fit_distribution,
 }
 
 

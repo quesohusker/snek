@@ -155,6 +155,45 @@ class ChiSquareTest(Tool):
 
 
 @register
+class SummaryStatistics(Tool):
+    type = "inference"
+    label = "Summary Statistics"
+    category = "Explore"
+    description = "Estimates with confidence intervals and tests. For each numeric column: mean, standard error, confidence intervals for the mean and the spread, a t-test against a value you choose, effect size and a normality test. Category columns get each level's share with a confidence interval. Add a group column for one set per group."
+    needs = "One row per observation. Numeric columns for the first output, category columns for the second."
+    outputs = [Port("numeric", "numbers"), Port("categories", "categories")]
+    fields = [
+        fld("columns", "Columns (blank is all)", "columns", []),
+        fld("group_by", "Group by", "columns", []),
+        fld("confidence", "Confidence level (%)", "number", 95, help="95 gives a 95% confidence interval."),
+        fld("mu", "Compare each mean with", "number", 0, help="The t-test asks whether the true mean differs from this value."),
+        fld("alternative", "Test direction", "select", "two-sided", options=opts(("two-sided", "Different from the value"), ("greater", "Greater than the value"), ("less", "Less than the value"))),
+        fld("categories", "Include category columns", "bool", True),
+        fld("max_levels", "Most levels in a category column", "number", 20, show_if={"categories": [True]}, help="A column with more levels than this is skipped, such as an ID column."),
+    ]
+
+    def code(self, cfg, ctx):
+        cols = list(cfg["columns"] or [])
+        group = list(cfg["group_by"] or [])
+        ctx.require_columns(cols + group)
+        confidence = float(cfg["confidence"] if cfg["confidence"] not in (None, "") else 95)
+        if not 50 <= confidence < 100:
+            raise ToolError("Confidence level must be from 50 up to, but not including, 100")
+        args = [ctx.var()]
+        args.append(f"columns={lit(cols)}" if cols else "columns=None")
+        args += [f"confidence={confidence:g}", f"mu={float(cfg['mu'] or 0):g}", f"alternative={cfg['alternative']!r}"]
+        if group:
+            args.append(f"group_by={lit(group)}")
+        args.append(f"max_levels={int(cfg['max_levels'] or 20)}")
+        args.append(f"categories={bool(cfg['categories'])}")
+        return f"{ctx.out('numeric')}, {ctx.out('categories')} = inference_summary({', '.join(args)})"
+
+    def summary(self, cfg):
+        cols = cfg["columns"] or []
+        return short(", ".join(cols) if cols else "all columns")
+
+
+@register
 class Chart(Tool):
     type = "chart"
     label = "Chart"

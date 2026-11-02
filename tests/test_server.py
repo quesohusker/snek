@@ -227,3 +227,11 @@ def test_packaged_builds_trust_the_bundled_certificates(monkeypatch):
     monkeypatch.setenv("SSL_CERT_FILE", "/somewhere/else.pem")
     entry.trust_store()
     assert os.environ["SSL_CERT_FILE"] == "/somewhere/else.pem"
+
+
+def test_every_tool_belongs_to_a_listed_category():
+    from snek.tools import CATEGORY_ORDER, TOOLS
+
+    assert {t.category for t in TOOLS.values()} <= set(CATEGORY_ORDER)
+    client = TestClient(server.app, base_url="http://127.0.0.1:8765")
+    assert client.get("/api/tools").status_code == 200

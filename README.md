@@ -42,7 +42,7 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-97 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
+102 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Steps |
 |---|---|
@@ -52,10 +52,11 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 | Clean | Tidy Up, Detect Types, Fill Blanks, Replace Text, Split Text, Text Pattern, Dates and Times, Read JSON Text, One Row per Item, Spread Out Fields |
 | SQL | Match Tables, Match Many Tables, Stack Tables, Every Combination, Look Up Values |
 | Group & Pivot | Group and Total, Pivot Wider, Pivot Longer, Weighted Average, Count Rows |
-| Explore | Inspect, Profile Columns, Count Values, Correlation, Cross Count, Compare Averages, Test Independence, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
+| Explore | Inspect, Profile Columns, Summary Statistics, Count Values, Correlation, Cross Count, Compare Averages, Test Independence, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
 | Model | Linear and Logistic Regression, Ridge and Lasso, Count and Gamma Regression, Decision Tree, Random Forest, Gradient Boosting, Naive Bayes, Nearest-Neighbor Model, Support Vector Machine, Neural Network, Predict, Compare Models, Cross-Validation, Train and Test Split, Check Overlap (VIF) |
 | Segment | K-Means Groups, Choose Number of Groups, Hierarchical Groups, Principal Components, Most Similar Rows |
 | Forecast | Fill Missing Dates, Rolling Window, Smoothing Forecast, ARIMA Forecast, Trend and Season, Check Forecast |
+| Simulate | **Random data:** Random Data, Fit Distribution. **Process:** Make Arrivals, Simulate Process |
 | Sports | **All sports:** Team Ratings (SRS/Massey), Elo Ratings, Opponent Adjust, Spread & Win Probability (grades picks against betting lines), Season Simulation, Pythagorean Expectation. **Football:** Garbage-Time Filter, Success Rate, Football Efficiency (EPA, success rate, explosiveness, havoc). **Basketball:** Four Factors (with offensive, defensive and net rating), Shooting Efficiency. **Baseball:** Batting Stats (through wOBA), Pitching Stats (through FIP). **Volleyball:** Volleyball Box Stats, Side-Out & Serve |
 | Code | Python Code (your own Python code) |
 
@@ -110,6 +111,18 @@ Keys stay on your computer in `~/.snek/connections.json`. They never go into wor
 ## Charts
 
 The **Chart** tool draws bar, line, scatter, area, histogram, box plot and heat map charts. The chart shows in the results panel, where its menu saves a PNG or SVG. To save a web page, connect Save File with a path ending in `.html`; stack several charts with Stack Tables first to put them on one page. Chart pages load the charting library from the web, so they need an internet connection to display.
+
+## Estimates, distributions and simulation
+
+**Summary Statistics** gives, for each numeric column, the mean with its standard error and a confidence interval, a confidence interval for the standard deviation, a t-test against a value you pick, an effect size and a normality test. Category columns get each level's share with a confidence interval. Add a group column to get one set per group.
+
+**Fit Distribution** ranks distributions for a column by AIC: normal, lognormal, exponential, gamma, Weibull, uniform, triangular, logistic and beta for measurements, Poisson, geometric and negative binomial for counts. It also gives Kolmogorov-Smirnov statistics (the p-values are approximate, because the parameters were fitted from the same data) and a chart of the data with the best fits drawn over it. Gamma and Weibull include the exponential as a special case, so they often rank just above it.
+
+**Random Data** draws columns from those distributions, or a weighted choice from a list. Connect a Fit Distribution result to draw from the best fit.
+
+**Simulate Process** runs a discrete-event simulation. Entities (cars, customers, orders) arrive, queue, get served and move on through a chain of stations. Each station has servers, a limit on how many can wait, a service-time distribution and a next station, or several with weights. A full line turns arrivals away. A station can hold its server until the next station has room, which is how a drive-thru lane backs up. A schedule table can change the number of servers during the run, and a numeric attribute can scale the service time (items in the order). Arrivals come from a table of events (your own log, or **Make Arrivals**) or from a gap distribution set in the tool, which gives fresh arrivals in every replication. Run many replications to get means with 95% intervals. The outputs are every entity, every visit to a station, station statistics (utilization, queue length, waits, losses), the summary, and an optional event log. The sample "Simulate - drive-thru lane" has the order board, the pay window and the pickup window.
+
+Time has no unit. Use one unit throughout, such as seconds. The engine matches queueing theory: the tests check M/M/1, M/M/2 and M/M/1/K results against the exact formulas.
 
 ## Sports analytics
 
@@ -172,12 +185,20 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Sports: volleyball box and side-out (Volleyball Box Stats, Side-Out & Serve)
 - Penguins: charts (four chart types saved together as one web page)
 - Demo: no files needed
+- Simulate: drive-thru lane (order board, pay window and pickup window, made-up numbers)
+- Simulate: fit and generate (fit a distribution, draw from it, test the draws)
 
 All bundled data is CC0, and the sports data is made up. See [examples/data/README.md](examples/data/README.md) for sources and citations.
 
 ## Updates
 
 Once a day, Snek asks GitHub's public releases page whether a newer version exists. If one does, a link appears in the toolbar. The check sends nothing about you or your data, and Snek never downloads or installs anything on its own. Turn it off with Help ▸ Check for updates automatically, or check on demand with Help ▸ Check for updates.
+
+## Setup and packages
+
+The first time you start Snek from source, `snek.command` (or `snek.bat`) makes a `.venv` folder and installs Snek's packages into it. Your own Python is not changed. On every later start it checks that each needed package is present and recent enough, and it adds or updates them inside `.venv` if not. `python -m snek --check` prints the same check and exits with 1 if anything is missing. Snek needs Python 3.12 or newer for that first step.
+
+The downloadable apps and the Mac App Store app carry their own Python and every package, so there is nothing to install. The Mac app checks its own parts the first time it starts after an install or update. If a part is missing or damaged, it says so and asks you to reinstall. It never downloads code. A Python Code step that imports a package the app does not include says so and points you to Export Python, so you can run the workflow with your own Python.
 
 ## Caveats
 

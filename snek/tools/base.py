@@ -25,6 +25,7 @@ class Port:
     name: str
     label: str = ""
     multi: bool = False
+    optional: bool = False
 
 
 def fld(key, label, kind, default=None, **extra):

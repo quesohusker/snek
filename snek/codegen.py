@@ -2,6 +2,7 @@ import inspect
 import pprint
 import re
 
+from snek.distributions import FAMILIES
 from snek.runtime import EXTENSIONS, FORMATS, HELPERS
 
 
@@ -22,7 +23,7 @@ def export_script(ev, name="workflow"):
 
 
 def prelude(body, name):
-    constants = {"FORMATS": FORMATS, "EXTENSIONS": EXTENSIONS}
+    constants = {"FORMATS": FORMATS, "EXTENSIONS": EXTENSIONS, "FAMILIES": FAMILIES}
     used = [h for h in HELPERS if re.search(rf"\b{h}\(", body)]
     imports = {"io"} if "io.StringIO" in body else set()
     needed_constants, functions, packages = [], [], []

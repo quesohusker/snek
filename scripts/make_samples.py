@@ -348,6 +348,39 @@ def main():
         [(1, "out", n, "in") for n in (2, 3, 4, 5)] + [(n, "out", 6, "in") for n in (2, 3, 4, 5)] + [(6, "out", 7, "in")],
     )
 
+    build(
+        "Simulate - drive-thru lane (made-up numbers)",
+        [
+            (1, "simulate_process", "Order board, pay window, pickup window", 0, 0, {
+                "gap_dist": "exponential", "gap_p1": 50,
+                "attributes": [{"name": "items", "dist": "integer_uniform", "p1": 1, "p2": 6}],
+                "until": 14400, "warmup": 1200, "replications": 10, "seed": 7,
+                "stations": [
+                    {"name": "Order board", "servers": 1, "capacity": 6, "dist": "triangular", "p1": 20, "p2": 30, "p3": 70, "block": True, "next": "Pay window"},
+                    {"name": "Pay window", "servers": 1, "capacity": 1, "dist": "normal", "p1": 15, "p2": 4, "block": True, "next": "Pickup window"},
+                    {"name": "Pickup window", "servers": 1, "capacity": 1, "dist": "gamma", "p1": 4, "p2": 2, "scale_by": "items", "next": "Exit"},
+                ],
+            }),
+            (2, "browse", "Summary over 10 runs", 1, 0, {}),
+            (3, "browse", "By station", 1, 1, {}),
+            (4, "chart", "Time in system", 1, 2, {"kind": "histogram", "x": "time_in_system", "bins": 30, "title": "Seconds from arrival to leaving"}),
+        ],
+        [(1, "summary", 2, "in"), (1, "stations", 3, "in"), (1, "entities", 4, "in")],
+    )
+
+    build(
+        "Simulate - fit and generate (no files needed)",
+        [
+            (1, "random_data", "Pretend service times", 0, 0, {"rows": 2000, "seed": 3, "columns": [{"name": "service_seconds", "dist": "gamma", "p1": 2.5, "p2": 18}]}),
+            (2, "fit_distribution", "Which distribution fits?", 1, 0, {"column": "service_seconds", "kind": "auto", "top": 3}),
+            (3, "browse", "Ranked fits", 2, 0, {}),
+            (4, "random_data", "500 new times from the best fit", 2, 1, {"rows": 500, "seed": 9, "fit_rank": 1, "fit_name": "service_seconds"}),
+            (5, "inference", "Estimates and tests", 3, 1, {"columns": [], "group_by": [], "confidence": 95, "mu": 45, "alternative": "two-sided", "categories": False, "max_levels": 20}),
+            (6, "browse", "", 4, 1, {}),
+        ],
+        [(1, "out", 2, "in"), (2, "fits", 3, "in"), (2, "fits", 4, "fit"), (4, "out", 5, "in"), (5, "numeric", 6, "in")],
+    )
+
 
 if __name__ == "__main__":
     main()

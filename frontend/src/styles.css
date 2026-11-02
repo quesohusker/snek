@@ -24,6 +24,7 @@
   --cat-grouping: #66a80f;
   --cat-timeseries: #9c36b5;
   --cat-sports: #c92a2a;
+  --cat-simulate: #0b7285;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   color-scheme: light;
 }
@@ -807,6 +808,10 @@ kbd {
   border-radius: 3px;
 }
 
+.handle.optional {
+  border-style: dashed;
+}
+
 .handle-label {
   position: absolute;
   top: -5px;
@@ -1199,6 +1204,17 @@ kbd {
 .list-item.compact .list-item-fields {
   display: grid;
   gap: 6px;
+}
+
+.list-item.wide .list-item-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 8px;
+}
+
+.list-item.wide .list-item-fields .field:first-child,
+.list-item.wide .list-item-fields .field:nth-child(n + 8) {
+  grid-column: 1 / -1;
 }
 
 .list-item .field {
