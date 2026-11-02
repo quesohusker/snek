@@ -1,5 +1,7 @@
 import json
 import os
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -188,3 +190,40 @@ def test_upload_saves_into_project_data(client, tmp_path):
 def test_table_copies_as_tab_separated(client):
     r = client.post("/api/table", json={"workflow": simple_output_workflow("output/x.csv"), "node": "1"})
     assert r.json() == {"text": "a\tb\n1\t2\n3\t4\n", "rows": 2, "total": 2}
+
+
+def test_mime_lookup_survives_unreadable_system_tables():
+    script = "\n".join([
+        "import builtins",
+        "real_open = builtins.open",
+        "def guarded(path, *args, **kwargs):",
+        "    if isinstance(path, str) and path.startswith('/etc/'):",
+        "        raise PermissionError(1, 'Operation not permitted', path)",
+        "    return real_open(path, *args, **kwargs)",
+        "builtins.open = guarded",
+        "import snek.server",
+        "import mimetypes",
+        "print(mimetypes.guess_type('index.html')[0])",
+    ])
+    result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, cwd=ROOT)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "text/html"
+
+
+def test_packaged_builds_trust_the_bundled_certificates(monkeypatch):
+    import sys
+
+    import certifi
+
+    from snek import __main__ as entry
+
+    monkeypatch.setenv("SSL_CERT_FILE", "placeholder")
+    monkeypatch.delenv("SSL_CERT_FILE")
+    entry.trust_store()
+    assert "SSL_CERT_FILE" not in os.environ
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    entry.trust_store()
+    assert os.environ["SSL_CERT_FILE"] == certifi.where()
+    monkeypatch.setenv("SSL_CERT_FILE", "/somewhere/else.pem")
+    entry.trust_store()
+    assert os.environ["SSL_CERT_FILE"] == "/somewhere/else.pem"

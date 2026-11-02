@@ -1,3 +1,4 @@
+import { revealNative } from "./native";
 import type { FsListing, NodeResult, PreviewData, ProjectInfo, SnekSettings, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 async function call<T>(method: string, url: string, body?: unknown): Promise<T> {
@@ -62,7 +63,10 @@ export const api = {
     if (!r.ok) throw new Error(body.detail ?? r.statusText);
     return body as { path: string; name: string };
   },
-  reveal: (path: string) => call<{ ok: boolean; path: string }>("POST", "/api/reveal", { path }),
+  reveal: async (path: string) => {
+    if (await revealNative(path)) return { ok: true, path };
+    return call<{ ok: boolean; path: string }>("POST", "/api/reveal", { path });
+  },
 };
 
 export type ConnectionKey = { name: string; saved: boolean; hint: string; env: string; from_env: boolean; declared?: { label: string; section: string; url: string; help: string } };

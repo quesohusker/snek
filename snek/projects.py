@@ -2,6 +2,7 @@ import json
 import os
 from pathlib import Path
 
+from snek import sandbox
 from snek.paths import examples_root, snek_home
 
 ROOT = examples_root()
@@ -68,13 +69,12 @@ class Projects:
             ("Project", self.current),
             ("Project output", self.current / "output"),
             ("Project data", self.current / "data"),
-            ("Desktop", home / "Desktop"),
-            ("Documents", home / "Documents"),
-            ("Downloads", home / "Downloads"),
-            ("Home", home),
-            (EXAMPLES_NAME, ROOT / "examples" / "data"),
-            ("Autosaves", snek_home() / "autosave"),
         ]
+        if sandbox.active():
+            items += [(p.name or str(p), p) for p in sandbox.grants()]
+        else:
+            items += [("Desktop", home / "Desktop"), ("Documents", home / "Documents"), ("Downloads", home / "Downloads"), ("Home", home)]
+        items += [(EXAMPLES_NAME, ROOT / "examples" / "data"), ("Autosaves", snek_home() / "autosave")]
         extra = [tuple(p.split("=", 1)) for p in os.environ.get("SNEK_PLACES", "").split(";") if "=" in p]
         items += [(label, Path(os.path.expanduser(path))) for label, path in extra]
         seen = set()
@@ -94,4 +94,5 @@ class Projects:
             "recent": [{"path": p, "name": self.name_of(p)} for p in self.recent],
             "examples": str(ROOT),
             "places": self.places(),
+            "sandboxed": sandbox.active(),
         }

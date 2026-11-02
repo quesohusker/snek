@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useReactFlow } from "@xyflow/react";
 import { useFlow } from "./store";
 import { api } from "./api";
+import { allowFolder, hasNative } from "./native";
 import type { Menu, MenuItem } from "./components/Menubar";
 import type { ProjectInfo } from "./types";
 import { FILE_MANAGER, basename, dirname, keyLabel } from "./paths";
@@ -267,6 +268,7 @@ export function useMenus(): Menu[] {
             submenu: recentProjectItems(project),
           },
           { label: `Show project in ${FILE_MANAGER}`, onSelect: revealProject, disabled: !project },
+          ...(hasNative() ? [{ label: "Allow Folder Access…", onSelect: () => void allowFolder() }] : []),
           { type: "separator" },
           { label: "New workflow", onSelect: newWorkflow },
           { label: "Open workflow…", onSelect: () => setDialog("open") },

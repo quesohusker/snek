@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass, field
 
 import pandas as pd
 
+from snek import sandbox
 from snek.runtime import NAMESPACE, output_path
 from snek.tools import TOOLS, Ctx, ToolError, output_var
 
@@ -255,7 +256,10 @@ class Engine:
 
 
 def explain(exc, code, nid):
-    msg = f"{type(exc).__name__}: {exc}"
+    plain = f"{type(exc).__name__}: {exc}"
+    msg = sandbox.rewrite(exc, plain)
+    if msg != plain:
+        return msg
     tb = traceback.extract_tb(exc.__traceback__)
     lines = code.splitlines()
     for frame in reversed(tb):

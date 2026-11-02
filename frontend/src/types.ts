@@ -118,6 +118,7 @@ export type ProjectInfo = {
   recent: { path: string; name: string }[];
   examples: string;
   places: Place[];
+  sandboxed: boolean;
 };
 
 export type UpdateInfo = {

@@ -34,6 +34,17 @@ def free_port(host, preferred):
             return s.getsockname()[1]
 
 
+def trust_store():
+    if not getattr(sys, "frozen", False) or os.environ.get("SSL_CERT_FILE"):
+        return
+    try:
+        import certifi
+    except ImportError:
+        return
+    if os.path.exists(certifi.where()):
+        os.environ["SSL_CERT_FILE"] = certifi.where()
+
+
 def ensure_streams():
     if sys.stdout is not None and sys.stderr is not None:
         return
@@ -52,6 +63,7 @@ def main():
     parser.add_argument("file", nargs="?", help="A .snek workflow to open")
     args, _ = parser.parse_known_args()
     ensure_streams()
+    trust_store()
     query = f"/?open={urllib.parse.quote(str(Path(args.file).expanduser().resolve()))}" if args.file else ""
     if running_snek(args.host, args.port):
         url = f"http://{args.host}:{args.port}{query}"

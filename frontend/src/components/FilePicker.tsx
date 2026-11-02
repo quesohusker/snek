@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { File, Folder, FolderOpen } from "lucide-react";
+import { File, Folder, FolderOpen, FolderPlus } from "lucide-react";
 import Modal from "./Modal";
 import { api } from "../api";
+import { allowFolder, hasNative } from "../native";
+import { useFlow } from "../store";
 import type { FsListing } from "../types";
 import { basename, dirname, isBareName, joinPath } from "../paths";
 
@@ -27,6 +29,7 @@ export default function FilePicker({ initial, mode, title, onPick, onClose }: { 
   const [listing, setListing] = useState<FsListing | null>(null);
   const [typed, setTyped] = useState(mode === "save" ? basename(initial) : initial);
   const [error, setError] = useState("");
+  const projectPlaces = useFlow((s) => s.project?.places ?? []);
 
   const open = (path: string) => {
     api
@@ -36,6 +39,12 @@ export default function FilePicker({ initial, mode, title, onPick, onClose }: { 
         setError("");
         if (mode === "folder") setTyped(l.path);
       })
+      .catch((e) => setError(String(e.message ?? e)));
+  };
+
+  const allow = () => {
+    allowFolder()
+      .then((path) => path && open(path))
       .catch((e) => setError(String(e.message ?? e)));
   };
 
@@ -66,11 +75,16 @@ export default function FilePicker({ initial, mode, title, onPick, onClose }: { 
     <Modal title={title ?? TITLES[mode]} onClose={onClose} footer={footer} wide>
       <div className="picker">
         <nav className="picker-places">
-          {listing?.places.map((p) => (
-            <button key={`${p.label}:${p.path}`} className={listing.path === p.path ? "active" : ""} onClick={() => open(p.path)} title={p.path}>
+          {(listing?.places ?? projectPlaces).map((p) => (
+            <button key={`${p.label}:${p.path}`} className={listing?.path === p.path ? "active" : ""} onClick={() => open(p.path)} title={p.path}>
               <FolderOpen size={14} /> {p.label}
             </button>
           ))}
+          {hasNative() && (
+            <button className="picker-allow" onClick={allow} title="Give Snek access to another folder on this Mac">
+              <FolderPlus size={14} /> Allow folder…
+            </button>
+          )}
         </nav>
         <div className="picker-main">
           <div className="picker-crumb">

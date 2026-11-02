@@ -1,4 +1,5 @@
 import json
+import mimetypes
 import os
 import re
 import subprocess
@@ -21,10 +22,13 @@ from snek.paths import DIST, snek_home
 from snek.preview import preview
 from snek.projects import Projects
 from snek.runtime import output_path
-from snek import ai, connect
+from snek import ai, connect, sandbox
 from snek import settings as user_settings
 from snek import updates
 from snek.tools import CATEGORY_ORDER, TOOLS
+
+mimetypes.knownfiles = []
+mimetypes.init()
 
 NAME_RE = re.compile(r"^[\w\- .(),'&+#]{1,80}$")
 
@@ -402,6 +406,8 @@ async def upload(request: Request, name: str):
 @app.get("/api/fs")
 def list_dir(path: str = ""):
     target = Path(os.path.expanduser(path)).resolve() if path else projects.current
+    if not sandbox.allowed(target):
+        raise HTTPException(403, sandbox.refusal(target))
     if target.is_file():
         target = target.parent
     while not target.exists() and target != target.parent:
@@ -444,7 +450,7 @@ def reveal(path: str = Body(..., embed=True)):
 
 @app.exception_handler(Exception)
 def unhandled(request, exc):
-    return JSONResponse(status_code=500, content={"detail": f"{type(exc).__name__}: {exc}"})
+    return JSONResponse(status_code=500, content={"detail": sandbox.rewrite(exc, f"{type(exc).__name__}: {exc}")})
 
 
 if DIST.exists():
