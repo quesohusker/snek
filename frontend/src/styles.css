@@ -1904,3 +1904,159 @@ kbd {
   border-color: var(--error);
   color: #fff;
 }
+
+
+.palette-favorites {
+  border-bottom: 1px solid var(--border);
+  margin: 0 0 8px;
+  padding-bottom: 4px;
+}
+
+.fav-toggle {
+  flex: none;
+  border: none;
+  background: transparent;
+  padding: 4px 6px;
+  color: var(--muted);
+  opacity: 0.35;
+  cursor: pointer;
+}
+
+.tool-row:hover .fav-toggle,
+.fav-toggle:focus-visible {
+  opacity: 0.9;
+}
+
+.fav-toggle.on {
+  color: #d4a017;
+  opacity: 1;
+}
+
+.palette-restore {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  text-decoration: underline;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.fx-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.chip.on {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.fx-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fx-hint {
+  font-family: var(--mono, ui-monospace, monospace);
+}
+
+.fx-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  margin: 4px 0 8px;
+  background: var(--panel-2);
+}
+
+.fx-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.fx-list {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fx-row {
+  display: grid;
+  gap: 1px;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 5px 6px;
+  border-radius: 6px;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.fx-row:hover {
+  background: var(--panel);
+}
+
+.fx-name {
+  font-weight: 700;
+}
+
+.fx-desc {
+  font-size: 12px;
+}
+
+.fx-syntax,
+.fx-example code {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.fx-example {
+  font-size: 11px;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.segmented button {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 5px 12px;
+}
+
+.segmented button.on {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.nb-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.nb-md h4 {
+  margin: 8px 0 2px;
+}
+
+.nb-md p {
+  margin: 0;
+  color: var(--muted);
+}

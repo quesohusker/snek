@@ -66,11 +66,12 @@ def convert_line(frame, column, dtype):
 
 
 class Ctx:
-    def __init__(self, node_id, tool, ins, schema):
+    def __init__(self, node_id, tool, ins, schema, upstream=None):
         self.node_id = node_id
         self.tool = tool
         self.ins = ins
         self.schema = schema
+        self.upstream = upstream or []
 
     def var(self, port="in"):
         names = self.ins.get(port) or []
@@ -133,6 +134,8 @@ class Tool:
     side_effect = False
     volatile = False
     needs_trust = False
+    needs_upstream = False
+    exportable = True
 
     def code(self, cfg, ctx):
         raise NotImplementedError

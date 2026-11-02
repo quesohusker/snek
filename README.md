@@ -42,11 +42,11 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-102 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
+103 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Steps |
 |---|---|
-| Open & Save | Open File, Type or Paste Data, Save File, List Files, Read Listed Files, Current Time, Make a Sequence, Web API, GitHub |
+| Open & Save | Open File, Type or Paste Data, Save File, List Files, Read Listed Files, Current Time, Make a Sequence, Web API, GitHub, Create Python |
 | Rows | Keep Rows, Sort Rows, Take Rows, Rows by Position, Find Duplicates, Number Rows, Rank Rows, Bucket Values |
 | Columns | Choose Columns, Calculate, Calculate Many Columns, Use Previous Rows, Cumulative Total, Rename Many Columns, Choose Columns by Rule, Column List |
 | Clean | Tidy Up, Detect Types, Fill Blanks, Replace Text, Split Text, Text Pattern, Dates and Times, Read JSON Text, One Row per Item, Spread Out Fields |
@@ -62,6 +62,8 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 Open File reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. List Files plus Read Listed Files reads every file in a folder.
 
+Create Python writes the workflow as a file when you press Run. Connect it to the last step of the branch you want, or connect several steps to include several branches. The file holds every step upstream of those, in order. Choose a Python script (`.py`) or a Jupyter notebook (`.ipynb`). The notebook has one section for each step: a heading that says what the step does, then its code. Export Python in the File menu gives the same two formats for the whole workflow.
+
 ## Editing
 
 Snek edits like a desktop app:
@@ -70,6 +72,7 @@ Snek edits like a desktop app:
 - Cut, copy, paste and duplicate tools with ⌘X, ⌘C, ⌘V and ⌘D. Connections between copied tools come along. Paste works between Snek windows.
 - Drag a box on the canvas, or Shift-click, to select several tools. Scroll to pan; ⌘-scroll or pinch to zoom.
 - Right-click a tool or the canvas for a menu.
+- The **Favorites** section at the top of the sidebar keeps the tools you use most. It starts with ten popular tools. Click the star on any tool to add it or remove it. **Restore popular tools** brings the starting set back.
 - Click **Clean up** in the toolbar, or press ⇧L, to line every step up in neat columns that follow the flow. One Undo puts them back.
 - Paste a table copied from Excel and Snek makes a Type or Paste Data step from it. Drop a data file on the canvas and Snek copies it into the project's `data/` folder and adds an Open File step.
 - The copy button above the results grid copies every row, ready to paste into Excel.
@@ -86,6 +89,28 @@ iif([dep_delay] > 15, 'late', 'on time')
 ```
 
 You can use `pd`, `np` and `iif(condition, then, else)`. Snek suggests a fix when a column name is misspelled.
+
+### Spreadsheet functions
+
+Expressions also know 138 spreadsheet functions with Excel's names and rules: `IF`, `IFS`, `IFERROR`, `SWITCH`, `LEFT`, `TRIM`, `TEXT`, `DATE`, `EDATE`, `NETWORKDAYS`, `WORKDAY`, `ROUND`, `CEILING`, `MOD` and more. The groups are Logical, Information, Text, Date and time, Math and trigonometry, and Engineering. Click **Functions** under an expression box to search them by name or by plain words ("remove spaces" finds `TRIM`). Type a name in capitals and press Tab to complete it.
+
+```
+IF([sales] > 100, "high", "low")
+ROUND([price] * 1.08, 2)
+TEXT([game_date], "mmm d, yyyy")
+WORKDAY([ordered], 3)
+[sales] / SUM([sales])
+```
+
+- Write names in capitals, with the dot where Excel has one: `CEILING.MATH`, `NETWORKDAYS.INTL`. Snek also accepts `TRUE`, `FALSE` and `<>`. Lowercase `round`, `sum` and `max` stay Python's own.
+- Most functions work row by row on a column. `SUM`, `PRODUCT`, `SUMSQ` and `SUMPRODUCT` give one number, so `[sales] / SUM([sales])` is each row's share of the total.
+- Dates are real dates, not day numbers. `TIME` gives a time of day you can add to a date. A text such as `"2024-03-05"` works wherever a date is expected.
+- A blank in gives a blank out. The exceptions follow Excel: `LEN`, `CONCAT`, `TEXTJOIN` and `ISBLANK` treat a blank as empty text, and `N` gives 0. An error such as a negative square root gives a blank. `IFERROR` replaces a blank or an infinite result, so it cannot tell an error from a real blank.
+- `RAND()` gives one number. Pass a column to get a new number on every row: `RAND([id])`. For repeatable draws use Random Data.
+- `CHAR` and `CODE` use Windows-1252 on every computer. `TEXT` does not support fraction formats such as `# ?/?`. `VALUE` reads `1/2` as an error, where Excel reads it as a date. A whole-number column keeps every digit when it becomes text. Excel cuts a typed constant to 15 digits.
+- Exported scripts carry only the functions the workflow uses.
+
+The functions were checked against Microsoft Excel for Mac 16.113.2 with about 1,200 formulas: many of the worked examples in Microsoft's function pages, and edge cases such as leap days, ties in rounding, negative numbers and blanks. The Excel answers are stored in `tests/data/excel_fx.json`, so the check runs without Excel.
 
 Use Previous Rows reaches into other rows with `[Row-1:column]` and `[Row+1:column]`, for example `[pts] - [Row-1:pts]` for the change since the last game. Calculate Many Columns applies one expression to many columns, with `[_CurrentField_]` standing for each column in turn.
 

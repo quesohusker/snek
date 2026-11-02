@@ -16,7 +16,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.datastructures import Headers
 
-from snek.codegen import export_script
+from snek.codegen import export_notebook, export_script
+from snek.fx_docs import catalog as function_catalog
 from snek.engine import Engine
 from snek.paths import DIST, snek_home
 from snek.preview import preview
@@ -116,6 +117,11 @@ def tools():
     return {"tools": specs, "categories": CATEGORY_ORDER}
 
 
+@app.get("/api/functions")
+def functions():
+    return function_catalog()
+
+
 @app.post("/api/run")
 def run(workflow: dict = Body(..., embed=True)):
     return engine.evaluate(workflow, run_side_effects=True).to_json()
@@ -208,9 +214,9 @@ def chart_specs(workflow: dict = Body(...), node: str = Body(...), port: str | N
 
 
 @app.post("/api/export")
-def export(workflow: dict = Body(...), name: str = Body("workflow")):
+def export(workflow: dict = Body(...), name: str = Body("workflow"), fmt: str = Body("py")):
     ev = engine.evaluate(workflow, run_side_effects=False)
-    return {"code": export_script(ev, name)}
+    return {"code": export_notebook(ev, name) if fmt == "ipynb" else export_script(ev, name)}
 
 
 @app.get("/api/update")

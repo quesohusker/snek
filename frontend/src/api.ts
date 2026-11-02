@@ -1,5 +1,5 @@
 import { revealNative } from "./native";
-import type { FsListing, NodeResult, PreviewData, ProjectInfo, SnekSettings, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
+import type { FsListing, FunctionCatalog, NodeResult, PreviewData, ProjectInfo, SnekSettings, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 async function call<T>(method: string, url: string, body?: unknown): Promise<T> {
   const res = await fetch(url, {
@@ -39,7 +39,8 @@ export const api = {
   connections: () => call<Connections>("GET", "/api/connections"),
   saveConnection: (name: string, key: string) => call<Connections>("PUT", "/api/connections", { name, key }),
   deleteConnection: (name: string) => call<Connections>("DELETE", `/api/connections/${encodeURIComponent(name)}`),
-  exportCode: (workflow: WorkflowFile, name: string) => call<{ code: string }>("POST", "/api/export", { workflow, name }),
+  exportCode: (workflow: WorkflowFile, name: string, fmt = "py") => call<{ code: string }>("POST", "/api/export", { workflow, name, fmt }),
+  functions: () => call<FunctionCatalog>("GET", "/api/functions"),
   listWorkflows: () => call<{ workflows: { name: string; modified: string }[]; folder: string }>("GET", "/api/workflows"),
   settings: () => call<SnekSettings>("GET", "/api/settings"),
   saveSettings: (changes: Partial<SnekSettings>) => call<SnekSettings>("PUT", "/api/settings", changes),

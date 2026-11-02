@@ -26,6 +26,8 @@ function remember(key: string, value: unknown) {
   }
 }
 
+export const POPULAR_TOOLS = ["input", "filter", "formula", "select", "sort", "summarize", "join", "cleanse", "chart", "output"];
+
 export type Snapshot = { nodes: ToolNode[]; edges: Edge[]; label: string };
 
 export type ClipboardData = {
@@ -66,6 +68,9 @@ type State = {
   setSettings: (s: SnekSettings) => void;
   paletteTab: string;
   setPaletteTab: (tab: string) => void;
+  favorites: string[];
+  toggleFavorite: (type: string) => void;
+  resetFavorites: () => void;
   setUpdate: (u: UpdateInfo) => void;
   setProject: (p: ProjectInfo) => void;
   setDialog: (d: Dialog) => void;
@@ -363,6 +368,20 @@ export const useFlow = create<State>()((set, get) => ({
   setPaletteTab: (paletteTab) => {
     remember("snek.paletteTab", paletteTab);
     set({ paletteTab });
+  },
+
+  favorites: stored<string[]>("snek.favorites", POPULAR_TOOLS),
+
+  toggleFavorite: (type) => {
+    const current = get().favorites;
+    const favorites = current.includes(type) ? current.filter((t) => t !== type) : [...current, type];
+    remember("snek.favorites", favorites);
+    set({ favorites });
+  },
+
+  resetFavorites: () => {
+    remember("snek.favorites", POPULAR_TOOLS);
+    set({ favorites: POPULAR_TOOLS });
   },
 
   setUpdate: (update) => set({ update }),

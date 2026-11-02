@@ -1,7 +1,11 @@
 import difflib
 import re
 
+from snek.fx import DOTTED
+
 IDENT_LIKE = re.compile(r"^[A-Za-z_][\w .\-]*$")
+CALL = re.compile(r"[A-Z][A-Z0-9_]*(?:\.[A-Z][A-Z0-9_]*)*(?=\s*\()")
+LOGICAL = re.compile(r"(TRUE|FALSE)\b(?!\s*\()")
 
 
 class ExprError(ValueError):
@@ -20,6 +24,21 @@ def translate(expr, frame, columns):
             out.append(expr[i:j])
             i = j
             continue
+        if ch.isupper() and not previous_word_char(expr, i):
+            m = CALL.match(expr, i)
+            if m:
+                out.append(DOTTED.get(m.group(0), m.group(0)))
+                i = m.end()
+                continue
+            m = LOGICAL.match(expr, i)
+            if m:
+                out.append("True" if m.group(1) == "TRUE" else "False")
+                i = m.end()
+                continue
+        if ch == "<" and expr[i + 1:i + 2] == ">":
+            out.append("!=")
+            i += 2
+            continue
         if ch == "[":
             close = expr.find("]", i + 1)
             inner = expr[i + 1:close] if close != -1 else ""
@@ -35,6 +54,10 @@ def translate(expr, frame, columns):
         out.append(ch)
         i += 1
     return "".join(out)
+
+
+def previous_word_char(expr, i):
+    return i > 0 and (expr[i - 1].isalnum() or expr[i - 1] in "_.")
 
 
 def skip_string(expr, start):

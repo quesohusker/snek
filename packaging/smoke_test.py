@@ -44,6 +44,18 @@ def main(executable):
             print(name, "->", "ok" if not bad else bad)
             if bad:
                 raise SystemExit(1)
+        export_flow = {
+            "nodes": [
+                {"id": "1", "type": "text_input", "config": {"data": "name,sales,day\n  Ann Lee ,120.456,2024-03-05\nbob,80,2024-12-31"}},
+                {"id": "2", "type": "formula", "config": {"formulas": [{"column": "tidy", "expression": "PROPER(TRIM([name]))", "dtype": ""}, {"column": "level", "expression": 'IF([sales] > 100, "high", "low")', "dtype": ""}, {"column": "flag", "expression": "iif([sales] > 100, 1, 0)", "dtype": ""}]}},
+            ],
+            "edges": [{"source": "1", "sourceHandle": "out", "target": "2", "targetHandle": "in"}],
+        }
+        script = call("/api/export", {"workflow": export_flow, "name": "smoke"})["code"]
+        assert "def PROPER" in script and "def IF" in script and "def iif" in script, "Export Python did not include the helper functions"
+        notebook = json.loads(call("/api/export", {"workflow": export_flow, "name": "smoke", "fmt": "ipynb"})["code"])
+        assert notebook["nbformat"] == 4 and len(notebook["cells"]) == 7, "Notebook export is wrong"
+        print("export: ok")
         with urllib.request.urlopen(f"http://127.0.0.1:{PORT}/", timeout=10) as r:
             page = r.read().decode()
         assert "<title>Snek</title>" in page, "UI not served"

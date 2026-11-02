@@ -10,6 +10,7 @@ from dataclasses import asdict, dataclass, field
 import pandas as pd
 
 from snek import health, sandbox
+from snek.codegen import export_steps
 from snek.runtime import NAMESPACE, output_path
 from snek.tools import TOOLS, Ctx, ToolError, output_var
 
@@ -174,7 +175,8 @@ class Engine:
             names, frames, schema, input_fps = gathered
             ev.input_frames[nid] = frames
             res.inputs = {p: {"rows": sum(len(f) for f in frames[p]), "columns": schema[p], "count": len(frames[p])} for p in frames}
-            res.code = tool.code(cfg, Ctx(nid, tool, names, schema))
+            upstream = export_steps(ev, graph.ancestors(nid)) if tool.needs_upstream else None
+            res.code = tool.code(cfg, Ctx(nid, tool, names, schema, upstream))
         except ToolError as e:
             res.status, res.error = "error", str(e)
             return res
@@ -197,7 +199,7 @@ class Engine:
         else:
             started = time.perf_counter()
             try:
-                outputs, res.warnings = self.execute(nid, tool, res.code, names, frames)
+                outputs, res.warnings = self.execute(nid, tool, res.code, names, frames, upstream)
             except Exception as e:
                 res.status, res.error = "error", explain(e, res.code, nid)
                 return res
@@ -211,8 +213,10 @@ class Engine:
         res.message = self.message(tool, cfg, res)
         return res
 
-    def execute(self, nid, tool, code, names, frames):
+    def execute(self, nid, tool, code, names, frames, upstream=None):
         ns = dict(NAMESPACE)
+        if upstream is not None:
+            ns["workflow_steps"] = upstream
         for port, port_names in names.items():
             for name, df in zip(port_names, frames[port]):
                 ns[name] = df.copy(deep=False)
@@ -234,6 +238,8 @@ class Engine:
     def message(self, tool, cfg, res):
         if tool.type == "output":
             return f"Wrote {res.inputs['in']['rows']:,} rows to {output_path(cfg['path'], cfg['format'])}"
+        if tool.type == "create_python":
+            return f"Wrote {output_path(cfg['path'], cfg['format'])}"
         if not tool.outputs:
             return f"{res.inputs.get('in', {}).get('rows', 0):,} rows"
         return ", ".join(f"{p}: {o['rows']:,}" if len(res.outputs) > 1 else f"{o['rows']:,} rows" for p, o in res.outputs.items())

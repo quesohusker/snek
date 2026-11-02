@@ -264,21 +264,50 @@ function SaveDialog({ onClose }: { onClose: () => void }) {
   );
 }
 
+type NotebookCell = { cell_type: string; source: string[] };
+
+function NotebookPreview({ text }: { text: string }) {
+  let cells: NotebookCell[] = [];
+  try {
+    cells = JSON.parse(text).cells;
+  } catch {
+    return <pre className="code-view tall">{text}</pre>;
+  }
+  return (
+    <div className="nb-preview">
+      {cells.map((c, i) =>
+        c.cell_type === "markdown" ? (
+          <div key={i} className="nb-md">
+            {c.source.join("").split("\n").map((line, j) => (line.startsWith("#") ? <h4 key={j}>{line.replace(/^#+\s*/, "")}</h4> : <p key={j}>{line}</p>))}
+          </div>
+        ) : (
+          <pre key={i} className="code-view">
+            {c.source.join("")}
+          </pre>
+        ),
+      )}
+    </div>
+  );
+}
+
 function ExportDialog({ onClose }: { onClose: () => void }) {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [fmt, setFmt] = useState<"py" | "ipynb">("py");
   const name = useFlow((s) => s.name) ?? "workflow";
   useEffect(() => {
+    setCode("");
+    setError("");
     api
-      .exportCode(useFlow.getState().toWorkflow(), name)
+      .exportCode(useFlow.getState().toWorkflow(), name, fmt)
       .then((r) => setCode(r.code))
       .catch((e) => setError(e.message));
-  }, [name]);
+  }, [name, fmt]);
   const download = () => {
-    const url = URL.createObjectURL(new Blob([code], { type: "text/x-python" }));
+    const url = URL.createObjectURL(new Blob([code], { type: fmt === "py" ? "text/x-python" : "application/x-ipynb+json" }));
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${name.replace(/[^\w-]+/g, "_")}.py`;
+    a.download = `${name.replace(/[^\w-]+/g, "_")}.${fmt}`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -293,13 +322,25 @@ function ExportDialog({ onClose }: { onClose: () => void }) {
             <Copy size={15} /> Copy
           </button>
           <button className="primary" onClick={download} disabled={!code}>
-            <Download size={15} /> Download .py
+            <Download size={15} /> Download .{fmt}
           </button>
         </>
       }
     >
-      <p className="muted">A standalone script that runs the same pandas code as the canvas. It needs only pandas, numpy and the readers for your file types.</p>
-      {error ? <div className="error-box">{error}</div> : <pre className="code-view tall">{code || "Generating…"}</pre>}
+      <div className="segmented" role="tablist" aria-label="Format">
+        <button role="tab" aria-selected={fmt === "py"} className={fmt === "py" ? "on" : ""} onClick={() => setFmt("py")}>
+          Python script (.py)
+        </button>
+        <button role="tab" aria-selected={fmt === "ipynb"} className={fmt === "ipynb" ? "on" : ""} onClick={() => setFmt("ipynb")}>
+          Jupyter notebook (.ipynb)
+        </button>
+      </div>
+      <p className="muted">
+        {fmt === "py"
+          ? "A standalone script that runs the same pandas code as the canvas. It needs only pandas, numpy and the readers for your file types."
+          : "A notebook with one section for each tool: a heading that says what the tool does, then its code. Run the cells in order."}
+      </p>
+      {error ? <div className="error-box">{error}</div> : !code ? <pre className="code-view tall">Generating…</pre> : fmt === "py" ? <pre className="code-view tall">{code}</pre> : <NotebookPreview text={code} />}
     </Modal>
   );
 }

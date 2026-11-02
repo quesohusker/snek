@@ -1,6 +1,6 @@
 import os
 
-from snek.tools.base import Tool, file_stamp, fld, lit, opts, register, short
+from snek.tools.base import Port, Tool, file_stamp, fld, lit, opts, register, short
 
 READ_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"))
 WRITE_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"), ("html", "HTML (a chart page, or a table)"))
@@ -95,6 +95,34 @@ class OutputData(Tool):
         ctx.require(cfg["path"], "Pick an output file")
         fmt = f", fmt={lit(cfg['format'])}" if cfg["format"] != "auto" else ""
         return f"write_any({ctx.var()}, {lit(cfg['path'])}{fmt})"
+
+    def summary(self, cfg):
+        return short(os.path.basename(cfg["path"] or ""))
+
+
+@register
+class CreatePython(Tool):
+    type = "create_python"
+    label = "Create Python"
+    category = "Open & Save"
+    description = "Write the workflow as a Python script (.py) or a Jupyter notebook (.ipynb) with one section for each tool."
+    needs = "The last tool of the branch you want. Connect several tools to include several branches. The file holds every tool upstream of them."
+    inputs = [Port("in", multi=True)]
+    outputs = []
+    side_effect = True
+    needs_upstream = True
+    exportable = False
+    fields = [
+        fld("path", "File", "file", "", save=True, help="Writes when you click Run. A name with no folder saves inside the project folder. A name with no extension gets one from Format."),
+        fld("format", "Format", "select", "py", options=opts(("py", "Python script (.py)"), ("ipynb", "Jupyter notebook (.ipynb)"))),
+        fld("title", "Title", "text", "", placeholder="Defaults to the file name", help="Names the script's first line and the notebook's heading."),
+    ]
+
+    def code(self, cfg, ctx):
+        ctx.require(cfg["path"], "Pick an output file")
+        ctx.vars()
+        ctx.require(ctx.upstream, "Connect a tool that has something upstream of it")
+        return f"create_python(workflow_steps, {lit(cfg['path'])}, {lit(cfg['format'])}, {lit(cfg['title'] or '')})"
 
     def summary(self, cfg):
         return short(os.path.basename(cfg["path"] or ""))

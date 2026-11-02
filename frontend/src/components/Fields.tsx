@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowUp, FolderOpen, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, FolderOpen, Plus, Sigma, Trash2 } from "lucide-react";
 import FilePicker from "./FilePicker";
+import FunctionBrowser, { useFunctions } from "./FunctionBrowser";
 import { api } from "../api";
 import { useFlow } from "../store";
 import { FILE_MANAGER, basename, joinPath } from "../paths";
@@ -84,22 +85,70 @@ function CodeField({ field, value, onChange, ctx }: Props) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const python = field.kind === "python";
   const cols = ctx.columns("in");
-  const insert = (name: string) => {
+  const [fxOpen, setFxOpen] = useState(false);
+  const [caret, setCaret] = useState(0);
+  const catalog = useFunctions(!python);
+  const text = value ?? "";
+  const splice = (insert: string, start: number, end: number, back = 0) => {
     const el = ref.current;
-    const text = python ? `df[${JSON.stringify(name)}]` : `[${name}]`;
-    const cur = value ?? "";
-    const start = el?.selectionStart ?? cur.length;
-    const end = el?.selectionEnd ?? cur.length;
-    onChange(cur.slice(0, start) + text + cur.slice(end));
+    onChange(text.slice(0, start) + insert + text.slice(end));
+    const at = start + insert.length - back;
     requestAnimationFrame(() => {
       if (!el) return;
       el.focus();
-      el.selectionStart = el.selectionEnd = start + text.length;
+      el.selectionStart = el.selectionEnd = at;
+      setCaret(at);
     });
+  };
+  const insert = (name: string) => {
+    const el = ref.current;
+    const label = python ? `df[${JSON.stringify(name)}]` : `[${name}]`;
+    splice(label, el?.selectionStart ?? text.length, el?.selectionEnd ?? text.length);
+  };
+  const typed = python ? null : /([A-Z][A-Z0-9_.]*)$/.exec(text.slice(0, caret));
+  const word = typed && !/[A-Za-z0-9_]/.test(text.charAt(caret - typed[1].length - 1) || " ") ? typed[1] : "";
+  const hints = word.length >= 2 && catalog ? catalog.functions.filter((f) => f.name.startsWith(word) && !(f.name === word && text.charAt(caret) === "(")).slice(0, 8) : [];
+  const accept = (name: string) => splice(`${name}()`, caret - word.length, caret, 1);
+  const pick = (name: string) => {
+    const el = ref.current;
+    splice(`${name}()`, el?.selectionStart ?? text.length, el?.selectionEnd ?? text.length, 1);
   };
   return (
     <>
-      <textarea ref={ref} className="mono" rows={python ? 14 : 3} value={value ?? ""} onChange={(e) => onChange(e.target.value)} spellCheck={false} placeholder={field.placeholder} />
+      <textarea
+        ref={ref}
+        className="mono"
+        rows={python ? 14 : 3}
+        value={text}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setCaret(e.target.selectionStart);
+        }}
+        onKeyUp={(e) => setCaret(e.currentTarget.selectionStart)}
+        onClick={(e) => setCaret(e.currentTarget.selectionStart)}
+        onKeyDown={(e) => {
+          if (e.key === "Tab" && !e.shiftKey && hints.length) {
+            e.preventDefault();
+            accept(hints[0].name);
+          }
+        }}
+        spellCheck={false}
+        placeholder={field.placeholder}
+      />
+      {!python && (
+        <div className="fx-bar">
+          <button type="button" className={`chip fx-toggle${fxOpen ? " on" : ""}`} onClick={() => setFxOpen(!fxOpen)} aria-expanded={fxOpen}>
+            <Sigma size={12} /> Functions
+          </button>
+          {hints.map((f, i) => (
+            <button key={f.name} type="button" className="chip fx-hint" onClick={() => accept(f.name)} title={f.description}>
+              {f.name}
+              {i === 0 && <span className="muted"> Tab</span>}
+            </button>
+          ))}
+        </div>
+      )}
+      {!python && fxOpen && catalog && <FunctionBrowser catalog={catalog} onPick={pick} />}
       {cols.length > 0 && (
         <div className="chips" title="Click to insert">
           {cols.slice(0, 200).map((c) => (

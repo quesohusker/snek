@@ -6,7 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from snek import connect, distributions, inference, modeling, simulation, sports_math
+from snek import connect, distributions, fx, inference, modeling, simulation, sports_math
 from snek.charts import chart_html, make_chart
 
 FORMATS = {
@@ -67,7 +67,7 @@ def read_any(path, fmt="auto", sheet=None, sep=None, encoding="utf-8", flatten=F
     return pd.concat(frames, ignore_index=True)
 
 
-EXTENSIONS = {"csv": ".csv", "tsv": ".tsv", "excel": ".xlsx", "json": ".json", "jsonl": ".jsonl", "parquet": ".parquet", "html": ".html"}
+EXTENSIONS = {"csv": ".csv", "tsv": ".tsv", "excel": ".xlsx", "json": ".json", "jsonl": ".jsonl", "parquet": ".parquet", "html": ".html", "py": ".py", "ipynb": ".ipynb"}
 
 
 def output_path(path, fmt="auto"):
@@ -426,6 +426,11 @@ NAMESPACE = {
     "simulate_process": simulation.simulate_process,
     "fit_distribution": distributions.fit_distribution,
 }
+
+
+for _name, _spec in fx.registry().items():
+    HELPERS[_name] = _spec
+    NAMESPACE[_name] = fx.FUNCTIONS[_name]
 
 
 def register_helper(name, fns, imports=(), constants=(), packages=()):

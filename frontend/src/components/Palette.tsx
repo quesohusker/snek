@@ -1,7 +1,7 @@
 import { useState, type DragEvent, type ReactNode } from "react";
 import { useReactFlow } from "@xyflow/react";
-import { ChevronRight } from "lucide-react";
-import { useFlow } from "../store";
+import { ChevronRight, Star } from "lucide-react";
+import { POPULAR_TOOLS, useFlow } from "../store";
 import { useMenus } from "../commands";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
 import type { MenuItem } from "./Menubar";
@@ -88,6 +88,9 @@ export default function Palette() {
   const tab = useFlow((s) => s.paletteTab);
   const addNode = useFlow((s) => s.addNode);
   const selectedId = useFlow((s) => s.selectedId);
+  const favorites = useFlow((s) => s.favorites);
+  const toggleFavorite = useFlow((s) => s.toggleFavorite);
+  const resetFavorites = useFlow((s) => s.resetFavorites);
   const menus = useMenus();
   const [query, setQuery] = useState("");
   const [openState, setOpenState] = useState(readOpen);
@@ -120,9 +123,13 @@ export default function Palette() {
 
   const toolRow = (t: ToolSpec, showCategory = false) => {
     const color = CATEGORY_COLORS[t.category] ?? "var(--cat-dev)";
+    const fav = favorites.includes(t.type);
     return (
       <div key={t.type} className="tool-row">
         <ToolButton tool={t} color={color} showCategory={showCategory} onDragStart={onDragStart} onAdd={onAddTool} />
+        <button type="button" className={`fav-toggle${fav ? " on" : ""}`} aria-pressed={fav} title={fav ? "Remove from Favorites" : "Add to Favorites"} onClick={() => toggleFavorite(t.type)}>
+          <Star size={13} fill={fav ? "currentColor" : "none"} />
+        </button>
       </div>
     );
   };
@@ -184,6 +191,21 @@ export default function Palette() {
     body = groupedRows(toolList.filter((t) => t.category === tab), tab);
   }
 
+  const favList = favorites.map((type) => toolList.find((t) => t.type === type)).filter((t): t is ToolSpec => !!t);
+  const usual = favorites.length === POPULAR_TOOLS.length && POPULAR_TOOLS.every((t) => favorites.includes(t));
+  const favoritesBlock = !q && toolList.length > 0 && (
+    <div className="palette-favorites">
+      <Group label="Favorites" count={favList.length} open={isOpen("favorites", true)} onToggle={() => toggle("favorites", true)} depth={0}>
+        {favList.length ? favList.map((t) => toolRow(t)) : <div className="muted pad">Click the star on a tool to keep it here.</div>}
+        {!usual && (
+          <button type="button" className="palette-restore" onClick={resetFavorites}>
+            Restore popular tools
+          </button>
+        )}
+      </Group>
+    </div>
+  );
+
   const heading = q ? `Search: ${matches.length} tool${matches.length === 1 ? "" : "s"}` : tab;
   const color = CATEGORY_COLORS[tab];
 
@@ -201,6 +223,7 @@ export default function Palette() {
         </div>
       )}
       <input className="palette-search" placeholder="Search all tools and commands" value={query} onChange={(e) => setQuery(e.target.value)} />
+      {favoritesBlock}
       <div className="palette-heading" style={color && !q ? { color } : undefined}>
         {heading}
       </div>

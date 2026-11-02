@@ -101,6 +101,10 @@ export type WorkflowFile = {
 
 export type FsEntry = { name: string; path: string; dir: boolean; size: number; modified: string };
 
+export type FunctionDoc = { name: string; group: string; syntax: string; description: string; example: string; result: string; words: string };
+
+export type FunctionCatalog = { groups: string[]; functions: FunctionDoc[] };
+
 export type FsListing = {
   path: string;
   parent: string;

@@ -3,7 +3,7 @@ import re
 import sys
 from pathlib import Path
 
-from PyInstaller.utils.hooks import collect_submodules, copy_metadata
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy_metadata
 
 ROOT = Path(SPECPATH).parent
 VERSION = re.search(r'__version__ = "([^"]+)"', (ROOT / "snek" / "__init__.py").read_text(encoding="utf-8")).group(1)
@@ -11,10 +11,12 @@ ICON = str(ROOT / "packaging" / ("snek.ico" if sys.platform.startswith("win") el
 
 datas = [(str(ROOT / "frontend" / "dist"), "frontend/dist"), (str(ROOT / "examples"), "examples"), (str(ROOT / "LICENSE"), "."), (str(ROOT / "THIRD_PARTY_NOTICES.md"), ".")]
 datas += [(str(p), "workflows") for p in sorted((ROOT / "workflows").glob("*.snek")) if not p.name.startswith("CFB")]
+datas += [(str(p), str(p.parent.relative_to(ROOT))) for p in sorted((ROOT / "snek").rglob("*.py"))]
 PLUGINS = [name.strip() for name in os.environ.get("SNEK_BUNDLE_PLUGINS", "").split(",") if name.strip()]
 plugin_imports = []
 for dist in PLUGINS:
     datas += copy_metadata(dist)
+    datas += collect_data_files(dist.replace("-", "_"), include_py_files=True)
     plugin_imports += collect_submodules(dist.replace("-", "_"))
 
 a = Analysis(
