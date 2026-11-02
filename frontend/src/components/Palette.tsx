@@ -1,11 +1,12 @@
 import { useState, type DragEvent, type ReactNode } from "react";
 import { useReactFlow } from "@xyflow/react";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight, Sigma, Star } from "lucide-react";
 import { POPULAR_TOOLS, useFlow } from "../store";
 import { useMenus } from "../commands";
 import { CATEGORY_COLORS, ToolIcon } from "../icons";
 import type { MenuItem } from "./Menubar";
-import type { ToolSpec } from "../types";
+import type { FunctionDoc, ToolSpec } from "../types";
+import { findFunctions, useFunctions } from "./FunctionBrowser";
 import { useToolCard } from "./ToolCard";
 
 const OPEN_KEY = "snek.sidebarOpen";
@@ -80,7 +81,22 @@ function ToolButton({ tool, color, showCategory, onDragStart, onAdd }: { tool: T
 
 const TAB_HINTS: Record<string, string> = {
   All: "Every tool, grouped by category.",
+  Functions: "Spreadsheet functions with Excel's names. Click one to add a Calculate step that uses it. The Functions button under any expression box inserts one into a formula.",
 };
+
+function FunctionButton({ doc, color, onAdd }: { doc: FunctionDoc; color: string; onAdd: (doc: FunctionDoc) => void }) {
+  return (
+    <button className="palette-item" onClick={() => onAdd(doc)} title={`${doc.syntax}\n${doc.example} gives ${doc.result}`}>
+      <span className="palette-icon" style={{ background: color }}>
+        <Sigma size={15} />
+      </span>
+      <span className="palette-text">
+        <span className="palette-label">{doc.name}</span>
+        <span className="palette-desc">{doc.description}</span>
+      </span>
+    </button>
+  );
+}
 
 export default function Palette() {
   const toolList = useFlow((s) => s.toolList);
@@ -109,10 +125,13 @@ export default function Palette() {
     e.dataTransfer.effectAllowed = "move";
   };
 
-  const onAddTool = (type: string) => {
+  const catalog = useFunctions(true);
+
+  const onAddTool = (type: string, config?: Record<string, unknown>) => {
     const canvas = document.querySelector(".canvas")?.getBoundingClientRect();
     const center = canvas ? screenToFlowPosition({ x: canvas.left + canvas.width / 2 - 28, y: canvas.top + canvas.height / 2 - 28 }) : undefined;
     const id = addNode(type, selectedId ? undefined : center);
+    if (config) useFlow.getState().updateConfig(id, config);
     const node = useFlow.getState().nodes.find((n) => n.id === id);
     if (!node || !canvas) return;
     const p = flowToScreenPosition(node.position);
@@ -120,6 +139,14 @@ export default function Palette() {
       setCenter(node.position.x + 56, node.position.y + 40, { zoom: getZoom(), duration: 300 });
     }
   };
+
+  const addFunctionStep = (doc: FunctionDoc) => onAddTool("formula", { formulas: [{ column: doc.name.toLowerCase().replace(/\./g, "_"), expression: doc.example, dtype: "" }] });
+
+  const functionRow = (doc: FunctionDoc) => (
+    <div key={doc.name} className="tool-row">
+      <FunctionButton doc={doc} color={CATEGORY_COLORS.Columns ?? "var(--cat-dev)"} onAdd={addFunctionStep} />
+    </div>
+  );
 
   const toolRow = (t: ToolSpec, showCategory = false) => {
     const color = CATEGORY_COLORS[t.category] ?? "var(--cat-dev)";
@@ -171,9 +198,40 @@ export default function Palette() {
   const matches = q ? toolList.filter((t) => `${t.label} ${t.description} ${t.category}`.toLowerCase().includes(q)) : [];
   const visibleMenus = menus.map((m) => ({ ...m, items: filterItems(m.items, q) })).filter((m) => m.items.length);
 
+  const functionMatches = q && catalog ? findFunctions(catalog.functions, q, "").slice(0, 40) : [];
+
   let body: ReactNode;
   if (q) {
-    body = matches.length ? matches.map((t) => toolRow(t, true)) : <div className="muted pad">No tools match.</div>;
+    body =
+      matches.length || functionMatches.length ? (
+        <>
+          {matches.map((t) => toolRow(t, true))}
+          {functionMatches.length > 0 && (
+            <section>
+              <h4 className="palette-section" style={{ color: CATEGORY_COLORS.Columns }}>
+                Functions
+              </h4>
+              {functionMatches.map(functionRow)}
+            </section>
+          )}
+        </>
+      ) : (
+        <div className="muted pad">No tools or functions match.</div>
+      );
+  } else if (tab === "Functions") {
+    body = catalog ? (
+      catalog.groups.map((g, i) => {
+        const list = catalog.functions.filter((f) => f.group === g).sort((a, b) => a.name.localeCompare(b.name));
+        const key = `functions/${g}`;
+        return (
+          <Group key={key} label={g} count={list.length} open={isOpen(key, i === 0)} onToggle={() => toggle(key, i === 0)} depth={0}>
+            {list.map(functionRow)}
+          </Group>
+        );
+      })
+    ) : (
+      <div className="muted pad">Loading the functions…</div>
+    );
   } else if (tab === "All") {
     body = categories.map((c) => {
       const items = toolList.filter((t) => t.category === c);
@@ -206,7 +264,7 @@ export default function Palette() {
     </div>
   );
 
-  const heading = q ? `Search: ${matches.length} tool${matches.length === 1 ? "" : "s"}` : tab;
+  const heading = q ? `Search: ${matches.length} tool${matches.length === 1 ? "" : "s"}${functionMatches.length ? `, ${functionMatches.length} function${functionMatches.length === 1 ? "" : "s"}` : ""}` : tab;
   const color = CATEGORY_COLORS[tab];
 
   return (
@@ -227,7 +285,7 @@ export default function Palette() {
       <div className="palette-heading" style={color && !q ? { color } : undefined}>
         {heading}
       </div>
-      <div className="palette-hint">{q ? "Results from every category." : (TAB_HINTS[tab] ?? "Drag onto the canvas, or click to add after the selected tool.")}</div>
+      <div className="palette-hint">{q ? "Results from every category, and the spreadsheet functions." : (TAB_HINTS[tab] ?? "Drag onto the canvas, or click to add after the selected tool.")}</div>
       <div className="palette-tools">{body}</div>
     </aside>
   );

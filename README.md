@@ -92,7 +92,7 @@ You can use `pd`, `np` and `iif(condition, then, else)`. Snek suggests a fix whe
 
 ### Spreadsheet functions
 
-Expressions also know 305 spreadsheet functions with Excel's names and rules: `IF`, `IFS`, `IFERROR`, `SWITCH`, `LEFT`, `TRIM`, `TEXT`, `DATE`, `WORKDAY`, `ROUND`, `SUMIF`, `COUNTIFS`, `STDEV.S`, `PERCENTILE.INC`, `NORM.DIST`, `T.TEST`, `PMT`, `IRR`, `MATCH`, `XMATCH`, `INDEX` and more. The groups are Logical, Information, Text, Date and time, Math and trigonometry, Statistical, Distributions, Financial, Lookup, and Engineering. 39 old Excel names such as `STDEV` and `NORMDIST` work too. Click **Functions** under an expression box to search them by name or by plain words ("remove spaces" finds `TRIM`). Type a name in capitals and press Tab to complete it.
+Expressions also know 305 spreadsheet functions with Excel's names and rules: `IF`, `IFS`, `IFERROR`, `SWITCH`, `LEFT`, `TRIM`, `TEXT`, `DATE`, `WORKDAY`, `ROUND`, `SUMIF`, `COUNTIFS`, `STDEV.S`, `PERCENTILE.INC`, `NORM.DIST`, `T.TEST`, `PMT`, `IRR`, `MATCH`, `XMATCH`, `INDEX` and more. The groups are Logical, Information, Text, Date and time, Math and trigonometry, Statistical, Distributions, Financial, Lookup, and Engineering. 39 old Excel names such as `STDEV` and `NORMDIST` work too. Open the **Functions** tab in the sidebar, next to All, to browse every function by group. Click one to add a Calculate step that already uses it. The sidebar search finds them too. Under an expression box, click **Functions** to search them by name or by plain words ("remove spaces" finds `TRIM`) and insert one into a formula. Type a name in capitals and press Tab to complete it.
 
 ```
 IF([sales] > 100, "high", "low")
