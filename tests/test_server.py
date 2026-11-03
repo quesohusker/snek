@@ -192,6 +192,44 @@ def test_table_copies_as_tab_separated(client):
     assert r.json() == {"text": "a\tb\n1\t2\n3\t4\n", "rows": 2, "total": 2}
 
 
+def test_open_in_norm_writes_workbook_and_launches(client, tmp_path, monkeypatch):
+    launched = []
+    monkeypatch.setattr(server.norm, "launch", lambda path: launched.append(path) or True)
+    wf = {"nodes": [{"id": "1", "type": "text_input", "label": "Scores: week 1", "config": {"data": "team,pts\nA,1\nB,2"}}], "edges": []}
+    r = client.post("/api/norm", json={"workflow": wf, "node": "1"}).json()
+    path = Path(r["path"])
+    assert r["rows"] == 2 and r["opened"] is True
+    assert path == tmp_path / "home" / "norm" / "Scores- week 1.norm"
+    book = json.loads(path.read_text())
+    assert book["source"]["name"] == "Scores: week 1" and book["source"]["cols"]["c1"] == [1, 2]
+    assert launched == [str(path)]
+    quiet = client.post("/api/norm", json={"workflow": wf, "node": "1", "launch": False}).json()
+    assert quiet["opened"] is False and len(launched) == 1
+
+
+def test_open_in_norm_leaves_launching_to_the_mac_shell_when_sandboxed(client, monkeypatch):
+    monkeypatch.setattr(server.norm, "launch", lambda path: pytest.fail("the sandboxed server must not launch apps"))
+    monkeypatch.setattr(server.norm, "find_app", lambda: "/Applications/Norm.app")
+    monkeypatch.setenv("SNEK_SANDBOXED", "1")
+    wf = {"nodes": [{"id": "1", "type": "text_input", "config": {"data": "a\n1"}}], "edges": []}
+    r = client.post("/api/norm", json={"workflow": wf, "node": "1"}).json()
+    assert r["opened"] is False and Path(r["path"]).exists()
+    assert client.get("/api/norm").json() == {"available": False}
+
+
+def test_norm_status_reports_whether_norm_is_installed(client, monkeypatch):
+    monkeypatch.setattr(server.norm, "find_app", lambda: "/Applications/Norm.app")
+    assert client.get("/api/norm").json() == {"available": True}
+    monkeypatch.setattr(server.norm, "find_app", lambda: None)
+    assert client.get("/api/norm").json() == {"available": False}
+
+
+def test_open_in_norm_reports_tool_errors(client):
+    wf = {"nodes": [{"id": "1", "type": "input", "config": {"path": "missing.csv"}}], "edges": []}
+    r = client.post("/api/norm", json={"workflow": wf, "node": "1"})
+    assert r.status_code == 400
+
+
 def test_mime_lookup_survives_unreadable_system_tables():
     script = "\n".join([
         "import builtins",

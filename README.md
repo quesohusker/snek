@@ -61,7 +61,9 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 | Sports | **All sports:** Team Ratings (SRS/Massey), Elo Ratings, Opponent Adjust, Spread & Win Probability (grades picks against betting lines), Season Simulation, Pythagorean Expectation. **Football:** Garbage-Time Filter, Success Rate, Football Efficiency (EPA, success rate, explosiveness, havoc). **Basketball:** Four Factors (with offensive, defensive and net rating), Shooting Efficiency. **Baseball:** Batting Stats (through wOBA), Pitching Stats (through FIP). **Volleyball:** Volleyball Box Stats, Side-Out & Serve |
 | Code | Python Code (your own Python code) |
 
-Open File reads CSV, TSV, Excel, JSON, JSON Lines and Parquet, gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. List Files plus Read Listed Files reads every file in a folder.
+Open File reads CSV, TSV, Excel, JSON, JSON Lines, Parquet and Norm workbooks (`.norm`), gzipped CSV included. Put `*` in the path to stack many files into one table, for example `flights_2013_*.csv.gz`. List Files plus Read Listed Files reads every file in a folder.
+
+Save File writes a Norm workbook when the path ends in `.norm` or Format is **Norm workbook**. Norm is a drag-and-drop chart builder for the Mac. The workbook holds the table, with numbers, dates and text typed for Norm, and an empty sheet ready to build on. When Norm is installed, the results panel shows an **Open in Norm** button next to Copy. It sends the selected tool's output straight to Norm. Those copies go to the `norm` folder inside Snek's settings folder and are replaced each time.
 
 Create Python writes the workflow as a file when you press Run. Connect it to the last step of the branch you want, or connect several steps to include several branches. The file holds every step upstream of those, in order. Choose a Python script (`.py`) or a Jupyter notebook (`.ipynb`). The notebook has one section for each step: a heading that says what the step does, then its code. Export Python in the File menu gives the same two formats for the whole workflow.
 

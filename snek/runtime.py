@@ -2,6 +2,7 @@ import glob
 import io
 import json
 import os
+import re
 
 import numpy as np
 import pandas as pd
@@ -22,6 +23,7 @@ FORMATS = {
     ".ndjson": "jsonl",
     ".parquet": "parquet",
     ".pq": "parquet",
+    ".norm": "norm",
 }
 
 
@@ -53,6 +55,8 @@ def read_any(path, fmt="auto", sheet=None, sep=None, encoding="utf-8", flatten=F
                     data = json.load(fh)
                 records = data if isinstance(data, list) else [data]
                 df = pd.json_normalize(records) if flatten else pd.DataFrame(records)
+            elif kind == "norm":
+                df = read_norm(file)
             else:
                 raise ValueError(f"Unknown format {kind!r}")
             if skiprows:
@@ -67,7 +71,7 @@ def read_any(path, fmt="auto", sheet=None, sep=None, encoding="utf-8", flatten=F
     return pd.concat(frames, ignore_index=True)
 
 
-EXTENSIONS = {"csv": ".csv", "tsv": ".tsv", "excel": ".xlsx", "json": ".json", "jsonl": ".jsonl", "parquet": ".parquet", "html": ".html", "py": ".py", "ipynb": ".ipynb"}
+EXTENSIONS = {"csv": ".csv", "tsv": ".tsv", "excel": ".xlsx", "json": ".json", "jsonl": ".jsonl", "parquet": ".parquet", "html": ".html", "norm": ".norm", "py": ".py", "ipynb": ".ipynb"}
 
 
 def output_path(path, fmt="auto"):
@@ -86,6 +90,109 @@ def nested_to_json(df):
                 out = df.copy(deep=False)
             out.iloc[:, i] = s.map(lambda v: json.dumps(v, default=str) if isinstance(v, (dict, list)) else v)
     return out
+
+
+def norm_null(v):
+    return v is None or v is pd.NA or v is pd.NaT or (isinstance(v, float) and v != v)
+
+
+def norm_values(s):
+    if isinstance(s.dtype, pd.CategoricalDtype):
+        return "string", [None if norm_null(v) else str(v) for v in s.tolist()]
+    if pd.api.types.is_bool_dtype(s.dtype):
+        return "string", [None if norm_null(v) else ("True" if v else "False") for v in s.tolist()]
+    if pd.api.types.is_numeric_dtype(s.dtype) and not pd.api.types.is_complex_dtype(s.dtype):
+        vals = pd.to_numeric(s, errors="coerce").astype("float64").to_numpy()
+        good = np.isfinite(vals).tolist()
+        return "number", [(int(v) if v.is_integer() and abs(v) < 2 ** 53 else v) if ok else None for v, ok in zip(vals.tolist(), good)]
+    if pd.api.types.is_datetime64_any_dtype(s.dtype):
+        t = s.dt.tz_localize(None) if isinstance(s.dtype, pd.DatetimeTZDtype) else s
+        known = t.dropna()
+        fmt = "%Y-%m-%dT%H:%M:%S" if bool((known != known.dt.normalize()).any()) else "%Y-%m-%d"
+        return "date", [None if norm_null(v) else v.strftime(fmt) for v in t.tolist()]
+    items = s.tolist()
+    if s.dtype == object:
+        present = [v for v in items if not norm_null(v)]
+        if present and all(isinstance(v, (int, float, np.integer, np.floating)) and not isinstance(v, (bool, np.bool_)) for v in present):
+            return norm_values(pd.to_numeric(s, errors="coerce"))
+        if present and all(hasattr(v, "strftime") and not isinstance(v, str) for v in present):
+            return norm_values(pd.to_datetime(s, errors="coerce"))
+    return "string", [None if norm_null(v) else (json.dumps(v, default=str) if isinstance(v, (dict, list)) else str(v)) for v in items]
+
+
+def norm_workbook(df, name):
+    dims = re.compile(r"(^|[\s_\-.])(id|code|zip|zipcode|postal|postcode|key|number|no|num|year|fips|phone)$", re.I)
+    used, names = set(), []
+    for j, col in enumerate(df.columns):
+        base = str(col).replace("[", "").replace("]", "").strip() or f"Column {j + 1}"
+        field, k = base, 2
+        while field in used:
+            field = f"{base} ({k})"
+            k += 1
+        used.add(field)
+        names.append(field)
+    count = "Record Count"
+    while count in used:
+        count = f"({count})"
+    cols, fields = {}, []
+    for j, field in enumerate(names):
+        kind, values = norm_values(df.iloc[:, j])
+        cols[f"c{j}"] = values
+        fields.append({"name": field, "src": f"c{j}", "type": kind, "role": "measure" if kind == "number" and not dims.search(field) else "dimension"})
+    fields.append({"name": count, "virtual": "count", "type": "number", "role": "measure"})
+    sheet = {
+        "id": "s1", "name": "Sheet 1", "columns": [], "rows": [],
+        "marks": {"type": "auto", "color": None, "size": None, "label": None, "angle": None, "detail": [], "tooltip": []},
+        "filters": [], "aggregate": True, "analytics": {"avg": False, "trend": False},
+    }
+    return {"norm": 1, "creator": "Snek", "source": {"name": name, "n": int(len(df)), "fields": fields, "cols": cols, "sample": False}, "sheets": [sheet], "dashboards": [], "active": "s1"}
+
+
+def write_norm(df, target, name=None):
+    book = norm_workbook(nested_to_json(df), name or os.path.splitext(os.path.basename(target))[0])
+    with open(target, "w", encoding="utf-8") as f:
+        json.dump(book, f, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+    return target
+
+
+def norm_number(v):
+    if norm_null(v):
+        return np.nan
+    if isinstance(v, (bool, int, float)):
+        return float(v)
+    text = re.sub(r"[$€£¥,\s]", "", str(v))
+    negative = text.startswith("(") and text.endswith(")")
+    text = text.strip("()").rstrip("%")
+    try:
+        n = float(text)
+    except ValueError:
+        return np.nan
+    return -n if negative else n
+
+
+def read_norm(file):
+    with open(file, encoding="utf-8") as fh:
+        book = json.load(fh)
+    source = book.get("source") if isinstance(book, dict) else None
+    cols = (source or {}).get("cols")
+    if not isinstance(cols, dict):
+        raise ValueError(f"{os.path.basename(file)} was saved without its data. Save it from Norm with ⌘S to include the data.")
+    data = {}
+    for f in source.get("fields", []):
+        key = f.get("src")
+        if not key or key not in cols or f.get("formula") is not None:
+            continue
+        raw = cols[key]
+        if f.get("type") == "number":
+            col = pd.Series([norm_number(v) for v in raw], dtype="float64")
+            if col.notna().all() and (col % 1 == 0).all():
+                col = col.astype("int64")
+        elif f.get("type") == "date":
+            col = pd.to_datetime(pd.Series(raw, dtype=object), errors="coerce", format="mixed")
+        else:
+            col = pd.Series([None if norm_null(v) or v == "" else str(v) for v in raw], dtype="str")
+        data[f["name"]] = col
+    return pd.DataFrame(data)
 
 
 def write_any(df, path, fmt="auto"):
@@ -110,6 +217,8 @@ def write_any(df, path, fmt="auto"):
     elif kind == "html":
         with open(target, "w", encoding="utf-8") as f:
             f.write(chart_html(df) if "Vega-Lite" in df.columns else df.to_html(index=False))
+    elif kind == "norm":
+        write_norm(df, target)
     else:
         raise ValueError(f"Unknown format {kind!r}")
     return target
@@ -379,15 +488,15 @@ def map_values(df, column, mapping, unmatched="keep", default="", ignore_case=Fa
 
 HELPERS = {
     "map_values": ([parse_mapping, map_values], [], [], []),
-    "read_any": ([match_files, read_any], ["glob", "json", "os"], ["FORMATS"]),
-    "write_any": ([output_path, nested_to_json, chart_html, write_any], ["html", "json", "os"], ["FORMATS", "EXTENSIONS"]),
+    "read_any": ([match_files, norm_null, norm_number, read_norm, read_any], ["glob", "json", "os", "re"], ["FORMATS"]),
+    "write_any": ([output_path, nested_to_json, chart_html, norm_null, norm_values, norm_workbook, write_norm, write_any], ["html", "json", "os", "re"], ["FORMATS", "EXTENSIONS"]),
     "make_chart": ([make_chart], ["json"], []),
     "join_lrj": ([join_lrj], [], []),
     "unnest": ([unnest], [], []),
     "iif": ([iif], [], []),
     "auto_type": ([auto_type], [], []),
     "list_files": ([list_files], ["glob", "os"], []),
-    "read_many": ([match_files, read_any, read_many], ["glob", "json", "os"], ["FORMATS"]),
+    "read_many": ([match_files, norm_null, norm_number, read_norm, read_any, read_many], ["glob", "json", "os", "re"], ["FORMATS"]),
     "weighted_average": ([weighted_average], [], []),
     "select_rows": ([select_rows], [], []),
     "parse_json": ([parse_json], ["json"], []),

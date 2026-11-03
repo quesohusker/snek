@@ -1,4 +1,4 @@
-import { revealNative } from "./native";
+import { hasNative, normAppNative, openInNormNative, revealNative } from "./native";
 import type { FsListing, FunctionCatalog, NodeResult, PreviewData, ProjectInfo, SnekSettings, ToolSpec, UpdateInfo, WorkflowFile } from "./types";
 
 async function call<T>(method: string, url: string, body?: unknown): Promise<T> {
@@ -33,6 +33,13 @@ export const api = {
     call<PreviewResponse>("POST", "/api/preview", { workflow, node, port, offset, limit, profile }),
   chart: (workflow: WorkflowFile, node: string, port: string | null) => call<{ specs: unknown[] }>("POST", "/api/chart", { workflow, node, port }),
   table: (workflow: WorkflowFile, node: string, port: string | null) => call<{ text: string; rows: number; total: number }>("POST", "/api/table", { workflow, node, port }),
+  normStatus: async () => (hasNative() ? normAppNative() : call<{ available: boolean }>("GET", "/api/norm").then((r) => r.available).catch(() => false)),
+  openInNorm: async (workflow: WorkflowFile, node: string, port: string | null) => {
+    const native = hasNative();
+    const r = await call<{ path: string; rows: number; opened: boolean }>("POST", "/api/norm", { workflow, node, port, launch: !native });
+    if (native) r.opened = await openInNormNative(r.path);
+    return r;
+  },
   aiInfo: () => call<AIInfo>("GET", "/api/ai"),
   aiContext: (request: string) => call<{ text: string; catalog_chars: number }>("POST", "/api/ai/context", { request }),
   aiWorkflow: (request: string, model: string) => call<AIResult>("POST", "/api/ai/workflow", { request, model }),

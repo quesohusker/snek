@@ -15,6 +15,15 @@ function cell(v: any) {
   return String(v);
 }
 
+function NormMark() {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 19.5h20" />
+      <path d="M3 18c3.2 0 4.6-2.6 6-6.5C10.2 8 11 6 12 6s1.8 2 3 5.5c1.4 3.9 2.8 6.5 6 6.5" />
+    </svg>
+  );
+}
+
 function stat(v: any) {
   if (v === null || v === undefined) return "";
   if (typeof v === "number") return Number.isInteger(v) ? v.toLocaleString() : v.toLocaleString(undefined, { maximumFractionDigits: 4 });
@@ -49,6 +58,26 @@ export default function ResultsPanel() {
       setCopied(`Copy failed: ${(e as Error).message}`);
     }
     setTimeout(() => setCopied(""), 2500);
+  };
+  const [normReady, setNormReady] = useState(false);
+  const [normNote, setNormNote] = useState("");
+  useEffect(() => {
+    let live = true;
+    api.normStatus().then((ok) => live && setNormReady(ok));
+    return () => {
+      live = false;
+    };
+  }, []);
+  const openNorm = async () => {
+    if (!selectedId) return;
+    setNormNote("Opening in Norm…");
+    try {
+      const r = await api.openInNorm(useFlow.getState().toWorkflow(), selectedId, port);
+      setNormNote(r.opened ? `Opened ${r.rows.toLocaleString()} rows in Norm` : `Norm did not open. Saved ${r.path}`);
+    } catch (e) {
+      setNormNote(`Open in Norm failed: ${(e as Error).message}`);
+    }
+    setTimeout(() => setNormNote(""), 4000);
   };
   const seq = useRef(0);
 
@@ -143,6 +172,12 @@ export default function ResultsPanel() {
               </span>
             )}
             {copied && <span className="muted">{copied}</span>}
+            {normNote && <span className="muted">{normNote}</span>}
+            {normReady && (
+              <button className="icon-btn" title="Open in Norm" aria-label="Open in Norm" disabled={!data} onClick={openNorm}>
+                <NormMark />
+              </button>
+            )}
             <button className="icon-btn" title="Copy all rows (paste into Excel)" disabled={!data} onClick={copyTable}>
               {copied ? <Check size={14} /> : <Copy size={14} />}
             </button>

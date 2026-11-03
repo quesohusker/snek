@@ -2,8 +2,8 @@ import os
 
 from snek.tools.base import Port, Tool, file_stamp, fld, lit, opts, register, short
 
-READ_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"))
-WRITE_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"), ("html", "HTML (a chart page, or a table)"))
+READ_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"), ("norm", "Norm workbook"))
+WRITE_FORMATS = opts(("auto", "Detect from extension"), ("csv", "CSV"), ("tsv", "Tab-delimited"), ("excel", "Excel"), ("json", "JSON"), ("jsonl", "JSON Lines"), ("parquet", "Parquet"), ("html", "HTML (a chart page, or a table)"), ("norm", "Norm workbook (.norm)"))
 
 
 @register
@@ -11,7 +11,7 @@ class InputData(Tool):
     type = "input"
     label = "Open File"
     category = "Open & Save"
-    description = "Read CSV, Excel, JSON, JSON Lines or Parquet. Put * in the path to stack many files."
+    description = "Read CSV, Excel, JSON, JSON Lines, Parquet or a Norm workbook. Put * in the path to stack many files."
     needs = "No input. Reads a file from disk."
     inputs = []
     fields = [
@@ -82,7 +82,7 @@ class OutputData(Tool):
     type = "output"
     label = "Save File"
     category = "Open & Save"
-    description = "Write CSV, Excel, JSON or Parquet when the workflow runs."
+    description = "Write CSV, Excel, JSON, Parquet or a Norm workbook when the workflow runs."
     needs = "Any table to save."
     outputs = []
     side_effect = True

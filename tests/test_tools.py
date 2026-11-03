@@ -365,6 +365,98 @@ def test_output_writes_nested_values_as_json(tmp_path):
     assert pd.isna(back["offense"].iloc[1])
 
 
+def test_norm_workbook_maps_types_names_and_nulls(tmp_path):
+    import json
+
+    from snek.runtime import write_norm
+
+    df = pd.DataFrame({
+        "Team": ["Nebraska", None, "Iowa"],
+        "pts": pd.array([24, None, 20], dtype="Int64"),
+        "ratio": [0.5, float("nan"), float("inf")],
+        "Game ID": [101, 102, 103],
+        "won": [True, False, True],
+        "day": pd.to_datetime(["2025-09-06", None, "2025-09-20"]),
+        "kick": pd.to_datetime(["2025-09-06 19:30", "2025-09-13 11:00", None]),
+        "tags": [{"a": 1}, [1, 2], None],
+        "[odd]": ["x", "y", "z"],
+        "Team ": ["a", "b", "c"],
+        "Record Count": [1, 2, 3],
+    })
+    target = tmp_path / "games.norm"
+    write_norm(df, str(target))
+    book = json.loads(target.read_text())
+    src = book["source"]
+    fields = {f["name"]: f for f in src["fields"]}
+    col = lambda name: src["cols"][fields[name]["src"]]
+    assert book["norm"] == 1 and src["n"] == 3 and src["name"] == "games"
+    assert [f["name"] for f in src["fields"]] == ["Team", "pts", "ratio", "Game ID", "won", "day", "kick", "tags", "odd", "Team (2)", "Record Count", "(Record Count)"]
+    assert fields["(Record Count)"]["virtual"] == "count"
+    assert {n: (f["type"], f["role"]) for n, f in fields.items() if "src" in f} == {
+        "Team": ("string", "dimension"), "pts": ("number", "measure"), "ratio": ("number", "measure"), "Game ID": ("number", "dimension"),
+        "won": ("string", "dimension"), "day": ("date", "dimension"), "kick": ("date", "dimension"), "tags": ("string", "dimension"),
+        "odd": ("string", "dimension"), "Team (2)": ("string", "dimension"), "Record Count": ("number", "measure"),
+    }
+    assert col("Team") == ["Nebraska", None, "Iowa"]
+    assert col("pts") == [24, None, 20]
+    assert col("ratio") == [0.5, None, None]
+    assert col("won") == ["True", "False", "True"]
+    assert col("day") == ["2025-09-06", None, "2025-09-20"]
+    assert col("kick") == ["2025-09-06T19:30:00", "2025-09-13T11:00:00", None]
+    assert json.loads(col("tags")[0]) == {"a": 1} and col("tags")[2] is None
+    assert book["sheets"][0]["id"] == book["active"]
+
+
+def test_output_norm_round_trips_through_open_file(tmp_path):
+    run(workflow([(1, "text_input", {"data": GAMES}), (2, "output", {"path": str(tmp_path / "games"), "format": "norm"})], [(1, "out", 2, "in")]))
+    target = tmp_path / "games.norm"
+    assert target.exists()
+    back = out(run(workflow([(3, "input", {"path": str(target)})], [])), 3)
+    orig = out(run(workflow([(1, "text_input", {"data": GAMES})], [])), 1)
+    pd.testing.assert_frame_equal(back, orig, check_dtype=False)
+
+
+def test_read_norm_parses_values_saved_by_norm(tmp_path):
+    import json
+
+    book = {"norm": 1, "source": {"name": "csv", "n": 3, "cols": {"c0": ["$1,200.50", "(3)", ""], "c1": ["3/15/2024", "2024-03-16", None], "c2": ["a", "", "c"]}, "fields": [
+        {"name": "Sales", "src": "c0", "type": "number", "role": "measure"},
+        {"name": "Day", "src": "c1", "type": "date", "role": "dimension"},
+        {"name": "Tag", "src": "c2", "type": "string", "role": "dimension"},
+        {"name": "Twice", "formula": "[Sales] * 2", "type": "number", "role": "measure"},
+        {"name": "Record Count", "virtual": "count", "type": "number", "role": "measure"},
+    ]}, "sheets": [], "dashboards": []}
+    target = tmp_path / "from norm.norm"
+    target.write_text(json.dumps(book))
+    df = out(run(workflow([(1, "input", {"path": str(target)})], [])), 1)
+    assert list(df.columns) == ["Sales", "Day", "Tag"]
+    assert df["Sales"].tolist()[:2] == [1200.5, -3.0] and pd.isna(df["Sales"].iloc[2])
+    assert df["Day"].dt.strftime("%Y-%m-%d").tolist()[:2] == ["2024-03-15", "2024-03-16"] and pd.isna(df["Day"].iloc[2])
+    assert df["Tag"].iloc[0] == "a" and pd.isna(df["Tag"].iloc[1])
+
+
+def test_norm_export_matches_engine(tmp_path):
+    import json
+
+    engine_out = tmp_path / "engine.norm"
+    script_out = tmp_path / "script.norm"
+    wf = workflow([(1, "text_input", {"data": GAMES}), (2, "output", {"path": str(engine_out)})], [(1, "out", 2, "in")])
+    ev = Engine().evaluate(wf, run_side_effects=True)
+    code = export_script(ev, "test").replace(repr(str(engine_out)), repr(str(script_out)))
+    script = tmp_path / "exported.py"
+    script.write_text(code)
+    subprocess.run([sys.executable, str(script)], check=True, cwd=tmp_path)
+    a, b = json.loads(engine_out.read_text()), json.loads(script_out.read_text())
+    a["source"].pop("name"), b["source"].pop("name")
+    assert a == b
+    csv_out = tmp_path / "back.csv"
+    reread = Engine().evaluate(workflow([(1, "input", {"path": str(engine_out)}), (2, "output", {"path": str(csv_out)})], [(1, "out", 2, "in")]), run_side_effects=True)
+    reread_code = export_script(reread, "test").replace(repr(str(csv_out)), repr(str(tmp_path / "script.csv")))
+    script.write_text(reread_code)
+    subprocess.run([sys.executable, str(script)], check=True, cwd=tmp_path)
+    assert (tmp_path / "script.csv").read_text() == csv_out.read_text()
+
+
 def test_glob_input_adds_filename(tmp_path):
     (tmp_path / "w1.csv").write_text("a\n1\n")
     (tmp_path / "w2.csv").write_text("a\n2\n3\n")

@@ -22,8 +22,8 @@ from snek.engine import Engine
 from snek.paths import DIST, snek_home
 from snek.preview import preview
 from snek.projects import Projects
-from snek.runtime import output_path
-from snek import ai, connect, health, sandbox
+from snek.runtime import output_path, write_norm
+from snek import ai, connect, health, norm, sandbox
 from snek import settings as user_settings
 from snek import updates
 from snek.tools import CATEGORY_ORDER, TOOLS
@@ -194,6 +194,37 @@ def table_text(workflow: dict = Body(...), node: str = Body(...), port: str | No
     if df is None:
         raise HTTPException(400, "Nothing to copy")
     return {"text": df.head(COPY_LIMIT).to_csv(sep="\t", index=False, lineterminator="\n"), "rows": int(min(len(df), COPY_LIMIT)), "total": int(len(df))}
+
+
+@app.get("/api/norm")
+def norm_status():
+    return {"available": not sandbox.active() and norm.find_app() is not None}
+
+
+@app.post("/api/norm")
+def open_in_norm(workflow: dict = Body(...), node: str = Body(...), port: str | None = Body(None), launch: bool = Body(True)):
+    ev = engine.evaluate(workflow, targets=[node], include_targets=True, run_side_effects=False)
+    res = ev.results.get(node)
+    if res is None or res.status != "ok":
+        raise HTTPException(400, res.error if res else "No such tool")
+    tool = TOOLS[ev.graph.nodes[node]["type"]]
+    chosen = port if port in res.outputs else (tool.outputs[0].name if tool.outputs else None)
+    if tool.outputs:
+        df = ev.frames.get((node, chosen))
+    else:
+        frames = ev.input_frames.get(node, {}).get("in") or []
+        df = frames[0] if frames else None
+    if df is None:
+        raise HTTPException(400, "Nothing to open")
+    label = ev.graph.nodes[node].get("label") or tool.label
+    if chosen and len(tool.outputs) > 1:
+        label = f"{label} {chosen}"
+    folder = snek_home() / "norm"
+    folder.mkdir(parents=True, exist_ok=True)
+    target = folder / f"{norm.file_name(label)}.norm"
+    write_norm(df, str(target), name=label)
+    opened = bool(launch) and not sandbox.active() and norm.launch(str(target))
+    return {"path": str(target), "rows": int(len(df)), "opened": opened}
 
 
 @app.post("/api/chart")
