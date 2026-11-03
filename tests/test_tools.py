@@ -457,6 +457,16 @@ def test_norm_export_matches_engine(tmp_path):
     assert (tmp_path / "script.csv").read_text() == csv_out.read_text()
 
 
+def test_read_and_write_helpers_export_as_ascii():
+    import inspect
+
+    from snek.runtime import HELPERS
+
+    for name in ("read_any", "read_many", "write_any"):
+        for fn in HELPERS[name][0]:
+            assert inspect.getsource(fn).isascii(), f"{fn.__name__} has non-ASCII source, which breaks exported scripts saved in a Windows code page"
+
+
 def test_glob_input_adds_filename(tmp_path):
     (tmp_path / "w1.csv").write_text("a\n1\n")
     (tmp_path / "w2.csv").write_text("a\n2\n3\n")

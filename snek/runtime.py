@@ -160,7 +160,7 @@ def norm_number(v):
         return np.nan
     if isinstance(v, (bool, int, float)):
         return float(v)
-    text = re.sub(r"[$€£¥,\s]", "", str(v))
+    text = re.sub("[$\u20ac\u00a3\u00a5,\\s]", "", str(v))
     negative = text.startswith("(") and text.endswith(")")
     text = text.strip("()").rstrip("%")
     try:
@@ -176,7 +176,7 @@ def read_norm(file):
     source = book.get("source") if isinstance(book, dict) else None
     cols = (source or {}).get("cols")
     if not isinstance(cols, dict):
-        raise ValueError(f"{os.path.basename(file)} was saved without its data. Save it from Norm with ⌘S to include the data.")
+        raise ValueError(f"{os.path.basename(file)} was saved without its data. Save it again from Norm to include the data.")
     data = {}
     for f in source.get("fields", []):
         key = f.get("src")
