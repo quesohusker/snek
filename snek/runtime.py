@@ -6,7 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from snek import connect, distributions, fx, inference, modeling, simulation, sports_math
+from snek import connect, distributions, fx, geo, inference, modeling, simulation, sports_math
 from snek.charts import chart_html, make_chart
 
 FORMATS = {
@@ -330,7 +330,55 @@ def linear_regression(df, target, predictors, intercept=True):
     return scored, coef, fit
 
 
+def parse_mapping(text):
+    pairs = []
+    for number, raw in enumerate(str(text or "").splitlines(), start=1):
+        line = raw.strip("\r")
+        if not line.strip():
+            continue
+        for separator in ("\t", "->", "=", ","):
+            if separator in line:
+                key, _, value = line.partition(separator)
+                break
+        else:
+            raise ValueError(f"Line {number} has no separator. Write each pair as old = new.")
+        pairs.append((key.strip().strip('"'), value.strip().strip('"')))
+    return pairs
+
+
+def map_values(df, column, mapping, unmatched="keep", default="", ignore_case=False, trim=True, output=None):
+    def normal(v):
+        if isinstance(v, float) and v == int(v):
+            v = int(v)
+        text = str(v)
+        text = text.strip() if trim else text
+        return text.lower() if ignore_case else text
+
+    table = {}
+    for old, new in parse_mapping(mapping):
+        table.setdefault(normal(old), new)
+    source = df[column]
+    keys = source.map(lambda v: None if pd.isna(v) else normal(v))
+    hit = keys.isin(list(table))
+    replaced = keys.map(table)
+    if unmatched == "default":
+        result = replaced.where(hit, default)
+    elif unmatched == "blank":
+        result = replaced.where(hit, None)
+    else:
+        result = replaced.where(hit, source)
+    result = result.where(source.notna(), None)
+    try:
+        result = pd.to_numeric(result)
+    except (ValueError, TypeError):
+        pass
+    out = df.copy()
+    out[output or column] = result
+    return out
+
+
 HELPERS = {
+    "map_values": ([parse_mapping, map_values], [], [], []),
     "read_any": ([match_files, read_any], ["glob", "json", "os"], ["FORMATS"]),
     "write_any": ([output_path, nested_to_json, chart_html, write_any], ["html", "json", "os"], ["FORMATS", "EXTENSIONS"]),
     "make_chart": ([make_chart], ["json"], []),
@@ -390,6 +438,12 @@ HELPERS.update({
     "make_arrivals": ([distributions.check_params, distributions.parse_choices, distributions.draw_values, distributions.random_data, simulation.Sampler, simulation.generate_arrivals, simulation.make_arrivals], [], ["FAMILIES"], []),
     "simulate_process": ([distributions.check_params, distributions.parse_choices, distributions.draw_values, distributions.random_data, simulation.Sampler, simulation.build_stations, simulation.Sim, simulation.generate_arrivals, simulation.simulate_process], ["collections", "heapq", "warnings"], ["FAMILIES"], ["scipy"]),
     "inference_summary": ([inference.inference_summary], [], [], ["scipy", "statsmodels"]),
+    "distance_between": ([geo.coordinate_arrays, fx._haversine, fx._unit_km, fx._initial_bearing, geo.distance_between], [], ["EARTH_RADIUS_KM"], []),
+    "find_nearest": ([geo.coordinate_arrays, fx._unit_km, geo.find_nearest], [], ["EARTH_RADIUS_KM"], ["scikit-learn"]),
+    "geocode_addresses": ([geo.unused_name, geo.census_batch, geo.geocode_addresses], ["csv", "io", "time", "urllib.error", "urllib.request", "uuid"], ["CENSUS_BATCH"], []),
+    "read_map_file": ([geo.geometry_vertices, geo.ring_centroid, geo.geometry_centroid, geo.read_map_file], ["json", "os"], [], ["pyshp"]),
+    "find_region": ([geo.coordinate_arrays, geo.ring_contains, geo.parse_polygons, geo.find_region], ["json"], [], []),
+    "map_chart": ([fx._state_table, fx._state_lookup, geo.coordinate_arrays, geo.geometry_vertices, geo.ring_area, geo.wind_clockwise, geo.region_ids, geo.summarize_values, geo.map_chart], ["json"], ["US_BASEMAP", "WORLD_BASEMAP"], []),
     "github": ([connect.api_key, connect.json_frame, connect.github_next, connect.github_request, connect.github_file, connect.github], ["io", "json", "os", "re", "time", "urllib.error", "urllib.parse", "urllib.request", "warnings"], [], []),
 })
 
@@ -420,6 +474,13 @@ NAMESPACE = {
     **{name: getattr(sports_math, name) for name in ["opponent_adjust", "game_predictions", "simulate_season", "pythagorean", "football_efficiency", "four_factors", "shooting_stats", "batting_stats", "pitching_stats", "volleyball_stats", "sideout_stats"]},
     "api_request": connect.api_request,
     "github": connect.github,
+    "map_values": map_values,
+    "distance_between": geo.distance_between,
+    "find_nearest": geo.find_nearest,
+    "geocode_addresses": geo.geocode_addresses,
+    "read_map_file": geo.read_map_file,
+    "find_region": geo.find_region,
+    "map_chart": geo.map_chart,
     "inference_summary": inference.inference_summary,
     "random_data": distributions.random_data,
     "make_arrivals": simulation.make_arrivals,

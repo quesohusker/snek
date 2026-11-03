@@ -433,7 +433,7 @@ def test_bundled_sample_workflows_run(monkeypatch):
     import json
 
     monkeypatch.chdir(ROOT)
-    names = ["Penguins - body mass by species", "Penguins - clean the raw file", "Flights - Q1 delays by airline", "Flights - weather at departure", "Flights - fleets from nested JSON", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - league ratings (made-up teams)", "Penguins - model bake-off", "Flights - forecast accuracy check", "Demo - no files needed", "Simulate - drive-thru lane (made-up numbers)", "Simulate - fit and generate (no files needed)"]
+    names = ["Penguins - body mass by species", "Penguins - clean the raw file", "Flights - Q1 delays by airline", "Flights - weather at departure", "Flights - fleets from nested JSON", "Flights - daily delay trend", "Penguins - predict body mass", "Penguins - classify species", "Flights - forecast daily departures", "Demo - league ratings (made-up teams)", "Penguins - model bake-off", "Flights - forecast accuracy check", "Demo - no files needed", "Simulate - drive-thru lane (made-up numbers)", "Simulate - fit and generate (no files needed)", "Maps - shaded states (no files needed)", "Maps - nearest depot to each store (made-up stores)", "Maps - zones and customers (made-up zones)"]
     engine = Engine()
     for name in names:
         wf = json.loads((ROOT / "workflows" / f"{name}.snek").read_text())

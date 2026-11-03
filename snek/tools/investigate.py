@@ -169,7 +169,7 @@ class SummaryStatistics(Tool):
         fld("mu", "Compare each mean with", "number", 0, help="The t-test asks whether the true mean differs from this value."),
         fld("alternative", "Test direction", "select", "two-sided", options=opts(("two-sided", "Different from the value"), ("greater", "Greater than the value"), ("less", "Less than the value"))),
         fld("categories", "Include category columns", "bool", True),
-        fld("max_levels", "Most levels in a category column", "number", 20, show_if={"categories": [True]}, help="A column with more levels than this is skipped, such as an ID column."),
+        fld("max_levels", "Most levels in a category column", "number", 20, show_if={"categories": ["true"]}, help="A column with more levels than this is skipped, such as an ID column."),
     ]
 
     def code(self, cfg, ctx):

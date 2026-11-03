@@ -3277,6 +3277,151 @@ def ZTEST(array, x, sigma=None):
     return Z_TEST(array, x, sigma)
 
 
+
+def _state_table():
+    return [
+        ("AL", "Alabama", "01"),
+        ("AK", "Alaska", "02"),
+        ("AZ", "Arizona", "04"),
+        ("AR", "Arkansas", "05"),
+        ("CA", "California", "06"),
+        ("CO", "Colorado", "08"),
+        ("CT", "Connecticut", "09"),
+        ("DE", "Delaware", "10"),
+        ("DC", "District of Columbia", "11"),
+        ("FL", "Florida", "12"),
+        ("GA", "Georgia", "13"),
+        ("HI", "Hawaii", "15"),
+        ("ID", "Idaho", "16"),
+        ("IL", "Illinois", "17"),
+        ("IN", "Indiana", "18"),
+        ("IA", "Iowa", "19"),
+        ("KS", "Kansas", "20"),
+        ("KY", "Kentucky", "21"),
+        ("LA", "Louisiana", "22"),
+        ("ME", "Maine", "23"),
+        ("MD", "Maryland", "24"),
+        ("MA", "Massachusetts", "25"),
+        ("MI", "Michigan", "26"),
+        ("MN", "Minnesota", "27"),
+        ("MS", "Mississippi", "28"),
+        ("MO", "Missouri", "29"),
+        ("MT", "Montana", "30"),
+        ("NE", "Nebraska", "31"),
+        ("NV", "Nevada", "32"),
+        ("NH", "New Hampshire", "33"),
+        ("NJ", "New Jersey", "34"),
+        ("NM", "New Mexico", "35"),
+        ("NY", "New York", "36"),
+        ("NC", "North Carolina", "37"),
+        ("ND", "North Dakota", "38"),
+        ("OH", "Ohio", "39"),
+        ("OK", "Oklahoma", "40"),
+        ("OR", "Oregon", "41"),
+        ("PA", "Pennsylvania", "42"),
+        ("RI", "Rhode Island", "44"),
+        ("SC", "South Carolina", "45"),
+        ("SD", "South Dakota", "46"),
+        ("TN", "Tennessee", "47"),
+        ("TX", "Texas", "48"),
+        ("UT", "Utah", "49"),
+        ("VT", "Vermont", "50"),
+        ("VA", "Virginia", "51"),
+        ("WA", "Washington", "53"),
+        ("WV", "West Virginia", "54"),
+        ("WI", "Wisconsin", "55"),
+        ("WY", "Wyoming", "56"),
+        ("AS", "American Samoa", "60"),
+        ("GU", "Guam", "66"),
+        ("MP", "Northern Mariana Islands", "69"),
+        ("PR", "Puerto Rico", "72"),
+        ("UM", "U.S. Minor Outlying Islands", "74"),
+        ("VI", "U.S. Virgin Islands", "78")
+    ]
+
+
+def _state_lookup():
+    forward = {}
+    for abbr, name, fips in _state_table():
+        for key in (abbr.lower(), name.lower(), fips, str(int(fips))):
+            forward[key] = (abbr, name, fips)
+    return forward
+
+
+def _state_part(value, index):
+    lookup = _state_lookup()
+
+    def one(v):
+        key = _txt(v).strip().lower()
+        if key.endswith(".0"):
+            key = key[:-2]
+        return lookup[key][index]
+
+    return _each(one, value)
+
+
+def STATE_NAME(state):
+    return _state_part(state, 1)
+
+
+def STATE_ABBR(state):
+    return _state_part(state, 0)
+
+
+def STATE_FIPS(state):
+    return _state_part(state, 2)
+
+
+def _haversine(lat1, lon1, lat2, lon2, radius):
+    p1, p2 = np.radians(lat1), np.radians(lat2)
+    a = np.sin((p2 - p1) / 2) ** 2 + np.cos(p1) * np.cos(p2) * np.sin(np.radians(lon2 - lon1) / 2) ** 2
+    return 2 * radius * np.arcsin(np.sqrt(np.clip(a, 0.0, 1.0)))
+
+
+def _unit_km(unit):
+    factors = {"km": 1.0, "mi": 1.609344, "m": 0.001, "ft": 0.0003048, "yd": 0.0009144, "nmi": 1.852}
+    key = str(unit).strip().lower()
+    if key not in factors:
+        raise ValueError("unit")
+    return factors[key]
+
+
+def DISTANCE(lat1, lon1, lat2, lon2, unit="mi"):
+    factor = _unit_km(unit)
+
+    def core(a, b, c, d):
+        ok = (np.abs(a) <= 90) & (np.abs(c) <= 90) & (np.abs(b) <= 180) & (np.abs(d) <= 180)
+        return np.where(ok, _haversine(a, b, c, d, 6371.0088) / factor, np.nan)
+
+    return _vec(core, lat1, lon1, lat2, lon2)
+
+
+def _initial_bearing(lat1, lon1, lat2, lon2):
+    p1, p2, dl = np.radians(lat1), np.radians(lat2), np.radians(lon2 - lon1)
+    y = np.sin(dl) * np.cos(p2)
+    x = np.cos(p1) * np.sin(p2) - np.sin(p1) * np.cos(p2) * np.cos(dl)
+    ok = (np.abs(lat1) <= 90) & (np.abs(lat2) <= 90) & (np.abs(lon1) <= 180) & (np.abs(lon2) <= 180)
+    return np.where(ok, (np.degrees(np.arctan2(y, x)) + 360) % 360, np.nan)
+
+
+def BEARING(lat1, lon1, lat2, lon2):
+    return _vec(_initial_bearing, lat1, lon1, lat2, lon2)
+
+
+def XLOOKUP(lookup_value, lookup_array, return_array, if_not_found=np.nan, match_mode=0, search_mode=1):
+    where = XMATCH(lookup_value, lookup_array, match_mode, search_mode)
+    found = _lookup_array(return_array)
+    if len(found) != len(_lookup_array(lookup_array)):
+        raise ValueError("the lookup and return arrays differ in size")
+
+    def one(p):
+        if _blank(p):
+            return if_not_found
+        return found.iloc[int(p) - 1]
+
+    return _each(one, where, keep_blank=True)
+
+
 FUNCTIONS = {n: o for n, o in list(globals().items()) if re.fullmatch(r"[A-Z][A-Z0-9_]*", n) and callable(o)}
 DOTTED = {n.replace("_", "."): n for n in FUNCTIONS if "_" in n}
 

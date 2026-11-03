@@ -30,7 +30,7 @@ def test_every_function_is_documented_once():
     assert len(names) == len(set(names))
     assert set(names) == set(fx.FUNCTIONS)
     assert {d[1] for d in DOCS} <= set(GROUPS)
-    assert len(DOCS) == 305
+    assert len(DOCS) == 311
 
 
 @pytest.mark.parametrize("doc", DOCS, ids=[d[0] for d in DOCS])

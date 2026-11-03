@@ -268,7 +268,7 @@ class SimulateProcess(Tool):
         fld("time_column", "Time column in the arrivals table", "text", "arrival_time"),
         fld("id_column", "ID column in the arrivals table (blank numbers them)", "text", ""),
         fld("keep_log", "Keep an event log", "bool", False, help="One row per event. Handy for checking a small run. Large runs make large logs."),
-        fld("max_log", "Most log rows per replication", "number", 200000, show_if={"keep_log": [True]}),
+        fld("max_log", "Most log rows per replication", "number", 200000, show_if={"keep_log": ["true"]}),
     ]
 
     def code(self, cfg, ctx):

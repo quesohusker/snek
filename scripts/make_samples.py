@@ -381,6 +381,49 @@ def main():
         [(1, "out", 2, "in"), (2, "fits", 3, "in"), (2, "fits", 4, "fit"), (4, "out", 5, "in"), (5, "numeric", 6, "in")],
     )
 
+    build(
+        "Maps - shaded states (no files needed)",
+        [
+            (1, "text_input", "Made-up scores by state", 0, 0, {"data": "state,score\nTX,72\nCA,64\nFL,58\nNY,81\nIL,69\nNE,77\nIA,74\nKS,66\nMO,61\nCO,70\nOK,63\nMN,79\nWI,73\nOH,60\nGA,57\nWA,76\nOR,71\nAZ,59\nNM,55\nSD,75\n"}),
+            (2, "formula", "Full name and FIPS code", 1, 0, {"formulas": [
+                {"column": "state_name", "expression": "STATE_NAME([state])", "dtype": ""},
+                {"column": "fips", "expression": "STATE_FIPS([state])", "dtype": ""},
+            ]}),
+            (3, "map_chart", "Shade the states", 2, 0, {"kind": "states", "region": "state", "value": "score", "scheme": "greens", "title": "Made-up scores by state"}),
+            (4, "map_values", "Group states into areas", 2, 1, {"column": "state", "mapping": "TX, OK, GA, FL = South\nNE, IA, KS, MO, IL, MN, WI, OH, SD = Midwest\nCA, WA, OR, AZ, NM, CO = West\nNY = Northeast", "output": "new", "new_name": "area"}),
+            (5, "summarize", "Average by area", 3, 1, {"group_by": ["area"], "aggs": [{"column": "score", "func": "mean", "name": "avg_score"}, {"column": "state", "func": "size", "name": "states"}]}),
+            (6, "browse", "", 4, 1, {}),
+        ],
+        [(1, "out", 2, "in"), (2, "out", 3, "in"), (2, "out", 4, "in"), (4, "out", 5, "in"), (5, "out", 6, "in")],
+    )
+
+    build(
+        "Maps - nearest depot to each store (made-up stores)",
+        [
+            (1, "text_input", "Made-up stores", 0, 0, {"data": "store,city,lat,lon,weekly_sales\nS01,Omaha,41.2565,-95.9345,48\nS02,Lincoln,40.8136,-96.7026,31\nS03,Des Moines,41.5868,-93.6250,52\nS04,Kansas City,39.0997,-94.5786,64\nS05,Denver,39.7392,-104.9903,77\nS06,Minneapolis,44.9778,-93.2650,69\nS07,Chicago,41.8781,-87.6298,91\nS08,St. Louis,38.6270,-90.1994,58\nS09,Sioux Falls,43.5446,-96.7311,27\nS10,Wichita,37.6872,-97.3301,35\n"}),
+            (2, "text_input", "Made-up depots", 0, 1, {"data": "depot,lat,lon\nNorth depot,44.9778,-93.2650\nCentral depot,39.0997,-94.5786\nEast depot,41.8781,-87.6298\nWest depot,39.7392,-104.9903\n"}),
+            (3, "find_nearest", "Nearest depot", 1, 0, {"lat": "lat", "lon": "lon", "place_lat": "lat", "place_lon": "lon", "count": 1, "max_distance": 0, "unit": "mi", "columns": ["depot"], "keep_unmatched": True, "rank_name": "nearest_rank", "distance_name": "miles_to_depot"}),
+            (4, "map_chart", "Stores by distance", 2, 0, {"kind": "points", "lat": "lat", "lon": "lon", "color": "miles_to_depot", "size": "weekly_sales", "tooltip": ["store", "city", "depot", "miles_to_depot"], "scheme": "viridis", "title": "Miles from each store to its nearest depot"}),
+            (5, "summarize", "Stores per depot", 2, 1, {"group_by": ["depot"], "aggs": [{"column": "store", "func": "size", "name": "stores"}, {"column": "miles_to_depot", "func": "mean", "name": "avg_miles"}]}),
+            (6, "browse", "", 3, 1, {}),
+        ],
+        [(1, "out", 3, "in"), (2, "out", 3, "places"), (3, "out", 4, "in"), (3, "out", 5, "in"), (5, "out", 6, "in")],
+    )
+
+    build(
+        "Maps - zones and customers (made-up zones)",
+        [
+            (1, "read_map", "Made-up sales zones", 0, 0, {"path": "examples/data/maps/zones.geojson", "geometry": True}),
+            (2, "text_input", "Made-up customers", 0, 1, {"data": "customer,city,lat,lon,orders\nC01,Omaha,41.2565,-95.9345,14\nC02,Lincoln,40.8136,-96.7026,9\nC03,Des Moines,41.5868,-93.6250,12\nC04,Kansas City,39.0997,-94.5786,17\nC05,Sioux City,42.4963,-96.4049,6\nC06,Council Bluffs,41.2619,-95.8608,8\nC07,Ames,42.0308,-93.6319,5\nC08,Cedar Rapids,41.9779,-91.6656,11\nC09,Columbia,38.9517,-92.3341,4\nC10,Beatrice,40.2681,-96.7470,3\nC11,Iowa City,41.6611,-91.5302,7\nC12,St. Joseph,39.7675,-94.8467,10\n"}),
+            (3, "find_region", "Which zone?", 1, 1, {"lat": "lat", "lon": "lon", "geometry": "geometry", "columns": ["zone"], "keep_unmatched": True}),
+            (4, "summarize", "By zone", 2, 1, {"group_by": ["zone"], "aggs": [{"column": "customer", "func": "size", "name": "customers"}, {"column": "orders", "func": "sum", "name": "orders"}]}),
+            (5, "join", "Add the counts to the zones", 3, 0, {"keys": [{"left": "zone", "right": "zone"}], "suffix": "_right"}),
+            (6, "map_chart", "Shade zones by orders", 4, 0, {"kind": "regions", "geometry": "geometry", "value": "orders", "tooltip": ["zone", "customers", "target"], "scheme": "oranges", "title": "Orders by sales zone"}),
+            (7, "map_chart", "Customers by zone", 2, 2, {"kind": "points", "lat": "lat", "lon": "lon", "color": "zone", "tooltip": ["customer", "city", "zone", "orders"], "title": "Customers and the zone each falls in"}),
+        ],
+        [(2, "out", 3, "in"), (1, "out", 3, "regions"), (3, "out", 4, "in"), (1, "out", 5, "left"), (4, "out", 5, "right"), (5, "join", 6, "in"), (3, "out", 7, "in")],
+    )
+
 
 if __name__ == "__main__":
     main()

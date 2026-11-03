@@ -1,0 +1,146 @@
+{
+  "format": "snek",
+  "version": 2,
+  "name": "Maps - shaded states (no files needed)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "text_input",
+      "label": "Made-up scores by state",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "data": "state,score\nTX,72\nCA,64\nFL,58\nNY,81\nIL,69\nNE,77\nIA,74\nKS,66\nMO,61\nCO,70\nOK,63\nMN,79\nWI,73\nOH,60\nGA,57\nWA,76\nOR,71\nAZ,59\nNM,55\nSD,75\n"
+      }
+    },
+    {
+      "id": "2",
+      "type": "formula",
+      "label": "Full name and FIPS code",
+      "position": {
+        "x": 300,
+        "y": 0
+      },
+      "config": {
+        "formulas": [
+          {
+            "column": "state_name",
+            "expression": "STATE_NAME([state])",
+            "dtype": ""
+          },
+          {
+            "column": "fips",
+            "expression": "STATE_FIPS([state])",
+            "dtype": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "type": "map_chart",
+      "label": "Shade the states",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "config": {
+        "kind": "states",
+        "region": "state",
+        "value": "score",
+        "scheme": "greens",
+        "title": "Made-up scores by state"
+      }
+    },
+    {
+      "id": "4",
+      "type": "map_values",
+      "label": "Group states into areas",
+      "position": {
+        "x": 600,
+        "y": 120
+      },
+      "config": {
+        "column": "state",
+        "mapping": "TX, OK, GA, FL = South\nNE, IA, KS, MO, IL, MN, WI, OH, SD = Midwest\nCA, WA, OR, AZ, NM, CO = West\nNY = Northeast",
+        "output": "new",
+        "new_name": "area"
+      }
+    },
+    {
+      "id": "5",
+      "type": "summarize",
+      "label": "Average by area",
+      "position": {
+        "x": 900,
+        "y": 120
+      },
+      "config": {
+        "group_by": [
+          "area"
+        ],
+        "aggs": [
+          {
+            "column": "score",
+            "func": "mean",
+            "name": "avg_score"
+          },
+          {
+            "column": "state",
+            "func": "size",
+            "name": "states"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 1200,
+        "y": 120
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-4.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e4.out-5.in",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    }
+  ]
+}

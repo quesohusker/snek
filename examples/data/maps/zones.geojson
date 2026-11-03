@@ -1,0 +1,145 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "zone": "Northwest",
+    "manager": "Made-up manager A",
+    "target": 120
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -98,
+       41
+      ],
+      [
+       -95,
+       41
+      ],
+      [
+       -95,
+       43
+      ],
+      [
+       -98,
+       43
+      ],
+      [
+       -98,
+       41
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone": "Northeast",
+    "manager": "Made-up manager B",
+    "target": 90
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95,
+       41
+      ],
+      [
+       -92,
+       41
+      ],
+      [
+       -92,
+       43
+      ],
+      [
+       -95,
+       43
+      ],
+      [
+       -95,
+       41
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone": "Southwest",
+    "manager": "Made-up manager C",
+    "target": 70
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -98,
+       39
+      ],
+      [
+       -95,
+       39
+      ],
+      [
+       -95,
+       41
+      ],
+      [
+       -98,
+       41
+      ],
+      [
+       -98,
+       39
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "zone": "Southeast",
+    "manager": "Made-up manager D",
+    "target": 60
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95,
+       39
+      ],
+      [
+       -92,
+       39
+      ],
+      [
+       -92,
+       41
+      ],
+      [
+       -95,
+       41
+      ],
+      [
+       -95,
+       39
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

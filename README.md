@@ -42,14 +42,14 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 
 ## Tools
 
-103 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
+110 steps so far. Pick a category in the tab bar under the menus and its steps appear in the sidebar, or search across every category. Every menu command is also in the Commands list at the top of the sidebar. Hover over any step, in the sidebar or on the canvas, to see what input it needs.
 
 | Category | Steps |
 |---|---|
 | Open & Save | Open File, Type or Paste Data, Save File, List Files, Read Listed Files, Current Time, Make a Sequence, Web API, GitHub, Create Python |
 | Rows | Keep Rows, Sort Rows, Take Rows, Rows by Position, Find Duplicates, Number Rows, Rank Rows, Bucket Values |
 | Columns | Choose Columns, Calculate, Calculate Many Columns, Use Previous Rows, Cumulative Total, Rename Many Columns, Choose Columns by Rule, Column List |
-| Clean | Tidy Up, Detect Types, Fill Blanks, Replace Text, Split Text, Text Pattern, Dates and Times, Read JSON Text, One Row per Item, Spread Out Fields |
+| Clean | Tidy Up, Detect Types, Fill Blanks, Replace Text, Map Values, Split Text, Text Pattern, Dates and Times, Read JSON Text, One Row per Item, Spread Out Fields |
 | SQL | Match Tables, Match Many Tables, Stack Tables, Every Combination, Look Up Values |
 | Group & Pivot | Group and Total, Pivot Wider, Pivot Longer, Weighted Average, Count Rows |
 | Explore | Inspect, Profile Columns, Summary Statistics, Count Values, Correlation, Cross Count, Compare Averages, Test Independence, Chart (bar, line, scatter, area, histogram, box plot, heat map) |
@@ -57,6 +57,7 @@ Drag-and-drop data tools are fast to learn but lock your work inside the tool. S
 | Segment | K-Means Groups, Choose Number of Groups, Hierarchical Groups, Principal Components, Most Similar Rows |
 | Forecast | Fill Missing Dates, Rolling Window, Smoothing Forecast, ARIMA Forecast, Trend and Season, Check Forecast |
 | Simulate | **Random data:** Random Data, Fit Distribution. **Process:** Make Arrivals, Simulate Process |
+| Maps | **Draw:** Map Chart. **Places:** Geocode Addresses, Distance, Find Nearest. **Boundaries:** Read Map File, Find Region |
 | Sports | **All sports:** Team Ratings (SRS/Massey), Elo Ratings, Opponent Adjust, Spread & Win Probability (grades picks against betting lines), Season Simulation, Pythagorean Expectation. **Football:** Garbage-Time Filter, Success Rate, Football Efficiency (EPA, success rate, explosiveness, havoc). **Basketball:** Four Factors (with offensive, defensive and net rating), Shooting Efficiency. **Baseball:** Batting Stats (through wOBA), Pitching Stats (through FIP). **Volleyball:** Volleyball Box Stats, Side-Out & Serve |
 | Code | Python Code (your own Python code) |
 
@@ -92,7 +93,7 @@ You can use `pd`, `np` and `iif(condition, then, else)`. Snek suggests a fix whe
 
 ### Spreadsheet functions
 
-Expressions also know 305 spreadsheet functions with Excel's names and rules: `IF`, `IFS`, `IFERROR`, `SWITCH`, `LEFT`, `TRIM`, `TEXT`, `DATE`, `WORKDAY`, `ROUND`, `SUMIF`, `COUNTIFS`, `STDEV.S`, `PERCENTILE.INC`, `NORM.DIST`, `T.TEST`, `PMT`, `IRR`, `MATCH`, `XMATCH`, `INDEX` and more. The groups are Logical, Information, Text, Date and time, Math and trigonometry, Statistical, Distributions, Financial, Lookup, and Engineering. 39 old Excel names such as `STDEV` and `NORMDIST` work too. Open the **Functions** tab in the sidebar, next to All, to browse every function by group. Click one to add a Calculate step that already uses it. The sidebar search finds them too. Under an expression box, click **Functions** to search them by name or by plain words ("remove spaces" finds `TRIM`) and insert one into a formula. Type a name in capitals and press Tab to complete it.
+Expressions also know 311 spreadsheet functions with Excel's names and rules: `IF`, `IFS`, `IFERROR`, `SWITCH`, `LEFT`, `TRIM`, `TEXT`, `DATE`, `WORKDAY`, `ROUND`, `SUMIF`, `COUNTIFS`, `STDEV.S`, `PERCENTILE.INC`, `NORM.DIST`, `T.TEST`, `PMT`, `IRR`, `MATCH`, `XMATCH`, `INDEX` and more. The groups are Logical, Information, Text, Date and time, Math and trigonometry, Statistical, Distributions, Financial, Lookup, Mapping, and Engineering. 39 old Excel names such as `STDEV` and `NORMDIST` work too. Open the **Functions** tab in the sidebar, next to All, to browse every function by group. Click one to add a Calculate step that already uses it. The sidebar search finds them too. Under an expression box, click **Functions** to search them by name or by plain words ("remove spaces" finds `TRIM`) and insert one into a formula. Type a name in capitals and press Tab to complete it.
 
 ```
 IF([sales] > 100, "high", "low")
@@ -144,6 +145,19 @@ Keys stay on your computer in `~/.snek/connections.json`. They never go into wor
 ## Charts
 
 The **Chart** tool draws bar, line, scatter, area, histogram, box plot and heat map charts. The chart shows in the results panel, where its menu saves a PNG or SVG. To save a web page, connect Save File with a path ending in `.html`; stack several charts with Stack Tables first to put them on one page. Chart pages load the charting library from the web, so they need an internet connection to display.
+
+## Maps and mapping
+
+**Map Values** (Clean) changes a column's values with a list you paste, one pair per line: `TX = Texas`. A value with no pair stays as it is, or becomes a default or blank. A two-column paste from Excel works. For a lookup table in another table, use Look Up Values.
+
+The **Maps** category works with places:
+
+- **Map Chart** draws points from latitude and longitude columns, shades US states or US counties by a value, or shades the regions of a map file. States can be named, written as two-letter codes or given as FIPS codes; counties use five-digit FIPS codes. Several rows for one state are added, averaged or counted, as you choose. The map shows in the results panel; Save File with an `.html` path saves it as a web page. The outlines of the US and the world load from the web (the open Natural Earth and US Census shapes, through the `vega-datasets` files on jsdelivr), so a map needs an internet connection to draw.
+- **Distance** adds the straight-line distance over the Earth between two points in each row, in miles, kilometers, meters, feet, yards or nautical miles, and optionally the compass direction. **Find Nearest** finds, for each row, the nearest places in a second table, or every place within a distance. It gives one row per match with the rank and distance. Distances use a sphere with the mean Earth radius, so they can differ from a survey by up to 0.5%.
+- **Geocode Addresses** turns US street addresses into latitude and longitude with the US Census Bureau's free geocoder. **The addresses are sent to geocoding.geo.census.gov**, so do not use it on addresses you must keep private. It adds the latitude, longitude, a match status and the address the Census matched. Addresses it cannot find get a blank.
+- **Read Map File** reads a shapefile (the `.shp` with its `.dbf` beside it) or a GeoJSON file into a table: one row per shape with its attributes, a center point and the shape itself in a `geometry` column. Coordinates must be latitude and longitude (WGS 84); Snek says so when a file uses a projection. **Find Region** adds, to each point, the columns of the region it falls in, using the shapes from Read Map File. A point in two regions gets the first.
+
+The spreadsheet functions `DISTANCE`, `BEARING`, `STATE_NAME`, `STATE_ABBR`, `STATE_FIPS` and `XLOOKUP` do the same jobs row by row inside Calculate.
 
 ## Estimates, distributions and simulation
 
@@ -220,8 +234,11 @@ The `workflows/` folder includes samples built on the bundled open data in `exam
 - Demo: no files needed
 - Simulate: drive-thru lane (order board, pay window and pickup window, made-up numbers)
 - Simulate: fit and generate (fit a distribution, draw from it, test the draws)
+- Maps: shaded states (Map Chart, STATE_NAME and STATE_FIPS, Map Values; made-up scores)
+- Maps: nearest depot to each store (Find Nearest, Map Chart, made-up stores and depots)
+- Maps: zones and customers (Read Map File, Find Region, a join, two maps; made-up zones)
 
-All bundled data is CC0, and the sports data is made up. See [examples/data/README.md](examples/data/README.md) for sources and citations.
+All bundled data is CC0, and the sports data, the sales zones and the stores are made up. See [examples/data/README.md](examples/data/README.md) for sources and citations.
 
 ## Updates
 

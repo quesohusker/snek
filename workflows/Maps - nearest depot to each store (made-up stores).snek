@@ -1,0 +1,152 @@
+{
+  "format": "snek",
+  "version": 2,
+  "name": "Maps - nearest depot to each store (made-up stores)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "text_input",
+      "label": "Made-up stores",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "data": "store,city,lat,lon,weekly_sales\nS01,Omaha,41.2565,-95.9345,48\nS02,Lincoln,40.8136,-96.7026,31\nS03,Des Moines,41.5868,-93.6250,52\nS04,Kansas City,39.0997,-94.5786,64\nS05,Denver,39.7392,-104.9903,77\nS06,Minneapolis,44.9778,-93.2650,69\nS07,Chicago,41.8781,-87.6298,91\nS08,St. Louis,38.6270,-90.1994,58\nS09,Sioux Falls,43.5446,-96.7311,27\nS10,Wichita,37.6872,-97.3301,35\n"
+      }
+    },
+    {
+      "id": "2",
+      "type": "text_input",
+      "label": "Made-up depots",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "config": {
+        "data": "depot,lat,lon\nNorth depot,44.9778,-93.2650\nCentral depot,39.0997,-94.5786\nEast depot,41.8781,-87.6298\nWest depot,39.7392,-104.9903\n"
+      }
+    },
+    {
+      "id": "3",
+      "type": "find_nearest",
+      "label": "Nearest depot",
+      "position": {
+        "x": 300,
+        "y": 0
+      },
+      "config": {
+        "lat": "lat",
+        "lon": "lon",
+        "place_lat": "lat",
+        "place_lon": "lon",
+        "count": 1,
+        "max_distance": 0,
+        "unit": "mi",
+        "columns": [
+          "depot"
+        ],
+        "keep_unmatched": true,
+        "rank_name": "nearest_rank",
+        "distance_name": "miles_to_depot"
+      }
+    },
+    {
+      "id": "4",
+      "type": "map_chart",
+      "label": "Stores by distance",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "config": {
+        "kind": "points",
+        "lat": "lat",
+        "lon": "lon",
+        "color": "miles_to_depot",
+        "size": "weekly_sales",
+        "tooltip": [
+          "store",
+          "city",
+          "depot",
+          "miles_to_depot"
+        ],
+        "scheme": "viridis",
+        "title": "Miles from each store to its nearest depot"
+      }
+    },
+    {
+      "id": "5",
+      "type": "summarize",
+      "label": "Stores per depot",
+      "position": {
+        "x": 600,
+        "y": 120
+      },
+      "config": {
+        "group_by": [
+          "depot"
+        ],
+        "aggs": [
+          {
+            "column": "store",
+            "func": "size",
+            "name": "stores"
+          },
+          {
+            "column": "miles_to_depot",
+            "func": "mean",
+            "name": "avg_miles"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6",
+      "type": "browse",
+      "label": "",
+      "position": {
+        "x": 900,
+        "y": 120
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-3.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.out-3.places",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "places"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-5.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e5.out-6.in",
+      "source": "5",
+      "sourceHandle": "out",
+      "target": "6",
+      "targetHandle": "in"
+    }
+  ]
+}

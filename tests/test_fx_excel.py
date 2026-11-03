@@ -67,7 +67,7 @@ def test_fixture_is_recent_and_complete():
         names |= set(re.findall(r"[A-Z][A-Z0-9_.]*(?=\()", c[0]))
     from snek.fx import FUNCTIONS
 
-    wanted = {n.replace("_", ".") for n in FUNCTIONS} - {"NOW", "TODAY", "RAND", "RANDBETWEEN", "SUMPRODUCT", "NA", "TRUE", "FALSE", "PI"}
+    wanted = {n.replace("_", ".") for n in FUNCTIONS} - {"NOW", "TODAY", "RAND", "RANDBETWEEN", "SUMPRODUCT", "NA", "TRUE", "FALSE", "PI", "DISTANCE", "BEARING", "STATE.NAME", "STATE.ABBR", "STATE.FIPS"}
     assert not (wanted - names), sorted(wanted - names)
 
 

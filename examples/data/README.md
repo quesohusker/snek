@@ -24,6 +24,10 @@ Changes from the source: flights and weather are cut to January to March 2013. F
 
 Citation: Wickham H (2021). nycflights13: Flights that Departed NYC in 2013. https://github.com/tidyverse/nycflights13.
 
+## Made-up sales zones (`maps/`)
+
+`zones.geojson`: four invented rectangular sales zones (Northwest, Northeast, Southwest, Southeast) with made-up manager names and targets, drawn over part of Nebraska, Iowa, Kansas and Missouri. They match no real boundaries. Released under CC0. The Maps sample workflows use it.
+
 ## Made-up sports leagues (`demo_sports/`)
 
 Invented teams and players, generated at random by `scripts/make_demo_sports.py`. None of it describes real games. Released under CC0.

@@ -1,4 +1,4 @@
-GROUPS = ["Logical", "Information", "Text", "Date and time", "Math and trigonometry", "Statistical", "Distributions", "Financial", "Lookup", "Engineering"]
+GROUPS = ["Logical", "Information", "Text", "Date and time", "Math and trigonometry", "Statistical", "Distributions", "Financial", "Lookup", "Mapping", "Engineering"]
 
 SKIP = "skip"
 
@@ -319,6 +319,16 @@ OLD_NAMES = {
 
 _GROUP_OF = {d[0]: d[1] for d in DOCS}
 DOCS += [(old, _GROUP_OF[new], syntax, f"The old name of {new}. It works the same way.", example, result, "old name " + new.lower()) for old, (new, syntax, example, result) in OLD_NAMES.items()]
+
+
+DOCS += [
+    ("DISTANCE", "Mapping", "DISTANCE(lat1, lon1, lat2, lon2, unit)", 'The straight-line distance over the Earth between two points given as latitude and longitude. The unit is "mi" (the default), "km", "m", "ft", "yd" or "nmi". It uses a sphere, so it can be off by up to 0.5% against a survey.', 'ROUND(DISTANCE(40.6413, -73.7781, 33.9416, -118.4085, "km"), 1)', "3974.3", "distance miles kilometers between places haversine"),
+    ("BEARING", "Mapping", "BEARING(lat1, lon1, lat2, lon2)", "The compass direction, in degrees from north (0 to 360), to travel from the first point toward the second.", "BEARING(0, 0, 0, 90)", "90", "direction heading angle compass"),
+    ("STATE_NAME", "Mapping", "STATE_NAME(state)", "The full name of a US state, territory or DC. Give a name, a two-letter code or a FIPS code. An unknown value gives a blank.", 'STATE_NAME("tx")', '"Texas"', "state abbreviation to name fips"),
+    ("STATE_ABBR", "Mapping", "STATE_ABBR(state)", "The two-letter code of a US state, territory or DC. Give a name, a code or a FIPS code.", 'STATE_ABBR("Texas")', '"TX"', "state name to abbreviation fips"),
+    ("STATE_FIPS", "Mapping", "STATE_FIPS(state)", "The two-digit FIPS code, as text, of a US state, territory or DC. Give a name, a code or a FIPS code. The Map Chart tool uses these codes to shade states.", 'STATE_FIPS("Nebraska")', '"31"', "state name to fips code census"),
+    ("XLOOKUP", "Lookup", "XLOOKUP(lookup_value, lookup_array, return_array, if_not_found, match_mode, search_mode)", "Find a value in one column and give the value at the same position in another column. Use it to turn codes into names. Match mode and search mode work as in XMATCH.", 'XLOOKUP("b", ["a", "b", "c"], [1, 2, 3])', "2", "vlookup map codes to labels recode"),
+]
 
 
 def show(value):

@@ -5,6 +5,7 @@ import pprint
 import re
 
 from snek.distributions import FAMILIES
+from snek.geo import CENSUS_BATCH, EARTH_RADIUS_KM, US_BASEMAP, WORLD_BASEMAP
 from snek.runtime import EXTENSIONS, FORMATS, HELPERS, NAMESPACE, output_path
 from snek.tools import TOOLS
 
@@ -85,7 +86,7 @@ def create_python(steps, path, fmt="py", title=""):
 
 
 def prelude(body, name):
-    constants = {"FORMATS": FORMATS, "EXTENSIONS": EXTENSIONS, "FAMILIES": FAMILIES}
+    constants = {"FORMATS": FORMATS, "EXTENSIONS": EXTENSIONS, "FAMILIES": FAMILIES, "EARTH_RADIUS_KM": EARTH_RADIUS_KM, "US_BASEMAP": US_BASEMAP, "WORLD_BASEMAP": WORLD_BASEMAP, "CENSUS_BATCH": CENSUS_BATCH}
     used = [h for h in HELPERS if re.search(rf"\b{h}\(", body)]
     imports = {"io"} if "io.StringIO" in body else set()
     needed_constants, functions, packages = [], [], []

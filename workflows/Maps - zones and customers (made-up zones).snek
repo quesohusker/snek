@@ -1,0 +1,188 @@
+{
+  "format": "snek",
+  "version": 2,
+  "name": "Maps - zones and customers (made-up zones)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "read_map",
+      "label": "Made-up sales zones",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/maps/zones.geojson",
+        "geometry": true
+      }
+    },
+    {
+      "id": "2",
+      "type": "text_input",
+      "label": "Made-up customers",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "config": {
+        "data": "customer,city,lat,lon,orders\nC01,Omaha,41.2565,-95.9345,14\nC02,Lincoln,40.8136,-96.7026,9\nC03,Des Moines,41.5868,-93.6250,12\nC04,Kansas City,39.0997,-94.5786,17\nC05,Sioux City,42.4963,-96.4049,6\nC06,Council Bluffs,41.2619,-95.8608,8\nC07,Ames,42.0308,-93.6319,5\nC08,Cedar Rapids,41.9779,-91.6656,11\nC09,Columbia,38.9517,-92.3341,4\nC10,Beatrice,40.2681,-96.7470,3\nC11,Iowa City,41.6611,-91.5302,7\nC12,St. Joseph,39.7675,-94.8467,10\n"
+      }
+    },
+    {
+      "id": "3",
+      "type": "find_region",
+      "label": "Which zone?",
+      "position": {
+        "x": 300,
+        "y": 120
+      },
+      "config": {
+        "lat": "lat",
+        "lon": "lon",
+        "geometry": "geometry",
+        "columns": [
+          "zone"
+        ],
+        "keep_unmatched": true
+      }
+    },
+    {
+      "id": "4",
+      "type": "summarize",
+      "label": "By zone",
+      "position": {
+        "x": 600,
+        "y": 120
+      },
+      "config": {
+        "group_by": [
+          "zone"
+        ],
+        "aggs": [
+          {
+            "column": "customer",
+            "func": "size",
+            "name": "customers"
+          },
+          {
+            "column": "orders",
+            "func": "sum",
+            "name": "orders"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "type": "join",
+      "label": "Add the counts to the zones",
+      "position": {
+        "x": 900,
+        "y": 0
+      },
+      "config": {
+        "keys": [
+          {
+            "left": "zone",
+            "right": "zone"
+          }
+        ],
+        "suffix": "_right"
+      }
+    },
+    {
+      "id": "6",
+      "type": "map_chart",
+      "label": "Shade zones by orders",
+      "position": {
+        "x": 1200,
+        "y": 0
+      },
+      "config": {
+        "kind": "regions",
+        "geometry": "geometry",
+        "value": "orders",
+        "tooltip": [
+          "zone",
+          "customers",
+          "target"
+        ],
+        "scheme": "oranges",
+        "title": "Orders by sales zone"
+      }
+    },
+    {
+      "id": "7",
+      "type": "map_chart",
+      "label": "Customers by zone",
+      "position": {
+        "x": 600,
+        "y": 240
+      },
+      "config": {
+        "kind": "points",
+        "lat": "lat",
+        "lon": "lon",
+        "color": "zone",
+        "tooltip": [
+          "customer",
+          "city",
+          "zone",
+          "orders"
+        ],
+        "title": "Customers and the zone each falls in"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e2.out-3.in",
+      "source": "2",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-3.regions",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "3",
+      "targetHandle": "regions"
+    },
+    {
+      "id": "e3.out-4.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e1.out-5.left",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e4.out-5.right",
+      "source": "4",
+      "sourceHandle": "out",
+      "target": "5",
+      "targetHandle": "right"
+    },
+    {
+      "id": "e5.join-6.in",
+      "source": "5",
+      "sourceHandle": "join",
+      "target": "6",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e3.out-7.in",
+      "source": "3",
+      "sourceHandle": "out",
+      "target": "7",
+      "targetHandle": "in"
+    }
+  ]
+}

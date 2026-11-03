@@ -20,6 +20,7 @@ PACKAGES = [
     ("scipy", "scipy", None),
     ("statsmodels", "statsmodels", None),
     ("anthropic", "anthropic", None),
+    ("pyshp", "shapefile", None),
 ]
 
 

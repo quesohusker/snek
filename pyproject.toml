@@ -20,6 +20,7 @@ dependencies = [
     "scikit-learn",
     "statsmodels",
     "anthropic",
+    "pyshp",
 ]
 
 [project.optional-dependencies]
