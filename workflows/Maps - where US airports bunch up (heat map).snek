@@ -1,0 +1,119 @@
+{
+  "format": "snek",
+  "version": 2,
+  "name": "Maps - where US airports bunch up (heat map)",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "input",
+      "label": "US airports",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "config": {
+        "path": "examples/data/nycflights13/airports.csv"
+      }
+    },
+    {
+      "id": "2",
+      "type": "filter",
+      "label": "Lower 48 states",
+      "position": {
+        "x": 300,
+        "y": 0
+      },
+      "config": {
+        "mode": "expression",
+        "expression": "([lat] > 24) & ([lat] < 50) & ([lon] > -125) & ([lon] < -66)"
+      }
+    },
+    {
+      "id": "3",
+      "type": "map_chart",
+      "label": "Heat map of airports",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "config": {
+        "kind": "density",
+        "lat": "lat",
+        "lon": "lon",
+        "bins": 50,
+        "smooth": 1,
+        "scheme": "yelloworangered",
+        "title": "Where US airports bunch up"
+      }
+    },
+    {
+      "id": "4",
+      "type": "map_chart",
+      "label": "Average airport height",
+      "position": {
+        "x": 600,
+        "y": 120
+      },
+      "config": {
+        "kind": "density",
+        "lat": "lat",
+        "lon": "lon",
+        "weight": "alt",
+        "cell_agg": "mean",
+        "bins": 50,
+        "smooth": 1,
+        "color_scale": "sqrt",
+        "scheme": "viridis",
+        "title": "Average airport height above sea level (feet)"
+      }
+    },
+    {
+      "id": "5",
+      "type": "map_chart",
+      "label": "Exact cells",
+      "position": {
+        "x": 600,
+        "y": 240
+      },
+      "config": {
+        "kind": "density",
+        "lat": "lat",
+        "lon": "lon",
+        "bins": 30,
+        "smooth": 0,
+        "scheme": "oranges",
+        "title": "Airports per cell"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1.out-2.in",
+      "source": "1",
+      "sourceHandle": "out",
+      "target": "2",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.true-3.in",
+      "source": "2",
+      "sourceHandle": "true",
+      "target": "3",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.true-4.in",
+      "source": "2",
+      "sourceHandle": "true",
+      "target": "4",
+      "targetHandle": "in"
+    },
+    {
+      "id": "e2.true-5.in",
+      "source": "2",
+      "sourceHandle": "true",
+      "target": "5",
+      "targetHandle": "in"
+    }
+  ]
+}

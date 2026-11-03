@@ -443,7 +443,7 @@ HELPERS.update({
     "geocode_addresses": ([geo.unused_name, geo.census_batch, geo.geocode_addresses], ["csv", "io", "time", "urllib.error", "urllib.request", "uuid"], ["CENSUS_BATCH"], []),
     "read_map_file": ([geo.geometry_vertices, geo.ring_centroid, geo.geometry_centroid, geo.read_map_file], ["json", "os"], [], ["pyshp"]),
     "find_region": ([geo.coordinate_arrays, geo.ring_contains, geo.parse_polygons, geo.find_region], ["json"], [], []),
-    "map_chart": ([fx._state_table, fx._state_lookup, geo.coordinate_arrays, geo.geometry_vertices, geo.ring_area, geo.wind_clockwise, geo.region_ids, geo.summarize_values, geo.map_chart], ["json"], ["US_BASEMAP", "WORLD_BASEMAP"], []),
+    "map_chart": ([fx._state_table, fx._state_lookup, geo.coordinate_arrays, geo.geometry_vertices, geo.ring_area, geo.wind_clockwise, geo.region_ids, geo.summarize_values, geo.gaussian_blur, geo.density_cells, geo.map_chart], ["json"], ["US_BASEMAP", "WORLD_BASEMAP"], []),
     "github": ([connect.api_key, connect.json_frame, connect.github_next, connect.github_request, connect.github_file, connect.github], ["io", "json", "os", "re", "time", "urllib.error", "urllib.parse", "urllib.request", "warnings"], [], []),
 })
 

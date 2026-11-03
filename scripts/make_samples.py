@@ -424,6 +424,18 @@ def main():
         [(2, "out", 3, "in"), (1, "out", 3, "regions"), (3, "out", 4, "in"), (1, "out", 5, "left"), (4, "out", 5, "right"), (5, "join", 6, "in"), (3, "out", 7, "in")],
     )
 
+    build(
+        "Maps - where US airports bunch up (heat map)",
+        [
+            (1, "input", "US airports", 0, 0, {"path": f"{NYC}/airports.csv"}),
+            (2, "filter", "Lower 48 states", 1, 0, {"mode": "expression", "expression": "([lat] > 24) & ([lat] < 50) & ([lon] > -125) & ([lon] < -66)"}),
+            (3, "map_chart", "Heat map of airports", 2, 0, {"kind": "density", "lat": "lat", "lon": "lon", "bins": 50, "smooth": 1, "scheme": "yelloworangered", "title": "Where US airports bunch up"}),
+            (4, "map_chart", "Average airport height", 2, 1, {"kind": "density", "lat": "lat", "lon": "lon", "weight": "alt", "cell_agg": "mean", "bins": 50, "smooth": 1, "color_scale": "sqrt", "scheme": "viridis", "title": "Average airport height above sea level (feet)"}),
+            (5, "map_chart", "Exact cells", 2, 2, {"kind": "density", "lat": "lat", "lon": "lon", "bins": 30, "smooth": 0, "scheme": "oranges", "title": "Airports per cell"}),
+        ],
+        [(1, "out", 2, "in"), (2, "true", 3, "in"), (2, "true", 4, "in"), (2, "true", 5, "in")],
+    )
+
 
 if __name__ == "__main__":
     main()

@@ -66,15 +66,20 @@ class MapChart(Tool):
     label = "Map Chart"
     category = "Maps"
     group = "Draw"
-    description = "Draw points on a map, or shade US states, US counties or the regions of a map file by a value. The map shows in the results panel; connect Save File with an .html path to save it."
-    needs = "A table with latitude and longitude columns (points), a column of state names, codes or FIPS codes, or county FIPS codes (shaded maps), or a table from Read Map File (regions)."
+    description = "Draw points on a map, show where points bunch up as a heat map, or shade US states, US counties or the regions of a map file by a value. The map shows in the results panel; connect Save File with an .html path to save it."
+    needs = "A table with latitude and longitude columns (points and heat map), a column of state names, codes or FIPS codes, or county FIPS codes (shaded maps), or a table from Read Map File (regions)."
     fields = [
-        fld("kind", "Draw", "select", "points", options=opts(("points", "Points (latitude and longitude)"), ("states", "Shaded US states"), ("counties", "Shaded US counties"), ("regions", "Shaded regions from a map file"))),
-        fld("lat", "Latitude", "column", "", show_if={"kind": ["points"]}),
-        fld("lon", "Longitude", "column", "", show_if={"kind": ["points"]}),
+        fld("kind", "Draw", "select", "points", options=opts(("points", "Points (latitude and longitude)"), ("density", "Heat map of points (where they bunch up)"), ("states", "Shaded US states"), ("counties", "Shaded US counties"), ("regions", "Shaded regions from a map file"))),
+        fld("lat", "Latitude", "column", "", show_if={"kind": ["points", "density"]}),
+        fld("lon", "Longitude", "column", "", show_if={"kind": ["points", "density"]}),
         fld("size", "Size by (optional)", "column", "", show_if={"kind": ["points"]}),
         fld("color", "Color by (optional)", "column", "", show_if={"kind": ["points"]}),
-        fld("basemap", "Background", "select", "us", show_if={"kind": ["points"]}, options=opts(("us", "United States"), ("world", "World"))),
+        fld("basemap", "Background", "select", "us", show_if={"kind": ["points", "density"]}, options=opts(("us", "United States"), ("world", "World"))),
+        fld("weight", "Weight by (optional)", "column", "", show_if={"kind": ["density"]}, help="Leave blank to count rows. Pick a number column to add up or average it in each cell."),
+        fld("cell_agg", "In each cell", "select", "sum", show_if={"kind": ["density"]}, options=opts(("sum", "Add the weights"), ("mean", "Average the weights"), ("count", "Count rows"))),
+        fld("bins", "Detail (cells across)", "number", 40, show_if={"kind": ["density"]}, help="How many grid cells span the data. More cells show finer detail. Use 5 to 150."),
+        fld("smooth", "Smoothing (cells)", "number", 1, show_if={"kind": ["density"]}, help="Spreads each point over nearby cells for a softer look. Use 0 for exact cell values, up to 10."),
+        fld("color_scale", "Color scale", "select", "linear", show_if={"kind": ["density"]}, options=opts(("linear", "Linear"), ("sqrt", "Square root (shows light areas better)"))),
         fld("region", "Region column", "column", "", show_if={"kind": ["states", "counties"]}, help="States: a name, a two-letter code or a FIPS code. Counties: the five-digit FIPS code, such as 48453."),
         fld("geometry", "Shape column", "column", "geometry", show_if={"kind": ["regions"]}, help="The column Read Map File makes, named geometry."),
         fld("value", "Value to shade by", "column", "", show_if={"kind": ["states", "counties", "regions"]}, help="Leave blank on states or counties to shade by how many rows each has."),
@@ -100,6 +105,31 @@ class MapChart(Tool):
             for key in ("size", "color"):
                 if cfg[key]:
                     args.append(f"{key}={cfg[key]!r}")
+            if cfg["basemap"] != "us":
+                args.append(f"basemap={cfg['basemap']!r}")
+        elif kind == "density":
+            ctx.require(cfg["lat"], "Pick the latitude column")
+            ctx.require(cfg["lon"], "Pick the longitude column")
+            require_numeric(ctx, [cfg["lat"], cfg["lon"]])
+            args += [f"lat={cfg['lat']!r}", f"lon={cfg['lon']!r}"]
+            if cfg["weight"] and cfg["cell_agg"] != "count":
+                ctx.require_columns([cfg["weight"]])
+                require_numeric(ctx, [cfg["weight"]])
+                args.append(f"value={cfg['weight']!r}")
+                if cfg["cell_agg"] != "sum":
+                    args.append(f"agg={cfg['cell_agg']!r}")
+            bins = int(cfg["bins"] or 40)
+            if not 5 <= bins <= 150:
+                raise ToolError("Use between 5 and 150 cells across")
+            smooth = 1.0 if cfg["smooth"] in (None, "") else float(cfg["smooth"])
+            if not 0 <= smooth <= 10:
+                raise ToolError("Smooth by between 0 and 10 cells")
+            if bins != 40:
+                args.append(f"bins={bins}")
+            if smooth != 1.0:
+                args.append(f"smooth={smooth}")
+            if cfg["color_scale"] != "linear":
+                args.append(f"color_scale={cfg['color_scale']!r}")
             if cfg["basemap"] != "us":
                 args.append(f"basemap={cfg['basemap']!r}")
         elif kind in ("states", "counties"):
@@ -138,6 +168,8 @@ class MapChart(Tool):
     def summary(self, cfg):
         if cfg["kind"] == "points":
             return short(f"points: {cfg['lat']}, {cfg['lon']}") if cfg["lat"] and cfg["lon"] else ""
+        if cfg["kind"] == "density":
+            return short(f"heat map: {cfg['weight'] or 'row count'}") if cfg["lat"] and cfg["lon"] else ""
         label = {"states": "states", "counties": "counties", "regions": "regions"}[cfg["kind"]]
         return short(f"{label}: {cfg['value'] or 'row count'}")
 

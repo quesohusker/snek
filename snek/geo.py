@@ -349,7 +349,66 @@ def summarize_values(frame, agg):
     return frame.groupby("id", sort=False)["value"].agg(func).reset_index()
 
 
-def map_chart(df, kind="points", lat=None, lon=None, region=None, value=None, agg="sum", color=None, size=None, tooltip=None, geometry="geometry", title="", scheme="blues", basemap="us", max_rows=5000):
+def gaussian_blur(grid, sigma):
+    if sigma <= 0:
+        return grid
+    radius = int(np.ceil(3 * sigma))
+    total = np.exp(-0.5 * (np.arange(-radius, radius + 1) / sigma) ** 2).sum()
+
+    def band(n):
+        gap = np.arange(n)[:, None] - np.arange(n)[None, :]
+        return np.where(np.abs(gap) <= radius, np.exp(-0.5 * (gap / sigma) ** 2), 0.0) / total
+
+    return band(grid.shape[0]) @ grid @ band(grid.shape[1]).T
+
+
+def density_cells(lat, lon, weight, agg, bins, smooth, basemap):
+    ok = np.isfinite(lat) & np.isfinite(lon)
+    if weight is not None and agg != "count":
+        ok &= np.isfinite(weight)
+    lat, lon = lat[ok], lon[ok]
+    if len(lat) == 0:
+        return []
+    weight = weight[ok] if weight is not None and agg != "count" else None
+    squeeze = np.cos(np.radians(37.5)) if basemap == "us" else 1.0
+    step = (59.0 * squeeze if basemap == "us" else 360.0) / bins
+    x, y = lon * squeeze, lat + 90.0
+    gx = np.floor((x + 180.0 * squeeze) / step).astype(int)
+    gy = np.floor(y / step).astype(int)
+    pad = int(np.ceil(3 * smooth)) if smooth > 0 else 0
+    cols = int(gx.max() - gx.min()) + 1 + 2 * pad
+    rows = int(gy.max() - gy.min()) + 1 + 2 * pad
+    if cols * rows > 160000:
+        raise ValueError("These points cover too much of the map for this many cells. Use fewer cells across, pick the World background, or filter the points first.")
+    ix = gx - gx.min() + pad
+    iy = gy - gy.min() + pad
+    counts = np.zeros((rows, cols))
+    np.add.at(counts, (iy, ix), 1.0)
+    if weight is None:
+        shown = gaussian_blur(counts, smooth)
+        keep = (np.abs(shown) > (np.abs(shown).max() * 1e-3 if smooth > 0 else 0.0)) | (counts > 0)
+    else:
+        sums = np.zeros((rows, cols))
+        np.add.at(sums, (iy, ix), weight)
+        if agg == "mean":
+            support = gaussian_blur(counts, smooth)
+            keep = support >= (0.05 if smooth > 0 else 0.5)
+            shown = np.divide(gaussian_blur(sums, smooth), support, out=np.zeros_like(support), where=keep)
+        else:
+            shown = gaussian_blur(sums, smooth)
+            keep = (np.abs(shown) > (np.abs(shown).max() * 1e-3 if smooth > 0 else 0.0)) | (counts > 0)
+    cells = []
+    for r, c in zip(*np.nonzero(keep)):
+        west = (gx.min() - pad + c) * step / squeeze - 180.0
+        south = (gy.min() - pad + r) * step - 90.0
+        w, e = max(west, -180.0), min(west + step / squeeze, 180.0)
+        s, n = max(south, -90.0), min(south + step, 90.0)
+        if w < e and s < n:
+            cells.append((round(w, 4), round(e, 4), round(s, 4), round(n, 4), float(shown[r, c]), int(counts[r, c])))
+    return cells
+
+
+def map_chart(df, kind="points", lat=None, lon=None, region=None, value=None, agg="sum", color=None, size=None, tooltip=None, geometry="geometry", title="", scheme="blues", basemap="us", max_rows=5000, bins=40, smooth=1.0, color_scale="linear"):
     def vl_type(col):
         s = df[col]
         if pd.api.types.is_datetime64_any_dtype(s):
@@ -382,6 +441,44 @@ def map_chart(df, kind="points", lat=None, lon=None, region=None, value=None, ag
         encoding["tooltip"] = [{"field": c, "type": vl_type(c)} for c in needed]
         layers.append({"data": {"values": json.loads(data.to_json(orient="records", date_format="iso"))}, "mark": {"type": "circle", "opacity": 0.75, "stroke": "#ffffff", "strokeWidth": 0.5, **({} if size else {"size": 60})}, "encoding": encoding})
         default_title = "Places"
+    elif kind == "density":
+        if not 5 <= bins <= 150:
+            raise ValueError("Use between 5 and 150 cells across")
+        if not 0 <= smooth <= 10:
+            raise ValueError("Smooth by between 0 and 10 cells")
+        a, o, ok = coordinate_arrays(df, lat, lon)
+        weight = pd.to_numeric(df[value], errors="coerce").to_numpy(dtype="float64", na_value=np.nan) if value else None
+        weighted = weight is not None and agg != "count"
+        used = ok & np.isfinite(weight) if weighted else ok
+        plotted, missed = int(used.sum()), int((~used).sum())
+        cells = density_cells(a[used], o[used], weight[used] if weighted else None, agg, int(bins), float(smooth), basemap)
+        features = [
+            {"type": "Feature", "properties": {"value": float(f"{shown:.6g}"), "rows": rows}, "geometry": {"type": "Polygon", "coordinates": [[[w, s], [w, n], [e, n], [e, s], [w, s]]]}}
+            for w, e, s, n, shown, rows in cells
+        ]
+        if basemap == "world":
+            outline_source = {"url": WORLD_BASEMAP, "format": {"type": "topojson", "feature": "countries"}}
+            projection = {"type": "equalEarth"}
+        else:
+            outline_source = {"url": US_BASEMAP, "format": {"type": "topojson", "feature": "states"}}
+            projection = {"type": "albersUsa"}
+        what = "rows" if not weighted else f"{'average' if agg == 'mean' else 'sum'} of {value}"
+        legend = f"Smoothed {what}" if smooth > 0 else what.capitalize()
+        scale = {"scheme": scheme}
+        if color_scale == "sqrt" and all(f["properties"]["value"] >= 0 for f in features):
+            scale["type"] = "sqrt"
+        layers.append({"data": outline_source, **outline})
+        if features:
+            layers.append({
+                "data": {"values": {"type": "FeatureCollection", "features": features}, "format": {"type": "json", "property": "features"}},
+                "mark": {"type": "geoshape", "opacity": 0.85, "strokeWidth": 0},
+                "encoding": {
+                    "color": {"field": "properties.value", "type": "quantitative", "title": legend, "scale": scale},
+                    "tooltip": [{"field": "properties.value", "type": "quantitative", "title": legend}, {"field": "properties.rows", "type": "quantitative", "title": "Rows in cell"}],
+                },
+            })
+        layers.append({"data": outline_source, "mark": {"type": "geoshape", "fill": None, "stroke": "#7b8594", "strokeWidth": 0.5}})
+        default_title = f"Heat map of {value}" if weighted else "Heat map of rows"
     elif kind in ("states", "counties"):
         ids = region_ids(df[region], kind)
         frame = pd.DataFrame({"id": ids, "label": df[region].astype("string")})

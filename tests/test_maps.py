@@ -386,6 +386,155 @@ def test_map_chart_points_skips_bad_rows_and_respects_the_row_limit():
     assert row["Rows plotted"] == 2 and row["Rows not drawn"] == 2 and row["Rows in data"] == 5
 
 
+def density_features(frame):
+    spec = json.loads(frame.iloc[0]["Vega-Lite"])
+    cells = [layer for layer in spec["layer"] if layer["mark"]["type"] == "geoshape" and "encoding" in layer]
+    return spec, (cells[0]["data"]["values"]["features"] if cells else [])
+
+
+def cell_box(feature):
+    ring = np.array(feature["geometry"]["coordinates"][0])
+    return ring[:, 0].min(), ring[:, 0].max(), ring[:, 1].min(), ring[:, 1].max()
+
+
+def cell_center(lat, lon, bins=40):
+    lon_step = 59 / bins
+    lat_step = 59 * math.cos(math.radians(37.5)) / bins
+    return (math.floor((lat + 90) / lat_step) + 0.5) * lat_step - 90, (math.floor((lon + 180) / lon_step) + 0.5) * lon_step - 180
+
+
+OMAHA, KANSAS_CITY, HOUSTON = cell_center(41.25, -95.93), cell_center(39.10, -94.58), cell_center(29.76, -95.37)
+CLUSTER = pd.DataFrame({
+    "lat": [OMAHA[0], OMAHA[0] + 0.1, OMAHA[0] - 0.1, KANSAS_CITY[0], KANSAS_CITY[0] + 0.1, HOUSTON[0]],
+    "lon": [OMAHA[1], OMAHA[1] - 0.1, OMAHA[1] + 0.1, KANSAS_CITY[1], KANSAS_CITY[1] + 0.1, HOUSTON[1]],
+    "w": [10.0, 20.0, 30.0, 4.0, 6.0, 100.0],
+})
+
+
+def test_density_exact_cells_count_every_row_once():
+    frame = geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", smooth=0)
+    spec, features = density_features(frame)
+    row = frame.iloc[0]
+    assert row["Kind"] == "density" and row["Rows plotted"] == 6 and row["Rows not drawn"] == 0 and row["Title"] == "Heat map of rows"
+    assert sum(f["properties"]["rows"] for f in features) == 6
+    assert sorted(f["properties"]["value"] for f in features) == [1.0, 2.0, 3.0]
+    assert spec["projection"]["type"] == "albersUsa" and [layer["mark"]["type"] for layer in spec["layer"]] == ["geoshape", "geoshape", "geoshape"]
+    assert spec["layer"][1]["encoding"]["color"]["title"] == "Rows" and spec["layer"][1]["encoding"]["color"]["scale"] == {"scheme": "blues"}
+
+
+def test_density_cells_contain_their_points_and_wind_clockwise():
+    _, features = density_features(geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", smooth=0))
+    for feature in features:
+        assert geo.ring_area(feature["geometry"]["coordinates"][0]) < 0
+    for lat, lon in zip(CLUSTER["lat"], CLUSTER["lon"]):
+        hits = [f for f in features if cell_box(f)[0] <= lon < cell_box(f)[1] and cell_box(f)[2] <= lat < cell_box(f)[3]]
+        assert len(hits) == 1
+    widths = {round(cell_box(f)[1] - cell_box(f)[0], 3) for f in features}
+    heights = {round(cell_box(f)[3] - cell_box(f)[2], 3) for f in features}
+    assert widths == {round(59 / 40, 3)} and len(heights) == 1 and heights.pop() == pytest.approx(59 * math.cos(math.radians(37.5)) / 40, abs=1e-3)
+
+
+def test_density_detail_sets_the_cell_size():
+    for bins in (20, 80):
+        _, features = density_features(geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", smooth=0, bins=bins))
+        west, east, south, north = cell_box(features[0])
+        assert east - west == pytest.approx(59 / bins, abs=1e-3)
+        assert sum(f["properties"]["rows"] for f in features) == 6
+
+
+def test_density_cells_do_not_depend_on_which_other_points_are_present():
+    alone = geo.density_cells(np.array([41.25]), np.array([-95.93]), None, "count", 40, 0.0, "us")
+    with_far = geo.density_cells(np.array([41.25, 29.76, 47.6]), np.array([-95.93, -95.37, -122.3]), None, "count", 40, 0.0, "us")
+    assert alone[0][:4] in [c[:4] for c in with_far]
+
+
+def test_density_weighted_sum_and_mean():
+    total = geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", value="w", smooth=0)
+    spec, features = density_features(total)
+    by_rows = {f["properties"]["rows"]: f["properties"]["value"] for f in features}
+    assert by_rows == {3: 60.0, 2: 10.0, 1: 100.0}
+    assert spec["layer"][1]["encoding"]["color"]["title"] == "Sum of w" and total.iloc[0]["Title"] == "Heat map of w"
+    mean = geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", value="w", agg="mean", smooth=0)
+    spec, features = density_features(mean)
+    assert {f["properties"]["rows"]: f["properties"]["value"] for f in features} == {3: 20.0, 2: 5.0, 1: 100.0}
+    assert spec["layer"][1]["encoding"]["color"]["title"] == "Average of w"
+
+
+def test_density_weights_that_are_blank_are_not_drawn_but_count_mode_ignores_them():
+    df = CLUSTER.assign(w=[10.0, np.nan, 30.0, 4.0, 6.0, 100.0])
+    frame = geo.map_chart(df, "density", lat="lat", lon="lon", value="w", smooth=0)
+    assert frame.iloc[0]["Rows plotted"] == 5 and frame.iloc[0]["Rows not drawn"] == 1
+    counted = geo.map_chart(df, "density", lat="lat", lon="lon", value="w", agg="count", smooth=0)
+    assert counted.iloc[0]["Rows plotted"] == 6
+    assert density_features(counted)[0]["layer"][1]["encoding"]["color"]["title"] == "Rows"
+
+
+def test_density_skips_bad_coordinates_and_draws_nothing_when_none_are_good():
+    df = pd.DataFrame({"a": [40.0, 200.0, np.nan, 41.0], "b": [-96.0, 1.0, 1.0, -96.5]})
+    frame = geo.map_chart(df, "density", lat="a", lon="b", smooth=0)
+    assert frame.iloc[0]["Rows plotted"] == 2 and frame.iloc[0]["Rows not drawn"] == 2
+    empty = geo.map_chart(pd.DataFrame({"a": [np.nan], "b": [np.nan]}), "density", lat="a", lon="b")
+    spec, features = density_features(empty)
+    assert empty.iloc[0]["Rows plotted"] == 0 and features == [] and len(spec["layer"]) == 2
+
+
+def test_gaussian_blur_keeps_the_total_inside_the_grid_and_is_symmetric():
+    grid = np.zeros((21, 21))
+    grid[10, 10] = 1.0
+    blurred = geo.gaussian_blur(grid, 1.5)
+    assert blurred.sum() == pytest.approx(1.0, abs=1e-6)
+    assert np.allclose(blurred, blurred[::-1, ::-1]) and np.allclose(blurred, blurred.T)
+    assert blurred.argmax() == 10 * 21 + 10
+    assert geo.gaussian_blur(grid, 0) is grid
+
+
+def test_density_smoothing_spreads_points_and_keeps_their_cells():
+    lat, lon = np.array([41.25, 41.26, 39.10]), np.array([-95.93, -95.94, -94.58])
+    exact = geo.density_cells(lat, lon, None, "count", 40, 0.0, "us")
+    soft = geo.density_cells(lat, lon, None, "count", 40, 1.0, "us")
+    assert len(soft) > len(exact) and sum(c[5] for c in soft) == 3
+    assert sum(c[4] for c in soft) == pytest.approx(3.0, rel=0.03)
+    peak = max(soft, key=lambda c: c[4])
+    assert peak[5] == 2
+    assert {c[:4] for c in exact} <= {c[:4] for c in soft}
+
+
+def test_density_smoothed_mean_stays_between_the_weights():
+    lat, lon = np.array([41.25, 41.26, 39.10]), np.array([-95.93, -95.94, -94.58])
+    cells = geo.density_cells(lat, lon, np.array([10.0, 30.0, 50.0]), "mean", 40, 1.0, "us")
+    assert cells and all(10.0 - 1e-9 <= c[4] <= 50.0 + 1e-9 for c in cells)
+
+
+def test_density_clips_cells_at_the_edge_of_the_globe_instead_of_dropping_points():
+    lat, lon = np.array([51.9, -16.0, 0.0]), np.array([179.9, -179.95, 0.0])
+    cells = geo.density_cells(lat, lon, None, "count", 40, 0.0, "world")
+    assert sum(c[5] for c in cells) == 3
+    assert all(-180 <= c[0] < c[1] <= 180 and -90 <= c[2] < c[3] <= 90 for c in cells)
+
+
+def test_density_world_background_and_color_scale():
+    world = geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", basemap="world", color_scale="sqrt", scheme="plasma", title="Everywhere")
+    spec, features = density_features(world)
+    assert spec["projection"]["type"] == "equalEarth" and spec["title"] == "Everywhere"
+    assert spec["layer"][0]["data"]["format"]["feature"] == "countries"
+    assert spec["layer"][1]["encoding"]["color"]["scale"] == {"scheme": "plasma", "type": "sqrt"}
+    negative = geo.map_chart(CLUSTER.assign(w=[-5.0, 1, 1, 1, 1, 1]), "density", lat="lat", lon="lon", value="w", smooth=0, color_scale="sqrt")
+    assert "type" not in density_features(negative)[0]["layer"][1]["encoding"]["color"]["scale"]
+
+
+def test_density_refuses_bad_settings_and_grids_that_are_too_big():
+    with pytest.raises(ValueError, match="between 5 and 150"):
+        geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", bins=4)
+    with pytest.raises(ValueError, match="between 5 and 150"):
+        geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", bins=151)
+    with pytest.raises(ValueError, match="between 0 and 10"):
+        geo.map_chart(CLUSTER, "density", lat="lat", lon="lon", smooth=11)
+    spread = pd.DataFrame({"lat": [-80.0, 80.0], "lon": [-179.0, 179.0]})
+    with pytest.raises(ValueError, match="too much of the map"):
+        geo.map_chart(spread, "density", lat="lat", lon="lon", bins=150)
+    assert geo.map_chart(spread, "density", lat="lat", lon="lon", bins=150, basemap="world").iloc[0]["Rows plotted"] == 2
+
+
 def test_map_chart_states_accepts_names_codes_and_fips_and_combines_rows():
     df = pd.DataFrame({"st": ["TX", "Texas", "48", "nebraska", "NE", "ZZ", None, 31], "v": [1, 2, 3, 10, 20, 99, 5, 1]})
     row = geo.map_chart(df, "states", region="st", value="v").iloc[0]
@@ -505,6 +654,23 @@ def test_map_chart_tool_makes_a_chart_frame():
     assert "must hold numbers" in err(run(chain(("map_chart", {"kind": "states", "region": "st", "value": "st"}), data="st\nTX\n")), 2)
 
 
+def test_map_chart_density_tool_matches_the_function_and_checks_its_settings():
+    ev = run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "weight": "pop", "cell_agg": "mean", "bins": 25, "smooth": 0, "color_scale": "sqrt", "scheme": "plasma"}), data=CITIES_CSV))
+    expected = geo.map_chart(CITIES, "density", lat="lat", lon="lon", value="pop", agg="mean", bins=25, smooth=0, color_scale="sqrt", scheme="plasma")
+    pd.testing.assert_frame_equal(out(ev, 2), expected)
+    default = run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": "lon"}), data=CITIES_CSV))
+    pd.testing.assert_frame_equal(out(default, 2), geo.map_chart(CITIES, "density", lat="lat", lon="lon"))
+    zero = run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "smooth": 0}), data=CITIES_CSV))
+    pd.testing.assert_frame_equal(out(zero, 2), geo.map_chart(CITIES, "density", lat="lat", lon="lon", smooth=0))
+    assert err(run(chain(("map_chart", {"kind": "density", "lat": "", "lon": "lon"}), data=CITIES_CSV)), 2) == "Pick the latitude column"
+    assert err(run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": ""}), data=CITIES_CSV)), 2) == "Pick the longitude column"
+    assert "must hold numbers" in err(run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "weight": "city"}), data=CITIES_CSV)), 2)
+    assert err(run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "bins": 3}), data=CITIES_CSV)), 2) == "Use between 5 and 150 cells across"
+    assert err(run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "smooth": 12}), data=CITIES_CSV)), 2) == "Smooth by between 0 and 10 cells"
+    counted = run(chain(("map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "weight": "city", "cell_agg": "count"}), data=CITIES_CSV))
+    assert out(counted, 2).iloc[0]["Rows plotted"] == 5
+
+
 def test_read_map_and_find_region_pipeline_and_chart(tmp_path):
     path = write_geojson(tmp_path / "zones.geojson", collection(({"zone": "Core", "weight": 2}, SQUARE), ({"zone": "Ring", "weight": 9}, DONUT)))
     nodes = [
@@ -577,17 +743,19 @@ def test_exports_run_and_match_the_canvas(tmp_path):
         (10, "map_chart", {"kind": "points", "lat": "lat", "lon": "lon", "color": "pop"}),
         (11, "map_chart", {"kind": "states", "region": "st", "value": "v"}),
         (12, "text_input", {"data": "st,v\nTX,1\nNE,2\n"}),
+        (13, "map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "weight": "pop", "cell_agg": "mean", "bins": 30}),
+        (14, "map_chart", {"kind": "density", "lat": "lat", "lon": "lon", "smooth": 0, "basemap": "world", "color_scale": "sqrt"}),
     ]
-    edges = [(1, "out", 3, "in"), (2, "out", 3, "places"), (3, "out", 4, "in"), (4, "out", 5, "in"), (7, "out", 8, "in"), (6, "out", 8, "regions"), (6, "out", 9, "in"), (2, "out", 10, "in"), (12, "out", 11, "in")]
+    edges = [(1, "out", 3, "in"), (2, "out", 3, "places"), (3, "out", 4, "in"), (4, "out", 5, "in"), (7, "out", 8, "in"), (6, "out", 8, "regions"), (6, "out", 9, "in"), (2, "out", 10, "in"), (12, "out", 11, "in"), (2, "out", 13, "in"), (2, "out", 14, "in")]
     ev, code, ns = exported_matches_engine(tmp_path, nodes, edges, None)
-    for helper in ("def find_nearest", "def distance_between", "def map_values", "def read_map_file", "def find_region", "def map_chart", "def _haversine", "def ring_contains", "def _state_lookup"):
+    for helper in ("def find_nearest", "def distance_between", "def map_values", "def read_map_file", "def find_region", "def map_chart", "def density_cells", "def gaussian_blur", "def _haversine", "def ring_contains", "def _state_lookup"):
         assert helper in code
     assert "Requires pandas, numpy, scikit-learn, pyshp." in code
     pd.testing.assert_frame_equal(ns["find_nearest_3"], out(ev, 3))
     pd.testing.assert_frame_equal(ns["distance_4"], out(ev, 4))
     pd.testing.assert_frame_equal(ns["map_values_5"], out(ev, 5))
     pd.testing.assert_frame_equal(ns["find_region_8"], out(ev, 8))
-    for name, node in (("map_chart_9", 9), ("map_chart_10", 10), ("map_chart_11", 11)):
+    for name, node in (("map_chart_9", 9), ("map_chart_10", 10), ("map_chart_11", 11), ("map_chart_13", 13), ("map_chart_14", 14)):
         pd.testing.assert_frame_equal(ns[name], out(ev, node))
     proc = subprocess.run([sys.executable, "-I", str(tmp_path / "exported.py")], capture_output=True, text=True, cwd=tmp_path)
     assert proc.returncode == 0, proc.stderr
